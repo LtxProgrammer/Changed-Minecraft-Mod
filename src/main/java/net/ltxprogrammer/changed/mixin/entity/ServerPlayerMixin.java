@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin.entity;
 
 import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.UseItemMode;
@@ -25,6 +26,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.PacketDistributor;
@@ -61,6 +63,12 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 newVariant.getChangedEntity().readPlayerVariantData(oldVariant.getChangedEntity().savePlayerVariantData());
                 newVariant.handleRespawn();
             });
+        }
+        
+        if (restore) {
+            this.getAccessorySlots().ifPresent(slots -> slots.replaceWith(AccessorySlots.getForEntity(player).orElse(null)));
+        } else if (this.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) || player.isSpectator()) {
+            this.getAccessorySlots().ifPresent(slots -> slots.replaceWith(AccessorySlots.getForEntity(player).orElse(null)));
         }
     }
 

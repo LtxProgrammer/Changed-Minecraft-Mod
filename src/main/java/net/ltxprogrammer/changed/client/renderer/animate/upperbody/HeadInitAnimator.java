@@ -20,6 +20,7 @@ public class HeadInitAnimator<T extends ChangedEntity, M extends AdvancedHumanoi
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
         head.yRot = netHeadYaw * ((float)Math.PI / 180F);
+        head.x = 0F;
         if (fallFlying) {
             head.xRot = (-(float)Math.PI / 4F);
         } else if (core.swimAmount > 0.0F) {

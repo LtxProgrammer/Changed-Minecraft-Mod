@@ -931,9 +931,6 @@ public abstract class ChangedEntity extends Monster {
             return super.getCapability(capability, facing);
     }
 
-    @Deprecated
-    public abstract Color3 getDripColor();
-
     public Color3 getTransfurColor(TransfurCause cause) { return Color3.WHITE; }
 
     public float getDripRate(float damage) {

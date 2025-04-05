@@ -22,6 +22,7 @@ public class WingedDragonUpperBodyInitAnimator<T extends ChangedEntity, M extend
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
         torso.yRot = 0.0F;
         torso.zRot = 0.0F;
+        torso.x = 0F;
         rightArm.z = 0.0F;
         rightArm.x = -core.torsoWidth;
         leftArm.z = 0.0F;

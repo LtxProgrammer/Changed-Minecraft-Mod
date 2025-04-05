@@ -21,8 +21,13 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 10,
+          "weight": 8,
           "name": "changed:sports_bra"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "changed:black_tshirt"
         },
         {
           "type": "minecraft:item",

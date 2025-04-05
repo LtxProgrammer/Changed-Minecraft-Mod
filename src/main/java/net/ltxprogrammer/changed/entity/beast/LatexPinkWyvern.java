@@ -1,4 +1,3 @@
-
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.*;
@@ -8,9 +7,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class LatexPinkWyvern extends ChangedEntity implements PowderSnowWalkable, PatronOC {
     public LatexPinkWyvern(EntityType<? extends LatexPinkWyvern> p_19870_, Level p_19871_) {
@@ -22,11 +18,6 @@ public class LatexPinkWyvern extends ChangedEntity implements PowderSnowWalkable
         super.setAttributes(attributes);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.05);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.getColor(this.random.nextInt(4) < 3 ? "#f7aebe" : "#ffffff");
     }
 
     @Override
@@ -42,15 +33,6 @@ public class LatexPinkWyvern extends ChangedEntity implements PowderSnowWalkable
     @Override
     protected void registerGoals() {
         super.registerGoals();
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.WHITE;
-    }
-
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.EMPTY;
     }
 
     public Color3 getTransfurColor(TransfurCause cause) {

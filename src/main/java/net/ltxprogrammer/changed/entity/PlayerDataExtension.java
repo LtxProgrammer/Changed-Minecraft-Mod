@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public interface PlayerDataExtension {
+public interface PlayerDataExtension extends LivingEntityDataExtension {
     @Nullable
     TransfurVariantInstance<?> getTransfurVariant();
     void setTransfurVariant(@Nullable TransfurVariantInstance<?> variant);

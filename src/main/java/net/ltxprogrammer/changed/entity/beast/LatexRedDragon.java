@@ -1,15 +1,10 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-
 
 public class LatexRedDragon extends ChangedEntity implements PatronOC {
     public LatexRedDragon(EntityType<? extends LatexRedDragon> p_19870_, Level p_19871_) {
@@ -23,11 +18,6 @@ public class LatexRedDragon extends ChangedEntity implements PatronOC {
     }
 
     @Override
-    public Color3 getDripColor() {
-        return Color3.getColor("#a54f58");
-    }
-
-    @Override
     public int getTicksRequiredToFreeze() {  return 140; }
 
     @Override
@@ -38,15 +28,6 @@ public class LatexRedDragon extends ChangedEntity implements PatronOC {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.WHITE;
-    }
-
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.EMPTY;
     }
 
     public Color3 getTransfurColor(TransfurCause cause) {

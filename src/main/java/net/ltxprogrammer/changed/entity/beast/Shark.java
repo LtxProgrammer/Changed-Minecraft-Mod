@@ -4,12 +4,10 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
-import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -19,7 +17,6 @@ import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
-import org.jetbrains.annotations.NotNull;
 
 public class Shark extends AbstractAquaticEntity {
     public Shark(EntityType<? extends Shark> p_28316_, Level p_28317_) {
@@ -97,17 +94,7 @@ public class Shark extends AbstractAquaticEntity {
     }
 
     @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.WHITE;
-    }
-
-    @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return level.random.nextInt(10) > 3 ? Color3.GRAY : Color3.WHITE;
     }
 }

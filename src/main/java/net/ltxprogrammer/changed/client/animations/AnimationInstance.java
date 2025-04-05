@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
 import net.ltxprogrammer.changed.entity.animation.AnimationParameters;
 import net.ltxprogrammer.changed.entity.animation.NoParameters;
 import net.ltxprogrammer.changed.util.Transition;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -25,7 +26,8 @@ import java.util.Optional;
 
 public class AnimationInstance {
     private final AnimationDefinition animation;
-    private final Map<Limb, PartPose> baseline = new HashMap<>();
+    private final Map<Limb, PartPose> baselineH = new HashMap<>();
+    private final Map<Limb, PartPose> baselineAH = new HashMap<>();
     private final Map<LivingEntity, AnimationInstance> entities = new HashMap<>(0);
     private float time = 0.0f;
     private float timeO = 0.0f;
@@ -50,23 +52,43 @@ public class AnimationInstance {
         this.parentEntity = parentEntity;
     }
 
+    public void captureBaseline(EntityModel<?> model) {
+        if (model instanceof AdvancedHumanoidModel<?> advancedHumanoid)
+            this.captureBaseline(advancedHumanoid);
+        else if (model instanceof HumanoidModel<?> humanoid)
+            this.captureBaseline(humanoid);
+    }
+
+    public void resetToBaseline(EntityModel<?> model) {
+        if (model instanceof AdvancedHumanoidModel<?> advancedHumanoid)
+            this.resetToBaseline(advancedHumanoid);
+        else if (model instanceof HumanoidModel<?> humanoid)
+            this.resetToBaseline(humanoid);
+    }
+
     public void captureBaseline(HumanoidModel<?> model) {
         /* Capture model position baseline */
-        animation.channels.keySet().stream().filter(limb -> !baseline.containsKey(limb)).filter(Limb::isVanillaPart).forEach(limb -> {
-            baseline.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
+        animation.channels.keySet().stream().filter(Limb::isVanillaPart).forEach(limb -> {
+            baselineH.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
         });
     }
 
     public void resetToBaseline(HumanoidModel<?> model) {
-        animation.channels.keySet().stream().filter(Limb::isVanillaPart).filter(baseline::containsKey).forEach(limb -> {
-            limb.getModelPartSafe(model).ifPresent(part -> part.loadPose(baseline.get(limb)));
+        animation.channels.keySet().stream().filter(Limb::isVanillaPart).filter(baselineH::containsKey).forEach(limb -> {
+            limb.getModelPartSafe(model).ifPresent(part -> part.loadPose(baselineH.get(limb)));
         });
     }
 
     public void captureBaseline(AdvancedHumanoidModel<?> model) {
         /* Capture model position baseline */
-        animation.channels.keySet().stream().filter(limb -> !baseline.containsKey(limb)).forEach(limb -> {
-            baseline.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
+        animation.channels.keySet().forEach(limb -> {
+            baselineAH.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
+        });
+    }
+
+    public void resetToBaseline(AdvancedHumanoidModel<?> model) {
+        animation.channels.keySet().stream().filter(baselineAH::containsKey).forEach(limb -> {
+            limb.getModelPartSafe(model).ifPresent(part -> part.loadPose(baselineAH.get(limb)));
         });
     }
 
@@ -95,11 +117,14 @@ public class AnimationInstance {
         // TODO: Item animation track, either lock to limb or be keyframed
     }
 
-    private void animateLimb(Limb limb, ModelPart part, float time, float transition) {
+    private void animateLimb(Limb limb, ModelPart part, Map<Limb, PartPose> baseline, float time, float transition) {
         if (part == null)
             return;
 
         final var base = baseline.get(limb);
+        if (base == null)
+            return; // Don't touch limb unless it has been saved
+
         final var channelList = animation.channels.get(limb);
         if (channelList == null)
             return;
@@ -109,15 +134,14 @@ public class AnimationInstance {
                 return;
 
             channel.animate(animation, part, time);
-            if (base != null && channel.getTarget() == AnimationChannel.Target.POSITION) {
+            if (channel.getTarget() == AnimationChannel.Target.POSITION) {
                 part.x += base.x;
                 part.y += base.y;
                 part.z += base.z;
             }
         });
 
-        if (base != null)
-            part.loadPose(TransfurAnimator.lerpPartPose(part.storePose(), base, transition));
+        part.loadPose(TransfurAnimator.lerpPartPose(part.storePose(), base, transition));
     }
 
     public Vector3f getTargetValue(Limb limb, AnimationChannel.Target target, float partialTicks) {
@@ -156,21 +180,17 @@ public class AnimationInstance {
     }
 
     public void animate(HumanoidModel<?> model, float partialTicks) {
-        captureBaseline(model);
-
         final float time = computeTime(partialTicks);
         final float transition = computeTransition(partialTicks);
 
-        animation.channels.keySet().stream().filter(Limb::isVanillaPart).forEach(limb -> animateLimb(limb, limb.getModelPart(model), time, transition));
+        animation.channels.keySet().stream().filter(Limb::isVanillaPart).forEach(limb -> animateLimb(limb, limb.getModelPart(model), baselineH, time, transition));
     }
 
     public void animate(AdvancedHumanoidModel<?> model, float partialTicks) {
-        captureBaseline(model);
-
         final float time = computeTime(partialTicks);
         final float transition = computeTransition(partialTicks);
 
-        animation.channels.keySet().forEach(limb -> animateLimb(limb, limb.getModelPart(model), time, transition));
+        animation.channels.keySet().forEach(limb -> animateLimb(limb, limb.getModelPart(model), baselineAH, time, transition));
     }
 
     private void playSounds(float timeO, float time) {

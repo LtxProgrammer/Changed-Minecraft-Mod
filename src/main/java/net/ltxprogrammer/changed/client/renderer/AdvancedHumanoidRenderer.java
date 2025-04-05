@@ -59,6 +59,7 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
         this.addLayer(new LatexBeeStingerLayer<>(this));
         this.addLayer(new LatexSpinAttackEffectLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexHeldEntityLayer<>(this));
+        this.addLayer(ExoskeletonLayer.forAdvancedModel(this, context.getModelSet()));
 
         this.addLayer(new AccessoryLayer<>(this));
     }

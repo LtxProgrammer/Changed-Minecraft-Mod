@@ -32,6 +32,7 @@ public class PlayerLayerWrapper<T extends ChangedEntity, M extends AdvancedHuman
         if (layer instanceof SpinAttackEffectLayer<?>) return false;
         if (layer instanceof DarkLatexMaskLayer<?,?>) return false;
         if (layer instanceof GasMaskLayer<?,?>) return false;
+        if (layer instanceof ExoskeletonLayer<?,?>) return false;
 
         if (layer instanceof AccessoryLayer<?,?>) return false;
         return true;

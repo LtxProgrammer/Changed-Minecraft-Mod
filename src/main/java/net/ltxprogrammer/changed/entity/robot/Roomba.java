@@ -1,16 +1,19 @@
 package net.ltxprogrammer.changed.entity.robot;
 
+import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -36,6 +39,10 @@ public class Roomba extends AbstractRobot {
                 .add(Attributes.MOVEMENT_SPEED, 0.15D);
     }
 
+    public ItemLike getDropItem() {
+        return ChangedItems.ROOMBA.get();
+    }
+
     @Override
     protected void playStepSound(BlockPos p_20135_, BlockState p_20136_) {
         // Omitted
@@ -44,6 +51,20 @@ public class Roomba extends AbstractRobot {
     @Override
     public boolean isAffectedByWater() {
         return true;
+    }
+
+    @Override
+    public void push(Entity entity) {
+        if (!this.onGround || entity instanceof Roomba) {
+            super.push(entity);
+        } else {
+            entity.setDeltaMovement(entity.getDeltaMovement().add(this.getDeltaMovement()));
+        }
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return !this.onGround ? super.canBeCollidedWith() : this.isAlive();
     }
 
     @Override
@@ -116,6 +137,8 @@ public class Roomba extends AbstractRobot {
 
     @Override
     public void tick() {
+        this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+
         super.tick();
 
         setYBodyRot(getYRot());

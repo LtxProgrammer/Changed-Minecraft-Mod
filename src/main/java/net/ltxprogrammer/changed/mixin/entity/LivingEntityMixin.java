@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.block.entity.StasisChamberBlockEntity;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.robot.WearableExoskeleton;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.fluid.Gas;
@@ -23,10 +24,10 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -36,6 +37,8 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -121,6 +124,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "getJumpPower", at = @At("RETURN"), cancellable = true)
     public void getJumpPower(CallbackInfoReturnable<Float> callback) {
         ProcessTransfur.getEntityVariant((LivingEntity)(Object)this).map(variant -> callback.getReturnValue() * variant.jumpStrength).ifPresent(callback::setReturnValue);
+        if (this.getFirstPassenger() instanceof WearableExoskeleton mechSuit)
+            callback.setReturnValue(callback.getReturnValue() * mechSuit.getJumpStrengthMultiplier());
     }
 
     @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)
@@ -338,6 +343,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Shadow public abstract AttributeMap getAttributes();
 
+    @Shadow protected boolean jumping;
+
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;
     }
@@ -450,6 +457,15 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
             ci.cancel();
     }
 
+    @Inject(method = "getBedOrientation", at = @At("HEAD"), cancellable = true)
+    public void getStasisChamberOrientation(CallbackInfoReturnable<Direction> cir) {
+        if (this.vehicle instanceof SeatEntity seatEntity) {
+            seatEntity.getAttachedBlockState()
+                    .map(state -> state.getBedDirection(this.level, seatEntity.getAttachedBlockPos()))
+                    .ifPresent(cir::setReturnValue);
+        }
+    }
+
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
     public void addExtendedData(CompoundTag tag, CallbackInfo ci) {
         tag.put("ChangedAccessorySlots", accessorySlots.save());
@@ -459,5 +475,19 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     public void readExtendedData(CompoundTag tag, CallbackInfo ci) {
         if (tag.contains("ChangedAccessorySlots"))
             accessorySlots.load(tag.getCompound("ChangedAccessorySlots"));
+    }
+
+    @Inject(method = "dropEquipment", at = @At("RETURN"))
+    public void dropAccessories(CallbackInfo ci) {
+        if (!this.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+            for(int i = 0; i < accessorySlots.getContainerSize(); ++i) {
+                ItemStack itemstack = accessorySlots.getItem(i);
+                if (!itemstack.isEmpty() && EnchantmentHelper.hasVanishingCurse(itemstack)) {
+                    accessorySlots.removeItemNoUpdate(i);
+                }
+            }
+
+            accessorySlots.dropAll(AccessorySlots.dropItemHandler((LivingEntity)(Object)this));
+        }
     }
 }

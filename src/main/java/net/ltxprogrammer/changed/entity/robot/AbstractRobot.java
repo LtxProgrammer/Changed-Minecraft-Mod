@@ -18,6 +18,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -142,8 +143,6 @@ public abstract class AbstractRobot extends PathfinderMob {
 
         boolean damageByWater = this.isAffectedByWater() && this.isInWater();
 
-        this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
-
         if (this.getHurtTime() > 0) {
             this.setHurtTime(this.getHurtTime() - 1);
         }
@@ -169,7 +168,7 @@ public abstract class AbstractRobot extends PathfinderMob {
     }
 
     public ItemLike getDropItem() {
-        return ChangedItems.ROOMBA.get();
+        return Items.AIR;
     }
 
     public boolean hurt(DamageSource source, float damage) {

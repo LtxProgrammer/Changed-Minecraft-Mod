@@ -57,7 +57,8 @@ public class AnimatorPresets {
                     .addAnimator(new WolfBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
-                    .addAnimator(new WolfBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
+                    .addAnimator(new WolfBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new ExoskeletonBipedalAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
         };
     }
 
@@ -69,7 +70,8 @@ public class AnimatorPresets {
                     .addAnimator(new CatBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
-                    .addAnimator(new CatBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
+                    .addAnimator(new CatBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new ExoskeletonBipedalAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
         };
     }
 
@@ -82,7 +84,8 @@ public class AnimatorPresets {
                     .addAnimator(new DragonBipedalFallFlyAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
-                    .addAnimator(new DragonBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
+                    .addAnimator(new DragonBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new ExoskeletonBipedalAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
         };
     }
 
@@ -94,7 +97,8 @@ public class AnimatorPresets {
                     .addAnimator(new SharkBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
-                    .addAnimator(new SharkBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
+                    .addAnimator(new SharkBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new ExoskeletonBipedalAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
         };
     }
 
@@ -106,7 +110,8 @@ public class AnimatorPresets {
                     .addAnimator(new SharkBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
-                    .addAnimator(new OrcaBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
+                    .addAnimator(new OrcaBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new ExoskeletonBipedalAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
         };
     }
 

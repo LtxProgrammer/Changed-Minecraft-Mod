@@ -50,6 +50,7 @@
     "block.BlockColorsMixin",
     "client.ClientLevelMixin",
     "client.ClientLivingEntityMixin",
+    "client.ForgeHooksClientMixin",
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
     "client.OptionsMixin",

@@ -3,11 +3,13 @@ package net.ltxprogrammer.changed.mixin.render;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.block.SeatableBlock;
 import net.ltxprogrammer.changed.client.CameraExtender;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
+import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
@@ -45,6 +47,8 @@ public abstract class CameraMixin implements CameraExtender {
     @Shadow @Final private Vector3f up;
 
     @Shadow public abstract void setup(BlockGetter p_90576_, Entity p_90577_, boolean p_90578_, boolean p_90579_, float p_90580_);
+
+    @Shadow protected abstract void move(double p_90569_, double p_90570_, double p_90571_);
 
     @Unique
     private <T extends ChangedEntity> void adjustAnimForEntity(T changedEntity, float partialTicks) {
@@ -115,6 +119,15 @@ public abstract class CameraMixin implements CameraExtender {
         else if (entity instanceof Player player) {
             ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                 adjustAnimForEntity(variant.getChangedEntity(), partialTicks);
+            });
+        }
+
+        if (entity.getVehicle() instanceof SeatEntity seatEntity) {
+            seatEntity.getAttachedBlockState().ifPresent(state -> {
+                if (!(state.getBlock() instanceof SeatableBlock seatable)) return;
+                var offset = seatable.getSleepOffset(level, state, seatEntity.getAttachedBlockPos());
+
+                this.move(offset.x, offset.y, offset.z);
             });
         }
     }

@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.util;
 
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
@@ -18,6 +19,12 @@ public class EntityUtil {
         if (entity instanceof Player player)
             return player;
         return null;
+    }
+
+    public static LivingEntity maybeGetUnderlying(LivingEntity entity) {
+        if (entity instanceof ChangedEntity changedEntity)
+            return changedEntity.maybeGetUnderlying();
+        return entity;
     }
 
     public static float getFrictionOnBlock(@NotNull Entity entity) {

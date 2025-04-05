@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -136,11 +135,6 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
         this.goalSelector.addGoal(1, new GoToWaterGoal(this, 0.3));
         this.goalSelector.addGoal(1, new SinkFromSurfaceGoal(this, 0.3));
         this.goalSelector.addGoal(2, new RandomSwimmingGoal(this, 0.4D, 10));
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return level.random.nextInt(10) > 3 ? Color3.GRAY : Color3.WHITE;
     }
 
     public void travel(@NotNull Vec3 p_32394_) {

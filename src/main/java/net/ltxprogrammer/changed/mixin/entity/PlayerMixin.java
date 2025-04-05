@@ -249,13 +249,11 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @Inject(method = "tick", at = @At("RETURN"))
     public void checkGrabbed(CallbackInfo ci) {
-        if (this instanceof LivingEntityDataExtension ext) {
-            var grabbedBy = ext.getGrabbedBy();
-            var ability = AbstractAbility.getAbilityInstance(grabbedBy, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-            if (ability != null && !ability.grabbedHasControl) {
-                this.noPhysics = true;
-                this.onGround = false;
-            }
+        var grabbedBy = this.getGrabbedBy();
+        var ability = AbstractAbility.getAbilityInstance(grabbedBy, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        if (ability != null && !ability.grabbedHasControl) {
+            this.noPhysics = true;
+            this.onGround = false;
         }
     }
 

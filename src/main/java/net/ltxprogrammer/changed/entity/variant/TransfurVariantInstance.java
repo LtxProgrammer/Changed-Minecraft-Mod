@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.robot.WearableExoskeleton;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.entity.AccessoryEntities;
 import net.ltxprogrammer.changed.init.*;
@@ -364,6 +365,9 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         TransfurVariant<?> variant = TransfurVariant.getEntityVariant(event.getEntityLiving());
         if (variant != null && variant.isReducedFall()) {
             event.setDistance(0.4f * event.getDistance());
+        }
+        if (event.getEntityLiving().getFirstPassenger() instanceof WearableExoskeleton exo) {
+            event.setDistance(event.getDistance() * exo.getFallDamageMultiplier());
         }
     }
 

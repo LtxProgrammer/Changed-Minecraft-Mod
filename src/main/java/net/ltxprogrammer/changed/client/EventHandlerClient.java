@@ -4,14 +4,13 @@ import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
-import net.ltxprogrammer.changed.client.animations.AnimationDefinitions;
 import net.ltxprogrammer.changed.client.gui.ContentWarningScreen;
 import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.ExoskeletonLayer;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
@@ -23,10 +22,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -203,6 +199,7 @@ public class EventHandlerClient {
             if (pair.getSecond() instanceof PlayerRenderer renderer) {
                 renderer.addLayer(new DarkLatexMaskLayer<>(renderer, event.getEntityModels()));
                 renderer.addLayer(new GasMaskLayer<>(renderer, event.getEntityModels()));
+                renderer.addLayer(ExoskeletonLayer.forPlayerModel(renderer, event.getEntityModels()));
             }
         });
     }
