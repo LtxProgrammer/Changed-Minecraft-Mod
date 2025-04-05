@@ -466,7 +466,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             // Send client empty bpi packet, so it'll reply with its bpi
             Changed.PACKET_HANDLER.send(playerTarget, BasicPlayerInfoPacket.EMPTY);
 
-            Changed.PACKET_HANDLER.send(playerTarget, AccessoryEntities.INSTANCE.syncPacket());
+            Changed.PACKET_HANDLER.send(playerTarget, AccessoryEntities.INSTANCE.syncPacket(player));
         }
     }
 

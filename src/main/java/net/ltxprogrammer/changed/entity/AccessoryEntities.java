@@ -11,9 +11,11 @@ import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.AccessorySyncPacket;
 import net.ltxprogrammer.changed.network.packet.ChangedPacket;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
@@ -29,6 +31,7 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.io.InputStreamReader;
@@ -36,6 +39,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -127,9 +131,15 @@ public class AccessoryEntities extends SimplePreparableReloadListener<Multimap<E
 
     public static class SyncPacket implements ChangedPacket {
         private final Multimap<EntityType<?>, AccessorySlotType> map;
+        private final @Nullable AccessorySyncPacket receiverAccessories;
 
         protected SyncPacket(Multimap<EntityType<?>, AccessorySlotType> map) {
+            this(map, null);
+        }
+
+        protected SyncPacket(Multimap<EntityType<?>, AccessorySlotType> map, AccessorySyncPacket receiverAccessories) {
             this.map = map;
+            this.receiverAccessories = receiverAccessories;
         }
 
         public SyncPacket(FriendlyByteBuf buffer) {
@@ -142,6 +152,7 @@ public class AccessoryEntities extends SimplePreparableReloadListener<Multimap<E
                     map.put(entityType, ChangedRegistry.ACCESSORY_SLOTS.get().getValue(slotTypeId));
                 }
             });
+            this.receiverAccessories = buffer.readOptional(AccessorySyncPacket::new).orElse(null);
         }
 
         @Override
@@ -153,6 +164,7 @@ public class AccessoryEntities extends SimplePreparableReloadListener<Multimap<E
             });
             buffer.writeMap(intMap, FriendlyByteBuf::writeInt,
                     (setBuffer, intSet) -> setBuffer.writeCollection(intSet, FriendlyByteBuf::writeInt));
+            buffer.writeOptional(Optional.ofNullable(this.receiverAccessories), (opt, v) -> v.write(opt));
         }
 
         @Override
@@ -163,6 +175,10 @@ public class AccessoryEntities extends SimplePreparableReloadListener<Multimap<E
                 AccessoryEntities.INSTANCE.validEntities.clear();
                 AccessoryEntities.INSTANCE.validEntities.putAll(this.map);
 
+                if (this.receiverAccessories != null) {
+                    this.receiverAccessories.handle(contextSupplier);
+                }
+
                 context.setPacketHandled(true);
             }
         }
@@ -170,5 +186,11 @@ public class AccessoryEntities extends SimplePreparableReloadListener<Multimap<E
 
     public SyncPacket syncPacket() {
         return new SyncPacket(this.validEntities);
+    }
+
+    public SyncPacket syncPacket(ServerPlayer receiver) {
+        return AccessorySlots.getForEntity(receiver).map(
+                slots -> new SyncPacket(this.validEntities, new AccessorySyncPacket(receiver.getId(), slots))
+        ).orElseGet(this::syncPacket);
     }
 }
