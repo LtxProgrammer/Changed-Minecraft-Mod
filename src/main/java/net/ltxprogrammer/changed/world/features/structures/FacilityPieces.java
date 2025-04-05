@@ -20,7 +20,8 @@ import java.util.*;
 public class FacilityPieces {
     public static final FacilityPieceCollection ENTRANCES = new FacilityPieceCollection()
             .register(new FacilityEntrance(Changed.modResource("facility/entrance/entrance_blue")))
-            .register(new FacilityEntrance(Changed.modResource("facility/entrance/entrance_blue2")));
+            .register(new FacilityEntrance(Changed.modResource("facility/entrance/entrance_blue2")))
+            .register(new FacilityEntrance(Changed.modResource("facility/entrance/entrance_red")));
 
     public static final FacilityPieceCollection STAIRCASE_STARTS = new FacilityPieceCollection()
             .register(new FacilityStaircaseStart(Changed.modResource("facility/staircase/staircase_start_red")))
