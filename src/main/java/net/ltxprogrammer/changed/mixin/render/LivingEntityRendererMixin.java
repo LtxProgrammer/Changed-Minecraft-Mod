@@ -48,10 +48,6 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 
     @Unique
     private void prepareLayers(T entity) {
-        ((ClientLivingEntityExtender)EntityUtil.maybeGetUnderlying(entity)).getOrderedAnimations().forEach(instance -> {
-            instance.captureBaseline(this.model);
-        });
-
         if (!TransfurAnimator.isCapturing())
             return;
 
@@ -99,12 +95,14 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
         this.unprepareLayers(entity);
     }
 
-    @Inject(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("HEAD"))
+    @Inject(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+            at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V"))
     public void beforeRender(T entity, float yRot, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, CallbackInfo ci) {
         this.prepareLayers(entity);
     }
 
-    @Inject(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("RETURN"))
+    @Inject(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+            at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V"))
     public void afterRender(T entity, float yRot, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, CallbackInfo ci) {
         this.unprepareLayers(entity);
     }
