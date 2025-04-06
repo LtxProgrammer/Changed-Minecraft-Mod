@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.*;
 import net.ltxprogrammer.changed.block.entity.StasisChamberBlockEntity;
+import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.Util;
@@ -212,9 +213,12 @@ public class StasisChamberRenderer<T extends StasisChamberBlockEntity> implement
 
             for (RenderType rendertype : RenderType.chunkBufferLayers()) {
                 if (!fluidState.isEmpty() && ItemBlockRenderTypes.canRenderInLayer(fluidState, rendertype)) {
-                    if (fillPercent < 1f)
-                        renderTopSurface(pose.last(), buffers.getBuffer(rendertype), packedLight, packedOverlay, rgb.red(), rgb.green(), rgb.blue(), alpha, sprites[0]);
-                    renderFrontSurface(pose.last(), buffers.getBuffer(rendertype), packedLight, packedOverlay, rgb.red(), rgb.green(), rgb.blue(), alpha, sprites[1], fillYLevel);
+                    final PoseStack.Pose renderPose = pose.last();
+                    ChangedClient.recordTranslucentRender(buffers, rendertype, buffer -> {
+                        if (fillPercent < 1f)
+                            renderTopSurface(renderPose, buffer, packedLight, packedOverlay, rgb.red(), rgb.green(), rgb.blue(), alpha, sprites[0]);
+                        renderFrontSurface(renderPose, buffer, packedLight, packedOverlay, rgb.red(), rgb.green(), rgb.blue(), alpha, sprites[1], fillYLevel);
+                    });
                 }
             }
 

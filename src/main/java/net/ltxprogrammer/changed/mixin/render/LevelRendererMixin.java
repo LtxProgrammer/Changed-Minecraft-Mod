@@ -361,6 +361,12 @@ public abstract class LevelRendererMixin {
         this.minecraft.getProfiler().pop();
     }
 
+    @Inject(method = "renderChunkLayer", at = @At("RETURN"))
+    public void andRecordedTranslucent(RenderType renderType, PoseStack p_172995_, double p_172996_, double p_172997_, double p_172998_, Matrix4f p_172999_, CallbackInfo ci) {
+        if (renderType == RenderType.translucent())
+            ChangedClient.runRecordedTranslucentRender(this.renderBuffers.bufferSource(), renderType);
+    }
+
     @Inject(method = "renderLevel", at = @At("HEAD"), cancellable = true)
     public void orRenderWaveVision(PoseStack poseStack, float partialTicks, long nanoseconds, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci) {
         if (!ChangedClient.shouldRenderingWaveVision())
