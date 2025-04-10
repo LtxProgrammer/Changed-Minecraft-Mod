@@ -52,13 +52,6 @@ public class AnimationInstance {
         this.parentEntity = parentEntity;
     }
 
-    public void captureBaseline(EntityModel<?> model) {
-        if (model instanceof AdvancedHumanoidModel<?> advancedHumanoid)
-            this.captureBaseline(advancedHumanoid);
-        else if (model instanceof HumanoidModel<?> humanoid)
-            this.captureBaseline(humanoid);
-    }
-
     public void resetToBaseline(EntityModel<?> model) {
         if (model instanceof AdvancedHumanoidModel<?> advancedHumanoid)
             this.resetToBaseline(advancedHumanoid);
@@ -77,6 +70,7 @@ public class AnimationInstance {
         animation.channels.keySet().stream().filter(Limb::isVanillaPart).filter(baselineH::containsKey).forEach(limb -> {
             limb.getModelPartSafe(model).ifPresent(part -> part.loadPose(baselineH.get(limb)));
         });
+        baselineH.clear();
     }
 
     public void captureBaseline(AdvancedHumanoidModel<?> model) {
@@ -90,6 +84,7 @@ public class AnimationInstance {
         animation.channels.keySet().stream().filter(baselineAH::containsKey).forEach(limb -> {
             limb.getModelPartSafe(model).ifPresent(part -> part.loadPose(baselineAH.get(limb)));
         });
+        baselineAH.clear();
     }
 
     /**
@@ -180,6 +175,8 @@ public class AnimationInstance {
     }
 
     public void animate(HumanoidModel<?> model, float partialTicks) {
+        captureBaseline(model);
+
         final float time = computeTime(partialTicks);
         final float transition = computeTransition(partialTicks);
 
@@ -187,6 +184,8 @@ public class AnimationInstance {
     }
 
     public void animate(AdvancedHumanoidModel<?> model, float partialTicks) {
+        captureBaseline(model);
+
         final float time = computeTime(partialTicks);
         final float transition = computeTransition(partialTicks);
 

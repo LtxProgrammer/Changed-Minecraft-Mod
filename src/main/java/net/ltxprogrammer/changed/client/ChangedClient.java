@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.animations.AnimationAssociations;
@@ -16,20 +17,21 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
@@ -108,6 +110,22 @@ public class ChangedClient {
         clientTicks++;
 
         GasSFX.ensureGasSfx();
+    }
+
+    private static List<Consumer<VertexConsumer>> TRANSLUCENT_CONSUMERS = new ArrayList<>();
+
+    public static void runRecordedTranslucentRender(MultiBufferSource buffers, RenderType renderType) {
+        final VertexConsumer buffer = buffers.getBuffer(renderType);
+        TRANSLUCENT_CONSUMERS.forEach(consumer -> consumer.accept(buffer));
+        TRANSLUCENT_CONSUMERS.clear();
+    }
+
+    public static void recordTranslucentRender(MultiBufferSource buffers, RenderType renderType, Consumer<VertexConsumer> consumer) {
+        if (renderType == RenderType.translucent()) {
+            TRANSLUCENT_CONSUMERS.add(consumer);
+        } else {
+            consumer.accept(buffers.getBuffer(renderType));
+        }
     }
 
     public enum WaveVisionRenderPhase {

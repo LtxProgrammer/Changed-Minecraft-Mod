@@ -1,10 +1,20 @@
 package net.ltxprogrammer.changed.extension;
 
 import com.mojang.logging.LogUtils;
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.extension.origins.OriginsHelper;
+import net.ltxprogrammer.changed.util.Cacheable;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
@@ -182,5 +192,35 @@ public class ChangedCompatibility {
         if (OriginsHelper.doesOriginUsePlayer(player))
             return true;
         return false;
+    }
+
+    private static <T> Cacheable<T> findRegistryObject(Registry<T> registry, ResourceLocation name) {
+        return Cacheable.of(() -> {
+            var item = registry.get(name);
+            if (item != null)
+                LOGGER.info("Found registry object {}", ResourceKey.create(registry.key(), name));
+            else
+                LOGGER.info("Missing registry object {}, skipping", ResourceKey.create(registry.key(), name));
+            return item;
+        });
+    }
+
+    private static <T extends IForgeRegistryEntry<T>> Cacheable<T> findRegistryObject(IForgeRegistry<T> registry, ResourceLocation name) {
+        return Cacheable.of(() -> {
+            var item = registry.getValue(name);
+            if (item != null)
+                LOGGER.info("Found forge registry object {}", ResourceKey.create(registry.getRegistryKey(), name));
+            else
+                LOGGER.info("Missing forge registry object {}, skipping", ResourceKey.create(registry.getRegistryKey(), name));
+            return item;
+        });
+    }
+
+    private static final Cacheable<Enchantment> enchantment_enigmaticlegacy_eternalbinding
+            = findRegistryObject(ForgeRegistries.ENCHANTMENTS, new ResourceLocation("enigmaticlegacy", "eternal_binding_curse"));
+
+    public static void shouldAccessoryDropOnDeath(AccessorySlots.DropItemEvent event) {
+        if (EnchantmentHelper.getItemEnchantmentLevel(enchantment_enigmaticlegacy_eternalbinding.get(), event.getStack()) > 0)
+            event.keepItem();
     }
 }

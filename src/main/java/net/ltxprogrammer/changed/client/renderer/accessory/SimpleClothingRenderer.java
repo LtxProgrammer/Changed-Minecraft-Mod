@@ -85,9 +85,6 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                 model.unprepareVisibility(renderAs, stack);
             } else if (renderLayerParent.getModel() instanceof HumanoidModel<?> baseModel) {
                 baseModel.copyPropertiesTo(clothingModel);
-
-                clothingModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-                clothingModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
                 clothingModel.renderToBuffer(matrixStack,
                         ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                         light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

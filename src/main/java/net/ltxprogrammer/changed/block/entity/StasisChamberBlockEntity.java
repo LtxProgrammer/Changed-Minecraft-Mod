@@ -231,7 +231,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
 
     public boolean chamberEntity(LivingEntity entity) {
         if (entityHolder == null || entityHolder.isRemoved()) {
-            entityHolder = SeatEntity.createFor(entity.level, this.getBlockState(), this.getBlockPos(), false, true);
+            entityHolder = SeatEntity.createFor(entity.level, this.getBlockState(), this.getBlockPos(), false, true, false);
         }
 
         if (this.getSeatedEntity() != null)
@@ -370,11 +370,17 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
     }
 
     public List<LivingEntity> getEntitiesWithin() {
-        AABB box = new AABB(this.getBlockPos()).inflate(0.5, 0.8, 0.5);
+        AABB boxNS = new AABB(this.getBlockPos()).inflate(0.0, 14.0 / 16.0, 9.3 / 16.0);
+        AABB boxEW = new AABB(this.getBlockPos()).inflate(9.3 / 16.0, 14.0 / 16.0, 0.0);
         Level level = getLevel();
         if (level == null)
             return List.of();
-        return level.getEntitiesOfClass(LivingEntity.class, box);
+        var list = level.getEntitiesOfClass(LivingEntity.class, boxNS);
+        level.getEntitiesOfClass(LivingEntity.class, boxEW).forEach(entity -> {
+            if (list.contains(entity)) return;
+            list.add(entity);
+        });
+        return list;
     }
 
     public boolean ensureCapturedIsStillInside() {
