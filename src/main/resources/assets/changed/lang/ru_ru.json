@@ -431,7 +431,7 @@
   "entity.changed.latex_squid_dog_female": "Сквид дог - самка",
   "entity.changed.latex_squid_dog_male": "Сквид дог - самец",
   "entity.changed.latex_squirrel": "Латексная белка",
-  "entity.changed.latex_stiger": "Латексный паукотигр",
+  "entity.changed.latex_stiger": "Латексный стайгер",
   "entity.changed.latex_tiger_shark": "Латексная тигровая акула",
   "entity.changed.latex_traffic_cone_dragon": "Латексный дракон-дорожный конус",
   "entity.changed.latex_translucent_lizard": "Латексная просвечивающаяся ящерица",
@@ -511,7 +511,7 @@
   "item.changed.latex_squid_dog_female_spawn_egg": "Яйцо призыва Сквид дог - самка",
   "item.changed.latex_squid_dog_male_spawn_egg": "Яйцо призыва Сквид дог - самец",
   "item.changed.latex_squirrel_spawn_egg": "Яйцо призыва Латексная белка",
-  "item.changed.latex_stiger_spawn_egg": "Яйцо призыва Латексный паукотигр",
+  "item.changed.latex_stiger_spawn_egg": "Яйцо призыва Латексный стайгер",
   "item.changed.latex_siamese_cat_spawn_egg": "Яйцо призыва Латексная сиамская кошка",
   "item.changed.latex_siren_spawn_egg": "Яйцо призыва Латексная сирена",
   "item.changed.latex_snake_spawn_egg": "Яйцо призыва Латексная змея",
@@ -689,5 +689,5 @@
   "changed.stasis.modify.tail": "Хвост: %s",
   "changed.stasis.modify.legs": "Ноги: %s",
   "changed.stasis.modify.arms": "Руки: %s",
-  "changed.stasis.modify.scale": "Размер: %s"
+  "changed.stasis.modify.scale": "Размер: %s",
 }
