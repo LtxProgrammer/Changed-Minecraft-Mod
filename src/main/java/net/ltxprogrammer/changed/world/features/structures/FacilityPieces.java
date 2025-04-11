@@ -129,14 +129,17 @@ public class FacilityPieces {
             .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/red/intersection2_red")));
 
     public static final FacilityPieceCollection ROOMS = new FacilityPieceCollection()
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room/room_blue_wl_test"), LootTables.DECAYED_LAB_WL))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room/room_red_dl_test"), LootTables.DECAYED_LAB_DL))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room/room_gray_origin"), LootTables.DECAYED_LAB_ORIGIN))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room/room_blue_storage"), LootTables.LAB_WHITE_LATEX))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room/room_red_storage"), LootTables.LAB_DARK_LATEX))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room/room_gray_storage"), LootTables.DECAYED_LAB_ORIGIN))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room/room_blue_wl_risk"), LootTables.HIGH_TIER_LAB))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room/room_red_dl_risk"), LootTables.HIGH_TIER_LAB));
+            // Blue
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room/blue/blue_wl_test"), LootTables.DECAYED_LAB_WL))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room/blue/blue_storage"), LootTables.LAB_WHITE_LATEX))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room/blue/blue_wl_risk"), LootTables.HIGH_TIER_LAB))
+            // Gray
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room/gray/gray_origin"), LootTables.DECAYED_LAB_ORIGIN))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room/gray/gray_storage"), LootTables.DECAYED_LAB_ORIGIN))
+            // Red
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room/red/red_dl_test"), LootTables.DECAYED_LAB_DL))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room/red/red_storage"), LootTables.LAB_DARK_LATEX))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room/red/red_dl_risk"), LootTables.HIGH_TIER_LAB));
 
     public static final FacilityPieceCollection SEALS = new FacilityPieceCollection()
             .register(new FacilitySealPiece(Changed.modResource("facility/seal/seal_blue")))
