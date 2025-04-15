@@ -584,8 +584,8 @@
   "changed:advancements.main.transfur_aquatic.title": "Время плавать!",
   "changed:advancements.main.transfur_aquatic.description": "Трансфурмируйтесь в любой водный латекс.",
 
-  "changed:advancements.main.aquatic_swimming.title": "Время всплывать",
-  "changed:advancements.main.aquatic_swimming.description": "Проведите весь день подводой будучи водным латексом.",
+  "changed:advancements.main.aquatic_swimming.title": "Я искал монетку!",
+  "changed:advancements.main.aquatic_swimming.description": "Проведите весь день под водой будучи водным латексом.",
 
   "changed:advancements.main.transfur_white.title": "Единый разум",
   "changed:advancements.main.transfur_white.description": "Трансфурмируйтесь в белый латекс.",
@@ -612,7 +612,7 @@
   "changed:advancements.main.tame_a_latex.description": "Приручите латекс.",
 
   "changed:advancements.main.kill_all_latex.title": "Берсерк",
-  "changed:advancements.main.kill_all_latex.description": "Убейте по одному всех видов латекса.",
+  "changed:advancements.main.kill_all_latex.description": "Убейте все виды латекса.",
 
   "changed:advancements.main.flying.title": "Отличный вид отсюда!",
   "changed:advancements.main.flying.description": "Полетайте над землей 15 секунд.",
@@ -624,7 +624,7 @@
 
   "facility.zone.red_zone": "Красная зона",
   "facility.zone.gray_zone": "Серая зона",
-  "facility.zone.maintenance_zone": "Зона обслуживания",
+  "facility.zone.maintenance_zone": "Техническая зона",
   "facility.zone.library_zone": "Библиотечная зона",
   "facility.zone.vent_zone": "Вентиляционная зона",
   "facility.zone.greenhouse_zone": "Тепличная зона",
@@ -672,9 +672,9 @@
   "changed.stasis.command.close": "Закрытие",
   "changed.stasis.command.capture_entity": "Захват сущности",
   "changed.stasis.command.fill": "Наполнение камеры",
-  "changed.stasis.command.stabilize_entity": "Стабилизировать",
-  "changed.stasis.command.modify_entity": "Модифицировать сущность",
-  "changed.stasis.command.transfur_entity": "Трансфуррировать сущность",
+  "changed.stasis.command.stabilize_entity": "Стабилизация",
+  "changed.stasis.command.modify_entity": "Изменение сущности",
+  "changed.stasis.command.transfur_entity": "Трансфурмация сущности",
   "changed.stasis.command.drain": "Опустошение камеры",
   "changed.stasis.command.release": "Отпускание сущности",
   "changed.stasis.command.close_when_empty": "Закрытие",
