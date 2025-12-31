@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -48,12 +50,12 @@ public abstract class EnchantmentHelperMixin {
         });
     }
 
-    @Redirect(method = "doPostDamageEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getAllSlots()Ljava/lang/Iterable;"))
-    private static Iterable<ItemStack> accessoriesDoPostDamageEffects(LivingEntity livingEntity) {
-        Iterable<ItemStack> original = livingEntity.getAllSlots();
+    @WrapOperation(method = "doPostDamageEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getAllSlots()Ljava/lang/Iterable;"))
+    private static Iterable<ItemStack> accessoriesDoPostDamageEffects(LivingEntity livingEntity, Operation<Iterable<ItemStack>> originalOperation) {
+        Iterable<ItemStack> originalValue = originalOperation.call(livingEntity);
         List<ItemStack> defaultStacks = new ArrayList<>();
         List<ItemStack> stacks = new ArrayList<>();
-        original.forEach(defaultStacks::add);
+        originalValue.forEach(defaultStacks::add);
 
         AccessorySlots.getForEntity(livingEntity).ifPresent((slots) ->
                 slots.forEachSlot((slotType, itemStack) -> {
@@ -74,12 +76,12 @@ public abstract class EnchantmentHelperMixin {
         return defaultStacks;
     }
 
-    @Redirect(method = "doPostHurtEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getAllSlots()Ljava/lang/Iterable;"))
-    private static Iterable<ItemStack> accessoriesDoPostHurtEffects(LivingEntity livingEntity) {
-        Iterable<ItemStack> original = livingEntity.getAllSlots();
+    @WrapOperation(method = "doPostHurtEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getAllSlots()Ljava/lang/Iterable;"))
+    private static Iterable<ItemStack> accessoriesDoPostHurtEffects(LivingEntity livingEntity, Operation<Iterable<ItemStack>> original) {
+        Iterable<ItemStack> originalValue = original.call(livingEntity);
         List<ItemStack> defaultStacks = new ArrayList<>();
         List<ItemStack> stacks = new ArrayList<>();
-        original.forEach(defaultStacks::add);
+        originalValue.forEach(defaultStacks::add);
 
         AccessorySlots.getForEntity(livingEntity).ifPresent((slots) ->
                 slots.forEachSlot((slotType, itemStack) -> {
