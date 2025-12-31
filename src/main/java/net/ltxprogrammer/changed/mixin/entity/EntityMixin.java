@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.StasisChamber;
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.SeatEntity;
@@ -15,6 +16,7 @@ import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.item.AccessoryItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.world.LatexCoverGetter;
@@ -32,6 +34,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -51,6 +54,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Mixin(Entity.class)
@@ -288,5 +293,32 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
             return original.call(instance, reader, blockPos, entity);
         final SoundType coveredSound = coverState.getSoundType(reader, blockPos.above(), entity);
         return coveredSound != null ? coveredSound : original.call(instance, reader, blockPos, entity);
+    }
+
+    @Inject(method = "getAllSlots", at = @At("RETURN"), cancellable = true)
+    private void hookAccessoriesSlots(CallbackInfoReturnable<Iterable<ItemStack>> cir) {
+        Entity self = (Entity) (Object) this;
+        if (!(self instanceof LivingEntity livingEntity)) return;
+        List<ItemStack> defaultStacks = new ArrayList<>();
+        List<ItemStack> stacks = new ArrayList<>();
+
+        AccessorySlots.getForEntity(livingEntity).ifPresent((slots) ->
+                slots.forEachSlot((slotType, itemStack) -> {
+                    if (itemStack.isEmpty()) return;
+                    if (!(itemStack.getItem() instanceof AccessoryItem accessoryItem)) return;
+                    if (accessoryItem.isConsideredBySlots(itemStack, slotType, livingEntity)) {
+                        stacks.add(itemStack);
+                    }
+                })
+        );
+
+        if (!stacks.isEmpty()) {
+            Iterable<ItemStack> returnValue = cir.getReturnValue();
+            if (returnValue != null) {
+                returnValue.forEach(defaultStacks::add);
+                stacks.addAll(defaultStacks);
+                cir.setReturnValue(stacks);
+            }
+        }
     }
 }

@@ -1,15 +1,22 @@
 package net.ltxprogrammer.changed.mixin;
 
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.item.AccessoryItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(EnchantmentHelper.class)
 public abstract class EnchantmentHelperMixin {
@@ -39,5 +46,58 @@ public abstract class EnchantmentHelperMixin {
             if (variant.breatheMode == TransfurVariant.BreatheMode.STRONG)
                 callback.setReturnValue(Math.max(callback.getReturnValue(), 4));
         });
+    }
+
+    @Redirect(method = "doPostDamageEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getAllSlots()Ljava/lang/Iterable;"))
+    private static Iterable<ItemStack> accessoriesDoPostDamageEffects(LivingEntity livingEntity) {
+        Iterable<ItemStack> original = livingEntity.getAllSlots();
+        List<ItemStack> defaultStacks = new ArrayList<>();
+        List<ItemStack> stacks = new ArrayList<>();
+        original.forEach(defaultStacks::add);
+
+        AccessorySlots.getForEntity(livingEntity).ifPresent((slots) ->
+                slots.forEachSlot((slotType, itemStack) -> {
+                    if (itemStack.isEmpty()) return;
+                    if (!(itemStack.getItem() instanceof AccessoryItem accessoryItem)) return;
+                    if (accessoryItem.isConsideredIntoPostDamageEffects(itemStack, slotType, livingEntity)) {
+                        stacks.add(itemStack);
+                    } else {
+                        defaultStacks.remove(itemStack);
+                    }
+                })
+        );
+
+        if (!stacks.isEmpty()) {
+            stacks.addAll(defaultStacks);
+            return stacks;
+        }
+        return defaultStacks;
+    }
+
+    @Redirect(method = "doPostHurtEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getAllSlots()Ljava/lang/Iterable;"))
+    private static Iterable<ItemStack> accessoriesDoPostHurtEffects(LivingEntity livingEntity) {
+        Iterable<ItemStack> original = livingEntity.getAllSlots();
+        List<ItemStack> defaultStacks = new ArrayList<>();
+        List<ItemStack> stacks = new ArrayList<>();
+        original.forEach(defaultStacks::add);
+
+        AccessorySlots.getForEntity(livingEntity).ifPresent((slots) ->
+                slots.forEachSlot((slotType, itemStack) -> {
+                    if (itemStack.isEmpty()) return;
+                    if (!(itemStack.getItem() instanceof AccessoryItem accessoryItem)) return;
+                    if (accessoryItem.isConsideredIntoPostHurtEffects(itemStack, slotType, livingEntity)) {
+                        stacks.add(itemStack);
+                    } else {
+                        defaultStacks.remove(itemStack);
+                    }
+                })
+        );
+
+        if (!stacks.isEmpty()) {
+            stacks.addAll(defaultStacks);
+            return stacks;
+        }
+
+        return defaultStacks;
     }
 }
