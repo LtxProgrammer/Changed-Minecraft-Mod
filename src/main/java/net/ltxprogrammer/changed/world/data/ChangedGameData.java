@@ -14,6 +14,7 @@ import java.util.function.BooleanSupplier;
 
 public class ChangedGameData {
     private final ServerLevel attachedLevel;
+    private int loggedFacilityTimes = 0;
 
     public final List<ActiveFacilityInstance> facilities = new ObjectArrayList<>(2);
 
@@ -116,7 +117,10 @@ public class ChangedGameData {
                 facility.setHeader(pair.getSecond());
                 return facility;
             } catch (Exception e) {
-                Changed.LOGGER.error("Failed to load facility from disk ", e);
+                if (loggedFacilityTimes < 20) {
+                    Changed.LOGGER.error("Failed to load facility from disk ", e);
+                    loggedFacilityTimes++;
+                }
             }
             return null;
         }).filter(Objects::nonNull).forEach(facilities::add);
