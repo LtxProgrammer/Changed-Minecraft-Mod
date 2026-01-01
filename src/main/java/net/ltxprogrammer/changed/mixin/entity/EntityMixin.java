@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.StasisChamber;
+import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
@@ -306,7 +307,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                 slots.forEachSlot((slotType, itemStack) -> {
                     if (itemStack.isEmpty()) return;
                     if (!(itemStack.getItem() instanceof AccessoryItem accessoryItem)) return;
-                    if (accessoryItem.isConsideredBySlots(itemStack, slotType, livingEntity)) {
+                    if (accessoryItem.isAffectedByEnchantments(AccessorySlotContext.of(livingEntity, slotType))) {
                         stacks.add(itemStack);
                     }
                 })

@@ -82,15 +82,10 @@ public class ExoskeletonItem<T extends AbstractRobot> extends PlaceableEntity<T>
     }
 
     @Override
-    public boolean isConsideredByEnchantment(Enchantment enchantment, ItemStack itemStack, AccessorySlotType slotType, LivingEntity pEntity) {
+    public boolean isConsideredByEnchantment(AccessorySlotContext<?> accessorySlotContext, Enchantment enchantment, ExecutionContext executionContext) {
         if (enchantment == Enchantments.THORNS) return true;
 
-        return AccessoryItem.super.isConsideredByEnchantment(enchantment, itemStack, slotType, pEntity);
-    }
-
-    @Override
-    public boolean isConsideredIntoPostHurtEffects(ItemStack itemStack, AccessorySlotType slotType, LivingEntity livingEntity) {
-        return true;
+        return AccessoryItem.super.isConsideredByEnchantment(accessorySlotContext, enchantment, executionContext);
     }
 
     @Override

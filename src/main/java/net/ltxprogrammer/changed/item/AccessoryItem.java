@@ -12,7 +12,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.phys.AABB;
 
@@ -94,73 +93,34 @@ public interface AccessoryItem {
         return false;
     }
 
-    /**
-     * Allows the Accessory be affected by mending enchantment
-     * This is a split method from the AccessoryItem$isConsideredByEnchantment for better class organization
-     * The main default value is false
-     * @param slotType The Accessory Slot Type
-     * @param itemStack The Accessory ItemStack
-     * @return false if not affected by mending
-     */
-    default boolean isAffectedByMending(AccessorySlotType slotType, ItemStack itemStack) {
-        return false;
-    }
 
     /**
      * Allow the Accessory to be Considered by an Enchantment
      * It Affects directly the Enchantment$getSlotItems where it will make the method considerate the item and it equivalentSlot from the slot type
      * The main default value is false
+     * @param accessorySlotContext The Accessory Slot Context (Contains Wearer, ItemStack, etc.)
      * @param enchantment The Enchantment to be considered
-     * @param itemStack The Accessory ItemStack
-     * @param slotType The Accessory Slot Type
-     * @param pEntity The User
      * @return false if the enchantment should not be considered
      */
-    default boolean isConsideredByEnchantment(Enchantment enchantment, ItemStack itemStack, AccessorySlotType slotType, LivingEntity pEntity) {
-        if (enchantment == Enchantments.MENDING) {
-            return this.isAffectedByMending(slotType, itemStack);
-        }
-
+    default boolean isConsideredByEnchantment(AccessorySlotContext<?> accessorySlotContext, Enchantment enchantment, ExecutionContext executionContext) {
         return false;
+    }
+
+    enum ExecutionContext { //TODO: a better name
+        IDLE,
+        POST_HURT,
+        POST_ATTACK
     }
 
     /**
      * It Affects directly the Entity$getAllSlots where it will make the method considerate the item and it equivalentSlot from the slot type
      * This make the item be affected by Post Damage/Hurt Effects use with it caution
      * The main default value is false
-     * @param itemStack The Accessory ItemStack
-     * @param slotType The Accessory Slot Type
-     * @param livingEntity The User
+     * @param context The Accessory context
      * @return false if the enchantment should not be considered
      */
-    default boolean isConsideredBySlots(ItemStack itemStack, AccessorySlotType slotType, LivingEntity livingEntity) {
-        return false;
-    }
-
-    /**
-     * It Affects directly the EnchantmentHelper$doPostDamageEffects where it will make the method considerate the item and it equivalentSlot from the slot type
-     * It is here just for precision, example ("claw gloves" which would be affected by sharpness but not thorns)
-     * The main default value is false
-     * @param itemStack The Accessory ItemStack
-     * @param slotType The Accessory Slot Type
-     * @param livingEntity The User
-     * @return false if the enchantment should not be considered
-     */
-    default boolean isConsideredIntoPostDamageEffects(ItemStack itemStack, AccessorySlotType slotType, LivingEntity livingEntity) {
-        return false;
-    }
-
-    /**
-     * It Affects directly the EnchantmentHelper$doPostHurtEffects where it will make the method considerate the item and it equivalentSlot from the slot type
-     * It is here just for precision, example ("Chain Vest" which would be affected by protection but not from bane of arthropods)
-     * The main default value is false
-     * @param itemStack The Accessory ItemStack
-     * @param slotType The Accessory Slot Type
-     * @param livingEntity The User
-     * @return false if the enchantment should not be considered
-     */
-    default boolean isConsideredIntoPostHurtEffects(ItemStack itemStack, AccessorySlotType slotType, LivingEntity livingEntity) {
-        return false;
+    default boolean isAffectedByEnchantments(AccessorySlotContext<?> context) {
+        return true;
     }
 
     default void accessoryEquipped(AccessorySlotContext<?> slotContext) {}
