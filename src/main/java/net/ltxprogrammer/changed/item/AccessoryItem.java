@@ -96,7 +96,7 @@ public interface AccessoryItem {
 
     /**
      * Allow the Accessory to be Considered by an Enchantment
-     * It Affects directly the Enchantment$getSlotItems where it will make the method considerate the item and it equivalentSlot from the slot type
+     * It Affects directly the Enchantment behavior where it will make the method considerate the item and it equivalentSlot from the slot type
      * The main default value is false
      * @param accessorySlotContext The Accessory Slot Context (Contains Wearer, ItemStack, etc.)
      * @param enchantment The Enchantment to be considered
