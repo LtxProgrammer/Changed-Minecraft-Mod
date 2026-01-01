@@ -157,7 +157,6 @@ public class TransfurVariant<T extends ChangedEntity> {
     public final Supplier<EntityType<T>> ctor;
     public final float jumpStrength;
     public final BreatheMode breatheMode;
-    public final float stepSize;
     public final boolean canGlide;
     public final int extraJumpCharges;
     public final boolean reducedFall;
@@ -172,14 +171,13 @@ public class TransfurVariant<T extends ChangedEntity> {
     public final ResourceLocation sound;
 
     public TransfurVariant(Supplier<EntityType<T>> ctor,
-                           float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges,
+                           float jumpStrength, BreatheMode breatheMode, boolean canGlide, int extraJumpCharges,
                            boolean reducedFall, boolean canClimb,
                            VisionType visionType, MiningStrength miningStrength, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                            List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
         this.jumpStrength = jumpStrength;
         this.breatheMode = breatheMode;
-        this.stepSize = stepSize;
         this.miningStrength = miningStrength;
         this.visionType = visionType;
         this.canGlide = canGlide;
@@ -420,10 +418,6 @@ public class TransfurVariant<T extends ChangedEntity> {
             scares = v; return this;
         }
 
-        public Builder<T> stepSize(float factor) {
-            this.stepSize = factor; return this;
-        }
-
         public Builder<T> glide() {
             return glide(true);
         }
@@ -539,7 +533,7 @@ public class TransfurVariant<T extends ChangedEntity> {
         }
 
         public TransfurVariant<T> build() {
-            return new TransfurVariant<>(entityType, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges,
+            return new TransfurVariant<>(entityType, jumpStrength, breatheMode, canGlide, extraJumpCharges,
                     reducedFall, canClimb, visionType, miningStrength, itemUseMode, scares, transfurMode, abilities, cameraZOffset, sound);
         }
     }

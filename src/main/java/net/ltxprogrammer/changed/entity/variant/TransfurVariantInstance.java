@@ -240,7 +240,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         this.miningStrength = parent.miningStrength;
         this.itemUseMode = parent.itemUseMode;
         this.jumpStrength = parent.jumpStrength;
-        this.stepSize = parent.stepSize;
 
         var builder = new ImmutableMap.Builder<AbstractAbility<?>, AbstractAbilityInstance>();
         parent.abilities.forEach(abilityFunction -> {
@@ -664,7 +663,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             return original * 0.1;
         if (attribute == ForgeMod.SWIM_SPEED.get())
             return original * Mth.map(original, 1.0, 5.0, 1.0, 0.75);
-        return original;
+        return ChangedCompatibility.correctAttributeScaling(attribute, original);
     }
 
     protected static double noOp(Attribute attribute, double original) {
@@ -955,13 +954,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             host.setNoGravity(host.isEyeInFluid(FluidTags.WATER));
         }
 
-        // Step size
-        var stepSizeOffset = host.getAttributeValue(ChangedAttributes.STEP_SIZE.get()) - 0.6;
-        if (host.isCrouching() && (stepSize + stepSizeOffset) > 0.6f)
-            host.setMaxUpStep(0.6f);
-        else
-            host.setMaxUpStep((float) (stepSize + stepSizeOffset));
-
         // Effects
         if (visionType == VisionType.BLIND) {
             host.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1, false, false, false));
@@ -1020,7 +1012,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             }
             player.onUpdateAbilities();
         }
-        player.setMaxUpStep(0.6F);
         player.setNoGravity(false);
         player.refreshDimensions();
     }

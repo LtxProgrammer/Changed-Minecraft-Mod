@@ -6,6 +6,7 @@
   "refmap": "changed.refmap.json",
   "plugin": "net.ltxprogrammer.changed.mixin.compatibility.ChangedMixinPlugin",
   "mixins": [
+    "AttributesLib.AttributeEventsMixin",
     "SleepTight.HumanoidAnimatorMixin"
   ],
   "client": [

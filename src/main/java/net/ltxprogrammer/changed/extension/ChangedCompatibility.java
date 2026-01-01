@@ -8,10 +8,13 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.slf4j.Logger;
@@ -267,5 +270,15 @@ public class ChangedCompatibility {
     public static void shouldAccessoryDropOnDeath(AccessorySlots.DropItemEvent event) {
         if (EnchantmentHelper.getItemEnchantmentLevel(enchantment_enigmaticlegacy_eternalbinding.get(), event.getStack()) > 0)
             event.keepItem();
+    }
+
+    public static boolean isModPresent(String modId) {
+        return FMLLoader.getLoadingModList().getModFileById(modId) != null;
+    }
+
+    public static double correctAttributeScaling(Attribute attribute, double original) {
+        if (isModPresent("attributeslib") && attribute == ForgeMod.STEP_HEIGHT_ADDITION.get())
+            return original + 0.6; // Apothic Attributes ignores maxStepUp (default: 0.6), so compensate
+        return original;
     }
 }

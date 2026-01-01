@@ -88,8 +88,9 @@
       "missingEffects": [
         {
           "type": "changed:attribute_modifier",
-          "attribute": "changed:step_size",
-          "factor": -1.0
+          "attribute": "forge:step_height_addition",
+          "method": "add",
+          "factor": -2.0
         }
       ]
     },

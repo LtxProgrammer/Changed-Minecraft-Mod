@@ -30,6 +30,7 @@ public class LatexGnollTaur extends WhiteLatexKnight implements LatexTaur<LatexG
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.2);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.9);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(30);
+        attributes.getInstance(ForgeMod.STEP_HEIGHT_ADDITION.get()).setBaseValue(computeStepHeightOffset(1.1));
     }
 
     @Override

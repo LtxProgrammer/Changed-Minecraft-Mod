@@ -17,11 +17,6 @@ public class ChangedAttributes {
             () -> new RangedAttribute("attribute.name.changed.transfur_damage", 3.0D, 0.0D, 2048.0D));
 
     /**
-     *  Replaces player's base step size. ONLY APPLIES WITH A TRANSFUR VARIANT.
-     */
-    public static final RegistryObject<Attribute> STEP_SIZE = REGISTRY.register("step_size",
-            () -> new RangedAttribute("attribute.name.changed.step_size", 0.6D, 0.0D, 512.0D).setSyncable(true));
-    /**
      *  Multiplies the player's speed difference sprinting vs not. One is vanilla. Zero disables sprint. ONLY APPLIES WITH A TRANSFUR VARIANT.
      */
     public static final RegistryObject<Attribute> SPRINT_SPEED = REGISTRY.register("sprint_speed",
@@ -35,5 +30,5 @@ public class ChangedAttributes {
      *  Replaces player's base air capacity. Rounds to nearest tick. ONLY APPLIES WITH A TRANSFUR VARIANT.
      */
     public static final RegistryObject<Attribute> AIR_CAPACITY = REGISTRY.register("air_capacity",
-            () -> new RangedAttribute("attribute.name.changed.air_capacity", 300.0D, 0.0D, 4096.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name.changed.air_capacity", 300.0D, 0.0D, 16384.0D).setSyncable(true));
 }

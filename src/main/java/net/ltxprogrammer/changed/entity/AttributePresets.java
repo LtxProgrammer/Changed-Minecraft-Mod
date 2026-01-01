@@ -15,6 +15,7 @@ public abstract class AttributePresets {
         map.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
         map.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
         map.getInstance(Attributes.MAX_HEALTH).setBaseValue(20.0);
+        map.getInstance(ForgeMod.STEP_HEIGHT_ADDITION.get()).setBaseValue(0.0);
     }
 
     public static void wolfLike(AttributeMap map) {

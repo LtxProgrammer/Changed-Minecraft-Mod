@@ -129,6 +129,7 @@ repositories {
     maven { url "https://maven.theillusivec4.top/" }
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://cursemaven.com/" }
+    maven { url "https://maven.shadowsoffire.dev/releases" }
 }
 
 mixin {
@@ -180,7 +181,9 @@ def modIndex = [
     "curios": [ artifact: "curse.maven:curios-309927:6418456", compile: false, clientOnly: false ], // Forge 1.20.1 v5.14.1
     "quark": [ artifact: "curse.maven:quark-243121:6427817", compile: false, clientOnly: false ], // Forge 1.20.1 v4.0-462
     "zeta": [ artifact: "curse.maven:zeta-968868:6432578", compile: false, clientOnly: false ], // Forge 1.20.1 v1.0-30
-    "debugutils": [ artifact: "curse.maven:debug-utils-forge-783008:5337491", compile: false, clientOnly: false ] // Forge 1.20.1 v1.0.5
+    "debugutils": [ artifact: "curse.maven:debug-utils-forge-783008:5337491", compile: false, clientOnly: false ], // Forge 1.20.1 v1.0.5
+    "placebo": [ artifact: "dev.shadowsoffire:Placebo:${minecraftVersion}-${placeboVersion}", compile: false, clientOnly: false ],
+    "attributeslib": [ artifact: "dev.shadowsoffire:ApothicAttributes:${minecraftVersion}-${attributesLibVersion}", compile: true, clientOnly: false ]
 ]
 
 dependencies {

@@ -207,7 +207,6 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
         this.refreshDimensions();
 
         ProcessTransfur.ifPlayerTransfurred(this.getUnderlyingPlayer(), variant -> {
-            variant.stepSize = this.getLegType() == LegType.CENTAUR ? 1.1f : 0.6f;
             variant.jumpStrength = (this.getLegType() == LegType.CENTAUR || this.getTailType() == TailType.CAT) ? 1.25f : 1.0f;
             variant.breatheMode = switch (this.getTailType()) {
                 case CAT -> TransfurVariant.BreatheMode.WEAK;
@@ -450,11 +449,14 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
 
+        attributes.getInstance(ForgeMod.STEP_HEIGHT_ADDITION.get()).setBaseValue(computeStepHeightOffset(0.7));
+
         switch (getLegType()) {
             case CENTAUR -> {
                 attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.2);
                 attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.9);
                 attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(30);
+                attributes.getInstance(ForgeMod.STEP_HEIGHT_ADDITION.get()).setBaseValue(computeStepHeightOffset(1.1));
             }
             case MERMAID -> {
                 attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.34);

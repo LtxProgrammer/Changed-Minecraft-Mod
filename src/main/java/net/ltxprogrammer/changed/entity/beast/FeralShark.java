@@ -32,6 +32,7 @@ public class FeralShark extends AbstractAquaticEntity {
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(5.0D);
+        attributes.getInstance(ForgeMod.STEP_HEIGHT_ADDITION.get()).setBaseValue(computeStepHeightOffset(0.2));
     }
 
     @Override

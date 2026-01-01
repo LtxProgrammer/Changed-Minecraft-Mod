@@ -49,11 +49,15 @@
   "ability.changed.grab_entity.how_to_toggle_control": "Press [%s] to toggle control",
 
   "attribute.name.changed.transfur_damage": "Transfur Damage",
+  "attribute.name.changed.transfur_damage.desc": "How capable you are of transfurring enemies (Only applies while transfurred).",
   "attribute.name.changed.transfur_tolerance": "Transfur Tolerance",
-  "attribute.name.changed.step_size": "Step Size",
+  "attribute.name.changed.transfur_tolerance.desc": "How well you can resist being transfurred.",
   "attribute.name.changed.sprint_speed": "Sprint Speed",
+  "attribute.name.changed.sprint_speed.desc": "Multiplies your speed while sprinting (Only applies while transfurred).",
   "attribute.name.changed.sneak_speed": "Sneak Speed",
+  "attribute.name.changed.sneak_speed.desc": "Multiplies your speed while sneaking (Only applies while transfurred).",
   "attribute.name.changed.air_capacity": "Air Capacity",
+  "attribute.name.changed.air_capacity.desc": "How much air you can retain (Only applies while transfurred).",
 
   "subtitles.changed.block.cardboard_box.close": "Cardboard box closes",
   "subtitles.changed.block.cardboard_box.open": "Cardboard box opens",

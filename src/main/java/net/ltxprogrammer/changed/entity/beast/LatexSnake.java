@@ -23,6 +23,7 @@ public class LatexSnake extends ChangedEntity {
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.5);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(26);
+        attributes.getInstance(ForgeMod.STEP_HEIGHT_ADDITION.get()).setBaseValue(computeStepHeightOffset(1.1));
     }
 
     @Override

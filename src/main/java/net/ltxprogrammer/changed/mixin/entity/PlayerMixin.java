@@ -110,7 +110,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Inject(method = "createAttributes", at = @At("RETURN"))
     private static void addChangedAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
         cir.getReturnValue().add(ChangedAttributes.TRANSFUR_DAMAGE.get(), 3.0D)
-                .add(ChangedAttributes.STEP_SIZE.get(), 0.6)
                 .add(ChangedAttributes.SPRINT_SPEED.get(), 1.0D)
                 .add(ChangedAttributes.SNEAK_SPEED.get(), 1.0D)
                 .add(ChangedAttributes.AIR_CAPACITY.get(), 300.0);

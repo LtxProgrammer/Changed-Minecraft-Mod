@@ -486,6 +486,10 @@ public abstract class ChangedEntity extends Monster {
         }
     }
 
+    protected static double computeStepHeightOffset(double intendedStepHeight) {
+        return intendedStepHeight - 0.6;
+    }
+
     public static AttributeSupplier.Builder createLatexAttributes() {
         return Monster.createMonsterAttributes().add(ChangedAttributes.TRANSFUR_DAMAGE.get(), 3.0D);
     }
@@ -497,6 +501,7 @@ public abstract class ChangedEntity extends Monster {
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0);
         attributes.getInstance(Attributes.ARMOR).setBaseValue(4.0);
+        attributes.getInstance(ForgeMod.STEP_HEIGHT_ADDITION.get()).setBaseValue(computeStepHeightOffset(0.7));
     }
 
     @Override
