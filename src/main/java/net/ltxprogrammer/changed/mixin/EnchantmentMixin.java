@@ -47,7 +47,7 @@ public class EnchantmentMixin {
                     if (itemStack.isEmpty()) return;
                     if (!(itemStack.getItem() instanceof AccessoryItem accessoryItem)) return;
                     if (!accessoryItem.isConsideredByEnchantment(AccessorySlotContext.of(attacker, slotType), self(), ExecutionContext.POST_ATTACK)) {
-                        ci.cancel(); //Cancel behavior if the accessory don't support it
+                        ci.cancel(); //Cancel behavior if the accessory item don't support it
                     }
                 })
         );
@@ -60,7 +60,7 @@ public class EnchantmentMixin {
                     if (itemStack.isEmpty()) return;
                     if (!(itemStack.getItem() instanceof AccessoryItem accessoryItem)) return;
                     if (!accessoryItem.isConsideredByEnchantment(AccessorySlotContext.of(attacker, slotType), self(), ExecutionContext.POST_HURT)) {
-                        ci.cancel(); //Cancel behavior if the accessory don't support it
+                        ci.cancel(); //Cancel behavior if the accessory item don't support it
                     }
                 })
         );
