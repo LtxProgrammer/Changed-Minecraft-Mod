@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -9,23 +10,28 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractCustomShapeTallEntityBlock extends AbstractCustomShapeEntityBlock implements PartialEntityBlock {
+public abstract class AbstractCustomShapeTallEntityBlock extends AbstractCustomShapeEntityBlock implements PartialEntityBlock , SimpleWaterloggedBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
-
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    
     public AbstractCustomShapeTallEntityBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
+        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(WATERLOGGED, false));
     }
 
     public RenderShape getRenderShape(BlockState p_54559_) {
@@ -35,31 +41,78 @@ public abstract class AbstractCustomShapeTallEntityBlock extends AbstractCustomS
             return RenderShape.INVISIBLE;
     }
 
-    public void setPlacedBy(Level p_52872_, BlockPos p_52873_, BlockState p_52874_, LivingEntity p_52875_, ItemStack p_52876_) {
-        BlockPos blockpos = p_52873_.above();
-        p_52872_.setBlock(blockpos, this.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER).setValue(FACING, p_52874_.getValue(FACING)), 3);
+    public boolean isDoubleBlock(BlockState state) {
+        return state.hasProperty(HALF);
     }
 
+    
+
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext p_52863_) {
-        BlockPos blockpos = p_52863_.getClickedPos();
-        Level level = p_52863_.getLevel();
-        return blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(p_52863_) ? super.getStateForPlacement(p_52863_) : null;
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        FluidState fluidState = level.getFluidState(pos);
+        if (pos.getY() < level.getHeight() - 1 &&
+            level.getBlockState(pos.above()).canBeReplaced(context)) {
+            return this.defaultBlockState()
+                    .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                    .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+        }
+        return null;
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state,
+                            @Nullable LivingEntity placer, ItemStack stack) {
+        BlockPos topPos = pos.above();
+        BlockState topState = this.defaultBlockState()
+                .setValue(FACING, state.getValue(FACING))
+                .setValue(WATERLOGGED, level.getFluidState(topPos).getType() == Fluids.WATER);
+        level.setBlock(topPos, topState, 3);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_52901_) {
         super.createBlockStateDefinition(p_52901_);
+        p_52901_.add(WATERLOGGED);
         p_52901_.add(HALF);
     }
 
-    public boolean canSurvive(BlockState p_52887_, LevelReader p_52888_, BlockPos p_52889_) {
-        if (p_52887_.getValue(HALF) != DoubleBlockHalf.UPPER) {
-            return super.canSurvive(p_52887_, p_52888_, p_52889_);
-        } else {
-            BlockState blockstate = p_52888_.getBlockState(p_52889_.below());
-            if (p_52887_.getBlock() != this) return super.canSurvive(p_52887_, p_52888_, p_52889_); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
-            return blockstate.is(this) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER;
+    @Override
+    public BlockState updateShape(BlockState state, Direction direction, BlockState dState, LevelAccessor level, BlockPos pos, BlockPos pos2) {
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
+
+        if (isDoubleBlock(state)) {
+            DoubleBlockHalf half = state.getValue(HALF);
+            if (direction.getAxis() != Direction.Axis.Y || half == DoubleBlockHalf.LOWER != (direction == Direction.UP) || dState.is(this) && dState.getValue(HALF) != half) {
+            return half == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, dState, level, pos, pos2);
+        } else {
+            return Blocks.AIR.defaultBlockState();
+        }
+        }
+
+        return state;
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        if (!isDoubleBlock(state)) {
+            return true;
+        }
+
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+            return true;
+        }
+
+        BlockState below = level.getBlockState(pos.below());
+        return below.getBlock() == this && below.getValue(HALF) == DoubleBlockHalf.LOWER;
     }
 
     public static void placeAt(LevelAccessor p_153174_, BlockState p_153175_, BlockPos p_153176_, int p_153177_) {

@@ -42,6 +42,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
 
     public WhiteLatexPillar(Properties properties) {
         super(properties.randomTicks().isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never));
+        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(WATERLOGGED, false));
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {

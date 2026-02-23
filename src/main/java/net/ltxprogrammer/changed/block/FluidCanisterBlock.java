@@ -56,7 +56,7 @@ public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock {
 
     public FluidCanisterBlock(@Nullable Supplier<? extends Gas> gas) {
         super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(0.7F));
-        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false).setValue(WATERLOGGED, false));
         this.gas = gas;
     }
 
