@@ -1,0 +1,7 @@
+{
+  "variants": [
+    "#changed:latex"
+  ],
+  "titleId": "changed.ability_tree.latex",
+  "flavorId": "changed.ability_tree.latex.flavor"
+}

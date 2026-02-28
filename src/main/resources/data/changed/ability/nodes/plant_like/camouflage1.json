@@ -1,0 +1,15 @@
+{
+  "parent": { "tree": "changed:chlorophyll" },
+  "titleId": "changed.ability_tree.plant_like.camouflage1",
+  "flavorId": "changed.ability_tree.plant_like.camouflage1",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:camouflage",
+      "level": 1
+    }
+  ]
+}

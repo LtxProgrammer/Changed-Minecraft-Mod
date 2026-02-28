@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.ability.tree;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 import net.minecraft.util.StringRepresentable;
@@ -12,7 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
 
-public class AttributeModifierNodeEffect extends AbilityTree.NodeEffect {
+public class AttributeModifierNodeEffect extends NodeEffect {
     public static final Codec<AttributeModifierNodeEffect> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             AbstractCondition.CONDITION_CODEC.fieldOf("condition").orElse(TrueCondition.INSTANCE).forGetter(node -> node.condition),
             ForgeRegistries.ATTRIBUTES.getCodec().fieldOf("attribute").forGetter(node -> node.attribute),
@@ -66,7 +65,7 @@ public class AttributeModifierNodeEffect extends AbilityTree.NodeEffect {
     }
 
     @Override
-    public Codec<? extends AbilityTree.NodeEffect> getCodec() {
+    public Codec<? extends NodeEffect> getCodec() {
         return CODEC;
     }
 }

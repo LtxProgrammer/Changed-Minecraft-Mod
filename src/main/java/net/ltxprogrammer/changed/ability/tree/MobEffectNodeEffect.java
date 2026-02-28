@@ -7,7 +7,7 @@ import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class MobEffectNodeEffect extends AbilityTree.NodeEffect {
+public class MobEffectNodeEffect extends NodeEffect {
     public static final Codec<MobEffectInstance> MOB_EFFECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ForgeRegistries.MOB_EFFECTS.getCodec().fieldOf("effect").forGetter(MobEffectInstance::getEffect),
             Codec.INT.fieldOf("duration").orElse(600).forGetter(MobEffectInstance::getDuration),
@@ -37,7 +37,7 @@ public class MobEffectNodeEffect extends AbilityTree.NodeEffect {
     }
 
     @Override
-    public Codec<? extends AbilityTree.NodeEffect> getCodec() {
+    public Codec<? extends NodeEffect> getCodec() {
         return CODEC;
     }
 }

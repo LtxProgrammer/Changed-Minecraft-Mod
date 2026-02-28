@@ -1,0 +1,15 @@
+{
+  "parent": "changed:digitigrade_mobility/practice3",
+  "titleId": "changed.ability_tree.movement.run_faster",
+  "flavorId": "changed.ability_tree.movement.run_faster.digitigrade.flavor",
+  "price": 2,
+  "groupDiscount": -1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.movement_speed",
+      "factor": 0.10
+    }
+  ]
+}

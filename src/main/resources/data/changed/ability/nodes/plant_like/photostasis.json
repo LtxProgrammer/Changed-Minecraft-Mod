@@ -1,0 +1,34 @@
+{
+  "parent": "changed:plant_like/photosynthesis2",
+  "titleId": "changed.ability_tree.plant_like.photostasis",
+  "flavorId": "changed.ability_tree.plant_like.photostasis",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "missingEffects": [
+    {
+      "type": "changed:mob_effect",
+      "mobEffect": {
+        "effect": "minecraft:hunger",
+        "duration": 40,
+        "hideParticles": true,
+        "visible": false,
+        "showIcon": false
+      },
+      "condition": {
+        "type": "changed:all",
+        "components": [
+          {
+            "type": "changed:light_exposure",
+            "threshold": 6,
+            "operation": "less_than_equal_to"
+          },
+          {
+            "type": "changed:nth_tick",
+            "tickRate": 20
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -7,10 +7,10 @@ import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 
 import java.util.List;
 
-public class ToggleGroupNodeEffect extends AbilityTree.NodeEffect {
+public class ToggleGroupNodeEffect extends NodeEffect {
     public static final Codec<ToggleGroupNodeEffect> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             AbstractCondition.CONDITION_CODEC.fieldOf("condition").orElse(TrueCondition.INSTANCE).forGetter(node -> node.condition),
-            Codec.list(AbilityTree.NodeEffect.EFFECT_CODEC).fieldOf("effects").forGetter(node -> node.effects),
+            Codec.list(NodeEffect.EFFECT_CODEC).fieldOf("effects").forGetter(node -> node.effects),
             Codec.INT.fieldOf("chargeDuration").orElse(0).forGetter(node -> node.chargeDuration),
             Codec.INT.fieldOf("activeDuration").orElse(Integer.MAX_VALUE).forGetter(node -> node.activeDuration),
             Codec.INT.fieldOf("cooldownDuration").orElse(0).forGetter(node -> node.cooldownDuration),
@@ -18,13 +18,13 @@ public class ToggleGroupNodeEffect extends AbilityTree.NodeEffect {
     ).apply(builder, ToggleGroupNodeEffect::new));
 
     public final AbstractCondition condition;
-    public final List<AbilityTree.NodeEffect> effects;
+    public final List<NodeEffect> effects;
     public final int chargeDuration;
     public final int activeDuration;
     public final int cooldownDuration;
     public final boolean canCancel;
 
-    public ToggleGroupNodeEffect(AbstractCondition condition, List<AbilityTree.NodeEffect> effects,
+    public ToggleGroupNodeEffect(AbstractCondition condition, List<NodeEffect> effects,
                                  int chargeDuration, int activeDuration, int cooldownDuration,
                                  boolean canCancel) {
         this.condition = condition;
@@ -41,7 +41,7 @@ public class ToggleGroupNodeEffect extends AbilityTree.NodeEffect {
     }
 
     @Override
-    public Codec<? extends AbilityTree.NodeEffect> getCodec() {
+    public Codec<? extends NodeEffect> getCodec() {
         return CODEC;
     }
 }

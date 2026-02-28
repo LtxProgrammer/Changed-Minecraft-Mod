@@ -1,0 +1,30 @@
+{
+  "parent": { "tree": "changed:digitigrade_mobility" },
+  "titleId": "changed.ability_tree.practice1",
+  "flavorId": "changed.ability_tree.movement.digitigrade.practice1",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "missingEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "changed:sprint_speed",
+      "factor": -1.0
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.movement_speed",
+      "factor": -0.1
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "changed:sneak_speed",
+      "factor": -0.1
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "forge:swim_speed",
+      "factor": -0.1
+    }
+  ]
+}

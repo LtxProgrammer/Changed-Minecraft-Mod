@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "changed:form_dark_dragon",
+    "changed:form_dark_latex_yufeng",
+    "changed:form_dark_latex_double_yufeng",
+    "changed:form_latex_golden_dragon",
+    "changed:form_latex_pink_yuin_dragon",
+    "changed:form_latex_red_dragon"
+  ]
+}

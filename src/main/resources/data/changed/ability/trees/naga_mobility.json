@@ -1,0 +1,7 @@
+{
+  "variants": [
+    "#changed:naga"
+  ],
+  "titleId": "changed.ability_tree.naga_mobility",
+  "flavorId": "changed.ability_tree.naga_mobility.flavor"
+}

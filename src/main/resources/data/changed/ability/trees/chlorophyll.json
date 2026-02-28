@@ -1,0 +1,7 @@
+{
+  "variants": [
+    "#changed:plant_like"
+  ],
+  "titleId": "changed.ability_tree.chlorophyll",
+  "flavorId": "changed.ability_tree.chlorophyll.flavor"
+}

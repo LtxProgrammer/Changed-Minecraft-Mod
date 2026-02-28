@@ -1,0 +1,7 @@
+{
+  "variants": [
+    "#changed:hypnotic"
+  ],
+  "titleId": "changed.ability_tree.hypnosis",
+  "flavorId": "changed.ability_tree.hypnosis.flavor"
+}

@@ -1,0 +1,43 @@
+{
+  "parent": "changed:plant_like/photosynthesis1",
+  "occludes": "changed:plant_like/photosynthesis1",
+  "titleId": "changed.ability_tree.plant_like.photosynthesis2",
+  "flavorId": "changed.ability_tree.plant_like.photosynthesis2",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:mob_effect",
+      "mobEffect": {
+        "effect": "minecraft:saturation",
+        "duration": 1,
+        "hideParticles": true,
+        "visible": false,
+        "showIcon": false
+      },
+      "condition": {
+        "type": "changed:all",
+        "components": [
+          {
+            "type": "changed:light_exposure",
+            "threshold": 12,
+            "blockScale": 0,
+            "moonScale": 0
+          },
+          {
+            "type": "changed:standing_on",
+            "blocks":  [
+              "minecraft:grass_block",
+              "minecraft:dirt"
+            ]
+          },
+          {
+            "type": "changed:nth_tick",
+            "tickRate": 40
+          }
+        ]
+      }
+    }
+  ]
+}

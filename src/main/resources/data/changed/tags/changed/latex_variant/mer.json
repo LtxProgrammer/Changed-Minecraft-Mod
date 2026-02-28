@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "changed:form_latex_mermaid_shark/male",
+    "changed:form_latex_mermaid_shark/female",
+    "changed:form_latex_manta_ray/female"
+  ]
+}

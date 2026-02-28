@@ -1,0 +1,7 @@
+{
+  "variants": [
+    "#changed:digitigrade"
+  ],
+  "titleId": "changed.ability_tree.digitigrade_mobility",
+  "flavorId": "changed.ability_tree.digitigrade_mobility.flavor"
+}

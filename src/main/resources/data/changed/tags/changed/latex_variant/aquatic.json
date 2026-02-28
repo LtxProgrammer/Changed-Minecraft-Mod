@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "changed:form_latex_shark_feral",
+    "changed:form_latex_benign_orca",
+    "changed:form_latex_crocodile",
+    "changed:form_latex_eel",
+    "changed:form_latex_orca",
+    "changed:form_latex_shark",
+    "changed:form_latex_tiger_shark",
+    "changed:form_latex_manta_ray/female",
+    "changed:form_latex_manta_ray/male",
+    "changed:form_latex_mermaid_shark/female",
+    "changed:form_latex_mermaid_shark/male",
+    "changed:form_latex_shark/female",
+    "changed:form_latex_shark/male",
+    "changed:form_latex_squid_dog/female",
+    "changed:form_latex_squid_dog/male"
+  ]
+}

@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.datagen.ability_tree;
+package net.ltxprogrammer.changed.datagen.ability;
 
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class AbilityTreeProvider implements DataProvider {
-
     protected final PackOutput output;
     protected final String modid;
     private final Map<ResourceLocation, AbilityTreeBuilder> treeBuilders = new HashMap<>();
@@ -48,7 +47,7 @@ public abstract class AbilityTreeProvider implements DataProvider {
             ResourceLocation loc = entry.getKey();
             tree = entry.getValue().build(loc);
 
-            path = outFolder.resolve("data/" + modid + "/ability_trees/" + loc.getPath() + ".json");
+            path = outFolder.resolve("data/" + modid + "/ability/trees/" + loc.getPath() + ".json");
 
             json = AbilityTree.CODEC.encodeStart(JsonOps.INSTANCE, tree)
                     .result()
@@ -66,23 +65,17 @@ public abstract class AbilityTreeProvider implements DataProvider {
     }
 
     public static final class AbilityTreeBuilder {
-
         private final List<RegistryElementPredicate<TransfurVariant<?>>> variants;
-        private final Map<ResourceLocation, AbilityTree.Node> nodes = new HashMap<>();
 
         private AbilityTreeBuilder(List<RegistryElementPredicate<TransfurVariant<?>>> variants){
             this.variants = variants;
         }
 
-        public AbilityTreeBuilder withNode(ResourceLocation loc, AbilityTree.Node node){
-            nodes.put(loc, node);
-            return this;
-        }
-
-        private AbilityTree build(ResourceLocation loc){
-            AbilityTree tree = new AbilityTree(variants, nodes);
+        private AbilityTree build(ResourceLocation loc) {
+            /*AbilityTree tree = new AbilityTree(variants);
             tree.setTreeLocation(loc);
-            return tree;
+            return tree;*/
+            return null; // TODO
         }
     }
 }

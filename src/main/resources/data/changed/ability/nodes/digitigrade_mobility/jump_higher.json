@@ -1,0 +1,14 @@
+{
+  "parent": "changed:digitigrade_mobility/practice3",
+  "titleId": "changed.ability_tree.movement.jump_higher",
+  "flavorId": "changed.ability_tree.movement.jump_higher.digitigrade.flavor",
+  "price": 2,
+  "groupDiscount": -1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:high_jump"
+    }
+  ]
+}

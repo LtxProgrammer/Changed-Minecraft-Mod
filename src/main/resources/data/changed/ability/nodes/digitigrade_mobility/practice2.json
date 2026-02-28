@@ -1,0 +1,26 @@
+{
+  "parent": "changed:digitigrade_mobility/practice1",
+  "titleId": "changed.ability_tree.practice2",
+  "flavorId": "changed.ability_tree.movement.digitigrade.practice2",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "missingEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "changed:sprint_speed",
+      "factor": -0.05
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "forge:step_height_addition",
+      "method": "add",
+      "factor": -2.0
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.movement_speed",
+      "factor": -0.1
+    }
+  ]
+}

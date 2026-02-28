@@ -8,7 +8,7 @@ import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 import net.minecraft.world.item.ItemStack;
 
-public class CreateItemAbilityNodeEffect extends AbilityTree.NodeEffect {
+public class CreateItemAbilityNodeEffect extends NodeEffect {
     public final AbstractCondition condition;
     public final ItemStack itemStack;
     public final float exhaustion;
@@ -43,7 +43,7 @@ public class CreateItemAbilityNodeEffect extends AbilityTree.NodeEffect {
     }
 
     @Override
-    public Codec<? extends AbilityTree.NodeEffect> getCodec() {
+    public Codec<? extends NodeEffect> getCodec() {
         return CODEC;
     }
 }

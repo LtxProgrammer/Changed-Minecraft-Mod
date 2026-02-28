@@ -4,8 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.Lifecycle;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.tree.AbilityTree;
+import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
+import net.ltxprogrammer.changed.ability.tree.requirements.AbstractRequirement;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.entity.HairStyle;
@@ -202,8 +203,9 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
     public static final RegistryHolder<PieceType<?>> FACILITY_PIECE_TYPES = new RegistryHolder<>(registryKey("facility/piece_types"));
     public static final RegistryHolder<Zone> FACILITY_ZONES = new RegistryHolder<>(registryKey("facility/zones"));
 
-    public static final RegistryHolder<Codec<? extends AbilityTree.NodeEffect>> ABILITY_NODE_EFFECTS = new RegistryHolder<>(registryKey("ability/node_effects"));
+    public static final RegistryHolder<Codec<? extends NodeEffect>> ABILITY_NODE_EFFECTS = new RegistryHolder<>(registryKey("ability/node_effects"));
     public static final RegistryHolder<Codec<? extends AbstractCondition>> ABILITY_EFFECT_CONDITIONS = new RegistryHolder<>(registryKey("ability/effect_conditions"));
+    public static final RegistryHolder<Codec<? extends AbstractRequirement>> PURCHASE_REQUIREMENTS = new RegistryHolder<>(registryKey("ability/purchase_requirements"));
 
     private static class ClearableObjectIntIdentityMap<I> extends IdMapper<I> {
         void clear()
@@ -273,6 +275,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
         createRegistry(event, FACILITY_ZONES.key);
         createRegistry(event, ABILITY_NODE_EFFECTS.key);
         createRegistry(event, ABILITY_EFFECT_CONDITIONS.key);
+        createRegistry(event, PURCHASE_REQUIREMENTS.key);
     }
 
     private static <T> void createRegistry(NewRegistryEvent event, ResourceKey<? extends Registry<T>> key) {

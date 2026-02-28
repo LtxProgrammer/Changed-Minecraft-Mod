@@ -1,0 +1,7 @@
+{
+  "variants": [
+    "#changed:multi_armed"
+  ],
+  "titleId": "changed.ability_tree.multi_arm",
+  "flavorId": "changed.ability_tree.multi_arm.flavor"
+}

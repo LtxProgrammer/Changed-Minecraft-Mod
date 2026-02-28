@@ -22,7 +22,7 @@ public class AbilityCounter {
     private final Map<Attribute, Double> baselineAttributes;
     private final Map<Attribute, Double> attributeAdders;
     private final Map<AbstractAbility<?>, AbstractAbilityInstance> activeAbilities;
-    private final Map<AbilityTree.NodeEffect, AbilityTree.NodeEffectInstance> nodeEffectInstances;
+    private final Map<NodeEffect, AbilityTree.NodeEffectInstance> nodeEffectInstances;
 
     private static Map<Attribute, Double> getBaseAttributeValues(AttributeMap attributeMap) {
         Map<Attribute, Double> map = new HashMap<>();
@@ -73,7 +73,7 @@ public class AbilityCounter {
         });
     }
 
-    public AbilityTree.NodeEffectInstance addEffectInstance(AbilityTree.NodeEffect key, Function<IAbstractChangedEntity, AbilityTree.NodeEffectInstance> ctor) {
+    public AbilityTree.NodeEffectInstance addEffectInstance(NodeEffect key, Function<IAbstractChangedEntity, AbilityTree.NodeEffectInstance> ctor) {
         return nodeEffectInstances.computeIfAbsent(key, ignored -> ctor.apply(this.entity));
     }
 }

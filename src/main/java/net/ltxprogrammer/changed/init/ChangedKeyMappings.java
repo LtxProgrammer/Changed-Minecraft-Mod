@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.network.ExtraJumpKeybind;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
+import net.ltxprogrammer.changed.network.packet.AbilityTreeMenuPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.tutorial.ChangedTutorial;
 import net.minecraft.client.KeyMapping;
@@ -18,6 +19,8 @@ import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT})
 public class ChangedKeyMappings {
@@ -44,6 +47,21 @@ public class ChangedKeyMappings {
                 Changed.PACKET_HANDLER.sendToServer(VariantAbilityActivate.openRadial(local));
                 ChangedTutorial.triggerOnOpenRadial();
             });
+        }
+    };
+    public static final KeyMapping OPEN_ABILITY_TREE = new KeyMapping("key.changed.variant_ability_tree",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_B, "key.categories.ui") {
+        @Override
+        public void setDown(boolean newState) {
+            super.setDown(newState);
+            if (!newState) return;
+
+            Changed.PACKET_HANDLER.sendToServer(new AbilityTreeMenuPacket(AbilityTreeMenuPacket.Opcode.OPEN_MENU,
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty()));
         }
     };
     public static final KeyMapping USE_ABILITY = new KeyMapping("key.changed.use_ability",

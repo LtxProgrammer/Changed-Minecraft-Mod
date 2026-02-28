@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.objects.ReferenceArraySet;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.*;
+import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
+import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
@@ -470,6 +472,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
             serverPlayer.connection.send(
                     Changed.PACKET_HANDLER.toVanillaPacket(AccessoryEntities.INSTANCE.syncPacket(serverPlayer), NetworkDirection.PLAY_TO_CLIENT)
+            );
+
+            AbilityTreeInstance.getForPlayer(serverPlayer).updateTrees();
+            serverPlayer.connection.send(
+                    Changed.PACKET_HANDLER.toVanillaPacket(AbilityTrees.INSTANCE.syncPacket(serverPlayer), NetworkDirection.PLAY_TO_CLIENT)
             );
         }
 

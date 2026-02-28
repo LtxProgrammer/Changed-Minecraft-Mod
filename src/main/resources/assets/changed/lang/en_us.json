@@ -938,7 +938,70 @@
   "changed.tamed_dark_latex.attack_condition.owner_is_hostile": "Attack when owner is hostile",
 
   "builtin_resources.changed:beyond_earth_extra": "Changed Beyond Earth Extra",
-  "builtin_resources.changed:experiment_ability_tree": "Experimental: Changed Ability Trees",
   "builtin_resources.changed:instant_transfur": "Changed Instant Transfur",
-  "builtin_resources.changed:changed_pbr": "Changed PBR"
+  "builtin_resources.changed:changed_pbr": "Changed PBR",
+
+  "changed.ability_tree.latex": "Latex Mastery",
+  "changed.ability_tree.latex.flavor": "The goo that flows beneath your skin had replaced your flesh and blood. You feel weak, yet your body drips with unrecognized potential.",
+
+  "changed.ability_tree.digitigrade_mobility": "Digitigrade Mobility",
+  "changed.ability_tree.digitigrade_mobility.flavor": "You find your legs to be more animalistic than you remember.",
+  "changed.ability_tree.quadrupedal_mobility": "Quadrupedal Mobility",
+  "changed.ability_tree.quadrupedal_mobility.flavor": "You feel as if you are constantly bent over. What were your hands now stabilize you from falling forward.",
+  "changed.ability_tree.taur_mobility": "Taur Mobility",
+  "changed.ability_tree.taur_mobility.flavor": "You stand upright, yet you find yourself on all fours. You stumble as you try to work your footing.",
+  "changed.ability_tree.naga_mobility": "Naga Mobility",
+  "changed.ability_tree.naga_mobility.flavor": "Both of your legs have fused together into a long slithering tail. You sure won't be walking anymore.",
+  "changed.ability_tree.mer_mobility": "Mer Mobility",
+  "changed.ability_tree.mer_mobility.flavor": "Both of your legs have fused together into a tail adorned by large fins. You sure won't be walking anymore.",
+
+  "changed.ability_tree.arm_wing": "Arm Wing Mastery",
+  "changed.ability_tree.arm_wing.flavor": "Thick webbing has formed along the side of your arms to your back. It tingles against the air.",
+  "changed.ability_tree.back_wing": "Back Wing Mastery",
+  "changed.ability_tree.back_wing.flavor": "Large wings now adorn your back. They push you around more than they push air.",
+
+  "changed.ability_tree.aquatic": "Aquatic Mastery",
+  "changed.ability_tree.aquatic.flavor": "Gills have formed on your now sleek skin. You choke on air as you desire your new habitat: water.",
+
+  "changed.ability_tree.multi_arm": "Multi arm Mastery",
+  "changed.ability_tree.multi_arm.flavor": "You have more arms than before. They feel as if they just get in your way.",
+
+  "changed.ability_tree.hypnosis": "Hypnosis Mastery",
+  "changed.ability_tree.hypnosis.flavor": "Your hypnotic gaze petrifies any being that meets your eyes, locked in a trance as you penetrate their mind.",
+
+  "changed.ability_tree.chlorophyll": "Chlorophyll Mastery",
+  "changed.ability_tree.chlorophyll.flavor": "Your green skin easily soaks up sunlight. It had never felt so nice before.",
+
+  "changed.ability_tree.apidae": "Bee Mastery",
+  "changed.ability_tree.apidae.flavor": "Black and yellow; the colors of a true hard worker. You must do your part for the colony.",
+
+  "changed.ability_tree.arachnidae": "Spider Mastery",
+  "changed.ability_tree.arachnidae.flavor": "Caves and cobwebs feel like home to you. Make any place your home with that spinneret of yours.",
+
+  "changed.ability_tree.lamnidae": "Shark Mastery",
+  "changed.ability_tree.lamnidae.flavor": "The ocean is your kingdom. Rule it with an iron fist!",
+
+  "changed.ability_tree.coleoidae": "Squid Mastery",
+  "changed.ability_tree.coleoidae.flavor": "When life gives you 10 limbs, you make the most of it.",
+
+  "changed.ability_tree.practice1": "Practice I",
+  "changed.ability_tree.practice2": "Practice II",
+  "changed.ability_tree.practice3": "Practice III",
+  "changed.ability_tree.practice4": "Practice IV",
+  "changed.ability_tree.practice5": "Practice V",
+  "changed.ability_tree.practice6": "Practice VI",
+  "changed.ability_tree.practice7": "Practice VII",
+  "changed.ability_tree.practice8": "Practice VIII",
+  "changed.ability_tree.practice9": "Practice IX",
+  "changed.ability_tree.practice10": "Practice X",
+
+  "changed.ability_tree.movement.run_faster": "Run Faster",
+  "changed.ability_tree.movement.swim_faster": "Swim Faster",
+  "changed.ability_tree.movement.jump_higher": "Jump Higher",
+
+  "changed.ability_tree.plant_like.photosynthesis1": "Photosynthesis I",
+  "changed.ability_tree.plant_like.photosynthesis2": "Photosynthesis II",
+  "changed.ability_tree.plant_like.photostasis": "Photostasis",
+  "changed.ability_tree.plant_like.camouflage1": "Camouflage I",
+  "changed.ability_tree.plant_like.camouflage2": "Camouflage II"
 }

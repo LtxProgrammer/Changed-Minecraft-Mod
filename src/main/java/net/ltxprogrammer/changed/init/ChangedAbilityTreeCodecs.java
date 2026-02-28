@@ -8,7 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ChangedAbilityTreeCodecs {
-    public static final DeferredRegister<Codec<? extends AbilityTree.NodeEffect>> NODE_EFFECT_REGISTRY = ChangedRegistry.ABILITY_NODE_EFFECTS.createDeferred(Changed.MODID);
+    public static final DeferredRegister<Codec<? extends NodeEffect>> NODE_EFFECT_REGISTRY = ChangedRegistry.ABILITY_NODE_EFFECTS.createDeferred(Changed.MODID);
 
     /**
      * A group of node effects. This is useful for controlling multiple effects under one condition.

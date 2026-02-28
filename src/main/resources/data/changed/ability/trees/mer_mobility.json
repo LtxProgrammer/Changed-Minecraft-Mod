@@ -1,0 +1,7 @@
+{
+  "variants": [
+    "#changed:mer"
+  ],
+  "titleId": "changed.ability_tree.mer_mobility",
+  "flavorId": "changed.ability_tree.mer_mobility.flavor"
+}

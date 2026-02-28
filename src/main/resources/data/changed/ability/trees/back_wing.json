@@ -1,0 +1,7 @@
+{
+  "variants": [
+    "#changed:winged_back"
+  ],
+  "titleId": "changed.ability_tree.back_wing",
+  "flavorId": "changed.ability_tree.back_wing.flavor"
+}
