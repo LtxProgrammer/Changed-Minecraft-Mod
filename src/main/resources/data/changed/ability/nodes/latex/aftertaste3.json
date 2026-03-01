@@ -1,0 +1,10 @@
+{
+  "parent": "changed:latex/aftertaste2",
+  "titleId": "changed.ability_tree.latex.aftertaste3",
+  "flavorId": "changed.ability_tree.latex.aftertaste3.flavor",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "comment": "This node grants Instant Health I & Saturation III for 1 second after absorption, or Saturation I seconds after replication.",
+  "acquiredEffects": []
+}

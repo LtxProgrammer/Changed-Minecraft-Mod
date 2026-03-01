@@ -46,4 +46,9 @@ public class ChangedAttributes {
      */
     public static final RegistryObject<Attribute> FALL_RESISTANCE = REGISTRY.register("fall_resistance",
             () -> new RangedAttribute("attribute.name.changed.fall_resistance", 1.0D, 0.5D, 1024.0D).setSyncable(true));
+    /**
+     * Multiplies the entity's mining speed.
+     */
+    public static final RegistryObject<Attribute> MINING_SPEED = REGISTRY.register("mining_speed",
+            () -> new RangedAttribute("attribute.name.changed.mining_speed", 1.0D, 0.0D, 256.0D).setSyncable(true));
 }

@@ -2,7 +2,7 @@
   "parent": "changed:plant_like/camouflage1",
   "occludes": "changed:plant_like/camouflage1",
   "titleId": "changed.ability_tree.plant_like.camouflage2",
-  "flavorId": "changed.ability_tree.plant_like.camouflage2",
+  "flavorId": "changed.ability_tree.plant_like.camouflage2.flavor",
   "price": 1,
   "groupDiscount": -1,
 

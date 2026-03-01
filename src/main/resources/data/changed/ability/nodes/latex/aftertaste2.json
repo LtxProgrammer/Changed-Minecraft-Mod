@@ -1,0 +1,10 @@
+{
+  "parent": "changed:latex/aftertaste1",
+  "titleId": "changed.ability_tree.latex.aftertaste2",
+  "flavorId": "changed.ability_tree.latex.aftertaste2.flavor",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "comment": "This node grants strength I for 3 seconds after replication, or 10 seconds after absorption.",
+  "acquiredEffects": []
+}

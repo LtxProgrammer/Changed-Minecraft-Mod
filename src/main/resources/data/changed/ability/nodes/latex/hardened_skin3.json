@@ -1,0 +1,15 @@
+{
+  "parent": "changed:latex/hardened_skin2",
+  "titleId": "changed.ability_tree.latex.hardened_skin3",
+  "flavorId": "changed.ability_tree.latex.hardened_skin3.flavor",
+  "price": 2,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.armor",
+      "method": "add",
+      "factor": 4.0
+    }
+  ]
+}

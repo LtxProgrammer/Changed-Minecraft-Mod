@@ -1,0 +1,10 @@
+{
+  "parent": "changed:aquatic/practice2",
+  "titleId": "changed.ability_tree.aquatic.oxygen_symbiosis",
+  "flavorId": "changed.ability_tree.aquatic.oxygen_symbiosis.flavor",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "comment": "Allows the player to breathe on land if suiting an entity that can breathe air. And the reverse for water.",
+  "acquiredEffects": []
+}

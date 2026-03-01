@@ -1,0 +1,16 @@
+{
+  "parent": "changed:latex/hardened_skin1",
+  "titleId": "changed.ability_tree.latex.hardened_skin2",
+  "flavorId": "changed.ability_tree.latex.hardened_skin2.flavor",
+  "price": 2,
+  "groupDiscount": -1,
+
+  "missingEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.armor",
+      "method": "add",
+      "factor": -2.0
+    }
+  ]
+}

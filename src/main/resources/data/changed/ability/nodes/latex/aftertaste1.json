@@ -1,0 +1,10 @@
+{
+  "parent": "changed:latex/grab",
+  "titleId": "changed.ability_tree.latex.aftertaste1",
+  "flavorId": "changed.ability_tree.latex.aftertaste1.flavor",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "comment": "This node grants regen I for 10 seconds after replication, or regen II after absorption.",
+  "acquiredEffects": []
+}

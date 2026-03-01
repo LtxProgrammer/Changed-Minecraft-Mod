@@ -1,0 +1,15 @@
+{
+  "parent": { "tree": "changed:arachnidae" },
+  "titleId": "changed.ability_tree.arachnidae.adapted_vision",
+  "flavorId": "changed.ability_tree.arachnidae.adapted_vision.flavor",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "comment": "By default, stiger players will have a slightly obtrusive shader",
+  "missingEffects": [
+    {
+      "type": "changed:distortion_shader",
+      "resource": "changed:textures/misc/distortion/spider.png"
+    }
+  ]
+}

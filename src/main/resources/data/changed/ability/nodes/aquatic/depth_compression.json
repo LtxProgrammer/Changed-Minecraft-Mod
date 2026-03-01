@@ -1,0 +1,12 @@
+{
+  "parent": "changed:aquatic/practice2",
+  "titleId": "changed.ability_tree.aquatic.depth_compression",
+  "flavorId": "changed.ability_tree.aquatic.depth_compression.flavor",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "comment": "Toggle: The player's size shrinks the further from the water's surface they are.",
+  "comment2": "Compress rate proposed in #1341 may be too weak for this ability to be useful (i.e: the player would be 90% their size at 60 blocks deep).",
+  "comment3": "After 8 blocks, every 4 blocks shrinks 2%, clamp at 32%. (8 depth = 100%, 28 depth = 90%, 144 depth = 32%)",
+  "acquiredEffects": []
+}

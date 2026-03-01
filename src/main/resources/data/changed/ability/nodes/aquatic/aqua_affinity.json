@@ -1,0 +1,10 @@
+{
+  "parent": "changed:aquatic/practice1",
+  "titleId": "changed.ability_tree.aquatic.aqua_affinity",
+  "flavorId": "changed.ability_tree.aquatic.aqua_affinity.flavor",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "comment": "Grants aqua affinity so the player can mine underwater the same speed as on land.",
+  "acquiredEffects": []
+}

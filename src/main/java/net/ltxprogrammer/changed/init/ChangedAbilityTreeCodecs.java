@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.tree.*;
 import net.ltxprogrammer.changed.ability.tree.condition.*;
+import net.ltxprogrammer.changed.ability.tree.effects.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 

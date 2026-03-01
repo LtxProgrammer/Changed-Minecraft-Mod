@@ -1,7 +1,9 @@
-package net.ltxprogrammer.changed.ability.tree;
+package net.ltxprogrammer.changed.ability.tree.effects;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.ltxprogrammer.changed.ability.tree.AbilityCounter;
+import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 

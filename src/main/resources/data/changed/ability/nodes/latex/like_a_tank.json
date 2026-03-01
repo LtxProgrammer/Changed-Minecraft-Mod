@@ -1,0 +1,21 @@
+{
+  "parent": "changed:latex/hardened_skin3",
+  "titleId": "changed.ability_tree.latex.like_a_tank",
+  "flavorId": "changed.ability_tree.latex.like_a_tank.flavor",
+  "price": 4,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "method": "add",
+      "factor": 2.0
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.armor",
+      "method": "add",
+      "factor": 2.0
+    }
+  ]
+}

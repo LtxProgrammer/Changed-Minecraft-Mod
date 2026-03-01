@@ -1,0 +1,11 @@
+{
+  "parent": "changed:aquatic/practice2",
+  "titleId": "changed.ability_tree.aquatic.underwater_dash",
+  "flavorId": "changed.ability_tree.aquatic.underwater_dash.flavor",
+  "price": 2,
+  "groupDiscount": -1,
+
+  "comment": "This node will be a dash active ability where the player propels themself where the camera is pointing, after a very brief (0.2 second) charge. If the player breaches the surface during the dash, they will arc back into the water and grant a speed boost on re-entry.",
+  "comment2": "This node replaces the +20% swim speed bonus proposed in #1341",
+  "acquiredEffects": []
+}

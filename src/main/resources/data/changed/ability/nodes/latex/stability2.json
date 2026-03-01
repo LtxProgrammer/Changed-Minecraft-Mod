@@ -1,0 +1,26 @@
+{
+  "parent": "changed:latex/stability1",
+  "titleId": "changed.ability_tree.latex.stability2",
+  "flavorId": "changed.ability_tree.latex.stability2.flavor",
+  "price": 1,
+
+  "missingEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "method": "add",
+      "factor": -2.0
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "changed:transfur_damage",
+      "method": "add",
+      "factor": -1.0
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "changed:mining_speed",
+      "factor": -0.1
+    }
+  ]
+}

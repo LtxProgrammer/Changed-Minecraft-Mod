@@ -1,0 +1,9 @@
+{
+  "parent": { "tree": "changed:arachnidae" },
+  "titleId": "changed.ability_tree.arachnidae.spinneret_practice1",
+  "flavorId": "changed.ability_tree.arachnidae.spinneret_practice1.flavor",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "acquiredEffects": []
+}
