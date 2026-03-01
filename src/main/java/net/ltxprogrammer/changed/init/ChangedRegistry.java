@@ -15,6 +15,7 @@ import net.ltxprogrammer.changed.entity.decoration.WallSignVariant;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.animation.AnimationEvent;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantFeature;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.ltxprogrammer.changed.world.features.structures.facility.types.PieceType;
 import net.ltxprogrammer.changed.world.features.structures.facility.Zone;
@@ -206,6 +207,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
     public static final RegistryHolder<Codec<? extends NodeEffect>> ABILITY_NODE_EFFECTS = new RegistryHolder<>(registryKey("ability/node_effects"));
     public static final RegistryHolder<Codec<? extends AbstractCondition>> ABILITY_EFFECT_CONDITIONS = new RegistryHolder<>(registryKey("ability/effect_conditions"));
     public static final RegistryHolder<Codec<? extends AbstractRequirement>> PURCHASE_REQUIREMENTS = new RegistryHolder<>(registryKey("ability/purchase_requirements"));
+    public static final RegistryHolder<TransfurVariantFeature> TRANSFUR_VARIANT_FEATURES = new RegistryHolder<>(registryKey("ability/variant_features"));
 
     private static class ClearableObjectIntIdentityMap<I> extends IdMapper<I> {
         void clear()
@@ -276,6 +278,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
         createRegistry(event, ABILITY_NODE_EFFECTS.key);
         createRegistry(event, ABILITY_EFFECT_CONDITIONS.key);
         createRegistry(event, PURCHASE_REQUIREMENTS.key);
+        createRegistry(event, TRANSFUR_VARIANT_FEATURES.key);
     }
 
     private static <T> void createRegistry(NewRegistryEvent event, ResourceKey<? extends Registry<T>> key) {

@@ -1,19 +1,16 @@
 package net.ltxprogrammer.changed.mixin;
 
-import com.google.common.collect.Iterables;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedAbilityTreeCodecs;
 import net.ltxprogrammer.changed.item.AccessoryItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,17 +18,40 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 @Mixin(EnchantmentHelper.class)
 public abstract class EnchantmentHelperMixin {
+    @WrapMethod(method = "getEnchantmentLevel(Lnet/minecraft/world/item/enchantment/Enchantment;Lnet/minecraft/world/entity/LivingEntity;)I")
+    private static int getModifiedEnchantmentLevel(Enchantment enchantment, LivingEntity entity, Operation<Integer> original) {
+        var variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
+        if (variant == null)
+            return original.call(enchantment, entity);
+
+        int originalLevel = original.call(enchantment, entity);
+        AtomicInteger modifiedLevel = new AtomicInteger(originalLevel);
+        AtomicInteger maximumLevel = new AtomicInteger(Integer.MAX_VALUE);
+
+        variant.visitActiveNodeEffects(ChangedAbilityTreeCodecs.INTRINSIC_ENCHANTMENT_EFFECT.get(), effect -> {
+            if (effect.enchantment == enchantment) {
+                switch (effect.method) {
+                    case MINIMUM -> modifiedLevel.updateAndGet(current -> Math.max(current, effect.level));
+                    case MAXIMUM -> maximumLevel.updateAndGet(current -> Math.min(maximumLevel.get(), effect.level));
+                    case ADD -> modifiedLevel.addAndGet(effect.level);
+                }
+            }
+        });
+
+        return Math.min(modifiedLevel.getAcquire(), maximumLevel.getAcquire());
+    }
+
     @Inject(method = "getDepthStrider", at = @At("RETURN"), cancellable = true)
     private static void getDepthStrider(LivingEntity le, CallbackInfoReturnable<Integer> callback) {
         if (le instanceof ChangedEntity entity) {
@@ -41,14 +61,6 @@ public abstract class EnchantmentHelperMixin {
 
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(le), variant -> {
             callback.setReturnValue(callback.getReturnValue() + variant.getChangedEntity().getDepthStriderLevel());
-        });
-    }
-
-    @Inject(method = "hasAquaAffinity", at = @At("HEAD"), cancellable = true)
-    private static void hasAquaAffinity(LivingEntity le, CallbackInfoReturnable<Boolean> callback) {
-        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(le), variant -> {
-            if (variant.breatheMode.hasAquaAffinity())
-                callback.setReturnValue(true);
         });
     }
 

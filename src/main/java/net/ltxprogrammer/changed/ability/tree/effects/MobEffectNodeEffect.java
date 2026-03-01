@@ -2,12 +2,14 @@ package net.ltxprogrammer.changed.ability.tree.effects;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.ltxprogrammer.changed.ability.tree.AbilityCounter;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.function.Consumer;
 
 public class MobEffectNodeEffect extends NodeEffect {
     public static final Codec<MobEffectInstance> MOB_EFFECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -33,9 +35,9 @@ public class MobEffectNodeEffect extends NodeEffect {
     }
 
     @Override
-    public void applyEffect(AbilityCounter counter) {
-        if (condition.test(counter.entity))
-            counter.variantInstance.getHost().addEffect(new MobEffectInstance(mobEffect));
+    public void gatherActiveEffects(IAbstractChangedEntity entity, Consumer<NodeEffect> sink) {
+        if (condition.test(entity))
+            sink.accept(this);
     }
 
     @Override

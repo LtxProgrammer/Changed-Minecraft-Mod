@@ -5,6 +5,12 @@
   "price": 1,
   "groupDiscount": -1,
 
-  "comment": "Grants aqua affinity so the player can mine underwater the same speed as on land.",
-  "acquiredEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:intrinsic_enchantment",
+      "enchantment": "minecraft:aqua_affinity",
+      "method": "minimum",
+      "level": 1
+    }
+  ]
 }

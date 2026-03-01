@@ -7,23 +7,27 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
+import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.Consumer;
 
-public class AttributeModifierNodeEffect extends NodeEffect {
-    public static final Codec<AttributeModifierNodeEffect> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+public class IntrinsicEnchantmentNodeEffect extends NodeEffect {
+    public static final Codec<IntrinsicEnchantmentNodeEffect> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             AbstractCondition.CONDITION_CODEC.fieldOf("condition").orElse(TrueCondition.INSTANCE).forGetter(node -> node.condition),
-            ForgeRegistries.ATTRIBUTES.getCodec().fieldOf("attribute").forGetter(node -> node.attribute),
-            Method.CODEC.fieldOf("method").orElse(Method.MULTIPLY_BASE).forGetter(condition -> condition.method),
-            Codec.DOUBLE.fieldOf("factor").forGetter(node -> node.factor)
-    ).apply(builder, AttributeModifierNodeEffect::new));
+            ForgeRegistries.ENCHANTMENTS.getCodec().fieldOf("enchantment").forGetter(node -> node.enchantment),
+            Method.CODEC.fieldOf("method").orElse(Method.MINIMUM).forGetter(node -> node.method),
+            Codec.INT.fieldOf("level").forGetter(node -> node.level)
+    ).apply(builder, IntrinsicEnchantmentNodeEffect::new));
 
     public enum Method implements StringRepresentable {
-        MULTIPLY_BASE("multiply_base"),
+        MINIMUM("minimum"),
+        MAXIMUM("maximum"),
         ADD("add");
 
         public static Codec<Method> CODEC = Codec.STRING.comapFlatMap(Method::fromSerial, Method::getSerializedName);
@@ -46,15 +50,15 @@ public class AttributeModifierNodeEffect extends NodeEffect {
     }
 
     public final AbstractCondition condition;
-    public final Attribute attribute;
+    public final Enchantment enchantment;
     public final Method method;
-    public final double factor;
+    public final int level;
 
-    public AttributeModifierNodeEffect(AbstractCondition condition, Attribute attribute, Method method, double factor) {
+    public IntrinsicEnchantmentNodeEffect(AbstractCondition condition, Enchantment enchantment, Method method, int level) {
         this.condition = condition;
-        this.attribute = attribute;
+        this.enchantment = enchantment;
         this.method = method;
-        this.factor = factor;
+        this.level = level;
     }
 
     @Override
@@ -66,5 +70,11 @@ public class AttributeModifierNodeEffect extends NodeEffect {
     @Override
     public Codec<? extends NodeEffect> getCodec() {
         return CODEC;
+    }
+
+    @Nullable
+    @Override
+    protected NodeEffect createClientNodeEffect() {
+        return new IntrinsicEnchantmentNodeEffect(TrueCondition.INSTANCE, this.enchantment, this.method, this.level);
     }
 }

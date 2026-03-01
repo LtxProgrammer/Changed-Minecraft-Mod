@@ -2,8 +2,10 @@ package net.ltxprogrammer.changed.ability.tree;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -186,21 +189,23 @@ public class AbilityTreeInstance {
             });
         }
 
-        public void applyEffects(AbilityCounter counter) {
+        public void gatherNodeEffects(TransfurVariantInstance<?> variantInstance, Consumer<NodeEffect> sink) {
             Set<ResourceLocation> occludedNodes = new HashSet<>();
-            getNodeStates(counter.variantInstance.getParent()).filter(NodeState::unlocked)
+            getNodeStates(variantInstance.getParent()).filter(NodeState::unlocked)
                     .forEach(nodeState -> occludedNodes.addAll(nodeState.node.occludes));
 
-            getNodeStates(counter.variantInstance.getParent()).forEach(nodeState -> {
+            IAbstractChangedEntity entity = IAbstractChangedEntity.forPlayerWithVariant(variantInstance.getHost(), variantInstance);
+
+            getNodeStates(variantInstance.getParent()).forEach(nodeState -> {
                 if (nodeState.unlocked) {
                     if (!occludedNodes.contains(nodeState.nodeName)) {
                         nodeState.node.acquiredEffects.forEach(nodeEffect -> {
-                            nodeEffect.applyEffect(counter);
+                            nodeEffect.gatherActiveEffects(entity, sink);
                         });
                     }
                 } else {
                     nodeState.node.missingEffects.forEach(nodeEffect -> {
-                        nodeEffect.applyEffect(counter);
+                        nodeEffect.gatherActiveEffects(entity, sink);
                     });
                 }
             });
@@ -300,10 +305,10 @@ public class AbilityTreeInstance {
         trees.addAll(newAccountedTrees);
     }
 
-    public void applyEffects(AbilityCounter counter) {
+    public void gatherNodeEffects(TransfurVariantInstance<?> variantInstance, Consumer<NodeEffect> sink) {
         trees.forEach(tree -> {
-            if (tree.appliesTo(counter.variantInstance.getParent()))
-                tree.applyEffects(counter);
+            if (tree.appliesTo(variantInstance.getParent()))
+                tree.gatherNodeEffects(variantInstance, sink);
         });
     }
 

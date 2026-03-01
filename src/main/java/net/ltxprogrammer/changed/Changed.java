@@ -122,6 +122,7 @@ public class Changed {
         ChangedFacilityZones.REGISTRY.register(modEventBus);
         ChangedAbilityTreeCodecs.NODE_EFFECT_REGISTRY.register(modEventBus);
         ChangedAbilityTreeCodecs.EFFECT_CONDITION_REGISTRY.register(modEventBus);
+        ChangedTransfurVariantFeatures.REGISTRY.register(modEventBus);
 
         // Our DFU references the above registries, so they need to be initialized before the DFU is created
         dataFixer = new ChangedDataFixer();

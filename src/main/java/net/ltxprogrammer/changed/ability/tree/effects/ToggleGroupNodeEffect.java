@@ -2,12 +2,13 @@ package net.ltxprogrammer.changed.ability.tree.effects;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.ltxprogrammer.changed.ability.tree.AbilityCounter;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ToggleGroupNodeEffect extends NodeEffect {
     public static final Codec<ToggleGroupNodeEffect> CODEC = RecordCodecBuilder.create(builder -> builder.group(
@@ -35,11 +36,17 @@ public class ToggleGroupNodeEffect extends NodeEffect {
         this.activeDuration = activeDuration;
         this.cooldownDuration = cooldownDuration;
         this.canCancel = canCancel;
+
+        // TODO: give entity an ability to toggle sub effects
     }
 
     @Override
-    public void applyEffect(AbilityCounter counter) {
-        // TODO: give entity an ability to toggle sub effects
+    public void gatherActiveEffects(IAbstractChangedEntity entity, Consumer<NodeEffect> sink) {
+        if (condition.test(entity)) {
+            effects.forEach(nodeEffect -> {
+                nodeEffect.gatherActiveEffects(entity, sink);
+            });
+        }
     }
 
     @Override

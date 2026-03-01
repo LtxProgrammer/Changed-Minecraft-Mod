@@ -1,11 +1,14 @@
 package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.AtomicDouble;
+import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.ReferenceArraySet;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.*;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
+import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
@@ -91,6 +94,42 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public boolean willSurviveTransfur = true;
     protected boolean isTemporaryFromSuit = false;
 
+    protected final Map<TransfurVariantFeature, Double> variantFeatures = new HashMap<>();
+    protected final List<NodeEffect> activeNodeEffects = new ArrayList<>();
+
+    public <E extends NodeEffect> void visitActiveNodeEffects(Codec<E> codec, Consumer<E> visitor) {
+        activeNodeEffects.forEach(nodeEffect -> {
+            if (nodeEffect.getCodec() == codec)
+                visitor.accept((E)nodeEffect);
+        });
+    }
+
+    public double getFeatureLevel(TransfurVariantFeature feature) {
+        return variantFeatures.computeIfAbsent(feature, key -> {
+            AtomicDouble level = new AtomicDouble(0.0);
+
+            visitActiveNodeEffects(ChangedAbilityTreeCodecs.ENABLE_FEATURE_EFFECT.get(), featureNode -> {
+                if (featureNode.feature != key)
+                    return;
+
+                level.updateAndGet(current -> {
+                    return Math.max(featureNode.factor, current);
+                });
+            });
+
+            return level.get();
+        });
+    }
+
+    public boolean hasFeature(TransfurVariantFeature feature) {
+        return getFeatureLevel(feature) > 0.0;
+    }
+
+    public void setNodeEffects(List<NodeEffect> nodeEffects) {
+        this.activeNodeEffects.clear();
+        this.activeNodeEffects.addAll(nodeEffects);
+    }
+
     public void refreshAttributes() {
         newAttributes.clear();
     }
@@ -100,7 +139,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         baseValues.putAll(getBaseAttributeValues(attributeMap));
     }
 
-    private Map<Attribute, Double> getBaseAttributeValues(AttributeMap attributeMap) {
+    protected Map<Attribute, Double> getBaseAttributeValues(AttributeMap attributeMap) {
         Map<Attribute, Double> map = new HashMap<>();
         ForgeRegistries.ATTRIBUTES.getValues().stream()
                 .filter(attributeMap::hasAttribute)
@@ -787,6 +826,14 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         if (!shouldApplyAbilities())
             return;
 
+        boolean oxygenSymbiosis = false;
+        if (hasFeature(ChangedTransfurVariantFeatures.OXYGEN_SYMBIOSIS.get())) {
+            var grab = getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (grab != null && grab.grabbedEntity != null && grab.suited) {
+                oxygenSymbiosis = !grab.grabbedEntity.canDrownInFluidType(ForgeMod.EMPTY_TYPE.get());
+            }
+        }
+
         if (breatheMode == TransfurVariant.BreatheMode.NONE) {
             this.ticksBreathingUnderwater = 0;
 
@@ -805,8 +852,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             }
         } else {
             if (!breatheMode.canBreatheAir()) {
-                event.setCanBreathe(false);
-                event.setCanRefillAir(false);
+                event.setCanBreathe(oxygenSymbiosis);
+                event.setCanRefillAir(oxygenSymbiosis);
             }
 
             this.ticksBreathingUnderwater = 0;

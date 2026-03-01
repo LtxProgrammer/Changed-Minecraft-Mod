@@ -4,11 +4,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.SimpleCreateItemAbility;
-import net.ltxprogrammer.changed.ability.tree.AbilityCounter;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.function.Consumer;
 
 public class CreateItemAbilityNodeEffect extends NodeEffect {
     public final AbstractCondition condition;
@@ -40,7 +41,7 @@ public class CreateItemAbilityNodeEffect extends NodeEffect {
     }
 
     @Override
-    public void applyEffect(AbilityCounter counter) {
+    public void gatherActiveEffects(IAbstractChangedEntity entity, Consumer<NodeEffect> sink) {
 
     }
 

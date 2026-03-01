@@ -5,5 +5,14 @@
   "price": 1,
 
   "comment": "This node would allow the player to switch their transfur mode to absorb the entity. It also allows the player to suit the grabbed entity.",
-  "missingEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:transfur/absorption"
+    },
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:switch_transfur_mode"
+    }
+  ]
 }

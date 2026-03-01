@@ -5,6 +5,10 @@
   "price": 1,
   "groupDiscount": -1,
 
-  "comment": "Allows the player to breathe on land if suiting an entity that can breathe air. And the reverse for water.",
-  "acquiredEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:grab/oxygen_symbiosis"
+    }
+  ]
 }

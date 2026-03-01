@@ -2,12 +2,13 @@ package net.ltxprogrammer.changed.ability.tree.effects;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.ltxprogrammer.changed.ability.tree.AbilityCounter;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class GroupNodeEffect extends NodeEffect {
     public static final Codec<GroupNodeEffect> CODEC = RecordCodecBuilder.create(builder -> builder.group(
@@ -24,9 +25,12 @@ public class GroupNodeEffect extends NodeEffect {
     }
 
     @Override
-    public void applyEffect(AbilityCounter counter) {
-        if (condition.test(counter.entity))
-            effects.forEach(effect -> effect.applyEffect(counter));
+    public void gatherActiveEffects(IAbstractChangedEntity entity, Consumer<NodeEffect> sink) {
+        if (condition.test(entity)) {
+            effects.forEach(nodeEffect -> {
+                nodeEffect.gatherActiveEffects(entity, sink);
+            });
+        }
     }
 
     @Override

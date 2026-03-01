@@ -3,5 +3,12 @@
     "#changed:latex"
   ],
   "titleId": "changed.ability_tree.latex",
-  "flavorId": "changed.ability_tree.latex.flavor"
+  "flavorId": "changed.ability_tree.latex.flavor",
+  "pointEvents": [
+    {
+      "type": "changed:event",
+      "event": "changed:on_transfur_other",
+      "reward": 10
+    }
+  ]
 }

@@ -61,6 +61,7 @@ public class ChangedPackets {
         addNetworkMessage(AbilityTreeMenuPacket.class, AbilityTreeMenuPacket::new);
         addNetworkMessage(AbilityTrees.SyncPacket.class, AbilityTrees.SyncPacket::new);
         addNetworkMessage(AbilityTreeSyncInstancePacket.class, AbilityTreeSyncInstancePacket::new);
+        addNetworkMessage(SyncActiveNodeEffectsPacket.class, SyncActiveNodeEffectsPacket::new);
 
         addNetworkMessage(DebuggerPacket.class, DebuggerPacket::new);
         DebuggerPacket.registerDebugPacket(FacilityAddPiecesPayload.IDENTIFIER, FacilityAddPiecesPayload::new);

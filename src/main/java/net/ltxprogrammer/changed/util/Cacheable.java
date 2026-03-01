@@ -23,6 +23,12 @@ public abstract class Cacheable<T> implements Supplier<T> {
         return value.orElse(null);
     }
 
+    public final Optional<T> getOptional() {
+        if (value == null)
+            value = Optional.ofNullable(initialGet());
+        return value;
+    }
+
     public void forceValue(@Nullable T v) {
         value = Optional.ofNullable(v);
     }

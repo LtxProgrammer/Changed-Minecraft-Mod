@@ -1,20 +1,19 @@
 package net.ltxprogrammer.changed.server;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
-import net.ltxprogrammer.changed.ability.tree.AbilityCounter;
+import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
-import net.ltxprogrammer.changed.init.ChangedAbilities;
-import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
-import net.ltxprogrammer.changed.init.ChangedEffects;
-import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.network.packet.SyncActiveNodeEffectsPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -25,14 +24,14 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.living.LivingBreatheEvent;
+import net.minecraftforge.network.PacketDistributor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ServerTransfurVariantInstance<T extends ChangedEntity> extends TransfurVariantInstance<T> {
     private final ServerPlayer host;
+
+    protected final List<NodeEffect> lastSentNodeEffects = new ArrayList<>();
 
     public ServerTransfurVariantInstance(TransfurVariant<T> parent, ServerPlayer host) {
         super(parent, host);
@@ -101,30 +100,74 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
 
     public final Map<Attribute, UUID> attributesByUUID = new HashMap<>();
 
-    @Override
-    public void tick() {
-        AbilityCounter counter = new AbilityCounter(this);
+    protected void tickAbilityTree() {
         var abilityTree = ((PlayerDataExtension)host).getAbilityTree();
         abilityTree.updateTrees();
-        abilityTree.applyEffects(counter);
+        activeNodeEffects.clear();
+        abilityTree.gatherNodeEffects(this, activeNodeEffects::add);
 
-        var attributes = host.getAttributes();
-        counter.getAttributeAdders().forEach((attribute, value) -> {
-            var uuid = attributesByUUID.computeIfAbsent(attribute, ignored -> Mth.createInsecureUUID(RandomSource.createNewThreadLocalInstance()));
-            var instance = attributes.getInstance(attribute);
-            if (instance == null)
-                return;
-            var existing = instance.getModifier(uuid);
-            if (existing != null && existing.getAmount() == value)
-                return;
+        {
+            Map<Attribute, Double> attributeAdders = getBaseAttributeValues(this.getHost().getAttributes());
+            Map<Attribute, Double> baselineAttributes = Map.copyOf(attributeAdders);
+            attributeAdders.replaceAll((a, v) -> 0.0);
 
-            if (existing == null && value == 0.0)
-                return;
+            visitActiveNodeEffects(ChangedAbilityTreeCodecs.ATTRIBUTE_MODIFIER_EFFECT.get(), attributeModifier -> {
+                if (!baselineAttributes.containsKey(attributeModifier.attribute))
+                    return;
 
-            instance.removeModifier(uuid);
-            if (value != 0.0)
-                instance.addTransientModifier(new AttributeModifier(uuid, "AbilityTree-Modifier", value, AttributeModifier.Operation.ADDITION));
+                switch (attributeModifier.method) {
+                    case MULTIPLY_BASE -> {
+                        attributeAdders.computeIfPresent(attributeModifier.attribute, (attr, current) -> {
+                            return current + baselineAttributes.get(attr) * attributeModifier.factor;
+                        });
+                    }
+                    case ADD -> {
+                        attributeAdders.computeIfPresent(attributeModifier.attribute, (attr, current) -> {
+                            return current + attributeModifier.factor;
+                        });
+                    }
+                }
+            });
+
+            var attributes = host.getAttributes();
+            attributeAdders.forEach((attribute, value) -> {
+                var uuid = attributesByUUID.computeIfAbsent(attribute, ignored -> Mth.createInsecureUUID(RandomSource.createNewThreadLocalInstance()));
+                var instance = attributes.getInstance(attribute);
+                if (instance == null)
+                    return;
+                var existing = instance.getModifier(uuid);
+                if (existing != null && existing.getAmount() == value)
+                    return;
+
+                if (existing == null && value == 0.0)
+                    return;
+
+                instance.removeModifier(uuid);
+                if (value != 0.0)
+                    instance.addTransientModifier(new AttributeModifier(uuid, "AbilityTree-Modifier", value, AttributeModifier.Operation.ADDITION));
+            });
+        }
+
+        visitActiveNodeEffects(ChangedAbilityTreeCodecs.MOB_EFFECT_EFFECT.get(), mobEffectNode -> {
+            host.addEffect(new MobEffectInstance(mobEffectNode.mobEffect));
         });
+
+        List<NodeEffect> syncedEffects = activeNodeEffects.stream()
+                .map(NodeEffect::getClientNodeEffect)
+                .filter(Optional::isPresent)
+                .map(Optional::get).toList();
+        if (!lastSentNodeEffects.equals(syncedEffects)) {
+            lastSentNodeEffects.clear();
+            lastSentNodeEffects.addAll(syncedEffects);
+
+            Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(this::getHost),
+                    new SyncActiveNodeEffectsPacket(host.getId(), lastSentNodeEffects));
+        }
+    }
+
+    @Override
+    public void tick() {
+        this.tickAbilityTree();
 
         super.tick();
 

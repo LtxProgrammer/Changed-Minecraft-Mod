@@ -5,5 +5,10 @@
   "price": 1,
 
   "comment": "This node would grant the grab ability to the player, but not suiting",
-  "missingEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:grab_entity"
+    }
+  ]
 }

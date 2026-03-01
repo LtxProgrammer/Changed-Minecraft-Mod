@@ -34,6 +34,14 @@ public class ChangedAbilityTreeCodecs {
      * If the effect is active: the entity has access to an ability that allows them to create the defined item.
      */
     public static final RegistryObject<Codec<CreateItemAbilityNodeEffect>> CREATE_ITEM_ABILITY_EFFECT = NODE_EFFECT_REGISTRY.register("active/create_item_effect", () -> CreateItemAbilityNodeEffect.CODEC);
+    /**
+     * Marks a registered feature as enabled with a factor.
+     */
+    public static final RegistryObject<Codec<EnableFeatureNodeEffect>> ENABLE_FEATURE_EFFECT = NODE_EFFECT_REGISTRY.register("enable_feature", () -> EnableFeatureNodeEffect.CODEC);
+    /**
+     * Marks a registered feature as enabled with a factor.
+     */
+    public static final RegistryObject<Codec<IntrinsicEnchantmentNodeEffect>> INTRINSIC_ENCHANTMENT_EFFECT = NODE_EFFECT_REGISTRY.register("intrinsic_enchantment", () -> IntrinsicEnchantmentNodeEffect.CODEC);
 
     public static final DeferredRegister<Codec<? extends AbstractCondition>> EFFECT_CONDITION_REGISTRY = ChangedRegistry.ABILITY_EFFECT_CONDITIONS.createDeferred(Changed.MODID);
 

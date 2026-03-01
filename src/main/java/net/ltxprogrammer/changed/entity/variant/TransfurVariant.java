@@ -116,8 +116,6 @@ public class TransfurVariant<T extends ChangedEntity> {
         public boolean canBreatheAir() {
             return this == NORMAL || this == ANY;
         }
-
-        public boolean hasAquaAffinity() { return canBreatheWater(); }
     }
 
     private static final AtomicInteger NEXT_ENTITY_ID = new AtomicInteger(-70000000);
