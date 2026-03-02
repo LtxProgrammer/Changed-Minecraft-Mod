@@ -239,12 +239,16 @@ public abstract class StructureTemplateMixin implements StructureTemplateExtende
                                       RandomSource random,
                                       int setBlockFlags,
                                       Operation<Boolean> original) {
-        var coverStates = this.getRandomCoverPalette(settings, this.changed$latexCoverPalettes, templatePos).latexCovers();
-        var processedInfo = StructureTemplateExtender.processCoverInfos(level, templatePos, bottomCenterPos, settings, coverStates, (StructureTemplate)(Object)this);
+        changed$cachedProcessedInfo = null;
 
-        if (!processedInfo.isEmpty()) {
-            changed$cachedProcessedInfo = new HashMap<>(processedInfo.size());
-            processedInfo.forEach(coverInfo -> changed$cachedProcessedInfo.put(coverInfo.pos(), coverInfo));
+        if (!this.changed$latexCoverPalettes.isEmpty()) {
+            var coverStates = this.getRandomCoverPalette(settings, this.changed$latexCoverPalettes, templatePos).latexCovers();
+            var processedInfo = StructureTemplateExtender.processCoverInfos(level, templatePos, bottomCenterPos, settings, coverStates, (StructureTemplate) (Object) this);
+
+            if (!processedInfo.isEmpty()) {
+                changed$cachedProcessedInfo = new HashMap<>(processedInfo.size());
+                processedInfo.forEach(coverInfo -> changed$cachedProcessedInfo.put(coverInfo.pos(), coverInfo));
+            }
         }
 
         var didWork = original.call(level, templatePos, bottomCenterPos, settings, random, setBlockFlags);

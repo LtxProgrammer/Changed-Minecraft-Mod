@@ -119,6 +119,7 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Double> bpiSizeMinimumNPC;
         public final ForgeConfigSpec.ConfigValue<Double> bpiSizeMaximumNPC;
         public final ForgeConfigSpec.ConfigValue<Boolean> debugFacilitiesEnabled;
+        public final ForgeConfigSpec.ConfigValue<Boolean> unlimitedLatexSpread;
 
         public Server(ForgeConfigSpec.Builder builder) {
             builder.comment("Should transfurred players have a nametag");
@@ -141,6 +142,8 @@ public class ChangedConfig {
             bpiSizeMaximumNPC = builder.defineInRange("bpiSizeMaximumNPC", 1.05, 0.05, 1024.0);
             builder.comment("Should the server broadcast facility debug info.");
             debugFacilitiesEnabled = builder.define("debugFacilitiesEnabled", false);
+            builder.comment("Should latex spreadnot  be limited around a source.");
+            unlimitedLatexSpread = builder.define("unlimitedLatexSpread", false);
         }
 
         public Stream<RegistryElementPredicate<Block>> getBlacklistedCoverBlocks() {

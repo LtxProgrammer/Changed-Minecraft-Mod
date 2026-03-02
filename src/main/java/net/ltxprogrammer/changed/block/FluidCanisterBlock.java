@@ -13,12 +13,11 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,12 +39,13 @@ import java.util.stream.Collectors;
 
 import static net.ltxprogrammer.changed.item.GasCanister.CAPACITY;
 
-public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock {
+public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 28.0D, 12.0D);
     private final @Nullable Supplier<? extends Gas> gas;
     private FluidState stateOpen;
     private FluidState stateClosed;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     private void maybeInitializeFluidStates() {
         if (stateOpen == null)
@@ -62,12 +62,17 @@ public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock {
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(OPEN);
+        builder.add(OPEN, WATERLOGGED);
     }
 
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
-        super.setPlacedBy(level, pos, state, entity, stack);
+        BlockPos abovePos = pos.above();
+        level.setBlockAndUpdate(abovePos, this.defaultBlockState()
+                .setValue(HALF, DoubleBlockHalf.UPPER)
+                .setValue(FACING, state.getValue(FACING))
+                .setValue(WATERLOGGED, AbstractCustomShapeTallBlock.shouldWaterlog(level, abovePos)));
+
         if (!(stack.getItem() instanceof GasCanister))
             return;
         if (!(level.getBlockEntity(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below()) instanceof GasCanisterBlockEntity lBlockEntity))
@@ -77,6 +82,14 @@ public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock {
 
         lBlockEntity.setUsage(stack.getDamageValue());
         uBlockEntity.setUsage(stack.getDamageValue());
+    }
+
+    @Override
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState state = super.getStateForPlacement(context);
+        if (state != null && state.is(this))
+            return state.setValue(WATERLOGGED, AbstractCustomShapeTallBlock.shouldWaterlog(context.getLevel(), context.getClickedPos()));
+        return state;
     }
 
     @Override
@@ -115,7 +128,7 @@ public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (state.getValue(HALF) == DoubleBlockHalf.LOWER)
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER || state.getValue(WATERLOGGED))
             return super.use(state, level, pos, player, hand, hitResult);
 
         var beBottom = level.getBlockEntity(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below(), ChangedBlockEntities.GAS_CANISTER.get());
@@ -124,15 +137,19 @@ public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock {
             return super.use(state, level, pos, player, hand, hitResult);
 
         if (beTop.get().getUsage() < CAPACITY && !state.getValue(OPEN)) {
-            level.setBlockAndUpdate(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below(), state.setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, true));
-            level.setBlockAndUpdate(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos, state.setValue(HALF, DoubleBlockHalf.UPPER).setValue(OPEN, true));
+            AbstractCustomShapeTallBlock.getLowerHalf(state, pos,
+                    lowerPos -> level.setBlockAndUpdate(lowerPos, state.setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, true).setValue(WATERLOGGED, AbstractCustomShapeTallBlock.shouldWaterlog(level, lowerPos))));
+            AbstractCustomShapeTallBlock.getUpperHalf(state, pos,
+                    lowerPos -> level.setBlockAndUpdate(lowerPos, state.setValue(HALF, DoubleBlockHalf.UPPER).setValue(OPEN, true).setValue(WATERLOGGED, AbstractCustomShapeTallBlock.shouldWaterlog(level, lowerPos))));
             level.scheduleTick(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos, this, 1);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
         else if (state.getValue(OPEN)) {
-            level.setBlockAndUpdate(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below(), state.setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
-            level.setBlockAndUpdate(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos, state.setValue(HALF, DoubleBlockHalf.UPPER).setValue(OPEN, false));
+            AbstractCustomShapeTallBlock.getLowerHalf(state, pos,
+                    lowerPos -> level.setBlockAndUpdate(lowerPos, state.setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false).setValue(WATERLOGGED, AbstractCustomShapeTallBlock.shouldWaterlog(level, lowerPos))));
+            AbstractCustomShapeTallBlock.getUpperHalf(state, pos,
+                    lowerPos -> level.setBlockAndUpdate(lowerPos, state.setValue(HALF, DoubleBlockHalf.UPPER).setValue(OPEN, false).setValue(WATERLOGGED, AbstractCustomShapeTallBlock.shouldWaterlog(level, lowerPos))));
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
@@ -142,14 +159,19 @@ public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock {
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.tick(state, level, pos, random);
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER || state.getValue(WATERLOGGED))
+            return;
+
         var beBottom = level.getBlockEntity(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below(), ChangedBlockEntities.GAS_CANISTER.get());
         var beTop = level.getBlockEntity(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos, ChangedBlockEntities.GAS_CANISTER.get());
         if (beBottom.isEmpty() || beTop.isEmpty())
             return;
 
         if (beTop.get().getUsage() >= CAPACITY && state.getValue(OPEN)) {
-            level.setBlockAndUpdate(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below(), state.setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
-            level.setBlockAndUpdate(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos, state.setValue(HALF, DoubleBlockHalf.UPPER).setValue(OPEN, false));
+            AbstractCustomShapeTallBlock.getLowerHalf(state, pos,
+                    lowerPos -> level.setBlockAndUpdate(lowerPos, state.setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false).setValue(WATERLOGGED, AbstractCustomShapeTallBlock.shouldWaterlog(level, lowerPos))));
+            AbstractCustomShapeTallBlock.getUpperHalf(state, pos,
+                    lowerPos -> level.setBlockAndUpdate(lowerPos, state.setValue(HALF, DoubleBlockHalf.UPPER).setValue(OPEN, false).setValue(WATERLOGGED, AbstractCustomShapeTallBlock.shouldWaterlog(level, lowerPos))));
             return;
         }
 
@@ -166,13 +188,18 @@ public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock {
     @Override
     public FluidState getFluidState(BlockState blockState) {
         maybeInitializeFluidStates();
-        return blockState.getValue(OPEN) ? stateOpen : stateClosed;
+        if (blockState.getValue(WATERLOGGED))
+            return Fluids.WATER.getSource(false);
+        else if (blockState.getValue(OPEN))
+            return stateOpen;
+        return stateClosed;
     }
 
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         maybeInitializeFluidStates();
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, stateClosed);
+        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest,
+                state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) :  stateClosed);
     }
 
     @Override
@@ -180,6 +207,10 @@ public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock {
         if (state.getValue(OPEN) && gas != null) {
             level.scheduleTick(pos, gas.get(), gas.get().getTickDelay(level));
             level.scheduleTick(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos.below(), gas.get(), gas.get().getTickDelay(level));
+        }
+
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
         return super.updateShape(state, direction, otherState, level, pos, otherPos);

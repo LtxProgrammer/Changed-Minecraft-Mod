@@ -188,10 +188,15 @@ public abstract class SpreadingLatexType extends LatexType {
     }
 
     public boolean canSpread(LatexCoverState state) {
+        if (Changed.config.server.unlimitedLatexSpread.get())
+            return true;
         return state.getValue(SATURATION) < 15;
     }
 
     public boolean shouldDecay(LatexCoverState state, LevelReader level, BlockPos blockPos) {
+        if (Changed.config.server.unlimitedLatexSpread.get())
+            return false;
+
         final var thisSaturation = state.getValue(SATURATION);
         if (level.getBlockState(blockPos).getBlock() instanceof LatexCoveringSource)
             return false;
@@ -217,7 +222,10 @@ public abstract class SpreadingLatexType extends LatexType {
     }
 
     public LatexCoverState spreadState(LevelReader level, BlockPos blockPos, LatexCoverState state) {
-        state = state.setValue(SATURATION, state.getValue(SATURATION) + 1);
+        state = state.setValue(SATURATION,
+                Changed.config.server.unlimitedLatexSpread.get() ?
+                        state.getValue(SATURATION) :
+                        state.getValue(SATURATION) + 1);
         BlockState sourceState = level.getBlockState(blockPos);
         for (Direction direction : Direction.values()) {
             var face = FACES.get(direction);

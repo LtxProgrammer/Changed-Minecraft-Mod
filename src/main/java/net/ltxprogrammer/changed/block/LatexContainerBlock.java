@@ -25,6 +25,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -33,8 +34,13 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -47,11 +53,32 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock implements CustomFallable {
+public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock implements CustomFallable, SimpleWaterloggedBlock {
     public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 24, 12.0D);
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public LatexContainerBlock() {
         super(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().sound(SoundType.GLASS).strength(3.0F, 5.0F));
+        this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(WATERLOGGED);
+    }
+
+    @Override
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState state = super.getStateForPlacement(context);
+        if (state != null && state.is(this))
+            return state.setValue(WATERLOGGED, AbstractCustomShapeTallBlock.shouldWaterlog(context.getLevel(), context.getClickedPos()));
+        return state;
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
@@ -176,9 +203,8 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
     }
 
     private void survivedFall(Level level, BlockPos pos, BlockState state) {
-        //FluidState fluid = level.getFluidState(pos.above());
-
-        level.setBlockAndUpdate(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER));
+        level.setBlockAndUpdate(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER)
+                .setValue(WATERLOGGED, AbstractCustomShapeTallBlock.shouldWaterlog(level, pos.above())));
     }
 
     private double getFallDistance(FallingBlockEntity falling) {

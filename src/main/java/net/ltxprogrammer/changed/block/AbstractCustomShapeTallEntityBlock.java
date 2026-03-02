@@ -126,19 +126,22 @@ public abstract class AbstractCustomShapeTallEntityBlock extends AbstractCustomS
         return state.getValue(HALF) != DoubleBlockHalf.UPPER && super.canDropFromExplosion(state, level, pos, explosion);
     }
 
-    public void playerWillDestroy(Level p_52878_, BlockPos p_52879_, BlockState p_52880_, Player p_52881_) {
-        if (!p_52878_.isClientSide) {
-            if (p_52881_.isCreative()) {
-                AbstractCustomShapeTallBlock.preventCreativeDropFromBottomPart(p_52878_, p_52879_, p_52880_, p_52881_);
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState blockState, Player player) {
+        BlockPos otherPos = blockState.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
+        BlockState otherState = level.getBlockState(otherPos);
+
+        if (!level.isClientSide) {
+            if (player.isCreative()) {
+                AbstractCustomShapeTallBlock.preventCreativeDropFromBottomPart(level, pos, blockState, player);
             }
         }
 
-        switch (p_52880_.getValue(HALF)) {
-            case LOWER -> p_52878_.setBlock(p_52879_.above(), Blocks.AIR.defaultBlockState(), 3);
-            case UPPER -> p_52878_.setBlock(p_52879_.below(), Blocks.AIR.defaultBlockState(), 3);
-        }
+        level.setBlockAndUpdate(otherPos,
+                otherState.hasProperty(BlockStateProperties.WATERLOGGED) && otherState.getValue(BlockStateProperties.WATERLOGGED) ?
+                        Blocks.WATER.defaultBlockState() :
+                        Blocks.AIR.defaultBlockState());
 
-        super.playerWillDestroy(p_52878_, p_52879_, p_52880_, p_52881_);
+        super.playerWillDestroy(level, pos, blockState, player);
     }
 
     public VoxelShape getOcclusionShape(BlockState p_60578_, BlockGetter p_60579_, BlockPos p_60580_) {
