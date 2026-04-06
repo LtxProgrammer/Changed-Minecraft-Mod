@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
@@ -14,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityDimensions;
@@ -27,14 +29,26 @@ import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Objects;
 
-public class CustomLatexEntity extends ChangedEntity implements LatexTaur<CustomLatexEntity> {
-    public enum TorsoType {
-        GENERIC,
-        CHISELED,
-        FEMALE,
-        HEAVY;
+public class CustomLatexEntity extends ChangedEntity implements LatexTaur<CustomLatexEntity>, ModifiableEntity {
+    public enum TorsoType implements StringRepresentable {
+        GENERIC("generic"),
+        CHISELED("chiseled"),
+        FEMALE("female"),
+        HEAVY("heavy");
+
+        public final String serialName;
+
+        TorsoType(String serialName) {
+            this.serialName = serialName;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serialName;
+        }
 
         public TorsoType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
@@ -53,10 +67,21 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
         }
     }
 
-    public enum HairType {
-        BALD,
-        SHORT,
-        LONG;
+    public enum HairType implements StringRepresentable {
+        BALD("bald"),
+        SHORT("short"),
+        LONG("long");
+
+        public final String serialName;
+
+        HairType(String serialName) {
+            this.serialName = serialName;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serialName;
+        }
 
         public HairType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
@@ -75,11 +100,22 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
         }
     }
 
-    public enum EarType {
-        WOLF,
-        CAT,
-        DRAGON,
-        SHARK;
+    public enum EarType implements StringRepresentable {
+        WOLF("wolf"),
+        CAT("cat"),
+        DRAGON("dragon"),
+        SHARK("shark");
+
+        public final String serialName;
+
+        EarType(String serialName) {
+            this.serialName = serialName;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serialName;
+        }
 
         public EarType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
@@ -98,11 +134,22 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
         }
     }
 
-    public enum TailType {
-        WOLF,
-        CAT,
-        DRAGON,
-        SHARK;
+    public enum TailType implements StringRepresentable {
+        WOLF("wolf"),
+        CAT("cat"),
+        DRAGON("dragon"),
+        SHARK("shark");
+
+        public final String serialName;
+
+        TailType(String serialName) {
+            this.serialName = serialName;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serialName;
+        }
 
         public TailType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
@@ -121,10 +168,21 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
         }
     }
 
-    public enum LegType {
-        BIPEDAL,
-        CENTAUR,
-        MERMAID;
+    public enum LegType implements StringRepresentable {
+        BIPEDAL("bipedal"),
+        CENTAUR("centaur"),
+        MERMAID("mermaid");
+
+        public final String serialName;
+
+        LegType(String serialName) {
+            this.serialName = serialName;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serialName;
+        }
 
         public LegType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
@@ -143,10 +201,21 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
         }
     }
 
-    public enum ArmType {
-        GENERIC,
-        WYVERN,
-        SHARK;
+    public enum ArmType implements StringRepresentable {
+        GENERIC("generic"),
+        WYVERN("wyvern"),
+        SHARK("shark");
+
+        public final String serialName;
+
+        ArmType(String serialName) {
+            this.serialName = serialName;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serialName;
+        }
 
         public ArmType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
@@ -165,19 +234,26 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
         }
     }
 
-    public enum ScaleType {
-        NORMAL(1.0F, 1.0F, 1.0F),
-        BUFF(1.125F, 1.0F, 1.15F),
-        SMALL(0.85F, 1.0F, 0.85F);
+    public enum ScaleType implements StringRepresentable {
+        NORMAL("normal", 1.0F, 1.0F, 1.0F),
+        BUFF("buff", 1.125F, 1.0F, 1.15F),
+        SMALL("small", 0.85F, 1.0F, 0.85F);
 
+        public final String serialName;
         public final float bodyScale;
         public final float headScale;
         public final float bbScale;
 
-        ScaleType(float bodyScale, float headScale, float bbScale) {
+        ScaleType(String serialName, float bodyScale, float headScale, float bbScale) {
+            this.serialName = serialName;
             this.bodyScale = bodyScale;
             this.headScale = headScale;
             this.bbScale = bbScale;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serialName;
         }
 
         public ScaleType cycle() {
@@ -202,6 +278,7 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     // 8 Fields can be serialized, each having 16 different possible values
     public static final EntityDataAccessor<Integer> DATA_FORM_FLAGS = SynchedEntityData.defineId(CustomLatexEntity.class, EntityDataSerializers.INT);
     private int formFlagsLast = -1;
+    private final Map<String, ModificationVector> modificationVectors;
 
     public void updateShape() {
         this.setAttributes(getAttributes());
@@ -302,7 +379,7 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     public void setTorsoType(TorsoType type) {
         int flags = this.entityData.get(DATA_FORM_FLAGS);
         flags ^= (flags) & 0x0000000f;
-        flags &= type.ordinal();
+        flags |= type.ordinal();
         this.entityData.set(DATA_FORM_FLAGS, flags);
         this.updateShape();
     }
@@ -310,7 +387,7 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     public void setHairType(HairType type) {
         int flags = this.entityData.get(DATA_FORM_FLAGS);
         flags ^= (flags) & 0x000000f0;
-        flags &= type.ordinal() << 4;
+        flags |= type.ordinal() << 4;
         this.entityData.set(DATA_FORM_FLAGS, flags);
         this.updateShape();
     }
@@ -318,7 +395,7 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     public void setEarType(EarType type) {
         int flags = this.entityData.get(DATA_FORM_FLAGS);
         flags ^= (flags) & 0x00000f00;
-        flags &= type.ordinal() << 8;
+        flags |= type.ordinal() << 8;
         this.entityData.set(DATA_FORM_FLAGS, flags);
         this.updateShape();
     }
@@ -326,7 +403,7 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     public void setTailType(TailType type) {
         int flags = this.entityData.get(DATA_FORM_FLAGS);
         flags ^= (flags) & 0x0000f000;
-        flags &= type.ordinal() << 12;
+        flags |= type.ordinal() << 12;
         this.entityData.set(DATA_FORM_FLAGS, flags);
         this.updateShape();
     }
@@ -334,7 +411,7 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     public void setLegType(LegType type) {
         int flags = this.entityData.get(DATA_FORM_FLAGS);
         flags ^= (flags) & 0x000f0000;
-        flags &= type.ordinal() << 16;
+        flags |= type.ordinal() << 16;
         this.entityData.set(DATA_FORM_FLAGS, flags);
         this.updateShape();
     }
@@ -342,7 +419,7 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     public void setArmType(ArmType type) {
         int flags = this.entityData.get(DATA_FORM_FLAGS);
         flags ^= (flags) & 0x00f00000;
-        flags &= type.ordinal() << 20;
+        flags |= type.ordinal() << 20;
         this.entityData.set(DATA_FORM_FLAGS, flags);
         this.updateShape();
     }
@@ -350,41 +427,32 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     public void setScaleType(ScaleType type) {
         int flags = this.entityData.get(DATA_FORM_FLAGS);
         flags ^= (flags) & 0x0f000000;
-        flags &= type.ordinal() << 24;
+        flags |= type.ordinal() << 24;
         this.entityData.set(DATA_FORM_FLAGS, flags);
         this.updateShape();
     }
 
-    public void cycleTorsoType() {
-        setTorsoType(getTorsoType().cycle());
+    protected void buildModificationVectors(ImmutableMap.Builder<String, ModificationVector> builder) {
+        builder.put("torsoType", ModificationVector.simpleEnum(TorsoType.class, this::getTorsoType, this::setTorsoType, "changed.stasis.modify.torso"));
+        builder.put("hairType", ModificationVector.simpleEnum(HairType.class, this::getHairType, this::setHairType, "changed.stasis.modify.hair"));
+        builder.put("earType", ModificationVector.simpleEnum(EarType.class, this::getEarType, this::setEarType, "changed.stasis.modify.ears"));
+        builder.put("tailType", ModificationVector.simpleEnum(TailType.class, this::getTailType, this::setTailType, "changed.stasis.modify.tail"));
+        builder.put("legType", ModificationVector.simpleEnum(LegType.class, this::getLegType, this::setLegType, "changed.stasis.modify.legs"));
+        builder.put("armType", ModificationVector.simpleEnum(ArmType.class, this::getArmType, this::setArmType, "changed.stasis.modify.arms"));
+        builder.put("scaleType", ModificationVector.simpleEnum(ScaleType.class, this::getScaleType, this::setScaleType, "changed.stasis.modify.scale"));
     }
 
-    public void cycleHairType() {
-        setHairType(getHairType().cycle());
-    }
-
-    public void cycleEarType() {
-        setEarType(getEarType().cycle());
-    }
-
-    public void cycleTailType() {
-        setTailType(getTailType().cycle());
-    }
-
-    public void cycleLegType() {
-        setLegType(getLegType().cycle());
-    }
-
-    public void cycleArmType() {
-        setArmType(getArmType().cycle());
-    }
-
-    public void cycleScaleType() {
-        setScaleType(getScaleType().cycle());
+    @Override
+    public Map<String, ModificationVector> getModificationVectors() {
+        return modificationVectors;
     }
 
     public CustomLatexEntity(EntityType<? extends ChangedEntity> type, Level level) {
         super(type, level);
+
+        var builder = ImmutableMap.<String, ModificationVector>builder();
+        this.buildModificationVectors(builder);
+        this.modificationVectors = builder.build();
     }
 
     @Override

@@ -85,7 +85,7 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
         if (variant == null)
             return new ColorScheme(Color3.WHITE, Color3.GRAY);
 
-        var colors = variant.getParent().getColors();
+        var colors = variant.getColors();
         return new ColorScheme(colors.getFirst(), colors.getSecond());
     }
 

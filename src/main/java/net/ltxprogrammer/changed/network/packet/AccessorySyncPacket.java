@@ -91,9 +91,9 @@ public class AccessorySyncPacket implements ChangedPacket {
                 return CompletableFuture.failedFuture(new IllegalStateException("Sender is null (Shouldn't be possible)"));
 
             context.setPacketHandled(true);
-            AccessoryAccessMenu.openForPlayer(sender, carryRequest == null ? ItemStack.EMPTY : carryRequest);
-
-            return CompletableFuture.completedFuture(null);
+            return levelFuture.thenAccept(level -> {
+                AccessoryAccessMenu.openForPlayer(sender, carryRequest == null ? ItemStack.EMPTY : carryRequest);
+            });
         }
     }
 }

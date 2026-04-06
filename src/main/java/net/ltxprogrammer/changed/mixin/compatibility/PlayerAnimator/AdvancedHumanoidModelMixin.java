@@ -35,13 +35,10 @@ public abstract class AdvancedHumanoidModelMixin<T extends ChangedEntity> extend
 
     @Inject(method = "prepareMobModel(Lnet/ltxprogrammer/changed/entity/ChangedEntity;FFF)V", at = @At("RETURN"))
     private void hideBonesInFirstPerson(T entity, float limbSwing, float limbSwingAmount, float partialTicks, CallbackInfo ci) {
-        Player player = entity.getUnderlyingPlayer();
-        if (player == null) return;
-
-        if (FirstPersonMode.isFirstPersonPass()) {
-            AnimationApplier animationApplier = ((IAnimatedPlayer)player).playerAnimator_getAnimation();
+        if (FirstPersonMode.isFirstPersonPass() && entity instanceof IAnimatedPlayer animatedEntity) {
+            AnimationApplier animationApplier = animatedEntity.playerAnimator_getAnimation();
             FirstPersonConfiguration config = animationApplier.getFirstPersonConfiguration();
-            if (player == Minecraft.getInstance().getCameraEntity() || entity == Minecraft.getInstance().getCameraEntity()) {
+            if (entity.getUnderlyingPlayer() == Minecraft.getInstance().getCameraEntity() || entity == Minecraft.getInstance().getCameraEntity()) {
                 this.setAllLimbsVisible(entity, false);
 
                 final ModelPart rightArm = getArm(HumanoidArm.RIGHT);

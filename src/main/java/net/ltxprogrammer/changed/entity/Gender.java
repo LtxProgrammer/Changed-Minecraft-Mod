@@ -1,17 +1,34 @@
 package net.ltxprogrammer.changed.entity;
 
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.StringRepresentable;
 import net.minecraftforge.common.IExtensibleEnum;
 
-public enum Gender implements IExtensibleEnum {
-    MALE,
-    FEMALE;
+public enum Gender implements IExtensibleEnum, StringRepresentable {
+    MALE("male"),
+    FEMALE("female");
 
-    public static Gender create(String name) {
+    private final String serialName;
+
+    Gender(String serialName) {
+        this.serialName = serialName;
+    }
+
+    @Override
+    public String getSerializedName() {
+        return serialName;
+    }
+
+    public static Gender create(String name, String serialName) {
         throw new IllegalStateException("Enum not extended");
     }
-    
+
+    /**
+     * @deprecated use {@link net.ltxprogrammer.changed.init.ChangedTransfurVariants.Gendered#getOpposite(TransfurVariant)}
+     */
+    @Deprecated
     public static ResourceLocation switchGenderedForm(ResourceLocation form) {
         if (form.getPath().contains("/male")) {
             ResourceLocation newVariantId = ResourceLocation.fromNamespaceAndPath(form.getNamespace(),
@@ -33,7 +50,7 @@ public enum Gender implements IExtensibleEnum {
     }
 
     public static ResourceLocation getGenderedForm(ResourceLocation form, Gender gender) {
-        return ResourceLocation.parse(form.toString() + "/" + gender.toString().toLowerCase());
+        return ResourceLocation.fromNamespaceAndPath(form.getNamespace(), form.getPath() + "/" + gender.getSerializedName());
     }
 
     public ResourceLocation convertToGendered(ResourceLocation formId) {

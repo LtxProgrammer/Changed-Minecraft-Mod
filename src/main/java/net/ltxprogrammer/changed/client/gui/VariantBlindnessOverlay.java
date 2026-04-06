@@ -36,7 +36,7 @@ public class VariantBlindnessOverlay {
             return; // Override effect
         if (variant.visionType != VisionType.REDUCED)
             return;
-        Color3 color = variant.getParent().getColors().getFirst();
+        Color3 color = variant.getColors().getFirst();
         var eyePosition = player.getEyePosition(partialTicks);
         float darkness = (15 - player.level().getRawBrightness(new BlockPos(Mth.floor(eyePosition.x), Mth.floor(eyePosition.y), Mth.floor(eyePosition.z)), 0)) / 15.0f;
         float alpha;

@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -70,9 +71,13 @@ public class LatexTrafficCone extends AbstractCustomShapeBlock implements Wearab
         return EquipmentSlot.HEAD;
     }
 
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.LATEX_TRAFFIC_CONE_DRAGON.get(), TransfurContext.hazard(TransfurCause.CEILING_HAZARD), 2.5f);
+    }
+
     @Override
     public void wearTick(LivingEntity entity, ItemStack itemStack) {
-        if (ProcessTransfur.progressTransfur(entity, 2.5f, ChangedTransfurVariants.LATEX_TRAFFIC_CONE_DRAGON.get(), TransfurContext.hazard(TransfurCause.CEILING_HAZARD)))
+        if (ProcessTransfur.progressTransfur(entity, this.makeAssimilationDecision(entity)))
             itemStack.shrink(1);
     }
 }

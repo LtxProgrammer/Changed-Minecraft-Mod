@@ -27,7 +27,7 @@ public class DarkLatexYufeng extends AbstractDarkLatexEntity {
     }
 
     @Override
-    public TransfurVariant<?> getTransfurVariant() {
+    protected TransfurVariant<?> getTransfurVariant() {
         return ChangedTransfurVariants.DARK_LATEX_DOUBLE_YUFENG.get();
     }
 

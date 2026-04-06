@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.item;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.ImmediateTransfurDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.Pale;
@@ -87,13 +88,11 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
                 ResourceLocation formLocation = ResourceLocation.parse(tag.getString("form"));
                 if (formLocation.equals(TransfurVariant.SPECIAL_LATEX))
                     formLocation = Changed.modResource("special/form_" + entity.getUUID());
-                ProcessTransfur.transfur(entity, level, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(formLocation), false,
-                        TransfurContext.hazard(cause));
+                ProcessTransfur.transfur(entity, ImmediateTransfurDecision.unsafe(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(formLocation), cause));
             }
 
             else {
-                ProcessTransfur.transfur(entity, level, ChangedTransfurVariants.FALLBACK_VARIANT.get(), player.isCreative(),
-                        TransfurContext.hazard(cause));
+                ProcessTransfur.transfur(entity, ImmediateTransfurDecision.unsafe(ChangedTransfurVariants.FALLBACK_VARIANT.get(), cause));
             }
 
             player.awardStat(Stats.ITEM_USED.get(this));

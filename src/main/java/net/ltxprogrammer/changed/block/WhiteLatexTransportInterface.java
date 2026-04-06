@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.latex.LatexSwimMover;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
@@ -52,7 +53,9 @@ public interface WhiteLatexTransportInterface {
                 .map(grabAbility -> !grabAbility.suited && grabAbility.grabbedEntity != null).orElse(false))
             return;
 
-        ProcessTransfur.transfur(entity, entity.level(), ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), false, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
+        ProcessTransfur.progressTransfur(entity, LatexAssimilationDecision.strong(LatexAssimilationDecision.Method.ABSORPTION,
+                ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(),
+                TransfurContext.hazard(TransfurCause.WHITE_LATEX), 8.0f));
 
         if (entity instanceof PlayerDataExtension ext && (!entity.level().isClientSide || UniversalDist.isLocalPlayer(entity)))
             ext.setPlayerMoverType(PlayerMover.LATEX_SWIM.get());
@@ -91,6 +94,10 @@ public interface WhiteLatexTransportInterface {
 
     @Mod.EventBusSubscriber
     class EventSubscriber {
+        protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+            return LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX), 4.8f);
+        }
+
         @SubscribeEvent
         static void onPlayerTick(TickEvent.PlayerTickEvent event) {
             if (event.phase != TickEvent.Phase.END)
@@ -106,8 +113,9 @@ public interface WhiteLatexTransportInterface {
                     else if (ChangedLatexTypes.WHITE_LATEX.get().isHostileTo(variant.getLatexType()))
                         event.player.hurt(ChangedDamageSources.WHITE_LATEX.source(event.player.level().registryAccess()), 2.0f);
                 }, () -> {
-                    if (ProcessTransfur.progressTransfur(event.player, 4.8f, ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX)))
-                        entityEnterLatex(event.player, latexPosition);
+                    ProcessTransfur.progressTransfur(event.player, LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX), 4.8f, newEntity -> {
+                        entityEnterLatex(newEntity.getEntity(), latexPosition);
+                    }));
                 });
             });
         }

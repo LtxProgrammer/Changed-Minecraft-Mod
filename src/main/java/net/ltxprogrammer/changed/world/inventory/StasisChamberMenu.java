@@ -10,10 +10,10 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.FluidCanister;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,7 +26,6 @@ import net.minecraftforge.fml.LogicalSide;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.text.NumberFormat;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -35,12 +34,12 @@ public class StasisChamberMenu extends AbstractContainerMenu implements Updateab
     public static final int MAX_WAIT_DURATION = 20 * 120;
 
     public final StasisChamberBlockEntity blockEntity;
+    public final boolean startOnModificationsScreen;
     public final Container container;
     public final ContainerData data;
     private @NotNull Player accessor;
 
     private final Map<Integer, Slot> customSlots = new HashMap<>();
-    public int configuredCustomLatex = -1;
 
     public boolean hideSlots = false;
 
@@ -53,6 +52,7 @@ public class StasisChamberMenu extends AbstractContainerMenu implements Updateab
 
         if (extra == null) {
             this.blockEntity = null;
+            this.startOnModificationsScreen = false;
             this.container = new SimpleContainer(2);
             this.container.startOpen(inventory.player);
             this.createSlots(inventory);
@@ -60,6 +60,7 @@ public class StasisChamberMenu extends AbstractContainerMenu implements Updateab
         }
 
         this.blockEntity = inventory.player.level().getBlockEntity(extra.readBlockPos(), ChangedBlockEntities.STASIS_CHAMBER.get()).orElse(null);
+        this.startOnModificationsScreen = extra.readBoolean();
         this.container = blockEntity;
         this.container.startOpen(inventory.player);
         this.createSlots(inventory);
@@ -70,6 +71,7 @@ public class StasisChamberMenu extends AbstractContainerMenu implements Updateab
         this.accessor = inventory.player;
         this.data = dataAccess;
         this.blockEntity = blockEntity;
+        this.startOnModificationsScreen = false;
         this.container = blockEntity != null ? blockEntity : new SimpleContainer(2);
         this.container.startOpen(inventory.player);
         this.createSlots(inventory);
@@ -304,12 +306,6 @@ public class StasisChamberMenu extends AbstractContainerMenu implements Updateab
         return blockEntity.getConfiguredTransfurVariant();
     }
 
-    public int getConfiguredCustomLatex() {
-        if (blockEntity == null)
-            return 0;
-        return blockEntity.getConfiguredCustomLatex();
-    }
-
     public boolean isChamberOpen() {
         if (blockEntity == null)
             return false;
@@ -394,10 +390,14 @@ public class StasisChamberMenu extends AbstractContainerMenu implements Updateab
         this.setDirty(tag);
     }
 
-    public void inputModifyConfig(int configuredCustomLatex) {
+    public void inputModification(String key, Tag value) {
         CompoundTag tag = new CompoundTag();
-        tag.putString("control", "config");
-        tag.putInt("customLatex", configuredCustomLatex);
+        tag.putString("control", "modify");
+
+        CompoundTag modify = new CompoundTag();
+        modify.put(key, value);
+
+        tag.put("modify", modify);
         this.setDirty(tag);
     }
 
@@ -420,9 +420,9 @@ public class StasisChamberMenu extends AbstractContainerMenu implements Updateab
             } else if ("program".equals(control)) {
                 String program = payload.getString("program");
                 blockEntity.inputProgram(program, controller);
-            } else if ("config".equals(control)) {
-                if (payload.contains("customLatex"))
-                    blockEntity.setConfiguredCustomLatex(payload.getInt("customLatex"));
+            } else if ("modify".equals(control)) {
+                if (payload.contains("modify"))
+                    blockEntity.applyModifications(payload.getCompound("modify"));
             } else if ("waitDuration".equals(control)) {
                 if (payload.contains("waitDuration"))
                     blockEntity.setWaitDuration(payload.getInt("waitDuration"), controller);

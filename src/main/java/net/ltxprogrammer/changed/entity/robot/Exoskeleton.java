@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.BenignShorts;
 import net.ltxprogrammer.changed.item.ExoskeletonItem;
+import net.ltxprogrammer.changed.item.LaserReactiveItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.ItemUtil;
@@ -38,6 +39,7 @@ import net.minecraft.world.level.pathfinder.Path;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Exoskeleton extends AbstractRobot {
     private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(Exoskeleton.class, EntityDataSerializers.INT);
@@ -471,10 +473,9 @@ public class Exoskeleton extends AbstractRobot {
                     } else if (this.attackTime >= this.exoskeleton.getAttackDuration()) {
                         float amount = ProcessTransfur.difficultyAdjustTransfurAmount(exoskeleton.level().getDifficulty(), 11.0f);
 
-                        ItemUtil.isWearingItem(target, ChangedItems.BENIGN_SHORTS.get()).ifPresent(slottedItem -> {
-                            if (ProcessTransfur.progressTransfur(target, amount, BenignShorts.getBenignTransfurVariant(target), TransfurContext.hazard(TransfurCause.BENIGN_SHORTS)))
-                                slottedItem.itemStack().shrink(1);
-                            else
+                        AtomicBoolean playedSound = new AtomicBoolean(false);
+                        ItemUtil.getWearingItems(target, itemStack -> itemStack.getItem() instanceof LaserReactiveItem).forEach(slottedItem -> {
+                            if (!((LaserReactiveItem)slottedItem.itemStack().getItem()).tickLaserExposure(target, slottedItem.itemStack(), amount) && !playedSound.getAndSet(true))
                                 ChangedSounds.broadcastSound(target, ChangedSounds.TRANSFUR_HURT, 1, 1);
                         });
 

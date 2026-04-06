@@ -53,7 +53,7 @@ public class PureWhiteLatexWolfPup extends PureWhiteLatexWolf {
     }
 
     @Override
-    public TransfurVariant<?> getTransfurVariant() {
+    protected TransfurVariant<?> getTransfurVariant() {
         return ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get();
     }
 

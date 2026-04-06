@@ -56,6 +56,7 @@ public class LeglessInitAnimatorV2<T extends ChangedEntity, M extends AdvancedHu
         abdomen.xRot = (float) Math.toRadians(-12.5);
         abdomen.yRot = slitherAnim(segmentPosition, limbSwing * SLITHER_RATE) * 0.5f;
         abdomen.zRot = 0f;
+        abdomen.x = 0f;
         overallAngle += -abdomen.yRot;
         segmentPosition += SEGMENT_SIZE * 2f;
         lowerAbdomen.xRot = (float) Math.toRadians(42.5);

@@ -3,7 +3,9 @@ package net.ltxprogrammer.changed.process;
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.ai.*;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
@@ -13,7 +15,6 @@ import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.packet.*;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
-import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -22,7 +23,9 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.Foods;
@@ -35,26 +38,116 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
-
 @Mod.EventBusSubscriber(modid = Changed.MODID)
 public class ProcessTransfur {
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    private static final Map<ResourceLocation, EntityAssimilationBehavior<?>> ASSIMILATED_MOB_TRANSFUR_LOGIC = new HashMap<>();
+
+    public static <T extends LivingEntity> void registerMobAssimilation(EntityType<T> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
+        ASSIMILATED_MOB_TRANSFUR_LOGIC.put(ForgeRegistries.ENTITY_TYPES.getKey(entityType), entityAssimilationBehavior);
+    }
+
+    public static <T extends LivingEntity> void registerMobAssimilation(RegistryObject<EntityType<T>> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
+        ASSIMILATED_MOB_TRANSFUR_LOGIC.put(entityType.getId(), entityAssimilationBehavior);
+    }
+
+    public static <T extends LivingEntity> EntityAssimilationBehavior<T> getDefaultEntityAssimilationBehavior(T entity) {
+        if (entity instanceof Player)
+            return (EntityAssimilationBehavior<T>) EntityAssimilationBehavior.defaultPlayer();
+        else if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS))
+            return (EntityAssimilationBehavior<T>) EntityAssimilationBehavior.defaultHumanoid();
+        else
+            return null;
+    }
+
+    public static <T extends LivingEntity> EntityAssimilationBehavior<T> getEntityAssimilationBehavior(T entity) {
+        if (entity == null)
+            return null;
+        var key = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
+        if (!ASSIMILATED_MOB_TRANSFUR_LOGIC.containsKey(key))
+            return getDefaultEntityAssimilationBehavior(entity);
+        return (EntityAssimilationBehavior<T>) ASSIMILATED_MOB_TRANSFUR_LOGIC.get(key);
+    }
+
+    /**
+     * Computes the assimilation behavior that occurs between the victim and the source.
+     */
+    public static @Nullable AssimilationBehavior computeAssimilationBehavior(LivingEntity assimilationVictim, @Nullable LatexAssimilationDecision<?> decision) {
+        if (decision == null)
+            return null;
+        var fusionBehavior = ChangedFusions.INSTANCE.getFusionBehavior(assimilationVictim, decision.context());
+        if (fusionBehavior != null)
+            return fusionBehavior;
+
+        var behavior = getEntityAssimilationBehavior(assimilationVictim);
+        if (behavior == null)
+            return null;
+
+        var event = new TransfurEvents.LatexAssimilationDecisionEvent(assimilationVictim, decision);
+        if (Changed.postModEvent(event))
+            return null;
+
+        return behavior.latexAssimilateVictimBehavior(assimilationVictim, event.getDecision());
+    }
+
+    /**
+     * Computes the assimilation behavior that occurs between the victim and the source.
+     */
+    public static @Nullable AssimilationBehavior computeAssimilationBehavior(LivingEntity assimilationVictim, @Nullable NonLatexAssimilationDecision<?> decision) {
+        if (decision == null)
+            return null;
+
+        var behavior = getEntityAssimilationBehavior(assimilationVictim);
+        if (behavior == null)
+            return null;
+
+        var event = new TransfurEvents.NonLatexAssimilationDecisionEvent(assimilationVictim, decision);
+        if (Changed.postModEvent(event))
+            return null;
+
+        return behavior.nonLatexAssimilateVictimBehavior(assimilationVictim, event.getDecision());
+    }
+
+    /**
+     * Computes the assimilation behavior that occurs between the victim and the source.
+     */
+    public static @Nullable AssimilationBehavior computeAssimilationBehavior(LivingEntity assimilationTarget, @Nullable ImmediateTransfurDecision<?> decision) {
+        if (decision == null)
+            return null;
+
+        var behavior = getEntityAssimilationBehavior(assimilationTarget);
+        if (behavior == null)
+            return null;
+
+        var event = new TransfurEvents.ImmediateTransfurDecisionEvent(assimilationTarget, decision);
+        if (Changed.postModEvent(event))
+            return null;
+
+        return behavior.immediateTransfurTargetBehavior(assimilationTarget, decision);
+    }
+
     // Intended to apply statuses on the source entity
     public static void onAbsorbEntity(IAbstractChangedEntity source) {
+        if (Changed.postModEvent(new TransfurEvents.AbsorbedEntityEvent(source)))
+            return;
+
         source.getEntity().heal(14.0f); // Heal 7 hearts
         if (source.getEntity() instanceof Player player) {
             player.getFoodData().eat(Foods.COOKED_BEEF.getNutrition(), Foods.COOKED_BEEF.getSaturationModifier()); // Equivalent to eating one Cooked beef
@@ -65,7 +158,10 @@ public class ProcessTransfur {
     }
 
     // Intended to apply statuses on the source entity
-    public static void onReplicateEntity(IAbstractChangedEntity source) {
+    public static void onAssimilateEntity(IAbstractChangedEntity source) {
+        if (Changed.postModEvent(new TransfurEvents.AssimilatedEntityEvent(source)))
+            return;
+
         source.getEntity().heal(4.0f); // Heal 2 hearts
         if (source.getEntity() instanceof Player player) {
             player.getFoodData().eat(Foods.COOKIE.getNutrition(), Foods.COOKIE.getSaturationModifier()); // Equivalent to eating one Cookie
@@ -74,6 +170,27 @@ public class ProcessTransfur {
 
     public static void onNewlyTransfurred(IAbstractChangedEntity entity) {
         forceNearbyToRetarget(entity.getLevel(), entity.getEntity());
+        if (Changed.postModEvent(new TransfurEvents.NewlyTransfurredEntityEvent(entity)))
+            return;
+
+        entity.getEntity().heal(10.0f); // Heal 5 hearts
+        if (entity.getEntity() instanceof Player player) {
+            player.getFoodData().eat(10, 1f); // Not really equivalent to anything, but more than cooked meat
+        }
+    }
+
+    public static void onNewlyAssimilated(ILatexAssimilatedEntity entity) {
+        forceNearbyToRetarget(entity.getLevel(), entity.getEntity());
+        if (Changed.postModEvent(new TransfurEvents.NewlyAssimilatedEntityEvent(entity)))
+            return;
+
+        entity.getEntity().heal(10.0f); // Heal 5 hearts
+    }
+
+    public static void onNewlyFused(IAbstractChangedEntity entity) {
+        if (Changed.postModEvent(new TransfurEvents.NewlyFusedEntityEvent(entity)))
+            return;
+
         entity.getEntity().heal(10.0f); // Heal 5 hearts
         if (entity.getEntity() instanceof Player player) {
             player.getFoodData().eat(10, 1f); // Not really equivalent to anything, but more than cooked meat
@@ -130,135 +247,45 @@ public class ProcessTransfur {
         return amount;
     }
 
-    protected static boolean progressPlayerTransfur(Player player, float amount, TransfurVariant<?> transfurVariant, TransfurContext context) {
-        if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerPermTransfurred(player))
-            return false;
-        if (player.isDeadOrDying() || player.isRemoved())
-            return false;
-        boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
-
-        if (player.invulnerableTime > 10 && !justHit) {
-            return false;
-        }
-
-        else {
-            amount = LatexProtectionEnchantment.getLatexProtection(player, amount);
-            if (ChangedCompatibility.isPlayerUsedByOtherMod(player)) {
-                setPlayerTransfurProgress(player, 0.0f);
-                var damageSource = player.level().damageSources().mobAttack(context.source == null ? transfurVariant.getEntityType().create(player.level()) : context.source.getEntity());
-                player.hurt(damageSource, amount);
-                return false;
-            }
-
-            if (amount <= 0.0f)
-                return false;
-
-            player.invulnerableTime = 20;
-            player.hurtDuration = 10;
-            player.hurtTime = player.hurtDuration;
-            player.setLastHurtByMob(null);
-
-            float old = getPlayerTransfurProgress(player);
-            float next = old + amount;
-            float max = (float)ProcessTransfur.getEntityTransfurTolerance(player);
-            setPlayerTransfurProgress(player, next);
-            if (next >= max && old < max) {
-                if (TransfurVariant.getPublicTransfurVariants().anyMatch(transfurVariant::equals))
-                    transfur(player, player.level(), transfurVariant, false, context);
-
-                return true;
-            }
-
-            return false;
-        }
-    }
-
-    public static boolean willTransfur(LivingEntity entity, float amount) {
-        amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
-
-        if (entity instanceof Player player) {
-            if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerPermTransfurred(player))
-                return false;
-            boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
-
-            if (player.invulnerableTime > 10 && !justHit) {
-                return getPlayerTransfurProgress(player) >= ProcessTransfur.getEntityTransfurTolerance(player);
-            }
-
-            else {
-                /*player.invulnerableTime = 20;
-                player.hurtDuration = 10;
-                player.hurtTime = player.hurtDuration;*/
-
-                float next = getPlayerTransfurProgress(player) + amount;
-                return next >= ProcessTransfur.getEntityTransfurTolerance(player);
-            }
-        }
-        else {
-            float health = entity.getHealth();
-            float scale = 20.0f / Math.max(0.1f, (float)ProcessTransfur.getEntityTransfurTolerance(entity));
-
-            if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
-                if (health <= amount * scale && health > 0.0F) {
-                    return true;
-                }
-
-                else {
-                    return false;
-                }
-            }
-
-            else {
-                return health <= amount * scale && health > 0.0F;
-            }
-        }
-    }
-
     @Deprecated
     public static boolean progressTransfur(LivingEntity entity, float amount, TransfurVariant<?> transfurVariant) {
         return progressTransfur(entity, amount, transfurVariant, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE));
     }
 
+    @Deprecated
     public static boolean progressTransfur(LivingEntity entity, float amount, TransfurVariant<?> transfurVariant, TransfurContext context) {
-        if (entity instanceof Player player)
-            return progressPlayerTransfur(player, amount, transfurVariant, context);
-        else {
-            if (entity.isDeadOrDying() || entity.isRemoved())
-                return false;
+        return progressTransfur(entity, LatexAssimilationDecision.strong(
+                context.cause() == TransfurCause.GRAB_ABSORB ? LatexAssimilationDecision.Method.ABSORPTION : LatexAssimilationDecision.Method.REPLICATION,
+                transfurVariant,
+                context,
+                amount
+        ));
+    }
 
-            amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
-            float health = entity.getHealth();
-            float scale = 20.0f / Math.max(0.1f, (float)ProcessTransfur.getEntityTransfurTolerance(entity));
+    public static boolean progressTransfur(LivingEntity entity, LatexAssimilationDecision<?> decision) {
+        var behavior = computeAssimilationBehavior(entity, decision);
+        if (behavior == null)
+            return false;
 
-            if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
-                if (health <= amount * scale && health > 0.0F) {
-                    ProcessTransfur.transfur(entity, entity.level(), transfurVariant, false, context);
-                    return true;
-                }
+        AtomicBoolean completed = new AtomicBoolean(false);
+        behavior.appendTransfurListener(newEntity -> {
+            completed.set(true);
+        }).stepAssimilate();
 
-                else {
-                    entity.hurt(ChangedDamageSources.entityTransfur(entity.level().registryAccess(), context.source), amount * scale);
-                    return false;
-                }
-            }
+        return completed.getAcquire();
+    }
 
-            else {
-                List<TransfurVariant<?>> mobFusion = ChangedFusions.INSTANCE.getFusionsFor(transfurVariant, entity.getClass()).toList();
+    public static boolean progressTransfur(LivingEntity entity, NonLatexAssimilationDecision<?> decision) {
+        var behavior = computeAssimilationBehavior(entity, decision);
+        if (behavior == null)
+            return false;
 
-                if (mobFusion.isEmpty())
-                    return false;
+        AtomicBoolean completed = new AtomicBoolean(false);
+        behavior.appendTransfurListener(newEntity -> {
+            completed.set(true);
+        }).stepAssimilate();
 
-                if (health <= amount * scale && health > 0.0F) {
-                    ProcessTransfur.transfur(entity, entity.level(), Util.getRandom(mobFusion, entity.getRandom()), false, context);
-                    return true;
-                }
-
-                else {
-                    entity.hurt(ChangedDamageSources.entityTransfur(entity.level().registryAccess(), context.source), amount * scale);
-                    return false;
-                }
-            }
-        }
+        return completed.getAcquire();
     }
 
     public static LivingEntity changeTransfur(LivingEntity entity, TransfurVariant<?> transfurVariant) {
@@ -273,11 +300,27 @@ public class ProcessTransfur {
     public static void tickPlayerTransfurProgress(Player player) {
         if (isPlayerTransfurred(player))
             return;
+        if (player.level().isClientSide)
+            return;
+
         var progress = getPlayerTransfurProgress(player);
-        if (!player.level().isClientSide && progress > 0) {
+        if (progress <= 0) {
+            var event = new TransfurEvents.TickPlayerTransfurProgressEvent(player, progress, 0f);
+            if (Changed.postModEvent(event))
+                return;
+
+            setPlayerTransfurProgress(player, Math.max(progress + event.getDeltaProgress(), 0));
+        }
+
+        else {
             int deltaTicks = Math.max(((player.tickCount - player.getLastHurtByMobTimestamp()) / 8) - 20, 0);
-            float nextTicks = Math.max(progress - (deltaTicks * 0.001f), 0);
-            setPlayerTransfurProgress(player, nextTicks);
+            float scaledDeltaTicks = Math.max(-(deltaTicks * 0.001f), 0);
+
+            var event = new TransfurEvents.TickPlayerTransfurProgressEvent(player, progress, scaledDeltaTicks);
+            if (Changed.postModEvent(event))
+                return;
+
+            setPlayerTransfurProgress(player, Math.max(progress + event.getDeltaProgress(), 0));
         }
     }
 
@@ -446,8 +489,10 @@ public class ProcessTransfur {
         if (oldVariant != null && oldVariant.getChangedEntity() != null)
             oldVariant.getChangedEntity().discard();
         TransfurVariantInstance<?> instance = TransfurVariantInstance.variantFor(variant, player);
-        if (instance != null)
+        if (instance != null) {
             preProcess.accept(instance);
+            Changed.postModEvent(new TransfurEvents.PreProcessTransfurVariantInstanceEvent(player, variant, context, instance, progress, temporaryFromSuit));
+        }
         playerDataExtension.setTransfurVariant(instance);
 
         if (instance != null) {
@@ -552,7 +597,13 @@ public class ProcessTransfur {
     }
 
     public static boolean hasVariant(LivingEntity entity) {
-        return TransfurVariant.getEntityVariant(entity) != null || TransfurVariant.getEntityTransfur(entity) != null;
+        return TransfurVariant.getEntityVariant(entity) != null;
+    }
+
+    public static boolean isMobAssimilated(LivingEntity entity) {
+        if (entity instanceof PathFinderMobDataExtension ext)
+            return ext.isLatexAssimilated();
+        return false;
     }
 
     private static void bonusHurt(LivingEntity entity, DamageSource source, float damage, boolean overrideImmunity) {
@@ -694,108 +745,38 @@ public class ProcessTransfur {
     }
 
     public static void forceNearbyToRetarget(Level level, LivingEntity entity) {
-        for (ChangedEntity changedEntity : level.getEntitiesOfClass(ChangedEntity.class, entity.getBoundingBox().inflate(64))) {
-            if (changedEntity.getLastHurtByMob() == entity) {
-                changedEntity.setLastHurtByMob(null);
+        for (PathfinderMob targettingEntity : level.getEntitiesOfClass(PathfinderMob.class, entity.getBoundingBox().inflate(64))) {
+            if (!(targettingEntity instanceof ChangedEntity) && !ProcessTransfur.isMobAssimilated(targettingEntity))
+                continue;
+
+            if (targettingEntity.getLastHurtByMob() == entity) {
+                targettingEntity.setLastHurtByMob(null);
             }
 
-            if (changedEntity.getTarget() == entity) {
-                changedEntity.setTarget(null);
-                changedEntity.targetSelector.tick();
-                changedEntity.targetSelector.getRunningGoals().forEach(WrappedGoal::stop);
+            if (targettingEntity.getTarget() == entity) {
+                targettingEntity.setTarget(null);
+                targettingEntity.targetSelector.tick();
+                targettingEntity.targetSelector.getRunningGoals().forEach(WrappedGoal::stop);
             }
         }
     }
 
     // Transfurs an entity, keepConscious applies to players being transfurred
+    @Deprecated
     public static void transfur(LivingEntity entity, Level level, TransfurVariant<?> variant, boolean keepConscious, TransfurContext context) {
-        if (entity == null)
-            return;
-        if (entity.isDeadOrDying())
-            return; // To prevent most bugs, entity has to be alive to transfur
-        if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN))
-            keepConscious = true;
-        else if (entity instanceof Player player) {
-            if (player.isCreative())
-                keepConscious = true;
-            else {
-                KeepConsciousEvent event = new KeepConsciousEvent(player, variant, context, keepConscious);
-                Changed.postModEvent(event);
-                keepConscious = event.shouldKeepConscious;
-            }
-        }
+        var source = context.source() == null ? null : context.source().left().orElse(null);
 
-        final boolean doAnimation = level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION);
+        var decision = keepConscious ?
+                ImmediateTransfurDecision.safe(variant, context.cause(), source) :
+                ImmediateTransfurDecision.unsafe(variant, context.cause(), source);
 
-        if (entity.level().isClientSide) {
-            return;
-        }
+        transfur(entity, decision);
+    }
 
-        if (variant == null)
-            return;
+    public static void transfur(LivingEntity entity, ImmediateTransfurDecision<?> decision) {
+        var behavior = computeAssimilationBehavior(entity, decision);
 
-        final BiConsumer<IAbstractChangedEntity, TransfurVariant<?>> onReplicate = (iAbstractLatex, variant1) -> {
-            if (context.source != null) {
-                onReplicateEntity(context.source);
-                context.source.getChangedEntity().onReplicateOther(iAbstractLatex);
-            }
-        };
-
-        if (!(EntityUtil.maybeGetOverlaying(entity) instanceof ChangedEntity changedEntity)) {
-            ChangedSounds.broadcastSound(entity, variant.sound, 1.0f, 1.0f);
-            if ((keepConscious || doAnimation) && entity instanceof ServerPlayer player) {
-                var instance = setPlayerTransfurVariant(player, variant, context, doAnimation ? 0.0f : 1.0f);
-                if (instance == null)
-                    return; // Event canceled
-                IAbstractChangedEntity iAbstractChanged = IAbstractChangedEntity.forPlayerWithVariant(player, instance);
-
-                ChangedAnimationEvents.broadcastTransfurAnimation(player, instance.getParent(), context);
-
-                instance.willSurviveTransfur = keepConscious;
-                instance.transfurContext = context;
-
-                onNewlyTransfurred(iAbstractChanged);
-
-                onReplicate.accept(iAbstractChanged, variant);
-            }
-
-            else if (!entity.level().isClientSide) {
-                EntityVariantAssigned event = new EntityVariantAssigned(entity, variant, context);
-                Changed.postModEvent(event);
-                if (event.variant != null)
-                    onReplicate.accept(event.variant.replaceEntity(entity, context.source), event.variant);
-            }
-        }
-
-        else {
-            TransfurVariant<?> current = TransfurVariant.getEntityVariant(entity);
-            List<TransfurVariant<?>> possible = ChangedFusions.INSTANCE.getFusionsFor(current, variant).toList();
-
-            if (possible.isEmpty())
-                return;
-            if (entity instanceof Player player) {
-                var instance = getPlayerTransfurVariant(player);
-                if (instance != null && instance.ageAsVariant > entity.level().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
-                    return;
-            }
-
-            TransfurVariant<?> fusion = possible.get(level.random.nextInt(possible.size()));
-            ChangedSounds.broadcastSound(entity, fusion.sound, 1.0f, 1.0f);
-
-            if (entity instanceof ServerPlayer player) {
-                setPlayerTransfurVariant(player, fusion, context);
-
-                onNewlyTransfurred(IAbstractChangedEntity.forPlayer(player));
-
-                LOGGER.info("Fused " + entity + " with " + variant);
-            }
-
-            else if (!entity.level().isClientSide) {
-                EntityVariantAssigned event = new EntityVariantAssigned(entity, fusion, context);
-                Changed.postModEvent(event);
-                if (event.variant != null)
-                    event.variant.replaceEntity(entity, context.source);
-            }
-        }
+        if (behavior != null)
+            behavior.stepAssimilate();
     }
 }

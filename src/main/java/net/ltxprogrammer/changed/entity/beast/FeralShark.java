@@ -1,13 +1,19 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
+import net.ltxprogrammer.changed.util.LevelUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class FeralShark extends AbstractAquaticEntity {
     public FeralShark(EntityType<? extends FeralShark> p_28316_, Level p_28317_) {
@@ -41,8 +48,20 @@ public class FeralShark extends AbstractAquaticEntity {
     }
 
     @Override
-    public TransfurVariant<?> getTransfurVariant() {
-        return this.level().getSeaLevel() - 6 > this.getBlockY() ? ChangedTransfurVariants.Gendered.LATEX_MERMAID_SHARKS.getRandomVariant(this.random) : ChangedTransfurVariants.LATEX_SHARK.get();
+    protected TransfurVariant<?> getTransfurVariant(LatexAssimilationDecision.Method method) {
+        return LevelUtil.getDepthFromSurfaceOfWater(this.level(), this.position(), 7) > 6 ?
+                ChangedTransfurVariants.Gendered.LATEX_MERMAID_SHARKS.getRandomVariant(this.random) :
+                ChangedTransfurVariants.LATEX_SHARK.get();
+    }
+
+    @Override
+    public @Nullable LatexAssimilationDecision<?> makeLatexAssimilationDecision(TransfurCause cause, LivingEntity targetEntity) {
+        IAbstractChangedEntity self = IAbstractChangedEntity.forEntity(this);
+
+        return LatexAssimilationDecision.weakAbsorption(
+                this.getTransfurVariant(LatexAssimilationDecision.Method.ABSORPTION),
+                self.absorb(),
+                this.computeTransfurDamage());
     }
 
     protected PathNavigation createNavigation(Level p_28362_) {

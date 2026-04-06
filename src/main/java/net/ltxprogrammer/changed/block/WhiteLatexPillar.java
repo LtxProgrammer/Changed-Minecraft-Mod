@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
@@ -105,6 +106,10 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
         builder.add(EXTENDED);
     }
 
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.LATEX_PUDDLE), 4.8f);
+    }
+
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!state.getValue(EXTENDED))
             return;
@@ -123,7 +128,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
                 }
             }
             else {
-                ProcessTransfur.progressTransfur(le, 4.8f, ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX));
+                ProcessTransfur.progressTransfur(le, this.makeAssimilationDecision(le));
             }
         } else if (entity instanceof ChangedEntity changedEntity) {
             if (changedEntity.getLatexType().isHostileTo(ChangedLatexTypes.WHITE_LATEX.get()))

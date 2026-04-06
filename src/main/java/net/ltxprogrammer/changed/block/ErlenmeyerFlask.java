@@ -30,6 +30,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ErlenmeyerFlask extends Block implements SimpleWaterloggedBlock {
@@ -61,13 +62,17 @@ public class ErlenmeyerFlask extends Block implements SimpleWaterloggedBlock {
         }
     }
 
+    protected static LatexTypeOld findTypeFromGooItem(AbstractLatexItem goo) {
+        return Arrays.stream(LatexTypeOld.values()).filter(type -> type.goo.get() == goo).findFirst().orElse(null);
+    }
+
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         var itemInHand = player.getItemInHand(hand);
-        if (state.getValue(FILLED) == LatexTypeOld.NEUTRAL && itemInHand.getItem() instanceof AbstractLatexItem goo) {
+        if (state.getValue(FILLED) == LatexTypeOld.NEUTRAL && itemInHand.getItem() instanceof AbstractLatexItem goo && findTypeFromGooItem(goo) != null) {
             if (!player.isCreative())
                 itemInHand.shrink(1);
-            level.setBlockAndUpdate(pos, state.setValue(FILLED, LatexTypeOld.NEUTRAL));
+            level.setBlockAndUpdate(pos, state.setValue(FILLED, findTypeFromGooItem(goo)));
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 

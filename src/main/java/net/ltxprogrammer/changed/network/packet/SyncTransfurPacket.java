@@ -6,9 +6,6 @@ import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.UniversalDist;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,11 +15,9 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.function.Supplier;
 
 public class SyncTransfurPacket implements ChangedPacket {
     record Listing(int form,
@@ -110,7 +105,7 @@ public class SyncTransfurPacket implements ChangedPacket {
             ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                 changedForms.put(player.getId(),
                         new Listing(ChangedRegistry.TRANSFUR_VARIANT.getID(variant.getParent()),
-                                variant.transfurContext.cause,
+                                variant.transfurContext.cause(),
                                 variant.transfurProgression,
                                 variant.isTemporaryFromSuit(),
                                 variant.save()));

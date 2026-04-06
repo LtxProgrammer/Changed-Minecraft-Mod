@@ -357,6 +357,28 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
         }
     }
 
+    @Override
+    public void copyTraitsFrom(IAbstractChangedEntity entity) {
+        super.copyTraitsFrom(entity);
+
+        if (entity.getChangedEntity() instanceof AbstractDarkLatexEntity darkLatexEntity) {
+            this.setTame(darkLatexEntity.isTame());
+            this.setOwnerUUID(darkLatexEntity.getOwnerUUID());
+            this.setFollowOwner(darkLatexEntity.isFollowingOwner());
+            this.setCustomName(darkLatexEntity.getCustomName());
+            this.setUnderlyingPlayer(darkLatexEntity.getUnderlyingPlayer());
+            if (darkLatexEntity.inventory != null) {
+                this.inventory = this.createInventory();
+                this.grabEntityAbilityInstance = this.createGrabAbility();
+
+                var items = new ListTag();
+                darkLatexEntity.inventory.save(items);
+                this.inventory.load(items);
+                darkLatexEntity.inventory.clearContent();
+            }
+        }
+    }
+
     public boolean isPreventingPlayerRest(Player player) {
         if (isTame() && player.getUUID().equals(getOwnerUUID()))
             return false;

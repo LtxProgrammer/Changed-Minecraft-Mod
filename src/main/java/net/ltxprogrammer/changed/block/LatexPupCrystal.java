@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -131,6 +132,14 @@ public class LatexPupCrystal extends TransfurCrystalBlock {
         }
     }
 
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(variant.get(), TransfurContext.hazard(TransfurCause.CRYSTAL), 8.3f, newEntity -> {
+            for (int i = 1; i < multiply; ++i) {
+                variant.get().spawnAtEntity(newEntity.getEntity());
+            }
+        });
+    }
+
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         entity.makeStuckInBlock(state, new Vec3(0.8F, 0.75D, 0.8F));
@@ -142,11 +151,7 @@ public class LatexPupCrystal extends TransfurCrystalBlock {
                 return;
             this.extend(state, level, pos);
             if (!level.isClientSide) {
-                if (ProcessTransfur.progressTransfur(le, 8.3f, variant.get(), TransfurContext.hazard(TransfurCause.CRYSTAL))) {
-                    for (int i = 1; i < multiply; ++i) {
-                        variant.get().spawnAtEntity(le);
-                    }
-                }
+                ProcessTransfur.progressTransfur(le, this.makeAssimilationDecision(le));
             }
 
         }

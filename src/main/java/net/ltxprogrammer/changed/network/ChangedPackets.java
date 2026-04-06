@@ -58,6 +58,7 @@ public class ChangedPackets {
         addNetworkMessage(LatexCoverUpdatePacket.class, LatexCoverUpdatePacket::new);
         addNetworkMessage(SectionLatexCoversUpdatePacket.class, SectionLatexCoversUpdatePacket::new);
         addNetworkMessage(CustomLevelEventPacket.class, CustomLevelEventPacket::new);
+        addNetworkMessage(AssimilatedEntitySyncPacket.class, AssimilatedEntitySyncPacket::new);
         addNetworkMessage(AbilityTreeMenuPacket.class, AbilityTreeMenuPacket::new);
         addNetworkMessage(AbilityTrees.SyncPacket.class, AbilityTrees.SyncPacket::new);
         addNetworkMessage(AbilityTreeSyncInstancePacket.class, AbilityTreeSyncInstancePacket::new);

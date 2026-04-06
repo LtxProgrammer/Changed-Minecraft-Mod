@@ -185,7 +185,11 @@ def modIndex = [
     "placebo": [ artifact: "dev.shadowsoffire:Placebo:${minecraftVersion}-${placeboVersion}", compile: false, clientOnly: false ],
     "attributeslib": [ artifact: "dev.shadowsoffire:ApothicAttributes:${minecraftVersion}-${attributesLibVersion}", compile: true, clientOnly: false ],
     "artifacts": [ artifact: "curse.maven:artifacts-312353:6399828", compile: false, clientOnly: false ],
-    "expandability": [ artifact: "curse.maven:expandability-465066:5301414", compile: false, clientOnly: false ]
+    "expandability": [ artifact: "curse.maven:expandability-465066:5301414", compile: false, clientOnly: false ],
+    "framework": [ artifact: "curse.maven:framework-549225:6531428", compile: false, clientOnly: false ],
+    "jeg": [ artifact: "curse.maven:just-enough-guns-820727:6808139", compile: true, clientOnly: false ],
+    "sg2": [ artifact: "curse.maven:scorched-guns-802940:7232063", compile: true, clientOnly: false ],
+    "creaturechat": [ artifact: "curse.maven:creaturechat-1012118:6936270", compile: true, clientOnly: false ]
 ]
 
 dependencies {

@@ -23,7 +23,7 @@ public class DarkLatexWolfPupRenderer extends AdvancedHumanoidRenderer<DarkLatex
 				.withSclera(Color3.fromInt(0x242424))
 				.withIris(CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
 						CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE))
-				.build().setHeadShape(CustomEyesLayer.HeadShape.PUP));
+				.build().setHeadShape(CustomEyesLayer.HeadShape.PUP_CONCAVE));
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -81,6 +82,10 @@ public abstract class TransfurCrystalBlock extends BushBlock {
         return PlantType.get("latex_crystal");
     }
 
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(variant.get(), TransfurContext.hazard(TransfurCause.CRYSTAL), 8.3f);
+    }
+
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         entity.makeStuckInBlock(state, new Vec3((double)0.8F, 0.75D, (double)0.8F));
 
@@ -90,7 +95,7 @@ public abstract class TransfurCrystalBlock extends BushBlock {
             if (entity instanceof Player player && ProcessTransfur.isPlayerTransfurred(player))
                 return;
             if (!level.isClientSide) {
-                ProcessTransfur.progressTransfur(le, 8.3f, variant.get(), TransfurContext.hazard(TransfurCause.CRYSTAL));
+                ProcessTransfur.progressTransfur(le, this.makeAssimilationDecision(le));
             }
 
         }

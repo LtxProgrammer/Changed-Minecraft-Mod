@@ -11,6 +11,8 @@ import net.ltxprogrammer.changed.data.MixedTexture;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.AgeableListModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,22 +22,26 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
 import org.joml.Vector3f;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> implements FirstPersonLayer<T> {
+public class LatexParticlesLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> implements FirstPersonLayer<T> {
     private final RenderLayerParent<T, M> parent;
     private final Minecraft minecraft;
     private final Predicate<ModelPart> canPartDrip;
 
-    private final Map<AdvancedHumanoidModel<T>, Function<T, ResourceLocation>> models = new HashMap<>();
+    private final Map<EntityModel<T>, Function<T, ResourceLocation>> models = new HashMap<>();
 
     private static final NativeImage MISSING_TEXTURE = new NativeImage(1, 1, false);
     private static final Map<ResourceLocation, NativeImage> cachedTextures = new HashMap<>();
@@ -96,12 +102,12 @@ public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHuma
         models.put(model, parent::getTextureLocation);
     }
 
-    public LatexParticlesLayer<T, M> addModel(AdvancedHumanoidModel<T> model) {
+    public LatexParticlesLayer<T, M> addModel(EntityModel<T> model) {
         models.put(model, parent::getTextureLocation);
         return this;
     }
 
-    public LatexParticlesLayer<T, M> addModel(AdvancedHumanoidModel<T> model, Function<T, ResourceLocation> textureFetcher) {
+    public LatexParticlesLayer<T, M> addModel(EntityModel<T> model, Function<T, ResourceLocation> textureFetcher) {
         models.put(model, textureFetcher);
         return this;
     }
@@ -157,7 +163,7 @@ public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHuma
         return new SurfacePoint(polygon.normal, vertex.pos.mul(1.0f / 16.0f, scaledPos), new UVPair(vertex.u, vertex.v));
     }
 
-    private Optional<AdvancedHumanoidModel<T>> getRandomModel(RandomSource random) {
+    private Optional<EntityModel<T>> getRandomModel(RandomSource random) {
         if (this.models.isEmpty())
             return Optional.empty();
         int indexToGet = random.nextInt(this.models.size());
@@ -168,12 +174,22 @@ public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHuma
         return Optional.empty();
     }
 
-    public void createNewDripParticle(ChangedEntity entity) {
+    public void createNewDripParticle(LivingEntity entity) {
         var optionalModel = getRandomModel(entity.getRandom());
         if (optionalModel.isEmpty())
             return;
         var model = optionalModel.get();
-        var partsWithCubes = model.getAllParts().filter(part -> !part.getLeaf().cubes.isEmpty()).filter(part -> canPartDrip.test(part.getLeaf())).toList();
+        List<ModelPartStem> partsWithCubes;
+        if (model instanceof AdvancedHumanoidModel<?> advancedHumanoidModel)
+            partsWithCubes = advancedHumanoidModel.getAllParts().filter(part -> !part.getLeaf().cubes.isEmpty()).filter(part -> canPartDrip.test(part.getLeaf())).toList();
+        else if (model instanceof AgeableListModel<?> ageableListModel) {
+            partsWithCubes = Stream.concat(
+                    StreamSupport.stream(ageableListModel.headParts().spliterator(), false),
+                    StreamSupport.stream(ageableListModel.bodyParts().spliterator(), false)
+            ).flatMap(ModelPartStem::streamFromRoot).filter(part -> !part.getLeaf().cubes.isEmpty()).filter(part -> canPartDrip.test(part.getLeaf())).toList();
+        } else {
+            partsWithCubes = List.of();
+        }
         if (partsWithCubes.isEmpty())
             return;
 

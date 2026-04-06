@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 public class ModelPartStem {
     public final ImmutableList<ModelPart> stem;
@@ -80,5 +81,9 @@ public class ModelPartStem {
 
     public ModelPart getLeaf() {
         return stem.get(stem.size() - 1);
+    }
+
+    public static Stream<ModelPartStem> streamFromRoot(ModelPart root) {
+        return Stream.concat(Stream.of(new ModelPartStem(root)), root.children.values().stream().flatMap(ModelPartStem::streamFromRoot).map(stem -> stem.withParent(root)));
     }
 }

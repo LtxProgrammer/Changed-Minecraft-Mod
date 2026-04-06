@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.latex;
 
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -131,6 +132,10 @@ public class LatexSwimMover extends PlayerMover<LatexSwimMover.MoverInstance> {
             }
         }
 
+        protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+            return LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX), 4.8f);
+        }
+
         @Override
         public void aiStep(Player player, InputWrapper input, LogicalSide side) {
             if (lastPos == null)
@@ -140,7 +145,7 @@ public class LatexSwimMover extends PlayerMover<LatexSwimMover.MoverInstance> {
                 if (ChangedLatexTypes.WHITE_LATEX.get().isHostileTo(variant.getLatexType()))
                     player.hurt(ChangedDamageSources.WHITE_LATEX.source(player.level().registryAccess()), 2.0f);
             }, () -> {
-                ProcessTransfur.progressTransfur(player, 4.8f, ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX));
+                ProcessTransfur.progressTransfur(player, this.makeAssimilationDecision(player));
             });
 
             player.setDeltaMovement(0, 0, 0);

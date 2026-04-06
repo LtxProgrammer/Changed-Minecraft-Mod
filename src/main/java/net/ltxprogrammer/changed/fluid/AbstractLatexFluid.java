@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.fluid;
 
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
@@ -8,6 +9,7 @@ import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
@@ -57,6 +59,11 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
 
     public abstract boolean canEntityStandOn(LivingEntity entity);
 
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(Util.getRandom(form, target.getRandom()).get(),
+                TransfurContext.hazard(TransfurCause.LATEX_PUDDLE), 5.0f);
+    }
+
     @SubscribeEvent
     public static void onEntityTick(LivingEvent.LivingTickEvent event) {
         Level level = event.getEntity().level();
@@ -84,8 +91,7 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
         if (event.getEntity().isAlive() && !event.getEntity().isDeadOrDying() && fluid != null) {
             LatexType latexType = LatexType.getEntityLatexType(event.getEntity());
             if (latexType == null)
-                ProcessTransfur.progressTransfur(event.getEntity(), 5.0f, fluid.form.get(level.random.nextInt(fluid.form.size())).get(),
-                        TransfurContext.hazard(TransfurCause.LATEX_PUDDLE));
+                ProcessTransfur.progressTransfur(event.getEntity(), fluid.makeAssimilationDecision(event.getEntity()));
             else if (fluid.getLatexType().isHostileTo(latexType))
                 event.getEntity().hurt(ChangedDamageSources.LATEX_FLUID.source(event.getEntity().level().registryAccess()), 2.0f);
         }

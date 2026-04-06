@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.BenignShorts;
+import net.ltxprogrammer.changed.item.LaserReactiveItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.ItemUtil;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -173,9 +174,8 @@ public class EmittedLaser extends Entity {
 
         if (!entities.isEmpty()) {
             final LivingEntity effectedEntity = entities.get(0);
-            ItemUtil.isWearingItem(effectedEntity, ChangedItems.BENIGN_SHORTS.get()).ifPresent(slottedItem -> {
-                if (ProcessTransfur.progressTransfur(effectedEntity, 11.0f, BenignShorts.getBenignTransfurVariant(effectedEntity), TransfurContext.hazard(TransfurCause.BENIGN_SHORTS)))
-                    slottedItem.itemStack().shrink(1);
+            ItemUtil.getWearingItems(effectedEntity, itemStack -> itemStack.getItem() instanceof LaserReactiveItem).forEach(slottedItem -> {
+                ((LaserReactiveItem)slottedItem.itemStack().getItem()).tickLaserExposure(effectedEntity, slottedItem.itemStack(), 11.0f);
             });
         }
     }

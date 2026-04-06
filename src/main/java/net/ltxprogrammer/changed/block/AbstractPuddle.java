@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -37,10 +38,14 @@ public class AbstractPuddle extends AbstractCustomShapeBlock {
         return PushReaction.DESTROY;
     }
 
-    public void entityInside(BlockState p_49314_, Level p_49315_, BlockPos p_49316_, Entity p_49317_) {
-        if (!p_49315_.isClientSide && p_49317_ instanceof LivingEntity entity) {
-            if (ProcessTransfur.progressTransfur(entity, 6.0f, variant.get(), TransfurContext.hazard(TransfurCause.LATEX_PUDDLE)))
-                p_49315_.removeBlock(p_49316_, false);
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(variant.get(), TransfurContext.hazard(TransfurCause.LATEX_PUDDLE), 6.0f);
+    }
+
+    public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
+        if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
+            if (ProcessTransfur.progressTransfur(livingEntity, this.makeAssimilationDecision(livingEntity)))
+                level.removeBlock(blockPos, false);
         }
     }
 

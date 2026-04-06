@@ -1,0 +1,21 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"render_type": "minecraft:cutout",
+	"textures": {
+		"particle": "changed:block/chamber_door",
+		"door": "changed:block/chamber_door"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 5],
+			"to": [16, 16, 7],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, -4.3]},
+			"faces": {
+				"north": {"uv": [5.5, 3.5, 9.5, 7.5], "texture": "#door"},
+				"south": {"uv": [5.5, 3.5, 9.5, 7.5], "texture": "#door"}
+			}
+		}
+	]
+}

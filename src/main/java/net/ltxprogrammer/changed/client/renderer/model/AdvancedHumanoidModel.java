@@ -201,12 +201,13 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Pla
         poseStack.translate(0.0, (getAnimator(entity).armLength - 12.0f) / 20.0, 0.0);
     }
 
+    @Deprecated
     private Stream<ModelPartStem> getAllPartsFor(ModelPart root) {
-        return Stream.concat(Stream.of(new ModelPartStem(root)), root.children.values().stream().flatMap(this::getAllPartsFor).map(stem -> stem.withParent(root)));
+        return ModelPartStem.streamFromRoot(root);
     }
 
     public Stream<ModelPartStem> getAllParts() {
-        return getAllPartsFor(rootModelPart);
+        return ModelPartStem.streamFromRoot(rootModelPart);
     }
 
     public Stream<ModelPart> getRootLevelLimbs() {

@@ -649,7 +649,7 @@
   "item.changed.latex_bee_spawn_egg": "Яйцо призыва Латексная пчела",
   "item.changed.beifeng_spawn_egg": "Яйцо призыва Бейфенг",
   "item.changed.latex_benign_orca_spawn_egg": "Яйцо призыва Латексная безвредная косатка",
-  "item.changed.latex_benign_wolf_spawn_egg": "Яицо призыва Латексный безвредная волк",
+  "item.changed.latex_benign_wolf_spawn_egg": "Яицо призыва Латексный безвредный волк",
   "item.changed.latex_blue_dragon_spawn_egg": "Яицо призыва Латексный синий дракон",
   "item.changed.latex_blue_wolf_spawn_egg": "Яйцо призыва Латексная синяя волчица",
   "item.changed.latex_crocodile_spawn_egg": "Яйцо призыва Латексный крокодил",
@@ -938,7 +938,8 @@
   "changed.tamed_dark_latex.attack_condition.owner_is_hostile": "Атаковать при враждебности к ним владельца",
 
   "builtin_resources.changed:beyond_earth_extra": "Changed Beyond Earth Extra",
-  "builtin_resources.changed:experiment_ability_tree": "Experimental: Changed Ability Trees",
-  "builtin_resources.changed:instant_transfur": "Changed Instant Transfur",
+  "builtin_resources.changed:experiment_ability_tree": "Экспериментально: Changed Ветки способностей",
+  "builtin_resources.changed:instant_transfur": "Changed Мгновенная трансфурмация",
   "builtin_resources.changed:changed_pbr": "Changed PBR"
 }
+

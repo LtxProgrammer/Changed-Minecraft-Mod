@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.mixin.server;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
+import net.ltxprogrammer.changed.entity.PathFinderMobDataExtension;
 import net.ltxprogrammer.changed.entity.beast.DoubleHeadedEntity;
 import net.ltxprogrammer.changed.network.packet.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -75,6 +76,11 @@ public abstract class ServerEntityMixin {
                             Changed.PACKET_HANDLER.toVanillaPacket(new AccessorySyncPacket(this.entity.getId(), slots), NetworkDirection.PLAY_TO_CLIENT)
                     );
             });
+        }
+        if (entity instanceof PathFinderMobDataExtension ext && ext.isLatexAssimilated()) {
+            connectionSend.accept(
+                    Changed.PACKET_HANDLER.toVanillaPacket(new AssimilatedEntitySyncPacket(this.entity.getId(), true), NetworkDirection.PLAY_TO_CLIENT)
+            );
         }
     }
 

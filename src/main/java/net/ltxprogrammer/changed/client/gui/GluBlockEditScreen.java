@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.GluBlockEntity;
 import net.ltxprogrammer.changed.network.packet.ServerboundSetGluBlockPacket;
@@ -12,6 +13,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.commands.arguments.blocks.BlockStateParser;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -87,8 +90,17 @@ public class GluBlockEditScreen extends Screen {
         this.hasDoor = new Checkbox(this.width / 2 - 152, 90, 300, 20, HAS_DOOR_LABEL, gluEntity.getHasDoor(), false);
         this.addWidget(this.hasDoor);
 
+        final var blockHolderLookup = minecraft.level.holderLookup(Registries.BLOCK);
         this.finalStateEdit = new EditBox(this.font, this.width / 2 - 152, 125, 300, 20, FINAL_STATE_LABEL);
         this.finalStateEdit.setMaxLength(256);
+        this.finalStateEdit.setResponder(blockStateStr -> {
+            try {
+                BlockStateParser.parseForBlock(blockHolderLookup, blockStateStr, true);
+                finalStateEdit.setTextColor(0xE0E0E0); // White
+            } catch (CommandSyntaxException commandsyntaxexception) {
+                finalStateEdit.setTextColor(0xE00000); // Red - indicate error
+            }
+        });
         this.finalStateEdit.setValue(this.gluEntity.getFinalState());
         this.addWidget(this.finalStateEdit);
 

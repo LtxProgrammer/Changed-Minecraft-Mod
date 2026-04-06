@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.block.entity.DroppedSyringeBlockEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -42,10 +43,14 @@ public class DroppedSyringe extends Block implements EntityBlock, SimpleWaterlog
         this.registerDefaultState(this.stateDefinition.any().setValue(ROTATION, 0).setValue(WATERLOGGED, false));
     }
 
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(DroppedSyringeBlockEntity blockEntity, LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(blockEntity.getVariant(), TransfurContext.hazard(TransfurCause.LATEX_SYRINGE_FLOOR), 6.0f);
+    }
+
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
             level.getBlockEntity(pos, ChangedBlockEntities.DROPPED_SYRINGE.get()).ifPresent(droppedSyringeBlockEntity -> {
-                if (ProcessTransfur.progressTransfur(livingEntity, 6.0f, droppedSyringeBlockEntity.getVariant(), TransfurContext.hazard(TransfurCause.LATEX_SYRINGE_FLOOR)))
+                if (ProcessTransfur.progressTransfur(livingEntity, this.makeAssimilationDecision(droppedSyringeBlockEntity, livingEntity)))
                     level.removeBlock(pos, false);
             });
         }

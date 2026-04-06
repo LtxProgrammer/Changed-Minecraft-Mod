@@ -1,0 +1,21 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"particle": "changed:block/chamber_interior_off",
+		"exterior": "changed:block/chamber_exterior_frame",
+		"interior": "changed:block/chamber_interior_off"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 9],
+			"to": [16, 16, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, -0.3]},
+			"faces": {
+				"north": {"uv": [4, 11, 8, 15], "texture": "#interior"},
+				"south": {"uv": [4, 11, 8, 15], "texture": "#exterior"}
+			}
+		}
+	]
+}

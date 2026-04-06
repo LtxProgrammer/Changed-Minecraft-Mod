@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.GluBlock;
 import net.ltxprogrammer.changed.init.ChangedFacilityPieceTypes;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.util.CollectionUtil;
 import net.ltxprogrammer.changed.util.ResourceUtil;
 import net.ltxprogrammer.changed.util.StreamUtil;
@@ -22,10 +23,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -35,6 +34,8 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -141,7 +142,7 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
     private static Predicate<ConfiguredFacilityPiece> meetsPiecePositionRequirements(FacilityGenerationContext context, BoundingBox region) {
         final var center = region.getCenter();
         final var surfaceBiomes = context.structureContext.biomeSource().getBiomesWithin(
-                center.getX(), context.structureContext.chunkGenerator().getSeaLevel(), center.getZ(), /* Radius */ 16,
+                center.getX(), context.structureContext.chunkGenerator().getSeaLevel(), center.getZ(), /* Radius */ 8,
                 context.structureContext.randomState().sampler());
 
         return configuredFacilityPiece -> {
@@ -152,7 +153,7 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
     private static Predicate<Zone> meetsZonePositionRequirements(FacilityGenerationContext context, BoundingBox region) {
         final var center = region.getCenter();
         final var surfaceBiomes = context.structureContext.biomeSource().getBiomesWithin(
-                center.getX(), context.structureContext.chunkGenerator().getSeaLevel(), center.getZ(), /* Radius */ 16,
+                center.getX(), context.structureContext.chunkGenerator().getSeaLevel(), center.getZ(), /* Radius */ 8,
                 context.structureContext.randomState().sampler());
         return zone -> {
             return surfaceBiomes.stream().anyMatch(zone.getSurfaceBiomePredicate()::testHolder);
@@ -238,17 +239,29 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
         return stack.size() - nonSpan;
     }
 
+    private static Predicate<ConfiguredFacilityPiece> limitAttempts(PieceType<?> pieceType, Zone zone, int maximumCount) {
+        AtomicInteger countedPieces = new AtomicInteger(0);
+        AtomicBoolean logEvent = new AtomicBoolean(true);
+        return configuredFacilityPiece -> {
+            boolean result = countedPieces.getAndIncrement() < maximumCount;
+            if (!result && logEvent.getAndSet(false))
+                Changed.LOGGER.debug("Hit maximum attempts ({}) for piece type {} in zone {} while placing {}",
+                        maximumCount, pieceType, zone, configuredFacilityPiece.getName());
+            return result;
+        };
+    }
+
     private static Optional<PlacedFacilityPiece> treeGenerate(FacilityGenerationContext facilityContext,
                                      Stack<ConfiguredFacilityPiece> stack, FacilityPieceInstance parentStructure,
-                                     GenStep start, int genDepth, int span, BoundingBox allowedRegion, int zoneProtection) {
+                                     GenStep start, int genDepth, BoundingBox allowedRegion, int zoneProtection) {
         { // Early out for common failures
             final var center = parentStructure.getBoundingBox().getCenter();
             if (center.getY() > facilityContext.structureContext.chunkGenerator().getSeaLevel() - 30) {
                 final var pieceBiomes = facilityContext.structureContext.biomeSource().getBiomesWithin(
                         center.getX(), center.getY(), center.getZ(), /* Radius */ 2,
                         facilityContext.structureContext.randomState().sampler());
-                if (pieceBiomes.stream().anyMatch(pieceBiome -> pieceBiome.is(BiomeTags.IS_RIVER) || pieceBiome.is(BiomeTags.IS_OCEAN)))
-                    return Optional.empty(); // Deny pieces generating too close to surface water
+                if (pieceBiomes.stream().anyMatch(pieceBiome -> pieceBiome.is(ChangedTags.Biomes.DENY_FACILITY_PLACEMENT)))
+                    return Optional.empty();
             }
         }
 
@@ -270,7 +283,7 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
                     Stream.of(ChangedFacilityPieceTypes.STAIRCASE_END.get()));
         }
 
-        else if (span <= 0) {
+        else if (genDepth <= 0) {
             pieceTypeStream = Stream.of(ChangedFacilityPieceTypes.ROOM.get(), ChangedFacilityPieceTypes.SEAL.get());
         }
 
@@ -316,7 +329,9 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
             return INSTANCE.facilityPieceCollections.get(pieceType).shuffledStream(random)
                     .filter(hasNotReachedMaximum(facilityContext)
                             .and(pieceConnectsToZones(zone, nextZone))
-                            .and(meetsPiecePositionRequirements(facilityContext, parentStructure.getBoundingBox()))).map(nextConfiguredPiece -> {
+                            .and(meetsPiecePositionRequirements(facilityContext, parentStructure.getBoundingBox()))
+                            .and(limitAttempts(pieceType, nextZone, Changed.config.server.facilityPlacementAttemptsPerPieceType.get())))
+                    .map(nextConfiguredPiece -> {
                         var nextPiece = nextConfiguredPiece.getFacilityPiece();
                         var nextStructure = nextPiece.createStructurePiece(facilityContext.structureContext.structureTemplateManager(), genDepth);
                         if (!nextStructure.setupBoundingBox(facilityContext.builder, start.blockInfo(), random, allowedRegion))
@@ -327,7 +342,7 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
                         var startPos = GluBlock.getConnection(start.blockInfo().pos(), start.blockInfo().state());
                         facilityContext.addPiece(placed);
 
-                        int nextSpan = pieceType.shouldConsumeSpan() ? span - 1 : span;
+                        int nextSpan = pieceType.shouldConsumeSpan() ? genDepth - 1 : genDepth;
                         stack.push(nextConfiguredPiece);
 
                         var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), facilityContext.structureContext, nextSpan);
@@ -347,7 +362,7 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
                                     .anyMatch(box -> box.isInside(connectorPos)))
                                 continue;
 
-                            var childRoom = treeGenerate(facilityContext, stack, nextStructure, next, genDepth,
+                            var childRoom = treeGenerate(facilityContext, stack, nextStructure, next,
                                     firstStart ? nextSpan : nextSpan - 5,
                                     allowedRegion,
                                     firstStart ? Math.max(zoneProtection - 1, 0) : 5);
@@ -462,14 +477,14 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
 
         var zone = entrancePiece.getGluBlocks().stream().map(info -> GluBlock.getZone(info.nbt())).findAny();
         if (zone.isEmpty()) {
-            Changed.LOGGER.warn("Facility piece {} is missing glu blocks", entranceNew.getName());
+            Changed.LOGGER.warn("Facility entrance piece {} is missing glu blocks", entranceNew.getName());
             return Optional.empty();
         }
 
         return Optional.of(new PlacedFacilityPiece(zone.get(), entranceNew, entrancePiece));
     }
 
-    public static Optional<FacilityKeystone> generateFacility(StructurePiecesBuilder builder, Structure.GenerationContext context, int genDepth, int span, BoundingBox allowedRegion) {
+    public static Optional<FacilityKeystone> generateFacility(StructurePiecesBuilder builder, Structure.GenerationContext context, int genDepth, BoundingBox allowedRegion) {
         BlockPos chunkCenter = context.chunkPos().getMiddleBlockPosition(0);
         BlockPos surfacePos = chunkCenter.atY(context.chunkGenerator().getBaseHeight(chunkCenter.getX(), chunkCenter.getZ(),
                 Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()));
@@ -486,12 +501,12 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
         List<GenStep> starts = new ArrayList<>();
 
         stack.push(entrance.definition);
-        entrance.instance.addSteps(new FacilityGenerationStack(stack, entrance.instance.getBoundingBox(), context, span), starts);
+        entrance.instance.addSteps(new FacilityGenerationStack(stack, entrance.instance.getBoundingBox(), context, genDepth), starts);
 
         Set<PlacedFacilityPiece> directDependents = new HashSet<>();
-        if (span > 0) {
+        if (genDepth > 0) {
             starts.forEach(start -> {
-                treeGenerate(facilityGenerationContext, stack, entrance.instance, start, genDepth, span - 1, allowedRegion, 0)
+                treeGenerate(facilityGenerationContext, stack, entrance.instance, start, genDepth - 1, allowedRegion, 0)
                         .ifPresent(directDependents::add);
             });
         }

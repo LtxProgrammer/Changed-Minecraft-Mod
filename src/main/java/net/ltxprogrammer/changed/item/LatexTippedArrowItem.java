@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.item;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTabs;
@@ -48,12 +49,16 @@ public class LatexTippedArrowItem extends TippedArrowItem implements VariantHold
         });
     }
 
+    protected static LatexAssimilationDecision<?> makeAssimilationDecision(Arrow arrow, LivingEntity target) {
+        final var variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(arrow.getPersistentData(), FORM_LOCATION));
+        return LatexAssimilationDecision.fromBlockOrItem(variant, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE), 8.0f);
+    }
+
     @SubscribeEvent
     public static void onLivingDamaged(LivingDamageEvent event) {
         if (event.getSource().getDirectEntity() instanceof Arrow arrow) {
             if (arrow.getPersistentData().contains(FORM_LOCATION)) {
-                final var variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(arrow.getPersistentData(), FORM_LOCATION));
-                ProcessTransfur.progressTransfur(event.getEntity(), 8.0f, variant, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE));
+                ProcessTransfur.progressTransfur(event.getEntity(), makeAssimilationDecision(arrow, event.getEntity()));
                 arrow.remove(Entity.RemovalReason.DISCARDED);
             }
         }

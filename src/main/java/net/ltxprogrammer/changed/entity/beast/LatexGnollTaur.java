@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
@@ -42,7 +41,7 @@ public class LatexGnollTaur extends WhiteLatexKnight implements LatexTaur<LatexG
     }
 
     @Override
-    public TransfurVariant<?> getTransfurVariant() {
+    protected TransfurVariant<?> getTransfurVariant() {
         return ChangedTransfurVariants.LATEX_GNOLL_TAUR.get();
     }
 

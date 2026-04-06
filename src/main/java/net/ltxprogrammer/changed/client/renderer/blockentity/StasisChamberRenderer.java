@@ -22,6 +22,7 @@ import org.joml.*;
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class StasisChamberRenderer<T extends StasisChamberBlockEntity> implements BlockEntityRenderer<T> {
@@ -53,35 +54,23 @@ public class StasisChamberRenderer<T extends StasisChamberBlockEntity> implement
         out.accept(new ModelPart.Vertex(x1, y0, z1, u1, v0));
     }
 
-    private static void makeTri(Consumer<ModelPart.Vertex> out, float x0, float x1, float y0, float y1, float u0, float u1, float v0, float v1) {
-        out.accept(new ModelPart.Vertex(x0, 0f, y1, u0, v1));
-        out.accept(new ModelPart.Vertex(x0, 0f, y0, u0, v0));
-        out.accept(new ModelPart.Vertex(x1, 0f, y0, u1, v0));
-        out.accept(new ModelPart.Vertex(x1, 0f, y0, u1, v0));
-
-        out.accept(new ModelPart.Vertex(x1, 0f, y0, u1, v0));
-        out.accept(new ModelPart.Vertex(x0, 0f, y0, u0, v0));
-        out.accept(new ModelPart.Vertex(x0, 0f, y1, u0, v1));
-        out.accept(new ModelPart.Vertex(x0, 0f, y1, u0, v1));
-    }
-
     private static final List<ModelPart.Vertex> TOP_SURFACE_VERTICES = Util.make(new ArrayList<>(), list -> {
-        float v0 = 0.925f;
-        float v1 = 15.075f;
-        float o0 = -9.3f;
-        float o1 = 25.3f;
+        float v0 = 0.0f;
+        float v1 = 16.0f;
+        float o0 = -8.975f;
+        float o1 = 24.975f;
 
-        makeQuad(list::add, v0, v1, v0, v1, v0, v1, v0, v1);
+        makeQuad(list::add, v0, v1, v0, v1, v0, v1, v0, v1); // Center
 
-        makeQuad(list::add, o0, v0, v0, v1, 6.7f, v1, v0, v1);
-        makeQuad(list::add, v1, o1, v0, v1, v0, 9.3f, v0, v1);
-        makeQuad(list::add, v0, v1, o0, v0, v0, v1, 6.7f, v1);
-        makeQuad(list::add, v0, v1, v1, o1, v0, v1, v0, 9.3f);
+        makeQuad(list::add, o0, v0, v0, v1, 7.0f, v1, v0, v1); // l
+        makeQuad(list::add, v1, o1, v0, v1, v0, 9.0f, v0, v1); // r
+        makeQuad(list::add, v0, v1, o0, v0, v0, v1, 7.0f, v1); // b
+        makeQuad(list::add, v0, v1, v1, o1, v0, v1, v0, 9.0f); // f
 
-        makeTri(list::add, v0, o0, v0, o0, 16f, 6.7f, 16f, 6.7f);
-        makeTri(list::add, v1, o1, v0, o0, 16f, 6.7f, 16f, 6.7f);
-        makeTri(list::add, v0, o0, v1, o1, 16f, 6.7f, 16f, 6.7f);
-        makeTri(list::add, v1, o1, v1, o1, 16f, 6.7f, 16f, 6.7f);
+        makeQuad(list::add, o0, v0, o0, v0, 7.0f, v1, 7.0f, v1); // bl
+        makeQuad(list::add, o0, v0, v1, o1, 7.0f, v1, v0, 9.0f); // fl
+        makeQuad(list::add, v1, o1, o0, v0, v0, 9.0f, 7.0f, v1); // br
+        makeQuad(list::add, v1, o1, v1, o1, v0, 9.0f, v0, 9.0f); // fr
     });
     private void renderTopSurface(PoseStack.Pose pose, VertexConsumer buffer, int packedLight, int packedOverlay, float r, float g, float b, float a, TextureAtlasSprite sprite) {
         Matrix4f matrix4f = pose.pose();
@@ -103,11 +92,12 @@ public class StasisChamberRenderer<T extends StasisChamberBlockEntity> implement
         }
     }
 
+    private static final float FLOWING_FLUID_TEX_SCALE = 0.5F;
     private void renderFrontSurface(PoseStack.Pose pose, VertexConsumer buffer, int packedLight, int packedOverlay, float r, float g, float b, float a, TextureAtlasSprite sprite, float blockSize) {
-        float v0 = 0.925f;
-        float v1 = 15.075f;
-        float o0 = -9.3f;
-        float o1 = 25.3f;
+        float v0 = 0.0f;
+        float v1 = 16.0f;
+        float o0 = -8.975f;
+        float o1 = 24.975f;
 
         Matrix4f matrix4f = pose.pose();
         Matrix3f matrix3f = pose.normal();
@@ -115,56 +105,38 @@ public class StasisChamberRenderer<T extends StasisChamberBlockEntity> implement
         var front = new Vector3f(0f, 0f, 1f);
         front.mul(matrix3f);
         var left = new Vector3f(1f, 0f, 0f);
-        left.add(new Vector3f(0f, 0f, 1f));
-        left.normalize();
         left.mul(matrix3f);
         var right = new Vector3f(-1f, 0f, 0f);
-        right.add(new Vector3f(0f, 0f, 1f));
-        right.normalize();
         right.mul(matrix3f);
+
+        BiConsumer<ModelPart.Vertex, Vector3f> intermediate = (vertex, normal) -> {
+            float x = vertex.pos.x() / 16.0F;
+            float y = vertex.pos.y() / 16.0F;
+            float z = vertex.pos.z() / 16.0F;
+            Vector4f vector4f = new Vector4f(x, y, z, 1.0F);
+            vector4f.mul(matrix4f);
+
+            buffer.vertex(vector4f.x(), vector4f.y(), vector4f.z(), r, g, b, a,
+                    sprite.getU(vertex.u),
+                    sprite.getV(vertex.v),
+                    packedOverlay, packedLight, normal.x(), normal.y(), normal.z());
+        };
 
         float thisPos = 0f;
         while (blockSize > 0f) {
             float thisSize = Math.min(blockSize, 1f) * 16f;
 
-            makeQuad(vertex -> {
-                float x = vertex.pos.x() / 16.0F;
-                float y = vertex.pos.y() / 16.0F;
-                float z = vertex.pos.z() / 16.0F;
-                Vector4f vector4f = new Vector4f(x, y, z, 1.0F);
-                vector4f.mul(matrix4f);
-
-                buffer.vertex(vector4f.x(), vector4f.y(), vector4f.z(), r, g, b, a,
-                        sprite.getU(vertex.u),
-                        sprite.getV(vertex.v),
-                        packedOverlay, packedLight, front.x(), front.y(), front.z());
-            }, v0, v1, thisPos, thisPos - thisSize, o0, o0, v0, v1, 0f, thisSize);
-
-            makeQuad(vertex -> {
-                float x = vertex.pos.x() / 16.0F;
-                float y = vertex.pos.y() / 16.0F;
-                float z = vertex.pos.z() / 16.0F;
-                Vector4f vector4f = new Vector4f(x, y, z, 1.0F);
-                vector4f.mul(matrix4f);
-
-                buffer.vertex(vector4f.x(), vector4f.y(), vector4f.z(), r, g, b, a,
-                        sprite.getU(vertex.u),
-                        sprite.getV(vertex.v),
-                        packedOverlay, packedLight, left.x(), left.y(), left.z());
-            }, o1, v1, thisPos, thisPos - thisSize, v0, o0, v0, v1, 0f, thisSize);
-
-            makeQuad(vertex -> {
-                float x = vertex.pos.x() / 16.0F;
-                float y = vertex.pos.y() / 16.0F;
-                float z = vertex.pos.z() / 16.0F;
-                Vector4f vector4f = new Vector4f(x, y, z, 1.0F);
-                vector4f.mul(matrix4f);
-
-                buffer.vertex(vector4f.x(), vector4f.y(), vector4f.z(), r, g, b, a,
-                        sprite.getU(vertex.u),
-                        sprite.getV(vertex.v),
-                        packedOverlay, packedLight, right.x(), right.y(), right.z());
-            }, v0, o0, thisPos, thisPos - thisSize, o0, v0, v0, v1, 0f, thisSize);
+            makeQuad(vertex -> intermediate.accept(vertex, front), 
+                    o0, v0, thisPos, thisPos - thisSize, o0, o0, 7.0F * FLOWING_FLUID_TEX_SCALE, v1 * FLOWING_FLUID_TEX_SCALE, 0f, thisSize * FLOWING_FLUID_TEX_SCALE);
+            makeQuad(vertex -> intermediate.accept(vertex, front), 
+                    v0, v1, thisPos, thisPos - thisSize, o0, o0, v0 * FLOWING_FLUID_TEX_SCALE, v1 * FLOWING_FLUID_TEX_SCALE, 0f, thisSize * FLOWING_FLUID_TEX_SCALE);
+            makeQuad(vertex -> intermediate.accept(vertex, front), 
+                    v1, o1, thisPos, thisPos - thisSize, o0, o0, v0 * FLOWING_FLUID_TEX_SCALE, (9.0f) * FLOWING_FLUID_TEX_SCALE, 0f, thisSize * FLOWING_FLUID_TEX_SCALE);
+            
+            makeQuad(vertex -> intermediate.accept(vertex, left),
+                    o1, o1, thisPos, thisPos - thisSize, v0, o0, v0 * FLOWING_FLUID_TEX_SCALE, (9.0f) * FLOWING_FLUID_TEX_SCALE, 0f, thisSize * FLOWING_FLUID_TEX_SCALE);
+            makeQuad(vertex -> intermediate.accept(vertex, right), 
+                    o0, o0, thisPos, thisPos - thisSize, o0, v0, 7.0F * FLOWING_FLUID_TEX_SCALE, v1 * FLOWING_FLUID_TEX_SCALE, 0f, thisSize * FLOWING_FLUID_TEX_SCALE);
 
             blockSize -= 1f;
             thisPos -= thisSize;

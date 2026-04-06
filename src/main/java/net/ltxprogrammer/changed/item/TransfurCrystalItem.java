@@ -3,9 +3,11 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.minecraft.Util;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,9 +27,13 @@ public class TransfurCrystalItem extends Item {
         this(List.of(variant));
     }
 
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(Util.getRandom(variants, target.getRandom()).get(), TransfurContext.hazard(TransfurCause.CRYSTAL), 5.0f);
+    }
+
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity source) {
-        ProcessTransfur.progressTransfur(entity, 5.0f, variants.get(source.getRandom().nextInt(variants.size())).get(), TransfurContext.hazard(TransfurCause.CRYSTAL));
+        ProcessTransfur.progressTransfur(entity, this.makeAssimilationDecision(entity));
         return super.hurtEnemy(stack, entity, source);
     }
 }

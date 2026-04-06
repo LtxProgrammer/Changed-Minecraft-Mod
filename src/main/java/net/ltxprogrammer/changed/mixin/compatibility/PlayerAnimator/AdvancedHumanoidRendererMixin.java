@@ -39,10 +39,9 @@ public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M e
 
     @Inject(method = "setupRotations", at = @At("RETURN"))
     private void applyBodyTransforms(T entity, PoseStack matrixStack, float f, float bodyYaw, float tickDelta, CallbackInfo ci) {
-        Player player = entity.getUnderlyingPlayer();
-        if (player == null) return;
+        if (!(entity instanceof IAnimatedPlayer animatedEntity)) return;
 
-        AnimationApplier animationPlayer = ((IAnimatedPlayer)player).playerAnimator_getAnimation();
+        AnimationApplier animationPlayer = animatedEntity.playerAnimator_getAnimation();
         animationPlayer.setTickDelta(tickDelta);
         if (animationPlayer.isActive()) {
             { // Create reset pose so that specialized models can force the poseStack back to pre-animated

@@ -194,7 +194,8 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     if (FacilityPieces.isNotCompletelyInsideRegion(this.getBoundingBox(), allowedRegion))
                         continue;
                     if (!sanityCheckGluBlock(gluBlockPos))
-                        Changed.LOGGER.error("Sanity check failed for facility generation glu block");
+                        Changed.LOGGER.error("Sanity check failed for facility generation glu block {} for piece {} in {}",
+                                gluBlockPos, templateName, boundingBox);
 
                     if (builder.findCollisionPiece(this.boundingBox) == null)
                         return true;

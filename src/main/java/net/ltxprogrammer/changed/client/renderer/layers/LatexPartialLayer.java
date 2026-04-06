@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -17,26 +16,20 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 
+import java.util.function.Function;
+
 public class LatexPartialLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> implements FirstPersonLayer<T> {
     private final M model;
-    private final ResourceLocation texture;
+    private final Function<T, ResourceLocation> textureFunction;
 
-    public LatexPartialLayer(RenderLayerParent<T, M> p_174536_, M model, ResourceLocation texture) {
-        super(p_174536_);
-        this.model = model;
-        this.texture = texture;
+    public LatexPartialLayer(RenderLayerParent<T, M> parent, M model, ResourceLocation texture) {
+        this(parent, model, entity -> texture);
     }
 
-    public void prepareMobModel(T entity, float partialTicks) {
-        if (ChangedCompatibility.isFirstPersonRendering()) {
-            model.getHead().visible = false;
-            model.getTorso().visible = !entity.isVisuallySwimming();
-        }
-
-        else {
-            model.getHead().visible = true;
-            model.getTorso().visible = true;
-        }
+    public LatexPartialLayer(RenderLayerParent<T, M> parent, M model, Function<T, ResourceLocation> textureFunction) {
+        super(parent);
+        this.model = model;
+        this.textureFunction = textureFunction;
     }
 
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
@@ -45,14 +38,16 @@ public class LatexPartialLayer<T extends ChangedEntity, M extends AdvancedHumano
         if (!entity.isInvisible() || flag) {
             VertexConsumer vertexconsumer;
             if (flag) {
-                vertexconsumer = bufferSource.getBuffer(RenderType.outline(texture));
+                vertexconsumer = bufferSource.getBuffer(RenderType.outline(textureFunction.apply(entity)));
             } else {
-                vertexconsumer = bufferSource.getBuffer(renderType());
+                vertexconsumer = bufferSource.getBuffer(renderType(entity));
             }
 
-            this.prepareMobModel(entity, partialTicks);
-            this.model.getAnimator(entity).setupVariables(entity, partialTicks);
-            this.model.getAnimator(entity).applyPropertyModel(this.getParentModel());
+            this.model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+            this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
+            // Ensure limbs line up so modded animations copy over.
+            this.model.getAnimator(entity).applyPropertyModel(this.getParentModel().preparePropertyModel(entity));
             this.model.renderToBuffer(pose, vertexconsumer, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
@@ -61,12 +56,12 @@ public class LatexPartialLayer<T extends ChangedEntity, M extends AdvancedHumano
         return model;
     }
 
-    public ResourceLocation getTexture() {
-        return texture;
+    public Function<T, ResourceLocation> getTextureFunction() {
+        return textureFunction;
     }
 
-    public RenderType renderType() {
-        return RenderType.entityCutoutNoCull(texture);
+    public RenderType renderType(T entity) {
+        return RenderType.entityCutoutNoCull(textureFunction.apply(entity));
     }
 
     public ModelPart getArm(HumanoidArm arm) {
@@ -81,7 +76,7 @@ public class LatexPartialLayer<T extends ChangedEntity, M extends AdvancedHumano
         stack.scale(ZFIGHT_OFFSET, ZFIGHT_OFFSET, ZFIGHT_OFFSET);
         var armPart = model.getArm(arm);
         armPart.loadPose(armPose);
-        FormRenderHandler.renderModelPartWithTexture(armPart, stack, bufferSource.getBuffer(this.renderType()), packedLight, 1F);
+        FormRenderHandler.renderModelPartWithTexture(armPart, stack, bufferSource.getBuffer(this.renderType(entity)), packedLight, 1F);
         stack.popPose();
     }
 }

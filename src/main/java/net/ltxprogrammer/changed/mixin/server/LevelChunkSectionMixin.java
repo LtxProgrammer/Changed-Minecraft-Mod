@@ -87,14 +87,16 @@ public abstract class LevelChunkSectionMixin implements LevelChunkSectionExtensi
         return this.tickingLatexCoverCount > 0 || original.call();
     }
 
-    @Inject(method = "write", at = @At("TAIL"))
-    public void writeChangedData(FriendlyByteBuf buffer, CallbackInfo ci) {
+    @WrapMethod(method = "write")
+    public void writeChangedData(FriendlyByteBuf buffer, Operation<Void> original) {
         coverStates.write(buffer);
+        original.call(buffer);
     }
 
-    @Inject(method = "read", at = @At("TAIL"))
-    public void readChangedData(FriendlyByteBuf buffer, CallbackInfo ci) {
+    @WrapMethod(method = "read")
+    public void readChangedData(FriendlyByteBuf buffer, Operation<Void> original) {
         coverStates.read(buffer);
+        original.call(buffer);
     }
 
     @WrapMethod(method = "getSerializedSize")

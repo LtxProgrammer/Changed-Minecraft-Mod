@@ -2,8 +2,10 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -51,11 +53,15 @@ public class LatexWallSplotch extends HorizontalDirectionalBlock implements Simp
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
     }
 
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(Util.getRandom(variants, target.getRandom()).get(), TransfurContext.hazard(TransfurCause.LATEX_WALL_SPLOTCH), 6.0f);
+    }
+
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (variants.isEmpty()) return;
         if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
-            if (ProcessTransfur.progressTransfur(livingEntity, 6.0f, Util.getRandom(variants, level.random).get(), TransfurContext.hazard(TransfurCause.LATEX_WALL_SPLOTCH)))
+            if (ProcessTransfur.progressTransfur(livingEntity, this.makeAssimilationDecision(livingEntity)))
                 level.removeBlock(pos, false);
         }
     }

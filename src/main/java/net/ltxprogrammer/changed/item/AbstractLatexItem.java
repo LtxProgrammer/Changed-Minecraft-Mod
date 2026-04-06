@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.ai.ImmediateTransfurDecision;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
@@ -32,14 +34,18 @@ public class AbstractLatexItem extends ItemNameBlockItem {
         this.type = type;
     }
 
+    protected ImmediateTransfurDecision<?> makeAssimilationDecision(LivingEntity target) {
+        final var variant = type.get().getTransfurVariant(TransfurCause.ATE_LATEX, target.getRandom());
+        return ImmediateTransfurDecision.unsafe(variant, TransfurCause.LATEX_PUDDLE);
+    }
+
     @Override
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity entity) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity), (player, variant) -> {
             if (variant.getLatexType().isHostileTo(type.get()))
                 player.getFoodData().eat(Foods.DRIED_KELP.getNutrition(), Foods.DRIED_KELP.getSaturationModifier());
         });
-        final var variant = type.get().getTransfurVariant(TransfurCause.ATE_LATEX, level.random);
-        ProcessTransfur.progressTransfur(entity, 11.0f, variant, TransfurContext.hazard(TransfurCause.ATE_LATEX));
+        ProcessTransfur.transfur(entity, this.makeAssimilationDecision(entity));
         return super.finishUsingItem(itemStack, level, entity);
     }
 

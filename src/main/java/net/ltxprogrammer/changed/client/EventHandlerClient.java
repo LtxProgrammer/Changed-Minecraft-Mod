@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.client.gui.ContentWarningScreen;
 import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.effect.particle.EmoteParticle;
 import net.ltxprogrammer.changed.effect.particle.GasParticle;
@@ -29,13 +30,16 @@ import net.ltxprogrammer.changed.world.LatexCoverHitResult;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -46,6 +50,7 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -203,6 +208,11 @@ public class EventHandlerClient {
         }
     }
 
+    public static <T extends LivingEntity, M extends EntityModel<T>, R extends LivingEntityRenderer<T, M>> void addLatexParticles(EntityRenderersEvent.AddLayers event, EntityType<T> entityType) {
+        R renderer = event.getRenderer(entityType);
+        renderer.addLayer(new LatexParticlesLayer<>(renderer, renderer.getModel()));
+    }
+
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void addChangedLayers(EntityRenderersEvent.AddLayers event) {
@@ -212,6 +222,8 @@ public class EventHandlerClient {
                 renderer.addLayer(new GasMaskLayer<>(renderer, event.getEntityModels()));
             }
         });
+        addLatexParticles(event, EntityType.BEE);
+        addLatexParticles(event, EntityType.RABBIT);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -247,7 +259,7 @@ public class EventHandlerClient {
                 return;
 
             final int duration = event.livingEntity.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ?
-                    (int)(event.context.cause.getDuration() * 20) : 40;
+                    (int)(event.context.cause().getDuration() * 20) : 40;
             event.livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, 4, false, false));
 
             if (event.oldVariant != null || event.livingEntity.tickCount < 20)

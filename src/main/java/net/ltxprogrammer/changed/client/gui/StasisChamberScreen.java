@@ -1,27 +1,27 @@
 package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.beast.CustomLatexEntity;
+import net.ltxprogrammer.changed.block.entity.StasisChamberBlockEntity;
+import net.ltxprogrammer.changed.entity.ModifiableEntity;
+import net.ltxprogrammer.changed.entity.ModificationVector;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.world.inventory.StasisChamberMenu;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractSliderButton;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.nbt.ByteTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMenu> {
@@ -45,7 +45,7 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
     private static final ResourceLocation GENDER_SWITCH_LOCATION = Changed.modResource("textures/gui/gender_switch.png");
 
     private ButtonScope buttonScope = ButtonScope.DEFAULT;
-    private ModifyType modifyType = ModifyType.DEFAULT;
+    private ModifyType modifyType = ModifyType.INTERFACE;
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
@@ -158,10 +158,12 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
     }
 
     public enum ModifyType {
-        DEFAULT,
-        GENDERED,
-        CUSTOM
+        NONE,
+        INTERFACE,
+        GENDERED
     }
+
+    public record PaginatedWidget(int pageIndex, AbstractWidget widget) {}
 
     private boolean initialized = false;
     private Button programsButton;
@@ -171,8 +173,18 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
 
     private List<AbstractWidget> programWidgets = new ArrayList<>();
     private AbstractSliderButton waitDurationSlider;
-    private List<AbstractWidget> modificationWidgets = new ArrayList<>();
+    private ModifiableEntity lastSeenEntityForModification = null;
+    private List<PaginatedWidget> modificationWidgets = new ArrayList<>();
+    private int modificationsPageIndex = 0;
+    private int modificationsPageCount = 1;
     private Button genderButton;
+
+    @Override
+    public void containerTick() {
+        super.containerTick();
+
+        checkButtonStates();
+    }
 
     private void checkButtonStates() {
         if (!initialized) return;
@@ -190,23 +202,170 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         closeDoorButton.visible = buttonScope == ButtonScope.DEFAULT;
 
         modifyType = menu.getChamberedLatex().map(entity -> {
-            if (entity.getChangedEntity() instanceof CustomLatexEntity)
-                return ModifyType.CUSTOM;
+            if (entity.getChangedEntity() instanceof ModifiableEntity modifiable) {
+                if (this.lastSeenEntityForModification != modifiable) {
+                    modificationWidgets.forEach(entry -> this.removeWidget(entry.widget));
+                    modificationWidgets.clear();
+                    this.createModificationWidgets(modifiable);
+                }
+                return ModifyType.INTERFACE;
+            }
             else if (ChangedTransfurVariants.Gendered.getOpposite(entity.getSelfVariant()).isPresent())
                 return ModifyType.GENDERED;
-            return ModifyType.DEFAULT;
-        }).orElse(ModifyType.CUSTOM); // Default to custom to allow pre-programming
+            return ModifyType.NONE;
+        }).orElse(ModifyType.NONE);
 
         programWidgets.forEach(button -> button.visible = buttonScope == ButtonScope.PROGRAMS);
         genderButton.visible = buttonScope == ButtonScope.MODIFICATIONS && modifyType == ModifyType.GENDERED;
-        modificationWidgets.forEach(button -> button.visible = buttonScope == ButtonScope.MODIFICATIONS && modifyType == ModifyType.CUSTOM);
+        modificationWidgets.forEach(entry -> {
+            entry.widget.visible = (buttonScope == ButtonScope.MODIFICATIONS && modifyType == ModifyType.INTERFACE) &&
+                modificationsPageIndex == entry.pageIndex;
+        });
     }
 
-    @Override
-    public void containerTick() {
-        super.containerTick();
+    protected void createModificationWidgets(ModifiableEntity entity) {
+        this.lastSeenEntityForModification = entity;
 
-        checkButtonStates();
+        int leftMargin = this.leftPos + 7;
+        int topMargin = this.topPos + 7;
+        int buttonWidth = 79;
+        int buttonHeight = 20;
+        int buttonHeightSpacing = buttonHeight + 4;
+        int buttonWidthSpacing = buttonWidth + 4;
+        int buttonWidthLong = buttonWidth + buttonWidthSpacing;
+
+        Map<String, ModificationVector.EnumVector> enumVectors = new HashMap<>();
+        Map<String, ModificationVector.LinearVector> linearVectors = new HashMap<>();
+        Map<String, ModificationVector.BooleanVector> booleanVectors = new HashMap<>();
+
+        entity.getModificationVectors().forEach((key, vector) -> {
+            if (vector instanceof ModificationVector.EnumVector enumVector)
+                enumVectors.put(key, enumVector);
+            if (vector instanceof ModificationVector.LinearVector linearVector)
+                linearVectors.put(key, linearVector);
+            if (vector instanceof ModificationVector.BooleanVector booleanVector)
+                booleanVectors.put(key, booleanVector);
+        });
+
+        final AtomicInteger widgetIndex = new AtomicInteger(2);
+        final AtomicInteger pageIndex = new AtomicInteger(0);
+
+        Runnable createNewPage = () -> {
+            widgetIndex.set(2);
+            final int nextPage = pageIndex.get() + 1;
+            final int prevPage = pageIndex.get();
+
+            modificationWidgets.add(new PaginatedWidget(prevPage, this.addRenderableWidget(
+                    Button.builder(Component.literal(">"), button -> modificationsPageIndex = nextPage)
+                            .bounds(leftMargin + buttonWidthSpacing + buttonWidth - buttonHeight,
+                                    topMargin + buttonHeightSpacing * 5 + (buttonHeight / 2),
+                                    buttonHeight, buttonHeight).build())));
+            modificationWidgets.add(new PaginatedWidget(nextPage, this.addRenderableWidget(
+                    Button.builder(Component.literal("<"), button -> modificationsPageIndex = prevPage)
+                            .bounds(leftMargin,
+                                    topMargin + buttonHeightSpacing * 5 + (buttonHeight / 2),
+                                    buttonHeight, buttonHeight).build())));
+
+            pageIndex.incrementAndGet();
+        };
+
+        for (var entry : enumVectors.entrySet()) {
+            if (widgetIndex.get() >= 10)
+                createNewPage.run();
+
+            final var key = entry.getKey();
+            final var vector = entry.getValue();
+            var tooltip = vector.getTooltipText();
+            modificationWidgets.add(new PaginatedWidget(pageIndex.get(), this.addRenderableWidget(Button.builder(vector.getDisplayText(), button -> {
+                vector.cycleForward();
+                menu.inputModification(key, vector.writeAsTag());
+                button.setMessage(vector.getDisplayText());
+            })
+                    .bounds(
+                            leftMargin + (widgetIndex.get() % 2 == 1 ? buttonWidthSpacing : 0),
+                            topMargin + buttonHeightSpacing * (widgetIndex.get() / 2),
+                            buttonWidth, buttonHeight)
+                    .tooltip(tooltip == null ? null : Tooltip.create(tooltip)).build())));
+
+            widgetIndex.addAndGet(1);
+        }
+
+        for (var entry : linearVectors.entrySet()) {
+            widgetIndex.addAndGet(widgetIndex.get() % 2);
+            if (widgetIndex.get() >= 10)
+                createNewPage.run();
+
+            final var key = entry.getKey();
+            final var vector = entry.getValue();
+            var tooltip = vector.getTooltipText();
+
+            var slider = new AbstractSliderButton(
+                    leftMargin,
+                    topMargin + buttonHeightSpacing * (widgetIndex.get() / 2),
+                    buttonWidthLong, buttonHeight, vector.getDisplayText(), vector.getValue()) {
+                @Override
+                protected void updateMessage() {
+                    setMessage(vector.getDisplayText());
+                }
+
+                @Override
+                protected void applyValue() {
+                    vector.acceptValue(this.value);
+                    menu.inputModification(key, vector.writeAsTag());
+                }
+
+                @Override
+                public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+                    if (!(this.isHoveredOrFocused() && minecraft.mouseHandler.isLeftPressed())) {
+                        double last = this.value;
+                        this.value = vector.getValue();
+                        if (last != this.value)
+                            updateMessage();
+                    }
+                    super.renderWidget(graphics, mouseX, mouseY, partialTicks);
+                }
+            };
+
+            slider.setTooltip(tooltip == null ? null : Tooltip.create(tooltip));
+
+            modificationWidgets.add(new PaginatedWidget(pageIndex.get(), this.addRenderableWidget(slider)));
+
+            widgetIndex.addAndGet(2);
+        }
+
+        for (var entry : booleanVectors.entrySet()) {
+            widgetIndex.addAndGet(widgetIndex.get() % 2);
+            if (widgetIndex.get() >= 10)
+                createNewPage.run();
+
+            final var key = entry.getKey();
+            final var vector = entry.getValue();
+            var tooltip = vector.getTooltipText();
+
+            var checkbox = new Checkbox(
+                    leftMargin,
+                    topMargin + buttonHeightSpacing * (widgetIndex.get() / 2),
+                    buttonWidthLong, buttonHeight, vector.getDisplayText(), vector.getState()) {
+                @Override
+                public void onPress() {
+                    super.onPress();
+                    vector.acceptState(this.selected());
+                    menu.inputModification(key, vector.writeAsTag());
+                }
+
+                @Override
+                public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+                    this.selected = vector.getState();
+                    super.renderWidget(graphics, mouseX, mouseY, partialTicks);
+                }
+            };
+
+            checkbox.setTooltip(tooltip == null ? null : Tooltip.create(tooltip));
+
+            modificationWidgets.add(new PaginatedWidget(pageIndex.get(), this.addRenderableWidget(checkbox)));
+
+            widgetIndex.addAndGet(2);
+        }
     }
 
     @Override
@@ -292,59 +451,13 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         programWidgets.add(waitDurationSlider);
 
         genderButton = this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.modify.gender"), button -> {
-            menu.inputModifyConfig(menu.getConfiguredCustomLatex());
+            menu.inputModification("gender", ByteTag.valueOf(true));
         }).bounds(leftMargin, topMargin + buttonHeightSpacing, buttonWidthLong, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.modify.gender.tooltip"))).build());
 
-        modificationWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.modify.torso", CustomLatexEntity.TorsoType.fromFlags(menu.getConfiguredCustomLatex()).name()), button -> {
-            int flags = menu.getConfiguredCustomLatex();
-            var next = CustomLatexEntity.TorsoType.fromFlags(flags).cycle();
-            menu.inputModifyConfig(next.setFlags(flags));
-            button.setMessage(Component.translatable("changed.stasis.modify.torso", next.name()));
-        }).bounds(leftMargin, topMargin + buttonHeightSpacing, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.modify.torso.tooltip"))).build()));
-
-        modificationWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.modify.hair", CustomLatexEntity.HairType.fromFlags(menu.getConfiguredCustomLatex()).name()), button -> {
-            int flags = menu.getConfiguredCustomLatex();
-            var next = CustomLatexEntity.HairType.fromFlags(flags).cycle();
-            menu.inputModifyConfig(next.setFlags(flags));
-            button.setMessage(Component.translatable("changed.stasis.modify.hair", next.name()));
-        }).bounds(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.modify.hair.tooltip"))).build()));
-
-        modificationWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.modify.ears", CustomLatexEntity.EarType.fromFlags(menu.getConfiguredCustomLatex()).name()), button -> {
-            int flags = menu.getConfiguredCustomLatex();
-            var next = CustomLatexEntity.EarType.fromFlags(flags).cycle();
-            menu.inputModifyConfig(next.setFlags(flags));
-            button.setMessage(Component.translatable("changed.stasis.modify.ears", next.name()));
-        }).bounds(leftMargin, topMargin + buttonHeightSpacing * 2, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.modify.ears.tooltip"))).build()));
-
-        modificationWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.modify.tail", CustomLatexEntity.TailType.fromFlags(menu.getConfiguredCustomLatex()).name()), button -> {
-            int flags = menu.getConfiguredCustomLatex();
-            var next = CustomLatexEntity.TailType.fromFlags(flags).cycle();
-            menu.inputModifyConfig(next.setFlags(flags));
-            button.setMessage(Component.translatable("changed.stasis.modify.tail", next.name()));
-        }).bounds(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing * 2, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.modify.tail.tooltip"))).build()));
-
-        modificationWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.modify.legs", CustomLatexEntity.LegType.fromFlags(menu.getConfiguredCustomLatex()).name()), button -> {
-            int flags = menu.getConfiguredCustomLatex();
-            var next = CustomLatexEntity.LegType.fromFlags(flags).cycle();
-            menu.inputModifyConfig(next.setFlags(flags));
-            button.setMessage(Component.translatable("changed.stasis.modify.legs", next.name()));
-        }).bounds(leftMargin, topMargin + buttonHeightSpacing * 3, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.modify.legs.tooltip"))).build()));
-
-        modificationWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.modify.arms", CustomLatexEntity.ArmType.fromFlags(menu.getConfiguredCustomLatex()).name()), button -> {
-            int flags = menu.getConfiguredCustomLatex();
-            var next = CustomLatexEntity.ArmType.fromFlags(flags).cycle();
-            menu.inputModifyConfig(next.setFlags(flags));
-            button.setMessage(Component.translatable("changed.stasis.modify.arms", next.name()));
-        }).bounds(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing * 3, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.modify.arms.tooltip"))).build()));
-
-        modificationWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.modify.scale", CustomLatexEntity.ScaleType.fromFlags(menu.getConfiguredCustomLatex()).name()), button -> {
-            int flags = menu.getConfiguredCustomLatex();
-            var next = CustomLatexEntity.ScaleType.fromFlags(flags).cycle();
-            menu.inputModifyConfig(next.setFlags(flags));
-            button.setMessage(Component.translatable("changed.stasis.modify.scale", next.name()));
-        }).bounds(leftMargin, topMargin + buttonHeightSpacing * 4, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.modify.scale.tooltip"))).build()));
-
         initialized = true;
+
+        if (menu.startOnModificationsScreen)
+            buttonScope = ButtonScope.MODIFICATIONS;
 
         checkButtonStates();
     }

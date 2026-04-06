@@ -50,6 +50,8 @@ public class TaurQuadrupedalInitAnimator<T extends ChangedEntity, M extends Adva
         }
 
         torso.xRot = 0.0F;
+        torso.zRot = 0.0F;
+        torso.x = 0.0F;
         torso.z = 0.0F;
         torso.y = Mth.lerp(core.ageLerp, 0.0f, Mth.lerp(limbSwingAmount, 1.0f, 0.25f)) + core.hipOffset + (12.0f - core.legLength) + 12.5f;
 

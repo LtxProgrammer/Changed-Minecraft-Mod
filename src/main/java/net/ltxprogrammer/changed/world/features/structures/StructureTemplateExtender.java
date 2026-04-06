@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.world.features.structures;
 import com.google.common.collect.Maps;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
+import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.IdMapper;
@@ -23,7 +24,6 @@ public interface StructureTemplateExtender {
     }
 
     class SimpleCoverPalette implements Iterable<LatexCoverState> {
-        public static final LatexCoverState DEFAULT_COVER_STATE = ChangedLatexTypes.NONE.get().defaultCoverState();
         private final IdMapper<LatexCoverState> ids = new IdMapper<>(16);
         private int lastId;
 
@@ -40,7 +40,7 @@ public interface StructureTemplateExtender {
         @Nullable
         public LatexCoverState stateFor(int id) {
             LatexCoverState blockstate = this.ids.byId(id);
-            return blockstate == null ? DEFAULT_COVER_STATE : blockstate;
+            return blockstate == null ? ChangedLatexTypes.NONE.get().defaultCoverState() : blockstate;
         }
 
         public Iterator<LatexCoverState> iterator() {

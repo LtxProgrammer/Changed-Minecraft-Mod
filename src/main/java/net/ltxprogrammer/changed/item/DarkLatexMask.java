@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.item;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -58,7 +59,7 @@ public class DarkLatexMask extends Item implements ExtendedItemProperties {
             return;
         }
 
-        if (ProcessTransfur.progressTransfur(wearer, 11.0f, variant, TransfurContext.hazard(TransfurCause.FACE_HAZARD)))
+        if (ProcessTransfur.progressTransfur(wearer, LatexAssimilationDecision.fromBlockOrItem(variant, TransfurContext.hazard(TransfurCause.FACE_HAZARD), 11.0f)))
             itemStack.shrink(1);
     }
 

@@ -21,7 +21,7 @@ public class DarkLatexWolfPartialRenderer extends AdvancedHumanoidRenderer<DarkL
 				context.bakeLayer(slim ? DarkLatexWolfPartialModel.LAYER_LOCATION_LATEX_SLIM : DarkLatexWolfPartialModel.LAYER_LOCATION_LATEX)),
 				slim ? Changed.modResource("textures/dark_latex_wolf_partial_slim.png") : Changed.modResource("textures/dark_latex_wolf_partial.png"));
 		this.addLayer(partialModel);
-		this.addLayer(new LatexParticlesLayer<>(this).addModel(partialModel.getModel(), entity -> partialModel.getTexture()));
+		this.addLayer(new LatexParticlesLayer<>(this).addModel(partialModel.getModel(), partialModel.getTextureFunction()));
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
 		this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
 		this.addLayer(new GasMaskLayer<>(this, context.getModelSet()));

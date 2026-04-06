@@ -6,8 +6,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
-import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
-import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.block.ThreeXThreeSection;
 import net.ltxprogrammer.changed.block.WearableBlock;
@@ -17,8 +15,8 @@ import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.ai.EntityAssimilationBehavior;
 import net.ltxprogrammer.changed.entity.latex.SpreadingLatexType;
-import net.ltxprogrammer.changed.entity.robot.Exoskeleton;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.fluid.Gas;
@@ -36,7 +34,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -132,7 +129,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     private void updateFallFlying(CallbackInfo callback) {
         if (this.level().isClientSide) return;
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
-            if (variant.getParent().canGlide) {
+            if (variant.canElytraGlide()) {
                 this.setSharedFlag(7, player.isFallFlying() && !player.onGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION));
                 callback.cancel();
             }
@@ -457,12 +454,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         cir.setReturnValue(controlling.isBlocking());
     }
 
-    @Inject(method = "createLivingAttributes", at = @At("RETURN"))
-    private static void addChangedAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
-        cir.getReturnValue().add(ChangedAttributes.TRANSFUR_TOLERANCE.get())
-                .add(ChangedAttributes.GRAB_STRUGGLE_STRENGTH.get(), GrabEntityAbilityInstance.GRAB_STRENGTH_DECAY);
-    }
-
     @Inject(method = "increaseAirSupply", at = @At("HEAD"), cancellable = true)
     private void maybeAddAir(int current, CallbackInfoReturnable<Integer> cir) {
         TransfurGas.validEntityInGas((LivingEntity)(Object)this).ifPresent(gas -> cir.setReturnValue(current));
@@ -508,12 +499,23 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
     public void addExtendedData(CompoundTag tag, CallbackInfo ci) {
         tag.put("ChangedAccessorySlots", accessorySlots.save());
+        if (this instanceof PathFinderMobDataExtension ext && ext.isLatexAssimilated()) {
+            tag.putBoolean("ChangedIsAssimilated", true);
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
     public void readExtendedData(CompoundTag tag, CallbackInfo ci) {
         if (tag.contains("ChangedAccessorySlots"))
             accessorySlots.load(tag.getCompound("ChangedAccessorySlots"));
+        if ((LivingEntity)(Object)this instanceof PathfinderMob pathfinder &&
+                pathfinder instanceof PathFinderMobDataExtension ext &&
+                tag.contains("ChangedIsAssimilated") &&
+                tag.getBoolean("ChangedIsAssimilated")) {
+            if (!ext.isLatexAssimilated() && ProcessTransfur.getEntityAssimilationBehavior(pathfinder) instanceof EntityAssimilationBehavior.InjectEntityWithTransfurGoals behavior) {
+                behavior.assimilate(pathfinder);
+            }
+        }
     }
 
     @Inject(method = "dropEquipment", at = @At("RETURN"))
@@ -565,9 +567,14 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @WrapMethod(method = "getEyeHeight(Lnet/minecraft/world/entity/Pose;Lnet/minecraft/world/entity/EntityDimensions;)F")
     protected float getEyeHeight(Pose pose, EntityDimensions dimensions, Operation<Float> original) {
         var variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(this));
-        if (variant == null)
-            return original.call(pose, dimensions);
 
-        return variant.getTransfurEyeHeight(pose, original.call(pose, dimensions));
+        float eyeHeight = variant == null ? original.call(pose, dimensions) : variant.getTransfurEyeHeight(pose, original.call(pose, dimensions));
+        if (this instanceof PlayerDataExtension ext) {
+            var mover = ext.getPlayerMover();
+            if (mover != null)
+                return mover.getEyeHeight((LivingEntity)(Object)this, pose, eyeHeight);
+        }
+
+        return eyeHeight;
     }
 }

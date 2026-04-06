@@ -2,10 +2,10 @@ package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
-import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.core.BlockPos;
@@ -15,6 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,7 +36,9 @@ public interface IAbstractChangedEntity {
 
     @NotNull BlockPos getBlockPosition();
     @Nullable TransfurVariant<?> getSelfVariant();
-    @Nullable TransfurVariant<?> getTransfurVariant();
+    default @Deprecated @Nullable TransfurVariant<?> getTransfurVariant() { return null; }
+    @Nullable
+    LatexAssimilationDecision<?> makeLatexAssimilationDecision(TransfurCause cause, LivingEntity target);
     @Nullable TransfurVariantInstance<?> getTransfurVariantInstance();
     @NotNull Level getLevel();
     @Deprecated
@@ -68,6 +72,11 @@ public interface IAbstractChangedEntity {
     void setEyeStyle(EyeStyle style);
     void causeFoodExhaustion(float exhaustion);
 
+    /**
+     * Creates a copy of this abstraction.
+     */
+    IAbstractChangedEntity copyAbstraction();
+
     default boolean hasTransfurMode() {
         final TransfurMode mode = getTransfurMode();
         return mode != TransfurMode.NONE;
@@ -83,8 +92,8 @@ public interface IAbstractChangedEntity {
             doesAbsorption = getTransfurVariantInstance().transfurMode == TransfurMode.ABSORPTION;
         else if (getSelfVariant() != null)
             doesAbsorption = getSelfVariant().transfurMode() == TransfurMode.ABSORPTION;
-        else if (getTransfurVariant() != null && getTransfurVariant().transfurMode() == TransfurMode.ABSORPTION)
-            doesAbsorption = true;
+        /*else if (getTransfurVariant() != null && getTransfurVariant().transfurMode() == TransfurMode.ABSORPTION)
+            doesAbsorption = true;*/
         else
             doesAbsorption = false;
 
@@ -140,8 +149,8 @@ public interface IAbstractChangedEntity {
 
             @org.jetbrains.annotations.Nullable
             @Override
-            public TransfurVariant<?> getTransfurVariant() {
-                return instance.get().getChangedEntity().getTransfurVariant();
+            public LatexAssimilationDecision<?> makeLatexAssimilationDecision(TransfurCause cause, LivingEntity target) {
+                return instance.get().getChangedEntity().makeLatexAssimilationDecision(cause, target);
             }
 
             @Override
@@ -293,6 +302,11 @@ public interface IAbstractChangedEntity {
             public void causeFoodExhaustion(float exhaustion) {
                 player.causeFoodExhaustion(exhaustion);
             }
+
+            @Override
+            public IAbstractChangedEntity copyAbstraction() {
+                return forPlayerWithVariant(player, instance.get());
+            }
         };
     }
 
@@ -323,10 +337,9 @@ public interface IAbstractChangedEntity {
                 return cached.get().getSelfVariant();
             }
 
-            @org.jetbrains.annotations.Nullable
             @Override
-            public TransfurVariant<?> getTransfurVariant() {
-                return cached.get().getTransfurVariant();
+            public @org.jetbrains.annotations.Nullable LatexAssimilationDecision<?> makeLatexAssimilationDecision(TransfurCause cause, LivingEntity target) {
+                return cached.get().makeLatexAssimilationDecision(cause, target);
             }
 
             @org.jetbrains.annotations.Nullable
@@ -390,10 +403,27 @@ public interface IAbstractChangedEntity {
 
                 ChangedEntity oldEntity = cached.get();
                 ChangedEntity newEntity = otherVariant.getEntityType().create(getLevel());
-                getLevel().addFreshEntity(newEntity);
+
                 newEntity.teleportTo(oldEntity.getX(), oldEntity.getY(), oldEntity.getZ());
                 newEntity.setYRot(oldEntity.getYRot());
                 newEntity.setXRot(oldEntity.getXRot());
+                getLevel().addFreshEntity(newEntity);
+
+                if (oldEntity.hasCustomName()) {
+                    newEntity.setCustomName(oldEntity.getCustomName());
+                    newEntity.setCustomNameVisible(oldEntity.isCustomNameVisible());
+                    newEntity.setPersistenceRequired();
+                }
+
+                newEntity.setNoAi(oldEntity.isNoAi());
+                newEntity.setLeftHanded(oldEntity.isLeftHanded());
+
+                // Take armor and held items
+                Arrays.stream(EquipmentSlot.values()).forEach(slot -> {
+                    newEntity.setItemSlot(slot, entity.getItemBySlot(slot).copy());
+                });
+
+                newEntity.copyTraitsFrom(IAbstractChangedEntity.forEntity(oldEntity));
                 oldEntity.discard();
 
                 cached.forceValue(newEntity);
@@ -509,6 +539,11 @@ public interface IAbstractChangedEntity {
             @Override
             public void causeFoodExhaustion(float exhaustion) {
 
+            }
+
+            @Override
+            public IAbstractChangedEntity copyAbstraction() {
+                return forEntity(cached.get());
             }
         };
     }

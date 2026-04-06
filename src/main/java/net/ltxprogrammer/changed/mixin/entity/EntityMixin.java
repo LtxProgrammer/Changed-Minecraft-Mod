@@ -163,17 +163,9 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                 }).ifPresent(callback::setReturnValue);
     }
 
-    @Shadow public abstract boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> tag, double scale);
-
     @Shadow public abstract Vec3 getEyePosition();
 
     @Shadow protected BlockPos portalEntrancePos;
-
-    @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("RETURN"), cancellable = true)
-    protected void updateInWaterStateAndDoFluidPushing(CallbackInfoReturnable<Boolean> callback) {
-        if (this.updateFluidHeightAndDoFluidPushing(ChangedTags.Fluids.LATEX, 0.007D))
-            callback.setReturnValue(true);
-    }
 
     @Inject(method = "isInvisible", at = @At("RETURN"), cancellable = true)
     public void hideSeatedEntity(CallbackInfoReturnable<Boolean> cir) {

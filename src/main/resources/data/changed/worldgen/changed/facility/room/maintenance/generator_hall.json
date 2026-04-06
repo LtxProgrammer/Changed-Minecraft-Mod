@@ -1,0 +1,11 @@
+{
+  "piece": {
+    "type": "changed:room",
+    "template": "changed:facility/room/maintenance/room_maintenance_generator_hall",
+    "loot_table": "changed:chests/decayed_lab_aqua"
+  },
+  "spawn_weight": 10,
+  "neighboring_zones": [
+    "changed:maintenance"
+  ]
+}

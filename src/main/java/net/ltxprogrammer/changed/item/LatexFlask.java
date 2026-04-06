@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.item;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.ImmediateTransfurDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.Pale;
@@ -65,7 +66,7 @@ public class LatexFlask extends PotionItem implements VariantHoldingBase {
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
         }
-        //ChangedSounds.broadcastSound(entity, ChangedSounds.SWORD1, 1, 1);
+
         if (player != null) {
             CompoundTag tag = stack.getTag();
 
@@ -78,13 +79,11 @@ public class LatexFlask extends PotionItem implements VariantHoldingBase {
                 ResourceLocation formLocation = ResourceLocation.parse(tag.getString("form"));
                 if (formLocation.equals(TransfurVariant.SPECIAL_LATEX))
                     formLocation = Changed.modResource("special/form_" + entity.getUUID());
-                ProcessTransfur.transfur(entity, level, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(formLocation), false,
-                        TransfurContext.hazard(TransfurCause.FACE_HAZARD));
+                ProcessTransfur.transfur(entity, ImmediateTransfurDecision.unsafe(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(formLocation), TransfurCause.FACE_HAZARD));
             }
 
             else {
-                ProcessTransfur.transfur(entity, level, ChangedTransfurVariants.FALLBACK_VARIANT.get(), player.isCreative(),
-                        TransfurContext.hazard(TransfurCause.FACE_HAZARD));
+                ProcessTransfur.transfur(entity, ImmediateTransfurDecision.unsafe(ChangedTransfurVariants.FALLBACK_VARIANT.get(), TransfurCause.FACE_HAZARD));
             }
 
             player.awardStat(Stats.ITEM_USED.get(this));

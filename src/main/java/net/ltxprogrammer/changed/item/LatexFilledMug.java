@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.ImmediateTransfurDecision;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -21,8 +22,7 @@ public class LatexFilledMug extends FilledMug {
 
     @Override
     protected void onDrink(ItemStack stack, Level level, LivingEntity user) {
-        ProcessTransfur.progressTransfur(user, 22.0f,
-                latexType.get().getTransfurVariant(TransfurCause.ATE_LATEX, level.random),
-                TransfurContext.hazard(TransfurCause.ATE_LATEX));
+        ProcessTransfur.transfur(user,
+                ImmediateTransfurDecision.unsafe(latexType.get().getTransfurVariant(TransfurCause.ATE_LATEX, user.getRandom()), TransfurCause.ATE_LATEX));
     }
 }

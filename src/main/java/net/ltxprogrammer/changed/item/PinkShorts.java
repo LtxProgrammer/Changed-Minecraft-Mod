@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.item;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
@@ -47,6 +48,10 @@ public class PinkShorts extends ClothingItem implements LatexFusingItem {
         }
     }
 
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.LATEX_PINK_WYVERN.get(), TransfurContext.hazard(TransfurCause.PINK_SHORTS), 3.0f);
+    }
+
     @Override
     public void wearTick(ItemStack itemStack, LivingEntity wearer) {
         var tag = itemStack.getOrCreateTag();
@@ -54,7 +59,7 @@ public class PinkShorts extends ClothingItem implements LatexFusingItem {
         tag.putInt("age", age);
         if (age < 12000) // Half a minecraft day
             return;
-        if (ProcessTransfur.progressTransfur(wearer, 3.0f, ChangedTransfurVariants.LATEX_PINK_WYVERN.get(), TransfurContext.hazard(TransfurCause.PINK_SHORTS)))
+        if (ProcessTransfur.progressTransfur(wearer, this.makeAssimilationDecision(wearer)))
             itemStack.shrink(1);
     }
 

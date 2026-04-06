@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.AtomicDouble;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.ReferenceArraySet;
 import net.ltxprogrammer.changed.Changed;
@@ -31,7 +32,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -257,7 +257,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public Color3 getTransfurColor() {
-        return getChangedEntity().getTransfurColor(this.transfurContext.cause);
+        return getChangedEntity().getTransfurColor(this.transfurContext.cause());
     }
 
     public TransfurVariantInstance(TransfurVariant<T> parent, Player host) {
@@ -752,7 +752,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     protected void tickTransfurProgress() {
         transfurProgressionO = transfurProgression;
         if (transfurProgression < 1f) {
-            transfurProgression += (1.0f / transfurContext.cause.getDuration()) * 0.05f;
+            transfurProgression += (1.0f / transfurContext.cause().getDuration()) * 0.05f;
             if (!host.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION)) {
                 transfurProgressionO = 1f;
                 transfurProgression = 1f;
@@ -782,8 +782,16 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         return true;
     }
 
+    public boolean canElytraGlide() {
+        return this.parent.canGlide;
+    }
+
+    public boolean canCreativeFly() {
+        return this.parent.canGlide;
+    }
+
     protected void tickFlying() {
-        if (parent.canGlide && shouldApplyAbilities()) {
+        if (this.canCreativeFly() && shouldApplyAbilities()) {
             if (!host.isCreative() && !host.isSpectator()) {
                 boolean meetsCriteria = this.meetsCriteriaForFlying();
 
@@ -1001,7 +1009,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         });
         mapAttributes(player, previousAttributes, TransfurVariantInstance::noOp);
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth()));
-        if (parent.canGlide) {
+        if (this.canCreativeFly()) {
             player.getAbilities().mayfly = player.isCreative() || player.isSpectator();
             if (!player.isCreative() && !player.isSpectator()) {
                 player.getAbilities().flying = false;
@@ -1090,4 +1098,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public void prepareForRender(float partialTicks) {}
+
+    public Pair<Color3, Color3> getColors() {
+        return ChangedEntities.getEntityColor(this.entity);
+    }
 }

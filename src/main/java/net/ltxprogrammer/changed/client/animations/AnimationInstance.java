@@ -203,7 +203,7 @@ public class AnimationInstance {
 
     public void tickTime() {
         this.timeO = this.time;
-        this.time += 1.0f / 20.0f;
+        this.time += (1.0f / 20.0f) * parameters.getPlaybackSpeed(hostEntity, this.time);
         playSounds(this.timeO, this.time);
     }
 

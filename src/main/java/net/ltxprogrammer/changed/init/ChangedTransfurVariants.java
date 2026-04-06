@@ -1,20 +1,20 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.VisionType;
+import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.ai.EntityAssimilationBehavior;
+import net.ltxprogrammer.changed.entity.ai.TransfurDecider;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.GenderedPair;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -201,6 +201,13 @@ public class ChangedTransfurVariants {
 
     private static <T extends ChangedEntity> RegistryObject<TransfurVariant<T>> register(String name, TransfurVariant.Builder<T> builder) {
         return REGISTRY.register(name, builder::build);
+    }
+
+    static {
+        ProcessTransfur.registerMobAssimilation(EntityType.BEE, EntityAssimilationBehavior.latexAssimilation(1.4, true,
+                TransfurDecider.simpleMobDecider(LATEX_BEE, 3.0f)));
+        ProcessTransfur.registerMobAssimilation(EntityType.RABBIT, EntityAssimilationBehavior.latexAssimilation(2.0, true,
+                TransfurDecider.simpleMobDecider(Gendered.LATEX_RABBITS, 3.0f)));
     }
 
     public static class Gendered {

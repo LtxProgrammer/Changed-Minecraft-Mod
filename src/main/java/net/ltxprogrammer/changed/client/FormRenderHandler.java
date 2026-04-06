@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -23,6 +24,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +33,36 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class FormRenderHandler {
+    /**
+     * Returns the mix between the sky and block light values.
+     */
+    public static int lerpPackedLight(int packedLight0, int packedLight1, float alpha) {
+        int blockLight0 = LightTexture.block(packedLight0);
+        int skyLight0 = LightTexture.sky(packedLight0);
+        int blockLight1 = LightTexture.block(packedLight1);
+        int skyLight1 = LightTexture.sky(packedLight1);
+
+        return LightTexture.pack(
+                Mth.lerpInt(alpha, blockLight0, blockLight1),
+                Mth.lerpInt(alpha, skyLight0, skyLight1)
+        );
+    }
+
+    /**
+     * Returns the brighter sky and block light values within the two values
+     */
+    public static int maxPackedLight(int packedLight0, int packedLight1) {
+        int blockLight0 = LightTexture.block(packedLight0);
+        int skyLight0 = LightTexture.sky(packedLight0);
+        int blockLight1 = LightTexture.block(packedLight1);
+        int skyLight1 = LightTexture.sky(packedLight1);
+
+        return LightTexture.pack(
+                Math.max(blockLight0, blockLight1),
+                Math.max(skyLight0, skyLight1)
+        );
+    }
+
     public static void renderForm(Player player, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             ChangedCompatibility.freezeIsFirstPersonRendering();
@@ -60,8 +92,12 @@ public abstract class FormRenderHandler {
                     throw new ReportedException(report);
                 }
             } else {
-                if (!RenderOverride.renderOverrides(player, variant, stack, buffer, light, partialTick))
-                    renderLiving(variant.getChangedEntity(), stack, buffer, light, partialTick);
+                var changedEntity = variant.getChangedEntity();
+                EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(changedEntity);
+                int variantLight = maxPackedLight(light, renderer.getPackedLightCoords(changedEntity, partialTick));
+
+                if (!RenderOverride.renderOverrides(player, variant, stack, buffer, variantLight, partialTick))
+                    renderLiving(changedEntity, stack, buffer, variantLight, partialTick);
             }
 
             ChangedCompatibility.thawIsFirstPersonRendering();
@@ -153,7 +189,11 @@ public abstract class FormRenderHandler {
 
                     TransfurAnimator.renderTransfurringArm(player, handSide, armPose, variant, stack, buffer, light, partialTick, null);
                 } else {
-                    renderHand(variant.getChangedEntity(), handSide, armPose, stack, buffer, light, partialTick);
+                    var changedEntity = variant.getChangedEntity();
+                    EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(changedEntity);
+                    int variantLight = maxPackedLight(light, renderer.getPackedLightCoords(changedEntity, partialTick));
+
+                    renderHand(variant.getChangedEntity(), handSide, armPose, stack, buffer, variantLight, partialTick);
                 }
 
                 ChangedCompatibility.thawIsFirstPersonRendering();

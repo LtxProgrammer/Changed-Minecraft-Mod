@@ -32,6 +32,8 @@ public class QuadrupedalInitAnimator<T extends ChangedEntity, M extends Advanced
         }
 
         torso.xRot = 0.0F;
+        torso.zRot = 0.0F;
+        torso.x = 0.0F;
         torso.z = 0.0F;
         frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / swingSpeed;
         frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount / swingSpeed;

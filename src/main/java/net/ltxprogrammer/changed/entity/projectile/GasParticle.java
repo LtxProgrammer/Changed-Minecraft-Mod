@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.entity.projectile;
 
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
+import net.ltxprogrammer.changed.entity.ai.NonLatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.item.GasMaskItem;
@@ -72,6 +74,10 @@ public class GasParticle extends ThrowableProjectile {
         return 0.015f;
     }
 
+    protected NonLatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return NonLatexAssimilationDecision.fromBlockOrItem(variant, TransfurCause.FACE_HAZARD, (int)Mth.lerp((float)this.tickCount / DISSIPATE_TIME, 3.5f, 0.5f), 1.0f);
+    }
+
     @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
@@ -80,8 +86,7 @@ public class GasParticle extends ThrowableProjectile {
             if (livingEntity.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof GasMaskItem)
                 return;
 
-            ProcessTransfur.progressTransfur(livingEntity, (int)Mth.lerp((float)this.tickCount / DISSIPATE_TIME, 3.5f, 0.5f), variant,
-                    TransfurContext.hazard(TransfurCause.FACE_HAZARD));
+            ProcessTransfur.progressTransfur(livingEntity, this.makeAssimilationDecision(livingEntity));
             this.discard();
         }
     }

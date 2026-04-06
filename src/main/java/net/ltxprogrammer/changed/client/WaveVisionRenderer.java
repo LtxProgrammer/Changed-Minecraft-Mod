@@ -353,6 +353,9 @@ public class WaveVisionRenderer {
                         LOGGER.debug("Loaded {} into resonance mask", resonanceMask);
                     } catch (IOException e) {
                         fillMaskWithDefault(maskBuilder, sprite);
+                    } catch (NullPointerException e) {
+                        LOGGER.warn("Resource at {} gave a null InputStream", resonanceMask);
+                        fillMaskWithDefault(maskBuilder, sprite);
                     }
                 }, () -> {
                     fillMaskWithDefault(maskBuilder, sprite);

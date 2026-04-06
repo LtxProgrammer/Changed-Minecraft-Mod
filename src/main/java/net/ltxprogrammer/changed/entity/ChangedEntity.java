@@ -1,11 +1,12 @@
 package net.ltxprogrammer.changed.entity;
 
 import com.mojang.datafixers.util.Pair;
-import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
+import net.ltxprogrammer.changed.entity.ai.AssimilationBehavior;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.ai.LookAtPlayerButNotHostGoal;
 import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
 import net.ltxprogrammer.changed.entity.beast.*;
@@ -19,9 +20,7 @@ import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.Color3;
-import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -65,6 +64,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -126,7 +126,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     }
 
     public float getSimulatedSpring(SpringType type, SpringType.Direction direction, float partialTicks) {
-        return simulatedSprings.get(direction).get(type).getSpring(partialTicks);
+        var typeMap = simulatedSprings.computeIfAbsent(direction, dir -> new EnumMap<>(SpringType.class));
+        return typeMap.computeIfAbsent(type, SpringType.Simulator::new).getSpring(partialTicks);
     }
 
     private void moveCloak() {
@@ -285,7 +286,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     public HairStyle getDefaultHairStyle() {
         if (this.getValidHairStyles() != null) {
             var styles = this.getValidHairStyles();
-            return styles.isEmpty() ? HairStyle.BALD.get() :  styles.get(level().random.nextInt(styles.size()));
+            return styles.isEmpty() ? HairStyle.BALD.get() : styles.get(this.random.nextInt(styles.size()));
         }
 
         else
@@ -442,8 +443,45 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         return () -> SpawnPlacements.register(registryObject.get(), spawnPlacement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawnPredicate);
     }
 
-    public TransfurVariant<?> getTransfurVariant() {
+    @Deprecated
+    protected TransfurVariant<?> getTransfurVariant() {
         return getSelfVariant();
+    }
+
+    protected TransfurVariant<?> getTransfurVariant(LatexAssimilationDecision.Method method) {
+        return this.getTransfurVariant();
+    }
+
+    protected float computeTransfurDamage() {
+        IAbstractChangedEntity self = IAbstractChangedEntity.forEntity(this);
+
+        float damage = (float)self.getEntity().getAttributeValue(ChangedAttributes.TRANSFUR_DAMAGE.get());
+        damage = ProcessTransfur.difficultyAdjustTransfurAmount(self.getLevel().getDifficulty(), damage, self);
+        float attackStrengthScale = underlyingPlayer != null ? underlyingPlayer.getAttackStrengthScale(0.5F) : 1.0F;
+        damage *= 0.2F + attackStrengthScale * attackStrengthScale * 0.8F;
+
+        return damage;
+    }
+
+    /**
+     * Returns a decision on how this entity wants to transfur the target entity
+     * @param cause tagged transfur cause. Expected to be GRAB_REPLICATE or GRAB_ABSORB for entity sources.
+     * @param targetEntity target entity that this entity is deciding how to assimilate
+     * @return decision on how this entity wants to transfur the target entity, or null if it doesn't want to.
+     */
+    public @Nullable LatexAssimilationDecision<?> makeLatexAssimilationDecision(TransfurCause cause, LivingEntity targetEntity) {
+        IAbstractChangedEntity self = IAbstractChangedEntity.forEntity(this);
+
+        return switch (cause) {
+            case GRAB_REPLICATE -> LatexAssimilationDecision.strongReplication(getTransfurVariant(LatexAssimilationDecision.Method.REPLICATION),
+                    self.replicate(),
+                    this.computeTransfurDamage(),
+                    this::onReplicateOther);
+            case GRAB_ABSORB -> LatexAssimilationDecision.strongAbsorption(getTransfurVariant(LatexAssimilationDecision.Method.ABSORPTION),
+                    self.absorb(),
+                    this.computeTransfurDamage());
+            default -> null;
+        };
     }
 
     public TransfurVariant<?> getSelfVariant() {
@@ -460,13 +498,6 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         hairStyle = this.getDefaultHairStyle();
         if (level.isClientSide) { // Springs are only simulated on the client side
             simulatedSprings = new HashMap<>();
-            Arrays.stream(SpringType.Direction.values()).forEach(direction -> {
-                final var map = new EnumMap<SpringType, SpringType.Simulator>(SpringType.class);
-                simulatedSprings.put(direction, map);
-                Arrays.stream(SpringType.values()).forEach(springType -> {
-                    map.put(springType, new SpringType.Simulator(springType));
-                });
-            });
         } else {
             simulatedSprings = Map.of();
         }
@@ -526,27 +557,21 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
                 return false;
         }
 
-        TransfurVariant<?> targetVariant = TransfurVariant.getEntityVariant(livingEntity);
-        TransfurVariant<?> selfVariant = getSelfVariant();
-        if (ChangedFusions.INSTANCE.getFusionDefinitions().anyMatch(fusionDefinition ->
-                fusionDefinition.matches(selfVariant, livingEntity.getClass()) ||
-                fusionDefinition.matches(targetVariant, this.getClass()) ||
-                fusionDefinition.matches(selfVariant, targetVariant))) { // Fusion definition exists for target and this entity
-            if (!(livingEntity instanceof Player player))
-                return true; // Always fuse with NPCs
-            if (livingEntity.level().getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER)) {
-                var instance = ProcessTransfur.getPlayerTransfurVariant(player);
-                if (instance == null || instance.ageAsVariant < livingEntity.level().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
-                    return true;
-            }
-        }
+        LatexAssimilationDecision<?> decision = switch (this.getTransfurMode()) {
+            case REPLICATION -> this.makeLatexAssimilationDecision(TransfurCause.GRAB_REPLICATE, livingEntity);
+            case ABSORPTION -> this.makeLatexAssimilationDecision(TransfurCause.GRAB_ABSORB, livingEntity);
+            default -> null;
+        };
+        AssimilationBehavior behavior = ProcessTransfur.computeAssimilationBehavior(livingEntity, decision);
+        if (behavior != null)
+            return true;
 
-        if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof ChangedEntity))
-            return false;
+        var targetLatexType = LatexType.getEntityLatexType(livingEntity);
 
-        return getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity));
+        return targetLatexType != null && getLatexType().isHostileTo(targetLatexType);
     }
 
+    @Deprecated
     public TransfurContext getReplicateContext() {
         if (underlyingPlayer == null)
             return TransfurContext.npcLatexHazard(this, TransfurCause.GRAB_REPLICATE);
@@ -554,6 +579,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
             return TransfurContext.playerLatexHazard(underlyingPlayer, TransfurCause.GRAB_REPLICATE);
     }
 
+    @Deprecated
     public TransfurContext getAbsorbContext() {
         if (underlyingPlayer == null)
             return TransfurContext.npcLatexHazard(this, TransfurCause.GRAB_ABSORB);
@@ -565,244 +591,23 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         return underlyingPlayer != null ? underlyingPlayer : this;
     }
 
-    /**
-     * @param target entity to try to absorb
-     * @param source abstraction of the attacker
-     * @param amount damage amount
-     * @param possibleMobFusions possible fusions to absorb into
-     * @return True if the entity was absorbed, False otherwise
-     */
-    public boolean tryAbsorbTarget(LivingEntity target, IAbstractChangedEntity source, float amount, @Nullable List<TransfurVariant<?>> possibleMobFusions) {
-        final TransfurVariant<?> sourceTfVariant = source.getTransfurVariant();
-
-        if (sourceTfVariant == null)
-            return false;
-
-        if (!ProcessTransfur.willTransfur(target, amount)) {
-            ProcessTransfur.progressTransfur(target, amount, sourceTfVariant, source.absorb());
-            return false;
-        }
-
-        // Special scenario where source is NPC, and attacked is Player, transfur player with possible keepCon
-        if (!source.isPlayer() && target instanceof Player &&
-                ProcessTransfur.progressTransfur(target, amount, sourceTfVariant, source.absorb())) {
-            source.getEntity().discard();
-            return true;
-        }
-
-        TransfurVariant<?> actualTfVariant;
-
-        if (possibleMobFusions != null && !possibleMobFusions.isEmpty())
-            actualTfVariant = Util.getRandom(possibleMobFusions, source.getEntity().getRandom());
-        else
-            actualTfVariant = sourceTfVariant;
-
-        source.replaceVariant(actualTfVariant); // Replace entity variant if tf variant is different
-
-        ProcessTransfur.onAbsorbEntity(source);
-        var pos = target.position();
-        source.getEntity().teleportTo(pos.x, pos.y, pos.z);
-        source.getEntity().setYRot(target.getYRot());
-        source.getEntity().setXRot(target.getXRot());
-
-        ChangedAnimationEvents.broadcastTransfurAnimation(target, actualTfVariant, source.absorb());
-
-        // Should be one-hit absorption here
-        if (target instanceof Player loserPlayer) {
-            if (!ProcessTransfur.killPlayerByAbsorption(loserPlayer, source.getEntity())) { // Failed to kill player
-                var instance = ProcessTransfur.setPlayerTransfurVariant(loserPlayer, source.getTransfurVariant(), source.absorb(), 1.0f);
-                instance.willSurviveTransfur = true;
-
-                ProcessTransfur.onNewlyTransfurred(IAbstractChangedEntity.forPlayer(loserPlayer));
-            }
-        }
-
-        else {
-            target.discard();
-        }
-
-        ChangedSounds.broadcastSound(source.getEntity(), source.getTransfurVariant().sound, 1.0F, 1.0F);
-        return true;
-    }
-
-    public boolean tryFuseWithTarget(LivingEntity entity, IAbstractChangedEntity source, float amount) {
-        TransfurVariant<?> selfVariant = this.getSelfVariant();
-
-        var targetVariant = TransfurVariant.getEntityVariant(entity);
-        List<TransfurVariant<?>> possibleMobFusions = new ArrayList<>();
-        if (selfVariant != null && targetVariant != null) {
-            var possibleFusion = ChangedFusions.INSTANCE.getFusionsFor(selfVariant, targetVariant).toList();
-            if (possibleFusion.isEmpty())
-                return false;
-
-            if (level().isClientSide)
-                return true;
-
-            { // Check if attacker can't fuse
-                var instance = ProcessTransfur.getPlayerTransfurVariant(underlyingPlayer);
-                if (instance != null && instance.ageAsVariant > level().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
-                    possibleFusion = List.of();
-            }
-
-            { // Check if attackee can't fuse
-                var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
-                if (instance != null && instance.ageAsVariant > level().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
-                    possibleFusion = List.of();
-            }
-
-            if (entity instanceof Player && !source.isPlayer()) {
-                if (!level().getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
-                    possibleFusion = List.of();
-            }
-
-            if (!possibleFusion.isEmpty()) {
-                TransfurVariant<?> fusionVariant = Util.getRandom(possibleFusion, random);
-
-                if (underlyingPlayer != null) {
-                    if (entity instanceof Player pvpLoser) {
-                        ProcessTransfur.changeTransfur(underlyingPlayer, fusionVariant);
-                        ChangedSounds.broadcastSound(underlyingPlayer, ChangedSounds.LATEX_FUSE_ENTITY, 1f, 1f);
-                        ProcessTransfur.killPlayerByAbsorption(pvpLoser, underlyingPlayer);
-                    } else {
-                        ProcessTransfur.changeTransfur(underlyingPlayer, fusionVariant);
-                        ChangedSounds.broadcastSound(underlyingPlayer, ChangedSounds.LATEX_FUSE_ENTITY, 1f, 1f);
-                        entity.discard();
-                    }
-                } else {
-                    ChangedSounds.broadcastSound(ProcessTransfur.changeTransfur(entity, fusionVariant), ChangedSounds.LATEX_FUSE_ENTITY, 1f, 1f);
-                    this.discard();
-                }
-
-                ChangedAnimationEvents.broadcastTransfurAnimation(entity, fusionVariant, source.absorb());
-                return true;
-            }
-        }
-
-        else {
-            if (selfVariant == null)
-                selfVariant = this.getTransfurVariant();
-
-            if (!level().isClientSide) {
-                ChangedFusions.INSTANCE.getFusionsFor(selfVariant, entity.getClass()).forEach(possibleMobFusions::add);
-                ChangedFusions.INSTANCE.getFusionsFor(targetVariant, this.getClass()).forEach(possibleMobFusions::add);
-            }
-
-            { // Check if attacker can't fuse
-                var instance = ProcessTransfur.getPlayerTransfurVariant(underlyingPlayer);
-                if (instance != null && instance.ageAsVariant > level().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
-                    possibleMobFusions.clear();
-            }
-
-            if (entity instanceof Player && !source.isPlayer()) {
-                if (!level().getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
-                    possibleMobFusions.clear();
-            }
-        }
-
-        // Check if attacked entity is already latexed
-        if (ProcessTransfur.hasVariant(entity)) {
-            if (!possibleMobFusions.isEmpty()) {
-                var mobFusionVariant = Util.getRandom(possibleMobFusions, random);
-
-                ChangedAnimationEvents.broadcastTransfurAnimation(entity, mobFusionVariant, source.absorb());
-
-                if (underlyingPlayer != null) {
-                    float beforeHealth = underlyingPlayer.getHealth();
-                    ProcessTransfur.setPlayerTransfurVariant(underlyingPlayer, mobFusionVariant, getAbsorbContext());
-                    underlyingPlayer.setHealth(beforeHealth);
-                }
-
-                else if (entity instanceof Player victimPlayer) {
-                    float beforeHealth = entity.getHealth();
-                    ProcessTransfur.setPlayerTransfurVariant(victimPlayer, mobFusionVariant, getAbsorbContext());
-                    entity.setHealth(beforeHealth);
-                    this.discard();
-                    return true;
-                }
-
-                else {
-                    source.getEntity().discard();
-                    source = IAbstractChangedEntity.forEntity(mobFusionVariant.getEntityType().create(source.getLevel()));
-                    source.getLevel().addFreshEntity(source.getEntity());
-                }
-
-                ProcessTransfur.onAbsorbEntity(source);
-                var pos = entity.position();
-                source.getEntity().teleportTo(pos.x, pos.y, pos.z);
-                source.getEntity().setYRot(entity.getYRot());
-                source.getEntity().setXRot(entity.getXRot());
-
-                entity.discard();
-                return true;
-            }
-
-            return false;
-        }
-
-        if (possibleMobFusions.isEmpty() && !entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
-            return false;
-        }
-
-        entity.setLastHurtByMob(source.getEntity());
-        double d1 = source.getEntity().getX() - entity.getX();
-
-        double d0;
-        for(d0 = source.getEntity().getZ() - entity.getZ(); d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
-            d1 = (Math.random() - Math.random()) * 0.01D;
-        }
-
-        entity.animateHurt((float)(Mth.atan2(d0, d1) * (double)(180F / (float)Math.PI) - (double)entity.getYRot()));
-        entity.knockback((double)0.4F, d1, d0);
-
-        if(entity instanceof Player)
-            ChangedSounds.broadcastSound(entity, ChangedSounds.TRANSFUR_HURT, 1, entity.level().random.nextFloat() * 0.1F + 0.9F);
-
-        entity.hurt(ChangedDamageSources.entityTransfur(entity.level().registryAccess(), source), 0.0F);
-        boolean doesAbsorption = source.wantAbsorption();
-        if (!possibleMobFusions.isEmpty())
-            doesAbsorption = true;
-
-        if (!doesAbsorption) { // Replication
-            return false;
-        }
-
-        else { // Absorption
-            tryAbsorbTarget(entity, source, amount, possibleMobFusions);
-            return true;
-        }
-    }
-
     public boolean tryTransfurTarget(Entity entity) {
         if (!this.getType().is(ChangedTags.EntityTypes.LATEX))
             return false;
-
-        IAbstractChangedEntity abstractChangedEntity = IAbstractChangedEntity.forEither(maybeGetUnderlying());
-        if (abstractChangedEntity == null || !abstractChangedEntity.hasTransfurMode())
+        if (!(entity instanceof LivingEntity target))
             return false;
 
-        float damage = (float)maybeGetUnderlying().getAttributeValue(ChangedAttributes.TRANSFUR_DAMAGE.get());
-        damage = ProcessTransfur.difficultyAdjustTransfurAmount(entity.level().getDifficulty(), damage, abstractChangedEntity);
-        float attackStrengthScale = this.getUnderlyingPlayer() != null ? this.getUnderlyingPlayer().getAttackStrengthScale(0.5F) : 1.0F;
-        damage *= 0.2F + attackStrengthScale * attackStrengthScale * 0.8F;
-        TransfurVariant<?> variant = this.getTransfurVariant();
+        LatexAssimilationDecision<?> decision = switch (this.getTransfurMode()) {
+            case REPLICATION -> this.makeLatexAssimilationDecision(TransfurCause.GRAB_REPLICATE, target);
+            case ABSORPTION -> this.makeLatexAssimilationDecision(TransfurCause.GRAB_ABSORB, target);
+            default -> null;
+        };
+        AssimilationBehavior behavior = ProcessTransfur.computeAssimilationBehavior(target, decision);
+        if (behavior == null)
+            return false;
 
-        if (entity instanceof LivingEntity livingEntity) {
-            final var context = getReplicateContext();
-
-            ProcessTransfur.TransfurAttackEvent event = new ProcessTransfur.TransfurAttackEvent(livingEntity, variant, context);
-            if (Changed.postModEvent(event))
-                return false;
-
-            damage = ProcessTransfur.checkBlocked(livingEntity, damage, context.source);
-            if (tryFuseWithTarget(livingEntity, context.source, damage)) // Absorption or Fusion
-                return true;
-
-            if (TransfurVariant.getEntityVariant(livingEntity) == null) {
-                ProcessTransfur.progressTransfur(livingEntity, damage, variant, context);
-            }
-        }
-
-        return false;
+        behavior.stepAssimilate();
+        return true;
     }
 
     @Override
@@ -894,6 +699,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         this.attackAnim = player.attackAnim;
         this.oAttackAnim = player.oAttackAnim;
         this.flyDist = player.flyDist;
+        this.jumping = player.jumping;
 
         this.wasTouchingWater = player.wasTouchingWater;
         this.swimAmount = player.swimAmount;
@@ -1184,7 +990,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     }
 
     public void copyTraitsFrom(IAbstractChangedEntity entity) {
-
+        getBasicPlayerInfo().copyFrom(entity.getChangedEntity().getBasicPlayerInfo());
     }
 
     public CompoundTag savePlayerVariantData() {
@@ -1228,5 +1034,14 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return dimensions.height * this.getEyeHeightMul();
+    }
+
+    @Override
+    public float getFlyingSpeed() {
+        if (underlyingPlayer != null && underlyingPlayer.getAbilities().flying && !underlyingPlayer.isPassenger()) {
+            return this.isSprinting() ? underlyingPlayer.getAbilities().getFlyingSpeed() * 2.0F : underlyingPlayer.getAbilities().getFlyingSpeed();
+        } else {
+            return this.isSprinting() ? 0.025999999F : 0.02F;
+        }
     }
 }

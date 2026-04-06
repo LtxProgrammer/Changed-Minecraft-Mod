@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.projectile;
 
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
@@ -51,13 +52,18 @@ public class LatexInkball extends ThrowableItemProjectile {
 
     }
 
+    protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        return LatexAssimilationDecision.fromBlockOrItem(
+                ChangedTransfurVariants.Gendered.LATEX_SQUID_DOGS.getRandomVariant(target.getRandom()),
+                TransfurContext.hazard(TransfurCause.SQUID_DOG_INKBALL), 6.0f);
+    }
+
     protected void onHitEntity(EntityHitResult hitResult) {
         super.onHitEntity(hitResult);
         if (!(hitResult.getEntity() instanceof LivingEntity livingEntity))
             return;
 
-        ProcessTransfur.progressTransfur(livingEntity, 6.0f,
-                ChangedTransfurVariants.Gendered.LATEX_SQUID_DOGS.getRandomVariant(hitResult.getEntity().level().random), TransfurContext.hazard(TransfurCause.SQUID_DOG_INKBALL));
+        ProcessTransfur.progressTransfur(livingEntity, this.makeAssimilationDecision(livingEntity));
     }
 
     protected void onHit(HitResult hitResult) {

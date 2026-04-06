@@ -38,11 +38,8 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity> implements 
 
     @Inject(method = "setupAnim", at = @At("RETURN"))
     public void setupAnimEND(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo info) {
-        Player player = entity.getUnderlyingPlayer();
-        if (player == null) return;
-
-        if (!this.firstPersonNext && player instanceof AbstractClientPlayer && ((IAnimatedPlayer)player).playerAnimator_getAnimation().isActive()) {
-            AnimationApplier emote = ((IAnimatedPlayer)player).playerAnimator_getAnimation();
+        if (!this.firstPersonNext && entity instanceof IAnimatedPlayer animatedEntity && animatedEntity.playerAnimator_getAnimation().isActive()) {
+            AnimationApplier emote = animatedEntity.playerAnimator_getAnimation();
             this.emoteSupplier.set(emote);
             var propertyModel = this.getPropertyModel(null);
             propertyModel.body.y -= this.calculateTorsoPositionY();

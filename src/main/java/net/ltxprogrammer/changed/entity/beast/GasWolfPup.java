@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
@@ -75,25 +76,14 @@ public class GasWolfPup extends GasWolfMale {
 
         age++;
 
-        var underlyingPlayer = getUnderlyingPlayer();
-        if (ProcessTransfur.ifPlayerTransfurred(underlyingPlayer, variant -> {
-            if (variant.ageAsVariant > MAX_AGE || age > MAX_AGE) {
-                var newVariant = ChangedTransfurVariants.Gendered.GAS_WOLVES.getRandomVariant(level().random);
-                ProcessTransfur.changeTransfur(underlyingPlayer, newVariant);
-                ChangedSounds.broadcastSound(this, newVariant.sound, 1.0f, 1.0f);
-                underlyingPlayer.heal(12.0f);
-            }
-        })) return;
-
-        if (age > MAX_AGE) {
+        final int checkAge = ProcessTransfur.ifPlayerTransfurred(getUnderlyingPlayer(), variant -> variant.ageAsVariant, () -> age);
+        if (!level.isClientSide &&checkAge > MAX_AGE) {
+            IAbstractChangedEntity conversionEntity = IAbstractChangedEntity.forEntity(this);
             var newVariant = ChangedTransfurVariants.Gendered.GAS_WOLVES.getRandomVariant(level().random);
-            var wolf = newVariant.getEntityType().create(level);
-            if (wolf != null) {
-                wolf.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-                level.addFreshEntity(wolf);
-                ChangedSounds.broadcastSound(this, newVariant.sound, 1.0f, 1.0f);
-            }
-            this.discard();
+
+            conversionEntity.replaceVariant(newVariant);
+            ChangedSounds.broadcastSound(conversionEntity.getEntity(), newVariant.sound, 1.0f, 1.0f);
+            conversionEntity.getEntity().heal(12.0f);
         }
     }
 

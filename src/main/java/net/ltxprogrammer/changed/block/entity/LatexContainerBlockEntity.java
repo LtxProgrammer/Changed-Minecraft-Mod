@@ -1,16 +1,19 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.item.AbstractLatexBucket;
 import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -126,5 +129,14 @@ public class LatexContainerBlockEntity extends BlockEntity {
 
     public LatexType getFillType() {
         return currentType;
+    }
+
+    public @Nullable LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
+        final var variant = this.getFillType().getTransfurVariant(TransfurCause.LATEX_CONTAINER_FELL, target.getRandom());
+
+        if (variant == null)
+            return null;
+
+        return LatexAssimilationDecision.fromBlockOrItem(variant, TransfurContext.hazard(TransfurCause.LATEX_CONTAINER_FELL), 15.0f);
     }
 }

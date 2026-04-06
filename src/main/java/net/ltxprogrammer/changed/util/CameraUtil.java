@@ -7,15 +7,19 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.network.packet.TugCameraPacket;
 import net.minecraft.Util;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3fc;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
@@ -156,5 +160,30 @@ public class CameraUtil {
         /*Vector4f v = new Vector4f(modelSpace.x(), modelSpace.y(), modelSpace.z(), modelSpace.w());
         v.mul(modelSpaceToWorldSpaceMatrix);
         return v;*/
+    }
+
+    public static void decomposeZYX(Matrix3fc rotationMatrix, TriConsumer<Float, Float, Float> componentConsumer) {
+        // matrix decomposition from https://www.geometrictools.com/Documentation/EulerAngles.pdf
+        // JOML matrices are column-major, so switch row-major terms from example
+        if (rotationMatrix.m02() > -1.0f && rotationMatrix.m02() < 1.0f) {
+            float y = (float) Math.asin(-rotationMatrix.m02());
+            float z = (float) Math.atan2(rotationMatrix.m01(), rotationMatrix.m00());
+            float x = (float) Math.atan2(rotationMatrix.m12(), rotationMatrix.m22());
+            componentConsumer.accept(x, y, z);
+        } else {
+            int sign = Mth.sign(rotationMatrix.m02());
+            float y = sign * -Mth.HALF_PI;
+            float z = sign * (float) Math.atan2(-rotationMatrix.m21(), rotationMatrix.m11());
+            float x = 0f;
+            componentConsumer.accept(x, y, z);
+        }
+    }
+
+    public static void decomposeZYX(Matrix3fc rotationMatrix, ModelPart part) {
+        decomposeZYX(rotationMatrix, (xRot, yRot, zRot) -> {
+            part.xRot = xRot;
+            part.yRot = yRot;
+            part.zRot = zRot;
+        });
     }
 }

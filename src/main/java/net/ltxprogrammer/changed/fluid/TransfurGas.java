@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
+import net.ltxprogrammer.changed.entity.ai.NonLatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -57,6 +59,11 @@ public abstract class TransfurGas extends Gas {
         return Optional.empty();
     }
 
+    protected Optional<NonLatexAssimilationDecision<?>> makeAssimilationDecision(LivingEntity target) {
+        return Util.getRandomSafe(variants, target.getRandom()).map(Supplier::get)
+                .map(variant -> NonLatexAssimilationDecision.fromBlockOrItem(variant, TransfurCause.FACE_HAZARD, 8.0f, 1.0f));
+    }
+
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
         var entity = event.getEntity();
@@ -67,9 +74,7 @@ public abstract class TransfurGas extends Gas {
 
             if(air <= 0) {
                 air = 0;
-                Util.getRandomSafe(transfurGas.variants, entity.level().random).map(Supplier::get)
-                        .ifPresent(variant ->
-                                ProcessTransfur.progressTransfur(entity, 8.0f, variant, TransfurContext.hazard(TransfurCause.FACE_HAZARD)));
+                transfurGas.makeAssimilationDecision(entity).ifPresent(decision -> ProcessTransfur.progressTransfur(entity, decision));
             }
 
             entity.setAirSupply(air);

@@ -1,13 +1,16 @@
 package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.process.TransfurEvents;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Minecraft;
@@ -23,6 +26,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.IModBusEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -181,6 +185,7 @@ public class TransfurVariant<T extends ChangedEntity> {
 
     public T generateForm(@NotNull Player player, Level level) {
         T latexForm = createChangedEntity(level);
+        latexForm.setUnderlyingPlayer(player);
         latexForm.moveTo((player.getX()), (player.getY()), (player.getZ()), player.getYRot(), 0);
         latexForm.setCustomName(player.getDisplayName());
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
@@ -209,8 +214,21 @@ public class TransfurVariant<T extends ChangedEntity> {
         return replaceEntity(entity, cause == null ? null : cause.getEntity());
     }
 
+    public IAbstractChangedEntity replaceEntity(@NotNull LivingEntity entity, @Nullable ILatexAssimilatedEntity cause) {
+        return replaceEntity(entity, cause == null ? null : cause.getEntity());
+    }
+
+    public IAbstractChangedEntity replaceEntity(@NotNull LivingEntity entity, @Nullable Either<IAbstractChangedEntity, ILatexAssimilatedEntity> cause) {
+        return replaceEntity(entity, cause == null ? null : cause.map(IAbstractChangedEntity::getEntity, ILatexAssimilatedEntity::getEntity));
+    }
+
     public IAbstractChangedEntity replaceEntity(@NotNull LivingEntity entity, @Nullable LivingEntity cause) {
         var newEntity = spawnAtEntity(entity);
+        var event = new TransfurEvents.ReplaceEntityEvent(entity, this, cause, newEntity);
+        Changed.postModEvent(event);
+
+        cause = event.getCauseOfReplacement();
+
         if (entity.hasCustomName()) {
             newEntity.setCustomName(entity.getCustomName());
             newEntity.setCustomNameVisible(entity.isCustomNameVisible());
@@ -232,13 +250,10 @@ public class TransfurVariant<T extends ChangedEntity> {
                 var instance = ProcessTransfur.setPlayerTransfurVariant(player, this, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE), 1.0f);
                 instance.willSurviveTransfur = true;
 
-                ProcessTransfur.forceNearbyToRetarget(player.level(), player);
-
                 ProcessTransfur.onNewlyTransfurred(IAbstractChangedEntity.forPlayer(player));
                 return IAbstractChangedEntity.forPlayer(player);
             }
         } else if (entity instanceof ChangedEntity changedEntity) {
-            newEntity.getBasicPlayerInfo().copyFrom(changedEntity.getBasicPlayerInfo());
             newEntity.copyTraitsFrom(IAbstractChangedEntity.forEntity(changedEntity));
             // Take armor and held items
             Arrays.stream(EquipmentSlot.values()).forEach(slot -> {
@@ -531,15 +546,6 @@ public class TransfurVariant<T extends ChangedEntity> {
         return null;
     }
 
-    public static TransfurVariant<?> getEntityTransfur(LivingEntity entity) {
-        return ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity),
-                variant -> variant.getChangedEntity().getTransfurVariant(), () -> {
-            if (entity instanceof ChangedEntity changedEntity)
-                return changedEntity.getTransfurVariant();
-            return null;
-        });
-    }
-
     public static TransfurVariant<?> getEntityVariant(LivingEntity entity) {
         return ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity),
                 TransfurVariantInstance::getParent,
@@ -550,8 +556,9 @@ public class TransfurVariant<T extends ChangedEntity> {
                 });
     }
 
+    @Deprecated
     public Pair<Color3, Color3> getColors() {
-        var ints = ChangedEntities.getEntityColor(getEntityType().builtInRegistryHolder().key().location());
+        var ints = ChangedEntities.getEntityColor(ForgeRegistries.ENTITY_TYPES.getKey(getEntityType()));
         return new Pair<>(
                 Color3.fromInt(ints.getFirst()),
                 Color3.fromInt(ints.getSecond()));

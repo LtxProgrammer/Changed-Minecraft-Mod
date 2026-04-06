@@ -77,39 +77,38 @@ public class VariantAbilityActivate implements ChangedPacket {
         }
 
         else {
+            context.setPacketHandled(true);
             final var sender = context.getSender();
             if (sender.getId() != this.id)
                 return CompletableFuture.failedFuture(new IllegalArgumentException("Incorrect UUID for sending player"));
 
-            ProcessTransfur.ifPlayerTransfurred(sender, (variant) -> {
-                context.setPacketHandled(true);
+            return levelFuture.thenAccept(level -> {
+                ProcessTransfur.ifPlayerTransfurred(sender, (variant) -> {
+                    GrabEntityAbility.getGrabberSafe(sender).ifPresent(entity -> {
+                        if (entity.getAbilityInstanceSafe(ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                                .map(ability -> ability.grabbedHasControl).orElse(false)) {
+                            entity.getEntity().interact(sender, InteractionHand.MAIN_HAND);
+                        }
+                    });
 
-                GrabEntityAbility.getGrabberSafe(sender).ifPresent(entity -> {
-                    if (entity.getAbilityInstanceSafe(ChangedAbilities.GRAB_ENTITY_ABILITY.get())
-                            .map(ability -> ability.grabbedHasControl).orElse(false)) {
-                        entity.getEntity().interact(sender, InteractionHand.MAIN_HAND);
+                    if (variant.isTemporaryFromSuit())
+                        return;
+
+                    if (ability != null)
+                        variant.setSelectedAbility(ability);
+
+                    if (!keyDown && ability == null) {
+                        if (!sender.isUsingItem())
+                            sender.openMenu(new SimpleMenuProvider((id, inventory, givenPlayer) ->
+                                    new AbilityRadialMenu(id, inventory, null), AbilityRadialMenu.CONTAINER_TITLE));
                     }
+                    else if (variant.abilityKey.getFlipCount() < 6) { // Prevent DoS by limiting flip count / tick
+                        variant.abilityKey.queueKeyState(keyDown);
+                    }
+
+                    Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), this);
                 });
-
-                if (variant.isTemporaryFromSuit())
-                    return;
-
-                if (ability != null)
-                    variant.setSelectedAbility(ability);
-
-                if (!keyDown && ability == null) {
-                    if (!sender.isUsingItem())
-                        sender.openMenu(new SimpleMenuProvider((id, inventory, givenPlayer) ->
-                                new AbilityRadialMenu(id, inventory, null), AbilityRadialMenu.CONTAINER_TITLE));
-                }
-                else if (variant.abilityKey.getFlipCount() < 6) { // Prevent DoS by limiting flip count / tick
-                    variant.abilityKey.queueKeyState(keyDown);
-                }
-
-                Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), this);
             });
-
-            return CompletableFuture.completedFuture(null);
         }
     }
 }

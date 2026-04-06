@@ -29,6 +29,7 @@ public class LeglessInitAnimator<T extends ChangedEntity, M extends AdvancedHuma
         abdomen.xRot = (float) Math.toRadians(-12.5);
         abdomen.yRot = Mth.cos(limbSwing * 0.33333334F + ((float)Math.PI / 2.0F)) * 0.6F * slitherAmount;
         abdomen.zRot = Mth.cos(limbSwing * 0.33333334F) * 0.6F * slitherAmount;
+        abdomen.x = 0.0f;
         lowerAbdomen.xRot = (float) Math.toRadians(50);
         lowerAbdomen.yRot = abdomen.yRot;
         lowerAbdomen.zRot = abdomen.zRot;

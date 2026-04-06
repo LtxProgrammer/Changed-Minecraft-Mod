@@ -10,6 +10,8 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.ai.ImmediateTransfurDecision;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
@@ -156,22 +158,17 @@ public class CommandTransfur {
 
         if (TransfurVariant.getPublicTransfurVariants().map(ChangedRegistry.TRANSFUR_VARIANT::getKey).anyMatch(form::equals)) {
             TransfurVariant<?> transfurVariant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form);
-            ProcessTransfur.transfur(player, source.getLevel(), transfurVariant, true,
-                    TransfurContext.hazard(cause));
-            if (tag != null) {
-                ProcessTransfur.getPlayerTransfurVariantSafe(player).filter(instance -> instance.getParent() == transfurVariant)
-                        .ifPresent(instance -> {
-                            instance.getChangedEntity().readPlayerVariantData(tag);
-                        });
-            }
+            ProcessTransfur.transfur(player, ImmediateTransfurDecision.safe(transfurVariant, cause, newEntity -> {
+                if (tag != null)
+                    newEntity.getChangedEntity().readPlayerVariantData(tag);
+            }));
         }
         else if (form.equals(TransfurVariant.SPECIAL_LATEX)) {
             ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
             if (!ChangedRegistry.TRANSFUR_VARIANT.get().containsKey(key))
                 throw NO_SPECIAL_FORM.create();
 
-            ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(key), true,
-                    TransfurContext.hazard(cause));
+            ProcessTransfur.transfur(player, ImmediateTransfurDecision.safe(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(key), cause));
         }
         else
             throw NOT_LATEX_FORM.create();
@@ -226,14 +223,14 @@ public class CommandTransfur {
             form = Util.getRandom(TransfurVariant.getPublicTransfurVariants().collect(Collectors.toList()), player.getRandom()).getFormId();
 
         if (TransfurVariant.getPublicTransfurVariants().map(ChangedRegistry.TRANSFUR_VARIANT::getKey).anyMatch(form::equals)) {
-            ProcessTransfur.progressTransfur(player, progression, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), context);
+            ProcessTransfur.progressTransfur(player, LatexAssimilationDecision.strongReplication(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), context, progression));
         }
         else if (form.equals(TransfurVariant.SPECIAL_LATEX)) {
             ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
             if (!ChangedRegistry.TRANSFUR_VARIANT.get().containsKey(key))
                 throw NO_SPECIAL_FORM.create();
 
-            ProcessTransfur.progressTransfur(player, progression, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(key), context);
+            ProcessTransfur.progressTransfur(player, LatexAssimilationDecision.strongReplication(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), context, progression));
         }
         else
             throw NOT_LATEX_FORM.create();

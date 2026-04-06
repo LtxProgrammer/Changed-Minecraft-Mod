@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.LatexContainerBlockEntity;
+import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
@@ -242,13 +243,9 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
         blockEntity.ifPresent(container -> {
             if (container.getFillLevel() == 0)
                 return;
-            final var variant = container.getFillType().getTransfurVariant(TransfurCause.LATEX_CONTAINER_FELL, level.random);
-
-            if (variant == null)
-                return;
 
             level.getEntitiesOfClass(LivingEntity.class, new AABB(pos)).forEach(livingEntity -> {
-                ProcessTransfur.progressTransfur(livingEntity, 15.0f, variant, TransfurContext.hazard(TransfurCause.LATEX_CONTAINER_FELL));
+                ProcessTransfur.progressTransfur(livingEntity, container.makeAssimilationDecision(livingEntity));
             });
         });
 

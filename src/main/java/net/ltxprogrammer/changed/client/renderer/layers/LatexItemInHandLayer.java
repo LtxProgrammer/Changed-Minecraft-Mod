@@ -32,40 +32,30 @@ public class LatexItemInHandLayer<T extends ChangedEntity, M extends AdvancedHum
         this.itemInHandRenderer = itemInHandRenderer;
     }
 
-    protected void renderArmWithItem(LivingEntity p_174525_, ItemStack p_174526_, ItemDisplayContext p_174527_, HumanoidArm p_174528_, PoseStack poseStack, MultiBufferSource p_174530_, int p_174531_) {
-        if (p_174525_ instanceof ChangedEntity ChangedEntity && ChangedEntity.getUnderlyingPlayer() != null)
-            p_174525_ = ChangedEntity.getUnderlyingPlayer();
-
-        if (p_174526_.is(Items.SPYGLASS) && p_174525_.getUseItem() == p_174526_ && p_174525_.swingTime == 0) {
-            this.renderArmWithSpyglass(p_174525_, p_174526_, p_174528_, poseStack, p_174530_, p_174531_);
+    protected void renderArmWithItem(LivingEntity entity, ItemStack heldItem, ItemDisplayContext displayContext, HumanoidArm arm, PoseStack poseStack, MultiBufferSource source, int packedLight) {
+        if (heldItem.is(Items.SPYGLASS) && entity.getUseItem() == heldItem && entity.swingTime == 0) {
+            this.renderArmWithSpyglass(entity, heldItem, arm, poseStack, source, packedLight);
         } else {
             poseStack.pushPose();
             this.getParentModel().scaleForBody(poseStack);
-            super.renderArmWithItem(p_174525_, p_174526_, p_174527_, p_174528_, poseStack, p_174530_, p_174531_);
+            super.renderArmWithItem(entity, heldItem, displayContext, arm, poseStack, source, packedLight);
             poseStack.popPose();
         }
 
     }
 
-    private void renderArmWithSpyglass(LivingEntity entity, ItemStack itemStack, HumanoidArm arm, PoseStack pose, MultiBufferSource source, int color) {
+    private void renderArmWithSpyglass(LivingEntity entity, ItemStack itemStack, HumanoidArm arm, PoseStack pose, MultiBufferSource source, int packedLight) {
         pose.pushPose();
         ModelPart modelpart = this.getParentModel().getHead();
         this.getParentModel().scaleForHead(pose);
         float f = modelpart.xRot;
-        modelpart.xRot = Mth.clamp(modelpart.xRot, (-(float)Math.PI / 6F), ((float)Math.PI / 2F));
+        modelpart.xRot = Mth.clamp(modelpart.xRot, X_ROT_MIN, X_ROT_MAX);
         modelpart.translateAndRotate(pose);
         modelpart.xRot = f;
         CustomHeadLayer.translateToHead(pose, false);
         boolean flag = arm == HumanoidArm.LEFT;
-        /*var list = AdvancedHumanoidModel.findLargestCube(modelpart);
-        if (list.isEmpty()) {
-            pose.popPose();
-            return;
-        }
-        var headCube = list.get(0);
-        float dH = 0.5f - headCube.maxY;*/
-        pose.translate(((flag ? -2.5F : 2.5F) / 16.0F), -0.0625D/* + (dH / 16.0f)*/, 0.0D);
-        itemInHandRenderer.renderItem(entity, itemStack, ItemDisplayContext.HEAD, false, pose, source, color);
+        pose.translate(((flag ? -2.5F : 2.5F) / 16.0F), -0.0625D, 0.0D);
+        itemInHandRenderer.renderItem(entity, itemStack, ItemDisplayContext.HEAD, false, pose, source, packedLight);
         pose.popPose();
     }
 

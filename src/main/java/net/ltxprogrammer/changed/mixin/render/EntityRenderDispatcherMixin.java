@@ -1,6 +1,9 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.ChangedClient;
@@ -145,5 +148,13 @@ public abstract class EntityRenderDispatcherMixin {
                 });
             }
         });
+    }
+
+    @WrapMethod(method = "renderHitbox")
+    private static void orRenderOverlayingHitbox(PoseStack poseStack, VertexConsumer buffer, Entity entity, float partialTick, Operation<Void> original) {
+        if (entity instanceof LivingEntity livingEntity)
+            original.call(poseStack, buffer, EntityUtil.maybeGetOverlaying(livingEntity), partialTick);
+        else
+            original.call(poseStack, buffer, entity, partialTick);
     }
 }

@@ -66,11 +66,11 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
 
         if (transfurProgressionO < 1f && transfurProgression >= 1f) {
             if (!willSurviveTransfur)
-                this.getParent().replaceEntity(host, transfurContext.source);
+                this.getParent().replaceEntity(host, transfurContext.source());
         }
 
         if (transfurProgression >= 1f && !isTemporaryFromSuit()) {
-            transfurContext = transfurContext.withSource(null);
+            transfurContext = transfurContext.withoutSource();
             if (willSurviveTransfur)
                 ChangedCriteriaTriggers.TRANSFUR.trigger(host, this);
         }
@@ -80,7 +80,7 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
     protected void tickFlying() {
         super.tickFlying();
 
-        if (parent.canGlide && shouldApplyAbilities()) {
+        if (this.canCreativeFly() && shouldApplyAbilities()) {
             if (!host.isSpectator() && host.getAbilities().flying)
                 ChangedCriteriaTriggers.FLYING.trigger(host, ticksFlying);
         }

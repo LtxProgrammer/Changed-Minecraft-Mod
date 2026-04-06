@@ -5,15 +5,19 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.TorsoedModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.Color3;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
@@ -26,6 +30,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -52,9 +57,9 @@ public class LatexDripParticle extends LatexParticle {
     protected int ticksAttached = 0;
     private final int maxTicksAttached;
 
-    private final ChangedEntity attachedEntity;
+    private final LivingEntity attachedEntity;
     private final ModelPartStem attachedPart;
-    private final AdvancedHumanoidModel<?> attachedModel;
+    private final EntityModel<?> attachedModel;
   
     private final SurfacePoint surface;
     protected final Color3 color;
@@ -72,7 +77,7 @@ public class LatexDripParticle extends LatexParticle {
     }
 
     public LatexDripParticle(SpriteSet spriteSet,
-                             ChangedEntity attachedEntity, AdvancedHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
+                             LivingEntity attachedEntity, EntityModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
         super(attachedEntity.level(), lifespan);
         this.maxTicksAttached = attachedEntity.level().random.nextInt(80, 2400);
 
@@ -266,17 +271,15 @@ public class LatexDripParticle extends LatexParticle {
 
     @Override
     public void renderFromEvent(VertexConsumer buffer, Camera camera, float partialTicks, SetupContext context) {
-        boolean isCamEntity = camera.getEntity() == this.attachedEntity;
-        if (!isCamEntity && this.attachedEntity.getUnderlyingPlayer() != null) {
-            isCamEntity = camera.getEntity() == this.attachedEntity.getUnderlyingPlayer();
-        }
+        boolean isCamEntity = camera.getEntity() == this.attachedEntity ||
+                camera.getEntity() == EntityUtil.maybeGetUnderlying(this.attachedEntity);
 
         if (isCamEntity && attached) {
             if (ChangedCompatibility.isFirstPersonRendering()) {
                 var root = this.attachedPart.getRoot();
-                if (this.attachedModel.getHead() == root)
+                if (this.attachedModel instanceof HeadedModel headed && headed.getHead() == root)
                     return;
-                if (this.attachedEntity.isVisuallySwimming() && this.attachedModel.getTorso() == root)
+                if (this.attachedEntity.isVisuallySwimming() && this.attachedModel instanceof TorsoedModel torsoed && torsoed.getTorso() == root)
                     return;
             }
 
@@ -368,7 +371,7 @@ public class LatexDripParticle extends LatexParticle {
         }
     }
 
-    public static LatexParticleProvider<LatexDripParticle> of(ChangedEntity attachedEntity, AdvancedHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
+    public static LatexParticleProvider<LatexDripParticle> of(LivingEntity attachedEntity, EntityModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
         return new LatexParticleProvider<>() {
             @Override
             public LatexParticleType<LatexDripParticle> getParticleType() {

@@ -29,6 +29,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.level.FoliageColor;
@@ -114,7 +116,7 @@ public class ChangedClient {
         };
     }
 
-    protected static void addLatexParticleToEntity(ChangedEntity entity) {
+    protected static void addLatexParticleToChangedEntity(ChangedEntity entity) {
         if (particleSystem.getOrThrow().pauseForReload())
             return;
         if (entity.getRandom().nextFloat() > entity.getDripRate(1.0f - entity.computeHealthRatio()))
@@ -132,9 +134,29 @@ public class ChangedClient {
         }
     }
 
-    protected static void addLatexParticleToEntity(Player entity) {
+    protected static void addLatexParticleToAssimilatedEntity(PathfinderMob entity) {
+        if (particleSystem.getOrThrow().pauseForReload())
+            return;
+        if (!ProcessTransfur.isMobAssimilated(entity))
+            return;
+        if (entity.getRandom().nextFloat() > 0.05f)
+            return;
+        if (Minecraft.getInstance().cameraEntity != null && entity.distanceToSqr(Minecraft.getInstance().cameraEntity) > getAcceptableParticleDistanceSqr())
+            return;
+        var renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+        if (!(renderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer))
+            return;
+        for (var layer : livingEntityRenderer.layers) {
+            if (layer instanceof LatexParticlesLayer<?,?> latexParticlesLayer) {
+                latexParticlesLayer.createNewDripParticle(entity);
+                break;
+            }
+        }
+    }
+
+    protected static void addLatexParticleToPlayer(Player entity) {
         ProcessTransfur.ifPlayerTransfurred(entity, variant -> {
-            addLatexParticleToEntity(variant.getChangedEntity());
+            addLatexParticleToChangedEntity(variant.getChangedEntity());
         });
     }
 
@@ -146,8 +168,9 @@ public class ChangedClient {
         if (minecraft.level != null && particleSystem.getOrThrow().tick()) {
             var cameraPos = minecraft.gameRenderer.getMainCamera().getBlockPosition();
             var aabb = AABB.of(BoundingBox.fromCorners(cameraPos.offset(-64, -64, -64), cameraPos.offset(64, 64, 64)));
-            minecraft.level.getEntitiesOfClass(ChangedEntity.class, aabb).forEach(ChangedClient::addLatexParticleToEntity);
-            minecraft.level.getEntitiesOfClass(Player.class, aabb).forEach(ChangedClient::addLatexParticleToEntity);
+            minecraft.level.getEntitiesOfClass(ChangedEntity.class, aabb).forEach(ChangedClient::addLatexParticleToChangedEntity);
+            minecraft.level.getEntitiesOfClass(Player.class, aabb).forEach(ChangedClient::addLatexParticleToPlayer);
+            minecraft.level.getEntitiesOfClass(PathfinderMob.class, aabb).forEach(ChangedClient::addLatexParticleToAssimilatedEntity);
         }
 
         clientTicks++;

@@ -1,0 +1,32 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"particle": "changed:block/chamber_interior_off",
+		"exterior": "changed:block/chamber_exterior_frame",
+		"interior": "changed:block/chamber_interior_off"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 0],
+			"to": [7, 14, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 0, 0]},
+			"faces": {
+				"north": {"uv": [15.5, 0, 15, 3.5], "texture": "#exterior"},
+				"east": {"uv": [0, 11, 4, 14.5], "texture": "#interior"},
+				"west": {"uv": [0, 11, 4, 14.5], "texture": "#exterior"}
+			}
+		},
+		{
+			"from": [5, 14, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 14, 0]},
+			"faces": {
+				"west": {"uv": [2.75, 9.5, 6.75, 10], "texture": "#exterior"},
+				"up": {"uv": [9.5, 6.75, 6.75, 2.75], "texture": "#exterior", "cullface": "up"},
+				"down": {"uv": [9.5, 2.75, 6.75, 6.75], "texture": "#interior"}
+			}
+		}
+	]
+}

@@ -58,7 +58,11 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_HUMAN.get(), "slim", LatexHumanRenderer.forModelSize(true));
     }
 
-    private static <T extends ChangedEntity> void registerHumanoid(EntityRenderersEvent.RegisterRenderers event, EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererProvider) {
+    /**
+     * Allows addon mods to specify their entity renderer to copy modded player renderer layers
+     * @param event register event
+     */
+    public static <T extends ChangedEntity> void registerHumanoid(EntityRenderersEvent.RegisterRenderers event, EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererProvider) {
         copyPlayerLayers.add(entityType);
         event.registerEntityRenderer(entityType, entityRendererProvider);
     }

@@ -159,7 +159,7 @@ public class DarkLatexDoubleYufeng extends DarkLatexYufeng implements DoubleHead
     }
 
     @Override
-    public TransfurVariant<?> getTransfurVariant() {
+    protected TransfurVariant<?> getTransfurVariant() {
         return ChangedTransfurVariants.DARK_LATEX_YUFENG.get();
     }
 

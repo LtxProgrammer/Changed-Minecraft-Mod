@@ -3,10 +3,11 @@ package net.ltxprogrammer.changed.entity;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.IExtensibleEnum;
 
 import java.util.function.Function;
 
-public enum SpringType {
+public enum SpringType implements IExtensibleEnum {
     LIGHT_WEAK(0.8f, 0.6f),
     LIGHT_NORMAL(0.8f, 0.8f),
     LIGHT_STRONG(0.8f, 0.95f),
@@ -20,12 +21,26 @@ public enum SpringType {
     // Unit-less scalar parameter, defined as how much velocity affects the spring
     private final float weight;
     private final float strength;
+    private final float dampening;
     private static final float VELOCITY_DAMPENING = 0.95f;
     private static final float SPRING_DAMPENING = 0.85f;
 
     SpringType(float weight, float strength) {
+        this(weight, strength, SPRING_DAMPENING);
+    }
+
+    SpringType(float weight, float strength, float dampening) {
         this.weight = weight;
         this.strength = strength;
+        this.dampening = dampening;
+    }
+
+    public static SpringType create(String name, float weight, float strength) {
+        throw new IllegalStateException("enum not extended");
+    }
+
+    public static SpringType create(String name, float weight, float strength, float dampening) {
+        throw new IllegalStateException("enum not extended");
     }
 
     public float simulateVelocity(float velocity, float deltaVelocity, float spring) {
@@ -38,11 +53,11 @@ public enum SpringType {
 
     public float simulateSpring(float velocity, float spring) {
         spring += velocity * weight; // This adds weight to the spring
-        spring *= SPRING_DAMPENING; // This adds an organic dampening
+        spring *= dampening; // This adds an organic dampening
         return spring;
     }
 
-    public enum Direction implements Function<LivingEntity, Float> {
+    public enum Direction implements Function<LivingEntity, Float>, IExtensibleEnum {
         VERTICAL(entity -> {
             float vertVelocity = entity.onGround() ? 0.0f : (float) entity.getDeltaMovement().y;
             if (entity instanceof ChangedEntity changedEntity)
@@ -62,6 +77,10 @@ public enum SpringType {
 
         Direction(Function<LivingEntity, Float> fn) {
             this.fn = fn;
+        }
+
+        public static Direction create(String name, Function<LivingEntity, Float> velocityGetter) {
+            throw new IllegalStateException("enum not extended");
         }
 
         @Override

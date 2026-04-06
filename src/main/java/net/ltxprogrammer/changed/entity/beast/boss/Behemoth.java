@@ -30,7 +30,7 @@ public abstract class Behemoth extends ChangedEntity {
         return null;
     }
 
-    public TransfurVariant<?> getTransfurVariant() {
+    protected TransfurVariant<?> getTransfurVariant() {
         return ChangedTransfurVariants.WHITE_LATEX_WOLF_MALE.get();
     }
 

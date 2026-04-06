@@ -18,7 +18,7 @@ public abstract class ServerPlayerGameModeMixin {
     @Inject(method = "setGameModeForPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/GameType;updatePlayerAbilities(Lnet/minecraft/world/entity/player/Abilities;)V"))
     public void andApplyFlyAbility(GameType newType, GameType oldType, CallbackInfo callback) {
         ProcessTransfur.ifPlayerTransfurred(this.player, variant -> {
-            if (variant.getParent().canGlide) {
+            if (variant.canCreativeFly()) {
                 this.player.getAbilities().mayfly = true;
                 if (!this.player.onGround() && newType.isSurvival()) {
                     this.player.getAbilities().flying = true;

@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.ai.DarkLatexFavor;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
@@ -153,44 +154,14 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
 
         age++;
 
-        var underlyingPlayer = getUnderlyingPlayer();
-        if (ProcessTransfur.ifPlayerTransfurred(underlyingPlayer, variant -> {
-            if (variant.ageAsVariant > MAX_AGE || age > MAX_AGE) {
-                var newVariant = ChangedTransfurVariants.Gendered.DARK_LATEX_WOLVES.getRandomVariant(level().random);
-                ProcessTransfur.changeTransfur(underlyingPlayer, newVariant);
-                ChangedSounds.broadcastSound(this, newVariant.sound, 1.0f, 1.0f);
-                underlyingPlayer.heal(12.0f);
-            }
-        })) return;
-
-        if (age > MAX_AGE) {
+        final int checkAge = ProcessTransfur.ifPlayerTransfurred(getUnderlyingPlayer(), variant -> variant.ageAsVariant, () -> age);
+        if (!level.isClientSide && checkAge > MAX_AGE) {
+            IAbstractChangedEntity conversionEntity = IAbstractChangedEntity.forEntity(this);
             var newVariant = ChangedTransfurVariants.Gendered.DARK_LATEX_WOLVES.getRandomVariant(level().random);
-            var wolf = newVariant.getEntityType().create(level);
-            if (wolf != null) {
-                wolf.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-                level.addFreshEntity(wolf);
-                ChangedSounds.broadcastSound(this, newVariant.sound, 1.0f, 1.0f);
-                applyCustomizeToAged((AbstractDarkLatexEntity)wolf);
-            }
-            this.discard();
-        }
-    }
 
-    protected void applyCustomizeToAged(AbstractDarkLatexEntity aged) {
-        aged.setTame(this.isTame());
-        aged.setOwnerUUID(this.getOwnerUUID());
-        aged.setFollowOwner(this.isFollowingOwner());
-        aged.setCustomName(this.getCustomName());
-        aged.getBasicPlayerInfo().copyFrom(this.getBasicPlayerInfo());
-        aged.setUnderlyingPlayer(this.getUnderlyingPlayer());
-        if (this.inventory != null) {
-            aged.inventory = aged.createInventory();
-            aged.grabEntityAbilityInstance = aged.createGrabAbility();
-
-            var items = new ListTag();
-            this.inventory.save(items);
-            aged.inventory.load(items);
-            this.inventory.clearContent();
+            conversionEntity.replaceVariant(newVariant);
+            ChangedSounds.broadcastSound(conversionEntity.getEntity(), newVariant.sound, 1.0f, 1.0f);
+            conversionEntity.getEntity().heal(12.0f);
         }
     }
 

@@ -1,0 +1,10 @@
+{
+  "parent": "changed:block/stasis_chamber/base/closed/mmr",
+  "textures": {
+    "particle": "changed:block/chamber_interior_on",
+    "door": "changed:block/chamber_door",
+    "exterior": "changed:block/chamber_exterior_frame",
+    "interior": "changed:block/chamber_interior_on",
+    "panel": "changed:block/chamber_panel_on"
+  }
+}

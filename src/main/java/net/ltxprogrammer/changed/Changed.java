@@ -69,6 +69,8 @@ public class Changed {
         eventBus.addListener(this::commonSetup);
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::customPacks);
+
+        eventBus.addListener(ChangedAttributes::modifyEntityAttributes);
     }
 
     public Changed(FMLJavaModLoadingContext context) {

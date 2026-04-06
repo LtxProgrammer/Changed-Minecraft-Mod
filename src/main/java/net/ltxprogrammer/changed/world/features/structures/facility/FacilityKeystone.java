@@ -54,7 +54,7 @@ public class FacilityKeystone extends StructurePiece {
         this.piecesByZone = piecesByZone;
         header = new ActiveFacilityInstance.Header();
         header.initialize(BoundingBox.encapsulatingBoxes(piecesByZone.values().stream().flatMap(List::stream).map(Pair::getSecond)::iterator).orElseThrow(() -> {
-            return new IllegalStateException("Unable to calculate boundingbox without pieces");
+            return new IllegalStateException("Unable to calculate BoundingBox without pieces");
         }), random);
     }
 
