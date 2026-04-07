@@ -103,6 +103,7 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
     protected void tickAbilityTree() {
         var abilityTree = ((PlayerDataExtension)host).getAbilityTree();
         abilityTree.updateTrees();
+        variantFeatures.clear();
         activeNodeEffects.clear();
         abilityTree.gatherNodeEffects(this, activeNodeEffects::add);
 

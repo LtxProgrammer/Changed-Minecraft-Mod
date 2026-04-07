@@ -10,4 +10,5 @@ public class ChangedTransfurVariantFeatures {
 
     public static final RegistryObject<TransfurVariantFeature> ABSORPTION = REGISTRY.register("transfur/absorption", TransfurVariantFeature::new);
     public static final RegistryObject<TransfurVariantFeature> OXYGEN_SYMBIOSIS = REGISTRY.register("grab/oxygen_symbiosis", TransfurVariantFeature::new);
+    public static final RegistryObject<TransfurVariantFeature> DEPTH_COMPRESSION = REGISTRY.register("aquatic/depth_compression", TransfurVariantFeature::new);
 }

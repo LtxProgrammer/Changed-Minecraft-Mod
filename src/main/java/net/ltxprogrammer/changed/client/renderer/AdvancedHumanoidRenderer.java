@@ -101,6 +101,14 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
         poseStack.scale(forcedLimit, forcedLimit, forcedLimit);
     }
 
+    @Override
+    protected void scale(T entity, PoseStack poseStack, float partialTicks) {
+        super.scale(entity, poseStack, partialTicks);
+        float depthCompression = entity.getDepthCompression(partialTicks);
+        if (depthCompression > 0f)
+            poseStack.scale(1.0f - depthCompression, 1.0f - depthCompression, 1.0f - depthCompression);
+    }
+
     protected void setupRotations(@NotNull T entity, PoseStack poseStack, float bob, float bodyYRot, float partialTicks) {
         this.setModelResetPoseStack(entity, null);
         this.scaleForBPI(entity, entity.getBasicPlayerInfo(), poseStack);

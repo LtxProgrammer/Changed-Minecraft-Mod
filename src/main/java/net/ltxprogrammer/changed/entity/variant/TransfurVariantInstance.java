@@ -126,6 +126,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public void setNodeEffects(List<NodeEffect> nodeEffects) {
+        this.variantFeatures.clear();
         this.activeNodeEffects.clear();
         this.activeNodeEffects.addAll(nodeEffects);
     }
