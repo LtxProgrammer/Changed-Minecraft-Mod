@@ -1,10 +1,14 @@
 package net.ltxprogrammer.changed.block.entity;
 
 import net.ltxprogrammer.changed.block.AbstractLabDoor;
+import net.ltxprogrammer.changed.computers.BasicNIC;
+import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -17,9 +21,10 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LabDoorOpenerEntity extends BlockEntity {
+public class LabDoorOpenerEntity extends BlockEntity implements NetworkInterface {
     private final OpenableDoor door;
     private final Map<BlockState, AABB> detectionSize = new HashMap<>();
+    public BasicNIC nic = new BasicNIC();
 
     public LabDoorOpenerEntity(BlockPos pos, BlockState state, OpenableDoor door) {
         super(ChangedBlockEntities.LAB_DOOR_OPENER.get(), pos, state);
@@ -52,5 +57,15 @@ public class LabDoorOpenerEntity extends BlockEntity {
         if (state.getProperties().contains(BlockStateProperties.POWERED) && !state.getValue(AbstractLabDoor.POWERED))
             return;
         blockEntity.tick(level, pos, state);
+    }
+
+    @Override
+    public void acceptFrame(ServerLevel level, CompoundTag dataFrame) {
+        nic.acceptFrame(level, dataFrame);
+    }
+
+    @Override
+    public void sendFrame(ServerLevel level, CompoundTag dataFrame) {
+        nic.sendFrame(level, dataFrame);
     }
 }

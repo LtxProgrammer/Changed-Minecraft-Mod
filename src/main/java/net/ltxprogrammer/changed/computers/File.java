@@ -44,7 +44,7 @@ public class File {
         tag.putString("c", content);
     }
 
-    public CompoundTag save() {
+    public CompoundTag serialize() {
         var t = new CompoundTag();
         saveTo(t);
         return t;

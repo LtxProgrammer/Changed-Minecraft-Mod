@@ -8,11 +8,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.Nullable;
 
+/*
 public class ComputerTextScreen extends TextMenuScreen<ComputerMenu> {
     public static final Component TITLE = Component.translatable("container.changed.computer_writing");
 
     //public final Screen previous;
-    public ComputerTextScreen(/*Screen previous, */ComputerMenu container, Inventory inventory, Component text) {
+    public ComputerTextScreen(*/
+/*Screen previous, *//*
+ComputerMenu container, Inventory inventory, Component text) {
         super(container, inventory.player, text);
         //this.previous = previous;
     }
@@ -49,4 +52,4 @@ public class ComputerTextScreen extends TextMenuScreen<ComputerMenu> {
     public Component getNoteTitle() {
         return TITLE;
     }
-}
+}*/

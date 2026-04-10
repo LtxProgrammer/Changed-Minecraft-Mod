@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.computers;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
 
 import javax.annotation.Nullable;
 import java.nio.file.Path;
@@ -31,16 +28,31 @@ public class Folder {
         });
     }
 
+    public CompoundTag serialize() {
+        var tag = new CompoundTag();
+        folders.forEach((name, subFolder) -> {
+            var folderTag = new CompoundTag();
+            folderTag.put("//folders", subFolder.serialize());
+            tag.put(name, folderTag);
+        });
+        files.forEach((name, file) -> {
+            tag.put(name, file.serialize());
+        });
+        return tag;
+    }
+
     public @Nullable File getFile(Path path) {
         var it = path.iterator();
         if (!it.hasNext())
             return null;
         Path p = it.next();
         String rep = p.toString();
+        if (rep.isEmpty())
+            return null;
         if (files.containsKey(rep))
             return files.get(rep);
         if (folders.containsKey(rep))
-            return folders.get(rep).getFile(path.relativize(p));
+            return folders.get(rep).getFile(p.relativize(path));
         return null;
     }
 
@@ -50,8 +62,15 @@ public class Folder {
             return this;
         Path p = it.next();
         String rep = p.toString();
+        if (rep.isEmpty())
+            return this;
         if (folders.containsKey(rep))
-            return folders.get(rep).getFolder(path.relativize(p));
+            return folders.get(rep).getFolder(p.relativize(path));
         return null;
+    }
+
+    public Folder addFile(String fileName, File file) {
+        this.files.put(fileName, file);
+        return this;
     }
 }

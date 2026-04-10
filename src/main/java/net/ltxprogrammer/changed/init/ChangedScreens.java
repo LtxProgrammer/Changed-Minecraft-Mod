@@ -12,7 +12,7 @@ public class ChangedScreens {
     @SubscribeEvent
     public static void clientLoad(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            MenuScreens.register(ChangedMenus.COMPUTER.get(), ComputerTextScreen::new);
+            MenuScreens.register(ChangedMenus.COMPUTER.get(), ComputerExploreScreen::new);
             MenuScreens.register(ChangedMenus.INFUSER.get(), InfuserScreen::new);
             MenuScreens.register(ChangedMenus.PURIFIER.get(), PurifierScreen::new);
             MenuScreens.register(ChangedMenus.ABILITY_RADIAL.get(), AbilityRadialScreen::new);

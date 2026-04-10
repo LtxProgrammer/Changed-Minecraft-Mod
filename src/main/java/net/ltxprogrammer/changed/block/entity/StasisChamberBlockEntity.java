@@ -3,6 +3,9 @@ package net.ltxprogrammer.changed.block.entity;
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.StasisChamber;
+import net.ltxprogrammer.changed.computers.BasicNIC;
+import net.ltxprogrammer.changed.computers.protocol.LogicalNetworkInterface;
+import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.ai.ImmediateTransfurDecision;
 import net.ltxprogrammer.changed.entity.animation.StasisAnimationParameters;
@@ -57,13 +60,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class StasisChamberBlockEntity extends BaseContainerBlockEntity implements SeatableBlockEntity, StackedContentsCompatible {
+public class StasisChamberBlockEntity extends BaseContainerBlockEntity implements SeatableBlockEntity, StackedContentsCompatible, NetworkInterface {
     private SeatEntity entityHolder; // Track single entity when active
     private float fluidLevel = 0.0f; // Allows chamber to fill up with fluid
     private float fluidLevelO = 0.0f;
     private final List<ScheduledCommand> scheduledCommands = new ArrayList<>();
     private @Nullable ScheduledCommand currentCommand = null;
     private LivingEntity cachedEntity;
+    private BasicNIC nic = new BasicNIC();
 
     private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
         protected void onOpen(Level level, BlockPos blockPos, BlockState blockState) {
@@ -363,8 +367,14 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         return openersCounter.getOpenerCount() > 0;
     }
 
+    public void handlePacket(int logicalSource, CompoundTag packet) {
+        // TODO: handle packet
+    }
+
     public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, StasisChamberBlockEntity blockEntity) {
         blockEntity.openersCounter.recheckOpeners(level, blockPos, blockState);
+
+        blockEntity.nic.processPackets(blockEntity::handlePacket);
 
         var commands = blockEntity.scheduledCommands;
         if (commands.isEmpty() && !blockEntity.getEntitiesWithin().isEmpty()) {
@@ -391,6 +401,16 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
             blockEntity.currentCommand = null; // Command finished
             blockEntity.markUpdated();
         }
+    }
+
+    @Override
+    public void acceptFrame(ServerLevel level, CompoundTag dataFrame) {
+        nic.acceptFrame(level, dataFrame);
+    }
+
+    @Override
+    public void sendFrame(ServerLevel level, CompoundTag dataFrame) {
+        nic.sendFrame(level, dataFrame);
     }
 
     public boolean isOpen() {
