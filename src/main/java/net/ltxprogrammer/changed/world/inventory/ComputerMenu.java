@@ -1,6 +1,9 @@
 package net.ltxprogrammer.changed.world.inventory;
 
 import net.ltxprogrammer.changed.block.entity.ComputerBlockEntity;
+import net.ltxprogrammer.changed.computers.application.Application;
+import net.ltxprogrammer.changed.computers.application.ApplicationType;
+import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.minecraft.nbt.CompoundTag;
@@ -17,15 +20,21 @@ import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 
 public class ComputerMenu extends AbstractContainerMenu implements UpdateableMenu {
     protected final Player player;
     public ComputerBlockEntity computer;
 
+    protected final Stack<Application> applications = new Stack<>();
+
     public ComputerMenu(int id, Inventory inventory, ComputerBlockEntity computer) {
         super(ChangedMenus.COMPUTER.get(), id);
         this.computer = computer;
         this.player = inventory.player;
+
+        applications.push(ChangedApplications.DESKTOP.get().createApplication(List.of()));
     }
 
     public ComputerMenu(int id, Inventory inventory, FriendlyByteBuf extraData) {
@@ -35,6 +44,8 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
         if (extraData != null) {
             computer = player.level().getBlockEntity(extraData.readBlockPos(), ChangedBlockEntities.COMPUTER.get()).orElse(null);
         }
+
+        applications.push(ChangedApplications.DESKTOP.get().createApplication(List.of()));
     }
 
     @Override
@@ -108,5 +119,24 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
 
     public Path getDesktopDir() {
         return computer.homeDirectory.resolve(Path.of("Desktop/"));
+    }
+
+    public Application currentApplication() {
+        return applications.peek();
+    }
+
+    /// INTERNAL
+    public Application launchApplication(ApplicationType<?> applicationType, List<String> args) {
+        var app = applicationType.createApplication(args);
+        applications.push(app);
+
+        return app;
+    }
+
+    /// INTERNAL
+    public void closeApplication(ApplicationType<?> applicationType) {
+        if (applications.peek().getType() != applicationType)
+            throw new IllegalArgumentException("Application type mismatch");
+        applications.pop();
     }
 }

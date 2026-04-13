@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.requirements.AbstractRequirement;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
+import net.ltxprogrammer.changed.computers.application.ApplicationType;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
@@ -209,6 +210,8 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
     public static final RegistryHolder<Codec<? extends AbstractRequirement>> PURCHASE_REQUIREMENTS = new RegistryHolder<>(registryKey("ability/purchase_requirements"));
     public static final RegistryHolder<TransfurVariantFeature> TRANSFUR_VARIANT_FEATURES = new RegistryHolder<>(registryKey("ability/variant_features"));
 
+    public static final RegistryHolder<ApplicationType<?>> APPLICATION_TYPES = new RegistryHolder<>(registryKey("computer/application_type"));
+
     private static class ClearableObjectIntIdentityMap<I> extends IdMapper<I> {
         void clear()
         {
@@ -279,6 +282,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
         createRegistry(event, ABILITY_EFFECT_CONDITIONS.key);
         createRegistry(event, PURCHASE_REQUIREMENTS.key);
         createRegistry(event, TRANSFUR_VARIANT_FEATURES.key);
+        createRegistry(event, APPLICATION_TYPES.key);
     }
 
     private static <T> void createRegistry(NewRegistryEvent event, ResourceKey<? extends Registry<T>> key) {
