@@ -210,7 +210,10 @@ public class EventHandlerClient {
 
     public static <T extends LivingEntity, M extends EntityModel<T>, R extends LivingEntityRenderer<T, M>> void addLatexParticles(EntityRenderersEvent.AddLayers event, EntityType<T> entityType) {
         R renderer = event.getRenderer(entityType);
-        renderer.addLayer(new LatexParticlesLayer<>(renderer, renderer.getModel()));
+        if (renderer != null)
+            renderer.addLayer(new LatexParticlesLayer<>(renderer, renderer.getModel()));
+        else
+            Changed.LOGGER.warn("Renderer not present for {} in AddLayers event", entityType);
     }
 
     @OnlyIn(Dist.CLIENT)

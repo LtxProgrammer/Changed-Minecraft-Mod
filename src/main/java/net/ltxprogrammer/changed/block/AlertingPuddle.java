@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -83,7 +84,7 @@ public class AlertingPuddle extends ChangedBlock {
         if (blockState.getValue(OCCUPIED))
             return;
 
-        if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
+        if (!level.isClientSide && entity instanceof LivingEntity livingEntity && LevelUtil.isTouchingBlockCollision(level, blockPos, blockState, livingEntity)) {
             if (this.toTarget.test(livingEntity)) {
                 if (livingEntity instanceof Player player) {
                     player.playNotifySound(ChangedSounds.PUDDLE_ALERT.get(), SoundSource.HOSTILE, 1.0f, 1.0f);

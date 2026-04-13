@@ -120,7 +120,12 @@ public interface IAbstractChangedEntity {
     }
 
     static IAbstractChangedEntity forPlayerWithVariant(Player player, @Nullable TransfurVariantInstance<?> variant) {
-        Cacheable<TransfurVariantInstance<?>> instance = Cacheable.of(() -> ProcessTransfur.getPlayerTransfurVariant(player));
+        Cacheable<TransfurVariantInstance<?>> instance = Cacheable.of(() -> {
+            var variantInstance = ProcessTransfur.getPlayerTransfurVariant(player);
+            if (variantInstance == null)
+                throw new IllegalArgumentException("IAbstractChangedEntity abstraction created for non-transfurred player");
+            return variantInstance;
+        });
         Cacheable<ChangedEntity> latex = Cacheable.of(() -> instance.get().getChangedEntity());
 
         if (variant != null)

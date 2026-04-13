@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,7 +44,7 @@ public class AbstractPuddle extends AbstractCustomShapeBlock {
     }
 
     public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
-        if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
+        if (!level.isClientSide && entity instanceof LivingEntity livingEntity && LevelUtil.isTouchingBlockCollision(level, blockPos, blockState, livingEntity)) {
             if (ProcessTransfur.progressTransfur(livingEntity, this.makeAssimilationDecision(livingEntity)))
                 level.removeBlock(blockPos, false);
         }

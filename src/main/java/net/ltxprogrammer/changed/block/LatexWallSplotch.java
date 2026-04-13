@@ -5,8 +5,8 @@ import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
-import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.LevelUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -60,7 +60,7 @@ public class LatexWallSplotch extends HorizontalDirectionalBlock implements Simp
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (variants.isEmpty()) return;
-        if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
+        if (!level.isClientSide && entity instanceof LivingEntity livingEntity && LevelUtil.isTouchingBlockInteraction(level, pos, state, livingEntity)) {
             if (ProcessTransfur.progressTransfur(livingEntity, this.makeAssimilationDecision(livingEntity)))
                 level.removeBlock(pos, false);
         }

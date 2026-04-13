@@ -10,8 +10,14 @@ import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.ai.NonLatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public class TransfurEvents {
+public abstract class TransfurEvents {
     /**
      * Fired whenever a mob becomes assimilated from an unassimilated state.
      * Canceling this event will prevent the entity from receiving the default buffs.
@@ -103,6 +109,151 @@ public class TransfurEvents {
         public boolean isCancelable() {
             return true;
         }
+    }
+
+    /**
+     * Fired any time a player is about to be untransfurred.
+     * Canceling this event will cause the player to remain as their current variant.
+     * Setting the next variant will cause the player to change into that variant if the event is not canceled.
+     * This event class is abstract so that addon mods MUST provide a cause of the untransfur event.
+     */
+    public static abstract class UntransfurPlayerEvent extends Event {
+        public final @NotNull Player player;
+        public final @NotNull TransfurVariantInstance<?> variantInstance;
+        public final @Nullable TransfurVariant<?> originalNextVariant;
+        protected @Nullable TransfurVariant<?> nextVariant;
+
+        public UntransfurPlayerEvent(@NotNull Player player, @NotNull TransfurVariantInstance<?> variantInstance, @Nullable TransfurVariant<?> originalNextVariant) {
+            this.player = player;
+            this.variantInstance = variantInstance;
+            this.originalNextVariant = originalNextVariant;
+            this.nextVariant = originalNextVariant;
+        }
+
+        public @NotNull Player getPlayer() {
+            return player;
+        }
+
+        public @NotNull TransfurVariantInstance<?> getVariantInstance() {
+            return variantInstance;
+        }
+
+        public @Nullable TransfurVariant<?> getOriginalNextVariant() {
+            return originalNextVariant;
+        }
+
+        public @Nullable TransfurVariant<?> getNextVariant() {
+            return nextVariant;
+        }
+
+        public void setNextVariant(@Nullable TransfurVariant<?> nextVariant) {
+            this.nextVariant = nextVariant;
+        }
+
+        @Override
+        public boolean isCancelable() {
+            return true;
+        }
+
+        /// Allows the event to specify how its results should be handled if the event isn't canceled.
+        protected void finalizeEvent() {
+            if (nextVariant == null) {
+                ProcessTransfur.removePlayerTransfurVariant(player);
+                ProcessTransfur.setPlayerTransfurProgress(player, 0.0f);
+            } else {
+                IAbstractChangedEntity.forPlayerWithVariant(player, variantInstance).replaceVariant(nextVariant);
+            }
+        }
+    }
+
+    /**
+     * Fired any time a player is about to be untransfurred due to a command.
+     * Canceling this event will cause the player to remain as their current variant.
+     * Setting the next variant will cause the player to change into that variant if the event is not canceled.
+     */
+    public static class UntransfurPlayerByCommandEvent extends UntransfurPlayerEvent {
+        public final @NotNull CommandSourceStack source;
+
+        public UntransfurPlayerByCommandEvent(@NotNull CommandSourceStack source, @NotNull Player player, @NotNull TransfurVariantInstance<?> variantInstance, @Nullable TransfurVariant<?> originalNextVariant) {
+            super(player, variantInstance, originalNextVariant);
+            this.source = source;
+        }
+
+        public @NotNull CommandSourceStack getSource() {
+            return source;
+        }
+    }
+
+    /**
+     * Fired any time a player is about to be untransfurred due to an entity.
+     * Canceling this event will cause the player to remain as their current variant.
+     * Setting the next variant will cause the player to change into that variant if the event is not canceled.
+     * This event is not used in the base mod. Addon mods must provide the entity that caused the player to untransfur.
+     */
+    public static class UntransfurPlayerByEntityEvent extends UntransfurPlayerEvent {
+        public final @NotNull Entity sourceEntity;
+
+        public UntransfurPlayerByEntityEvent(@NotNull Entity sourceEntity, @NotNull Player player, @NotNull TransfurVariantInstance<?> variantInstance, @Nullable TransfurVariant<?> originalNextVariant) {
+            super(player, variantInstance, originalNextVariant);
+            this.sourceEntity = sourceEntity;
+        }
+
+        public @NotNull Entity getSourceEntity() {
+            return sourceEntity;
+        }
+    }
+
+    /**
+     * Fired any time a player is about to be untransfurred due to an entity using an item.
+     * Canceling this event will cause the player to remain as their current variant.
+     * Setting the next variant will cause the player to change into that variant if the event is not canceled.
+     * This event is not used in the base mod. Addon mods must provide the entity and the item that caused the player to untransfur.
+     */
+    public static class UntransfurPlayerByItemEvent extends UntransfurPlayerByEntityEvent {
+        public final @NotNull ItemStack usedItem;
+
+        public UntransfurPlayerByItemEvent(@NotNull Entity sourceEntity, @NotNull ItemStack usedItem, @NotNull Player player, @NotNull TransfurVariantInstance<?> variantInstance, @Nullable TransfurVariant<?> originalNextVariant) {
+            super(sourceEntity, player, variantInstance, originalNextVariant);
+            this.usedItem = usedItem;
+        }
+
+        public @NotNull ItemStack getUsedItem() {
+            return usedItem;
+        }
+    }
+
+    /**
+     * Fired any time a player is about to be untransfurred due to a block.
+     * Canceling this event will cause the player to remain as their current variant.
+     * Setting the next variant will cause the player to change into that variant if the event is not canceled.
+     * This event is not used in the base mod. Addon mods must provide the block that caused the player to untransfur.
+     */
+    public static class UntransfurPlayerByBlockEvent extends UntransfurPlayerEvent {
+        public final @NotNull BlockState blockState;
+        public final @NotNull BlockPos blockPosition;
+
+        public UntransfurPlayerByBlockEvent(@NotNull BlockState blockState, @NotNull BlockPos blockPosition, @NotNull Player player, @NotNull TransfurVariantInstance<?> variantInstance, @Nullable TransfurVariant<?> originalNextVariant) {
+            super(player, variantInstance, originalNextVariant);
+            this.blockState = blockState;
+            this.blockPosition = blockPosition;
+        }
+
+        public @NotNull BlockState getBlockState() {
+            return blockState;
+        }
+
+        public @NotNull BlockPos getBlockPosition() {
+            return blockPosition;
+        }
+    }
+
+    /**
+     * Utility function that calls the UntransfurPlayerEvent.finalizeEvent().
+     * This function is intended to be called after the event has been posted and all event listeners have processed it.
+     * @param event event that had finished being handled by event listeners and was not canceled.
+     */
+    public static void finalizeUntransfurPlayerEvent(@NotNull UntransfurPlayerEvent event) {
+        event.finalizeEvent();
     }
 
     /**

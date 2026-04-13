@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.LevelUtil;
 import net.ltxprogrammer.changed.world.LatexCoverGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -92,6 +93,8 @@ public abstract class TransfurCrystalBlock extends BushBlock {
         if (variant == null) return;
 
         if (entity instanceof LivingEntity le && !(entity instanceof ChangedEntity)) {
+            if (!LevelUtil.isTouchingBlockInteraction(level, pos, state, entity))
+                return;
             if (entity instanceof Player player && ProcessTransfur.isPlayerTransfurred(player))
                 return;
             if (!level.isClientSide) {

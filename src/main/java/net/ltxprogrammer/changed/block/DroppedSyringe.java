@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -48,7 +49,7 @@ public class DroppedSyringe extends Block implements EntityBlock, SimpleWaterlog
     }
 
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
+        if (!level.isClientSide && entity instanceof LivingEntity livingEntity && LevelUtil.isTouchingBlockCollision(level, pos, state, livingEntity)) {
             level.getBlockEntity(pos, ChangedBlockEntities.DROPPED_SYRINGE.get()).ifPresent(droppedSyringeBlockEntity -> {
                 if (ProcessTransfur.progressTransfur(livingEntity, this.makeAssimilationDecision(droppedSyringeBlockEntity, livingEntity)))
                     level.removeBlock(pos, false);

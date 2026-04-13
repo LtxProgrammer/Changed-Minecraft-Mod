@@ -314,7 +314,7 @@ public class ProcessTransfur {
 
         else {
             int deltaTicks = Math.max(((player.tickCount - player.getLastHurtByMobTimestamp()) / 8) - 20, 0);
-            float scaledDeltaTicks = Math.max(-(deltaTicks * 0.001f), 0);
+            float scaledDeltaTicks = -Math.max(deltaTicks * 0.001f, 0);
 
             var event = new TransfurEvents.TickPlayerTransfurProgressEvent(player, progress, scaledDeltaTicks);
             if (Changed.postModEvent(event))

@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -51,6 +52,11 @@ public class EmittedLaser extends Entity {
 
     public static final int MAX_DISTANCE = 24;
     public static final int SUBSTEP_PRECISION = 16;
+
+    @Override
+    public @NotNull PushReaction getPistonPushReaction() {
+        return PushReaction.IGNORE;
+    }
 
     protected static float traceVoxelShape(VoxelShape shape, Direction travelDirection, float radius) {
         int stepX = travelDirection.getStepX();
@@ -158,13 +164,13 @@ public class EmittedLaser extends Entity {
         }
 
         float length = this.traceLevel(level(), this.getEmitterPos(), this.getDirection(), this.getBeamRadius());
-        if (length <= 0.0f) {
-            this.discard();
-            return;
-        }
 
         this.entityData.set(DATA_LENGTH_ID, length);
-        this.recalculateBoundingBox();
+        this.reapplyPosition();
+
+        if (length <= 0.0f) {
+            return;
+        }
 
         ObjectArrayList<LivingEntity> entities = new ObjectArrayList<>(0);
         level().getEntities(EntityTypeTest.forClass(LivingEntity.class), this.getBoundingBox(), Objects::nonNull, entities);
@@ -183,6 +189,7 @@ public class EmittedLaser extends Entity {
     @Override
     public void tick() {
         super.tick();
+        this.setPos(this.getBeamStart());
 
         if (tickCount % 5 == 0) {
             this.checkShapeAndApplyEffects();
@@ -204,7 +211,8 @@ public class EmittedLaser extends Entity {
         return true;
     }
 
-    protected void recalculateBoundingBox() {
+    @Override
+    protected @NotNull AABB makeBoundingBox() {
         float length = this.getLength();
         float radius = this.getBeamRadius();
         BlockPos emittedPos = this.getEmitterPos();
@@ -222,11 +230,16 @@ public class EmittedLaser extends Entity {
                 direction.getStepZ() * length
         );
 
-        this.setBoundingBox(new AABB(emitterStart, emitterEnd).inflate(
+        return new AABB(emitterStart, emitterEnd).inflate(
                 (direction.getStepY() + direction.getStepZ()) * radius,
                 (direction.getStepX() + direction.getStepZ()) * radius,
                 (direction.getStepX() + direction.getStepY()) * radius
-        ));
+        );
+    }
+
+    @Override
+    protected void reapplyPosition() {
+        this.setPos(this.getBeamStart());
     }
 
     public Vec3 getBeamStart() {
@@ -276,7 +289,7 @@ public class EmittedLaser extends Entity {
     public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> accessor) {
         super.onSyncedDataUpdated(accessor);
         if (accessor.equals(DATA_DIRECTION_ID) || accessor.equals(DATA_LENGTH_ID) || accessor.equals(DATA_EMITTER_POS_ID)) {
-            this.recalculateBoundingBox();
+            this.reapplyPosition();
         }
     }
 
