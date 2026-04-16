@@ -112,6 +112,7 @@ public class ChangedBlocks {
     public static final RegistryObject<PetriDishBlock> PETRI_DISH = register("petri_dish", () -> new PetriDishBlock(BlockBehaviour.Properties.of().sound(SoundType.GLASS).instabreak().dynamicShape()));
     public static final RegistryObject<RetinalScanner> RETINAL_SCANNER = register("retinal_scanner", () -> new RetinalScanner(BlockBehaviour.Properties.copy(COMPUTER.get()).lightLevel((state) -> 0)));
     public static final RegistryObject<RoombaCharger> ROOMBA_CHARGER = register("roomba_charger", () -> new RoombaCharger(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3.0f, 3.0f)));
+    public static final RegistryObject<Router> ROUTER = register("router", () -> new Router(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3.0F, 3.0F).lightLevel((state) -> 4)));
     public static final RegistryObject<ShippingContainer> SHIPPING_CONTAINER_BLUE = register("shipping_container_blue", ShippingContainer::new);
     public static final RegistryObject<ShippingContainer> SHIPPING_CONTAINER_ORANGE = register("shipping_container_orange", ShippingContainer::new);
     public static final RegistryObject<SpeakerBlock> SPEAKER = register("speaker", () -> new SpeakerBlock(BlockBehaviour.Properties.copy(RETINAL_SCANNER.get())));

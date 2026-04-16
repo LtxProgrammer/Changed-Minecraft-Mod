@@ -3,15 +3,34 @@ package net.ltxprogrammer.changed.computers.protocol;
 import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.phys.AABB;
 
+import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 public interface NetworkInterface {
-    record Address(Either<BlockPos, UUID> blockPosOrID) {}
+    record Address(Either<BlockPos, UUID> blockPosOrID) {
+        public static Address forBlock(BlockPos blockPos) {
+            return new Address(Either.left(blockPos));
+        }
+
+        public static Address forEntity(Entity entity) {
+            return new Address(Either.right(entity.getUUID()));
+        }
+
+        public BlockPos getPosition(ServerLevel level) {
+            return blockPosOrID.map(Function.identity(), uuid -> {
+                return level.getEntities().get(uuid).blockPosition();
+            });
+        }
+    }
 
     static NetworkInterface findAtBlockPos(BlockGetter level, BlockPos blockPos) {
         // 1. Block entities having a network interface
@@ -29,7 +48,10 @@ public interface NetworkInterface {
     }
 
     static NetworkInterface findWithEntityUUID(ServerLevel level, UUID uuid) {
-        var entity = level.getEntities().get(uuid);
+        return findWithEntity(level.getEntities().get(uuid));
+    }
+
+    static NetworkInterface findWithEntity(Entity entity) {
         if (entity instanceof LivingEntity livingEntity)
             entity = EntityUtil.maybeGetOverlaying(livingEntity);
 
@@ -44,12 +66,29 @@ public interface NetworkInterface {
         return physicalAddress.blockPosOrID.map(blockPos -> findAtBlockPos(level, blockPos), uuid -> findWithEntityUUID(level, uuid));
     }
 
-    static void sendFrameToAddress(ServerLevel level, Address physicalAddress, CompoundTag dataFrame) {
-        var networkInterface = findAtAddress(level, physicalAddress);
-        if (networkInterface != null)
-            networkInterface.acceptFrame(level, dataFrame);
+    static Stream<Address> findNearbyAddresses(ServerLevel level, BlockPos source, int manhattanRadius) {
+        AABB boundingBox = AABB.of(BoundingBox.fromCorners(
+                source.offset(-manhattanRadius, -manhattanRadius, -manhattanRadius),
+                source.offset(manhattanRadius, manhattanRadius, manhattanRadius)
+        ));
+
+        var blockAddressStream = BlockPos.betweenClosedStream(boundingBox).filter(blockPos -> {
+            return manhattanRadius >= blockPos.distManhattan(source);
+        }).filter(blockPos -> Objects.nonNull(findAtBlockPos(level, blockPos))).map(Address::forBlock);
+
+        var entityAddressStream = level.getEntitiesOfClass(Entity.class, boundingBox).stream().filter(entity -> {
+            return manhattanRadius >= entity.blockPosition().distManhattan(source);
+        }).filter(entity -> Objects.nonNull(findWithEntity(entity))).map(Address::forEntity);
+
+        return Stream.concat(blockAddressStream, entityAddressStream);
     }
 
-    void acceptFrame(ServerLevel level, CompoundTag dataFrame);
-    void sendFrame(ServerLevel level, CompoundTag dataFrame);
+    static void sendFrameToAddress(ServerLevel level, Address destinationAddress, Address sourceAddress, Frame dataFrame) {
+        var networkInterface = findAtAddress(level, destinationAddress);
+        if (networkInterface != null)
+            networkInterface.acceptFrame(level, sourceAddress, dataFrame);
+    }
+
+    void acceptFrame(ServerLevel level, Address physicalSource, Frame dataFrame);
+    void sendFrame(ServerLevel level, Frame dataFrame);
 }

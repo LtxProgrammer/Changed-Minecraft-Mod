@@ -1,14 +1,10 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.block.entity.ComputerBlockEntity;
+import net.ltxprogrammer.changed.block.entity.RouterBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -23,22 +19,20 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class Computer extends AbstractCustomShapeEntityBlock {
+public class Router extends AbstractCustomShapeEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final VoxelShape SHAPE_SCREEN = Block.box(0.0D, 3.0D, 11.0D, 16.0D, 14.0D, 13.0D);
     public static final VoxelShape SHAPE_STAND = Block.box(6.0D, 1.0D, 13.0D, 10.0D, 8.0D, 14.0D);
     public static final VoxelShape SHAPE_BASE = Block.box(1.0D, 0.0D, 3.0D, 15.0D, 1.0D, 15.0D);
     public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_SCREEN, SHAPE_STAND, SHAPE_BASE);
 
-    public Computer(Properties properties) {
+    public Router(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
@@ -78,7 +72,7 @@ public class Computer extends AbstractCustomShapeEntityBlock {
     }
 
     public VoxelShape getInteractionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
-        return calculateShapes(blockState.getValue(FACING), SHAPE_WHOLE);
+        return Shapes.block();
     }
 
     public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos blockPos, CollisionContext context) {
@@ -89,44 +83,15 @@ public class Computer extends AbstractCustomShapeEntityBlock {
         return super.updateShape(p_52796_, p_52797_, p_52798_, p_52799_, p_52800_, p_52801_);
     }
 
-    public static boolean tryUseDisk(@Nullable Player player, Level level, BlockPos blockPos, BlockState state, ItemStack item) {
-        return level.getBlockEntity(blockPos, ChangedBlockEntities.COMPUTER.get()).map(blockEntity -> {
-            if (blockEntity.canPlaceItem(0, item)) {
-                blockEntity.setItem(0, item.copyWithCount(1));
-                item.shrink(1);
-                return true;
-            }
-
-            return false;
-        }).orElse(false);
-    }
-
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (player instanceof ServerPlayer serverPlayer) {
-            boolean canUse = level.getBlockEntity(pos, ChangedBlockEntities.COMPUTER.get()).map(blockEntity -> {
-                if (blockEntity.activeUser == null)
-                    blockEntity.activeUser = serverPlayer;
-                return blockEntity.activeUser == serverPlayer;
-            }).orElse(false);
-            if (!canUse)
-                return InteractionResult.FAIL;
-
-            NetworkHooks.openScreen(serverPlayer, getMenuProvider(state, level, pos), extra -> {
-                extra.writeBlockPos(pos);
-            });
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new ComputerBlockEntity(blockPos, blockState);
+        return new RouterBlockEntity(blockPos, blockState);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTicker(level, type, ChangedBlockEntities.COMPUTER.get());
+        return createTicker(level, type, ChangedBlockEntities.ROUTER.get());
     }
 
     @Nullable
@@ -135,7 +100,7 @@ public class Computer extends AbstractCustomShapeEntityBlock {
     }
 
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type, BlockEntityType<? extends ComputerBlockEntity> newType) {
-        return level.isClientSide ? null : createTickerHelper(type, newType, ComputerBlockEntity::serverTick);
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type, BlockEntityType<? extends RouterBlockEntity> newType) {
+        return level.isClientSide ? null : createTickerHelper(type, newType, RouterBlockEntity::serverTick);
     }
 }

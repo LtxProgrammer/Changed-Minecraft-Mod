@@ -1,12 +1,9 @@
 package net.ltxprogrammer.changed.network.packet;
 
-import net.ltxprogrammer.changed.client.gui.ComputerScreen;
-import net.ltxprogrammer.changed.client.gui.computer.ApplicationScreens;
 import net.ltxprogrammer.changed.computers.application.ApplicationType;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,8 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -53,7 +48,7 @@ public class ComputerAppSyncPacket implements ChangedPacket {
                 var app = computerMenu.currentApplication();
                 if (app == null || app.getType() != ChangedRegistry.APPLICATION_TYPES.getValue(this.appId))
                     throw new IllegalArgumentException("Application type mismatch");
-                app.acceptPayload(this.data);
+                app.update(this.data, LogicalSide.CLIENT, null);
             });
         }
 
@@ -69,7 +64,7 @@ public class ComputerAppSyncPacket implements ChangedPacket {
                 var app = computerMenu.currentApplication();
                 if (app == null || app.getType() != ChangedRegistry.APPLICATION_TYPES.getValue(this.appId))
                     throw new IllegalArgumentException("Application type mismatch");
-                app.acceptPayload(this.data);
+                app.update(this.data, LogicalSide.SERVER, sender);
             });
         }
     }

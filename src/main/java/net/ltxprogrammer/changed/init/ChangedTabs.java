@@ -90,6 +90,7 @@ public class ChangedTabs {
                         output.accept(ChangedBlocks.PETRI_DISH.get());
                         output.accept(ChangedBlocks.RETINAL_SCANNER.get());
                         output.accept(ChangedBlocks.ROOMBA_CHARGER.get());
+                        output.accept(ChangedBlocks.ROUTER.get());
                         output.accept(ChangedBlocks.SHIPPING_CONTAINER_BLUE.get());
                         output.accept(ChangedBlocks.SHIPPING_CONTAINER_ORANGE.get());
                         output.accept(ChangedBlocks.SPEAKER.get());

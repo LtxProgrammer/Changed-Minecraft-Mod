@@ -1,11 +1,11 @@
 package net.ltxprogrammer.changed.world.inventory;
 
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.block.entity.ComputerBlockEntity;
+import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.application.Application;
 import net.ltxprogrammer.changed.computers.application.ApplicationType;
-import net.ltxprogrammer.changed.init.ChangedApplications;
-import net.ltxprogrammer.changed.init.ChangedBlockEntities;
-import net.ltxprogrammer.changed.init.ChangedMenus;
+import net.ltxprogrammer.changed.init.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
@@ -34,7 +35,7 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
         this.computer = computer;
         this.player = inventory.player;
 
-        applications.push(ChangedApplications.DESKTOP.get().createApplication(List.of()));
+        applications.push(ChangedApplications.DESKTOP.get().createApplication(this, List.of()));
     }
 
     public ComputerMenu(int id, Inventory inventory, FriendlyByteBuf extraData) {
@@ -45,7 +46,7 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
             computer = player.level().getBlockEntity(extraData.readBlockPos(), ChangedBlockEntities.COMPUTER.get()).orElse(null);
         }
 
-        applications.push(ChangedApplications.DESKTOP.get().createApplication(List.of()));
+        applications.push(ChangedApplications.DESKTOP.get().createApplication(this, List.of()));
     }
 
     @Override
@@ -121,13 +122,39 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
         return computer.homeDirectory.resolve(Path.of("Desktop/"));
     }
 
+    public Path getBinariesDir() {
+        return computer.binariesDirectory;
+    }
+
+    public List<ApplicationType<?>> getInstalledApplications() {
+        List<ApplicationType<?>> applications = new ArrayList<>();
+
+        var regTags = ChangedRegistry.APPLICATION_TYPES.get().tags();
+        if (regTags != null)
+            regTags.getTag(ChangedTags.ApplicationTypes.ALWAYS_INSTALLED).forEach(applications::add);
+
+        final var binDir = this.getBinariesDir();
+        this.computer.getFolderSafe(binDir).ifPresent(bin -> {
+            bin.files.forEach((fileName, file) -> {
+                if (file.type != File.Type.APP)
+                    return;
+
+                var app = ChangedRegistry.APPLICATION_TYPES.getValue(ResourceLocation.parse(file.content));
+                if (!applications.contains(app))
+                    applications.add(app);
+            });
+        });
+
+        return applications;
+    }
+
     public Application currentApplication() {
         return applications.peek();
     }
 
     /// INTERNAL
     public Application launchApplication(ApplicationType<?> applicationType, List<String> args) {
-        var app = applicationType.createApplication(args);
+        var app = applicationType.createApplication(this, args);
         applications.push(app);
 
         return app;

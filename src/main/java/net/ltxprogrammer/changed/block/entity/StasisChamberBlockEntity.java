@@ -4,12 +4,10 @@ import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.computers.BasicNIC;
-import net.ltxprogrammer.changed.computers.protocol.LogicalNetworkInterface;
-import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
+import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.ai.ImmediateTransfurDecision;
 import net.ltxprogrammer.changed.entity.animation.StasisAnimationParameters;
-import net.ltxprogrammer.changed.entity.beast.CustomLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
@@ -56,6 +54,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -67,7 +66,9 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
     private final List<ScheduledCommand> scheduledCommands = new ArrayList<>();
     private @Nullable ScheduledCommand currentCommand = null;
     private LivingEntity cachedEntity;
-    private BasicNIC nic = new BasicNIC();
+    private final BasicNIC nic;
+
+    protected static final Set<Class<?>> PROTOCOLS = Set.of(DiscoveryProtocol.class, DoorControlProtocol.class);
 
     private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
         protected void onOpen(Level level, BlockPos blockPos, BlockState blockState) {
@@ -132,6 +133,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
 
     public StasisChamberBlockEntity(BlockPos pos, BlockState state) {
         super(ChangedBlockEntities.STASIS_CHAMBER.get(), pos, state);
+        this.nic = new BasicNIC(Address.forBlock(pos.immutable()));
     }
 
     public boolean isEmpty() {
@@ -367,14 +369,19 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         return openersCounter.getOpenerCount() > 0;
     }
 
-    public void handlePacket(int logicalSource, CompoundTag packet) {
-        // TODO: handle packet
+    public void handlePacket(ServerLevel level, int logicalSource, Object packet) {
+        if (packet instanceof DiscoveryProtocol discoveryProtocol && !discoveryProtocol.isReply()) {
+            nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(PROTOCOLS));
+        }
     }
 
     public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, StasisChamberBlockEntity blockEntity) {
         blockEntity.openersCounter.recheckOpeners(level, blockPos, blockState);
 
-        blockEntity.nic.processPackets(blockEntity::handlePacket);
+        if (level instanceof ServerLevel serverLevel) {
+            blockEntity.nic.tick(serverLevel, blockPos);
+            blockEntity.nic.processPackets(serverLevel, blockEntity::handlePacket);
+        }
 
         var commands = blockEntity.scheduledCommands;
         if (commands.isEmpty() && !blockEntity.getEntitiesWithin().isEmpty()) {
@@ -404,12 +411,12 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
     }
 
     @Override
-    public void acceptFrame(ServerLevel level, CompoundTag dataFrame) {
-        nic.acceptFrame(level, dataFrame);
+    public void acceptFrame(ServerLevel level, Address physicalSource, Frame dataFrame) {
+        nic.acceptFrame(level, physicalSource, dataFrame);
     }
 
     @Override
-    public void sendFrame(ServerLevel level, CompoundTag dataFrame) {
+    public void sendFrame(ServerLevel level, Frame dataFrame) {
         nic.sendFrame(level, dataFrame);
     }
 

@@ -55,7 +55,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
             }
 
             @Override
-            public @org.jetbrains.annotations.Nullable T byId(int id) {
+            public @Nullable T byId(int id) {
                 return RegistryHolder.this.getValue(id);
             }
 
@@ -282,7 +282,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
         createRegistry(event, ABILITY_EFFECT_CONDITIONS.key);
         createRegistry(event, PURCHASE_REQUIREMENTS.key);
         createRegistry(event, TRANSFUR_VARIANT_FEATURES.key);
-        createRegistry(event, APPLICATION_TYPES.key);
+        createRegistry(event, APPLICATION_TYPES.key, RegistryBuilder::hasTags, null);
     }
 
     private static <T> void createRegistry(NewRegistryEvent event, ResourceKey<? extends Registry<T>> key) {

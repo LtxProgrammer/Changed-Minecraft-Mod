@@ -1,9 +1,13 @@
 package net.ltxprogrammer.changed.client.gui;
 
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.computer.*;
 import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.UITheme;
+import net.ltxprogrammer.changed.computers.application.ApplicationType;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.network.packet.ComputerAppLaunchPacket;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -129,7 +133,10 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
             return;
 
         switch (file.type) {
-            //case APP -> {} // TODO app stack
+            case APP -> {
+                var app = ChangedRegistry.APPLICATION_TYPES.getValue(ResourceLocation.parse(file.content));
+                Changed.PACKET_HANDLER.sendToServer(ComputerAppLaunchPacket.launchApplication(app));
+            }
             //case PICTURE -> {} // TODO open window with picture
             //case TEXT -> this.minecraft.setScreen(new ComputerTextScreen(/*this, */this.menu, this.inventory, ComputerTextScreen.TITLE));
             case RECIPE -> this.menu.setDirty(this.menu.requestRecipe(fullPath));

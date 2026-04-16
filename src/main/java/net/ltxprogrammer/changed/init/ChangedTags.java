@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.computers.application.ApplicationType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
@@ -105,6 +106,14 @@ public class ChangedTags {
 
         private static TagKey<TransfurVariant<?>> create(String name) {
             return TagKey.create(ChangedRegistry.TRANSFUR_VARIANT.key, Changed.modResource(name));
+        }
+    }
+
+    public static class ApplicationTypes {
+        public static final TagKey<ApplicationType<?>> ALWAYS_INSTALLED = create("always_installed");
+
+        private static TagKey<ApplicationType<?>> create(String name) {
+            return TagKey.create(ChangedRegistry.APPLICATION_TYPES.key, Changed.modResource(name));
         }
     }
 }

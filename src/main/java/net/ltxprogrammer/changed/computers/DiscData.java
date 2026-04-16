@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.computers;
 
+import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
@@ -55,6 +56,8 @@ public class DiscData {
         data.rootFolder.folders.put("OperatingSystem", new Folder()
                 .addFile("krnl.bin", new File(File.Type.DATA, ""))
                 .addFile("resources.dat", new File(File.Type.DATA, "")));
+        data.rootFolder.folders.put("Binaries", new Folder()
+                .addFile("explorer.app", new File(File.Type.APP, ChangedApplications.FILE_EXPLORER.getId().toString())));
         data.rootFolder.folders.put("Users", Util.make(new Folder(), usersFolder -> {
             usersFolder.folders.put("TSCUser", Util.make(new Folder(), userFolder -> {
                 userFolder.folders.put("Desktop", new Folder()
