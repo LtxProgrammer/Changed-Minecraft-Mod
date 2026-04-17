@@ -150,7 +150,7 @@ public interface ApplicationScreen {
 
     }
 
-    default void tick() {
+    default void tick(int desktopLeft, int desktopTop, int desktopWidth, int desktopHeight) {
 
     }
 

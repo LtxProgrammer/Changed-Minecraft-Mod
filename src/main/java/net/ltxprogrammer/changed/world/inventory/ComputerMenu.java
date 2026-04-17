@@ -62,6 +62,7 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
     @Override
     public void removed(Player player) {
         super.removed(player);
+        computer.activeUser = null;
     }
 
     public enum Operation {

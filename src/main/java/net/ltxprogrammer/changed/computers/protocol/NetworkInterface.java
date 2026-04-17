@@ -83,10 +83,14 @@ public interface NetworkInterface {
         return Stream.concat(blockAddressStream, entityAddressStream);
     }
 
-    static void sendFrameToAddress(ServerLevel level, Address destinationAddress, Address sourceAddress, Frame dataFrame) {
+    static boolean sendFrameToAddress(ServerLevel level, Address destinationAddress, Address sourceAddress, Frame dataFrame) {
         var networkInterface = findAtAddress(level, destinationAddress);
-        if (networkInterface != null)
+        if (networkInterface != null) {
             networkInterface.acceptFrame(level, sourceAddress, dataFrame);
+            return true;
+        }
+
+        return false;
     }
 
     void acceptFrame(ServerLevel level, Address physicalSource, Frame dataFrame);

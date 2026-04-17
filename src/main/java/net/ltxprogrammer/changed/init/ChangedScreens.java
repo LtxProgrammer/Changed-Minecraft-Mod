@@ -30,6 +30,7 @@ public class ChangedScreens {
         event.enqueueWork(() -> {
             ApplicationScreens.register(ChangedApplications.DESKTOP.get(), DesktopScreen::new);
             ApplicationScreens.register(ChangedApplications.FILE_EXPLORER.get(), FileExplorerScreen::new);
+            ApplicationScreens.register(ChangedApplications.DOOR_CONTROLLER.get(), DoorControllerScreen::new);
         });
     }
 }

@@ -1,16 +1,16 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.AbstractLabDoor;
 import net.ltxprogrammer.changed.computers.BasicNIC;
-import net.ltxprogrammer.changed.computers.protocol.DiscoveryProtocol;
-import net.ltxprogrammer.changed.computers.protocol.DoorControlProtocol;
-import net.ltxprogrammer.changed.computers.protocol.Frame;
-import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
+import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -25,17 +25,20 @@ import java.util.Map;
 import java.util.Set;
 
 public class LabDoorOpenerEntity extends BlockEntity implements NetworkInterface {
+    public final RandomSource random = RandomSource.create();
+
     private final OpenableDoor door;
     private final Map<BlockState, AABB> detectionSize = new HashMap<>();
     private final BasicNIC nic;
     private boolean automatic = true;
 
-    protected static final Set<Class<?>> PROTOCOLS = Set.of(DiscoveryProtocol.class, DoorControlProtocol.class);
+    protected static final Set<Class<?>> PROTOCOLS = Set.of(DiscoveryProtocol.class, DoorControlProtocol.class, DeviceInfoProtocol.Query.class);
 
     public LabDoorOpenerEntity(BlockPos pos, BlockState state, OpenableDoor door) {
         super(ChangedBlockEntities.LAB_DOOR_OPENER.get(), pos, state);
         this.door = door;
         this.nic = new BasicNIC(Address.forBlock(pos.immutable()));
+        nic.logicalAddress = this.random.nextInt();
     }
 
     public static boolean canOpenDoor(@Nullable LivingEntity entity) {
@@ -82,6 +85,14 @@ public class LabDoorOpenerEntity extends BlockEntity implements NetworkInterface
                         door.closeDoor(state, level, pos);
                 }
             });
+        }
+
+        if (packet == DeviceInfoProtocol.Query.INSTANCE) {
+            nic.sendPacket(level, logicalSource, new DeviceInfoProtocol(
+                    this.getBlockState().getBlock().getName(),
+                    this.getBlockPos(),
+                    Changed.modResource("lab_door")
+            ));
         }
     }
 

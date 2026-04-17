@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.computers;
 
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.computers.protocol.*;
+import net.ltxprogrammer.changed.util.CollectionUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.Nullable;
@@ -48,11 +49,16 @@ public class BasicNIC implements LogicalNetworkInterface {
 
     @Override
     public void sendFrame(ServerLevel level, Frame dataFrame) {
-        if (remoteConnectedPhysicalAddress != null)
-            NetworkInterface.sendFrameToAddress(level, remoteConnectedPhysicalAddress, this.physicalAddress, dataFrame);
+        if (remoteConnectedPhysicalAddress != null) {
+            boolean success = NetworkInterface.sendFrameToAddress(level, remoteConnectedPhysicalAddress, this.physicalAddress, dataFrame);
+            if (!success) // Dropped frame
+                remoteConnectedPhysicalAddress = null;
+        }
     }
 
     public void tick(ServerLevel level, BlockPos pos) {
+        if (remoteConnectedPhysicalAddress != null && NetworkInterface.findAtAddress(level, remoteConnectedPhysicalAddress) == null)
+            remoteConnectedPhysicalAddress = null;
         if (remoteConnectedPhysicalAddress != null)
             return;
 
@@ -67,9 +73,8 @@ public class BasicNIC implements LogicalNetworkInterface {
         if (unprocessedPackets == null)
             return;
 
-        Pair<Integer, Packet> nextPacket;
-        while ((nextPacket = unprocessedPackets.poll()) != null) {
-            handler.handlePacket(level, nextPacket.getFirst(), nextPacket.getSecond());
-        }
+        CollectionUtil.deplete(unprocessedPackets, packet -> {
+            handler.handlePacket(level, packet.getFirst(), packet.getSecond());
+        });
     }
 }

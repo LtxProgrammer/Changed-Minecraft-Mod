@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.Folder;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
+import net.ltxprogrammer.changed.util.CollectionUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -42,6 +43,7 @@ public class RouterBlockEntity extends BlockEntity implements NetworkInterface {
     public RouterBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ChangedBlockEntities.ROUTER.get(), blockPos, blockState);
         this.physicalAddress = Address.forBlock(blockPos);
+        this.logicalAddress = this.random.nextInt();
     }
 
     protected void saveAdditional(CompoundTag tag) {
@@ -101,13 +103,13 @@ public class RouterBlockEntity extends BlockEntity implements NetworkInterface {
 
     public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, RouterBlockEntity blockEntity) {
         if (level instanceof ServerLevel serverLevel) {
-            for (var packet : blockEntity.unprocessedPackets) {
+            CollectionUtil.deplete(blockEntity.unprocessedPackets, packet -> {
                 blockEntity.handlePacket(serverLevel, packet.getFirst(), packet.getSecond());
-            }
+            });
 
-            for (var frame : blockEntity.outboundFrames) {
+            CollectionUtil.deplete(blockEntity.outboundFrames, frame -> {
                 NetworkInterface.sendFrameToAddress(serverLevel, frame.getFirst(), blockEntity.physicalAddress, frame.getSecond());
-            }
+            });
         }
     }
 

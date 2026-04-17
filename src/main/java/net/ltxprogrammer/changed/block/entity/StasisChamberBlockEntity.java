@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.block.entity;
 
 import com.google.common.collect.ImmutableList;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.computers.BasicNIC;
@@ -26,6 +27,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
@@ -60,6 +62,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class StasisChamberBlockEntity extends BaseContainerBlockEntity implements SeatableBlockEntity, StackedContentsCompatible, NetworkInterface {
+    public final RandomSource random = RandomSource.create();
+
     private SeatEntity entityHolder; // Track single entity when active
     private float fluidLevel = 0.0f; // Allows chamber to fill up with fluid
     private float fluidLevelO = 0.0f;
@@ -68,7 +72,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
     private LivingEntity cachedEntity;
     private final BasicNIC nic;
 
-    protected static final Set<Class<?>> PROTOCOLS = Set.of(DiscoveryProtocol.class, DoorControlProtocol.class);
+    protected static final Set<Class<?>> PROTOCOLS = Set.of(DiscoveryProtocol.class, DoorControlProtocol.class, DeviceInfoProtocol.Query.class);
 
     private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
         protected void onOpen(Level level, BlockPos blockPos, BlockState blockState) {
@@ -134,6 +138,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
     public StasisChamberBlockEntity(BlockPos pos, BlockState state) {
         super(ChangedBlockEntities.STASIS_CHAMBER.get(), pos, state);
         this.nic = new BasicNIC(Address.forBlock(pos.immutable()));
+        this.nic.logicalAddress = this.random.nextInt();
     }
 
     public boolean isEmpty() {
@@ -372,6 +377,14 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
     public void handlePacket(ServerLevel level, int logicalSource, Object packet) {
         if (packet instanceof DiscoveryProtocol discoveryProtocol && !discoveryProtocol.isReply()) {
             nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(PROTOCOLS));
+        }
+
+        if (packet == DeviceInfoProtocol.Query.INSTANCE) {
+            nic.sendPacket(level, logicalSource, new DeviceInfoProtocol(
+                    Component.literal("Stasis Chamber"),
+                    this.getBlockPos(),
+                    Changed.modResource("stasis_chamber")
+            ));
         }
     }
 

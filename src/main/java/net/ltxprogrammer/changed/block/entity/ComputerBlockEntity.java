@@ -1,13 +1,11 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.BasicNIC;
 import net.ltxprogrammer.changed.computers.DiscData;
 import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.Folder;
-import net.ltxprogrammer.changed.computers.protocol.DiscoveryProtocol;
-import net.ltxprogrammer.changed.computers.protocol.Frame;
-import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
-import net.ltxprogrammer.changed.computers.protocol.Packet;
+import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
@@ -74,6 +72,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     public ComputerBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ChangedBlockEntities.COMPUTER.get(), blockPos, blockState);
         nic = new BasicNIC(Address.forBlock(blockPos.immutable()));
+        nic.logicalAddress = this.random.nextInt();
     }
 
     public boolean isEmpty() {
@@ -166,9 +165,18 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         if (packet instanceof DiscoveryProtocol discoveryProtocol && !discoveryProtocol.isReply()) {
             Set<Class<?>> protocols = new HashSet<>();
             protocols.add(DiscoveryProtocol.class);
+            protocols.add(DeviceInfoProtocol.Query.class);
             if (menu != null)
                 protocols.addAll(menu.currentApplication().getNetworkProtocols());
             nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(protocols));
+        }
+
+        if (packet == DeviceInfoProtocol.Query.INSTANCE) {
+            nic.sendPacket(level, logicalSource, new DeviceInfoProtocol(
+                    Component.literal("Computer"),
+                    this.getBlockPos(),
+                    Changed.modResource("computer")
+            ));
         }
 
         if (menu != null)

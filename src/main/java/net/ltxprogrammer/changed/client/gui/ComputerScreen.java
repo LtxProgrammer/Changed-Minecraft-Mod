@@ -54,8 +54,9 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
 
     protected List<GuiEventListener> widgets = new ArrayList<>();
 
-    public void addApplicationWidget(AbstractWidget widget) {
+    public <T extends AbstractWidget> T addApplicationWidget(T widget) {
         widgets.add(this.addRenderableWidget(widget));
+        return widget;
     }
 
     public void clearApplicationWidgets() {
@@ -116,7 +117,7 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
     @Override
     public void tick() {
         if (!this.applicationScreens.empty())
-            this.applicationScreens.peek().tick();
+            this.applicationScreens.peek().tick(this.leftPos + 6, this.topPos + 6, this.imageWidth - 12, this.imageHeight - 12);
         super.tick();
     }
 
@@ -142,5 +143,11 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
             case RECIPE -> this.menu.setDirty(this.menu.requestRecipe(fullPath));
             default -> {} // No action
         }
+    }
+
+    @Override
+    public void onClose() {
+        super.onClose();
+        this.minecraft.player.closeContainer();
     }
 }

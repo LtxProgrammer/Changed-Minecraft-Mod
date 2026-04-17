@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "changed:file_explorer"
+    "changed:file_explorer",
+    "changed:door_controller"
   ]
 }

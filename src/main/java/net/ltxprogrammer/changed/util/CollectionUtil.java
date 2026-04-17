@@ -1,5 +1,9 @@
 package net.ltxprogrammer.changed.util;
 
+import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.computers.protocol.Frame;
+import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
+import net.ltxprogrammer.changed.computers.protocol.Packet;
 import net.minecraft.util.RandomSource;
 
 import javax.annotation.Nullable;
@@ -115,5 +119,13 @@ public class CollectionUtil {
                 return mapper.apply(iterator.next());
             }
         };
+    }
+
+    /// Iterates over the elements in the queue and provides them to consumer in order, until {@link Queue#poll()} returns `null`.
+    public static <T> void deplete(Queue<T> queue, Consumer<T> consumer) {
+        T nextElem;
+        while ((nextElem = queue.poll()) != null) {
+            consumer.accept(nextElem);
+        }
     }
 }
