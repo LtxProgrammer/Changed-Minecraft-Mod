@@ -323,73 +323,79 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
             }
         });
 
-        Stream<PlacedFacilityPiece> placedPieceStream = pieceZoneStream.flatMap(pair -> {
+        Iterator<Pair<PieceType<?>, Zone>> pieceZoneIterator = pieceZoneStream.iterator();
+        while (pieceZoneIterator.hasNext()) { // Collapse stream stack
+            Pair<PieceType<?>, Zone> pair = pieceZoneIterator.next();
             final PieceType<?> pieceType = pair.getFirst();
             final Zone nextZone = pair.getSecond();
-            return INSTANCE.facilityPieceCollections.get(pieceType).shuffledStream(random)
+
+            Iterator<ConfiguredFacilityPiece> configuredFacilityPieceIterator = INSTANCE.facilityPieceCollections.get(pieceType).shuffledStream(random)
                     .filter(hasNotReachedMaximum(facilityContext)
                             .and(pieceConnectsToZones(zone, nextZone))
                             .and(meetsPiecePositionRequirements(facilityContext, parentStructure.getBoundingBox()))
-                            .and(limitAttempts(pieceType, nextZone, Changed.config.server.facilityPlacementAttemptsPerPieceType.get())))
-                    .map(nextConfiguredPiece -> {
-                        var nextPiece = nextConfiguredPiece.getFacilityPiece();
-                        var nextStructure = nextPiece.createStructurePiece(facilityContext.structureContext.structureTemplateManager(), genDepth);
-                        if (!nextStructure.setupBoundingBox(facilityContext.builder, start.blockInfo(), random, allowedRegion))
-                            return null;
+                            .and(limitAttempts(pieceType, nextZone, Changed.config.server.facilityPlacementAttemptsPerPieceType.get()))).iterator();
 
-                        var placed = new PlacedFacilityPiece(nextZone, nextConfiguredPiece, nextStructure);
+            while (configuredFacilityPieceIterator.hasNext()) { // Collapse stream stack
+                ConfiguredFacilityPiece nextConfiguredPiece = configuredFacilityPieceIterator.next();
 
-                        var startPos = GluBlock.getConnection(start.blockInfo().pos(), start.blockInfo().state());
-                        facilityContext.addPiece(placed);
+                var nextPiece = nextConfiguredPiece.getFacilityPiece();
+                var nextStructure = nextPiece.createStructurePiece(facilityContext.structureContext.structureTemplateManager(), genDepth);
+                if (!nextStructure.setupBoundingBox(facilityContext.builder, start.blockInfo(), random, allowedRegion))
+                    continue;
 
-                        int nextSpan = pieceType.shouldConsumeSpan() ? genDepth - 1 : genDepth;
-                        stack.push(nextConfiguredPiece);
+                var placed = new PlacedFacilityPiece(nextZone, nextConfiguredPiece, nextStructure);
 
-                        var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), facilityContext.structureContext, nextSpan);
-                        ObjectArrayList<GenStep> starts = new ObjectArrayList<>();
-                        nextStructure.addSteps(genStack, starts);
-                        Util.shuffle(starts, random);
+                var startPos = GluBlock.getConnection(start.blockInfo().pos(), start.blockInfo().state());
+                facilityContext.addPiece(placed);
 
-                        boolean firstStart = true;
-                        Set<PlacedFacilityPiece> directDependents = new HashSet<>();
-                        for (var next : starts) {
-                            if (next.blockInfo().pos().equals(startPos))
-                                continue;
-                            var connectorPos = GluBlock.getConnection(next.blockInfo().pos(), next.blockInfo().state());
-                            if (parentStructure.getBoundingBox().isInside(connectorPos))
-                                continue;
-                            if (directDependents.stream().map(placedDependent -> placedDependent.instance.getBoundingBox())
-                                    .anyMatch(box -> box.isInside(connectorPos)))
-                                continue;
+                int nextSpan = pieceType.shouldConsumeSpan() ? genDepth - 1 : genDepth;
+                stack.push(nextConfiguredPiece);
 
-                            var childRoom = treeGenerate(facilityContext, stack, nextStructure, next,
-                                    firstStart ? nextSpan : nextSpan - 5,
-                                    allowedRegion,
-                                    firstStart ? Math.max(zoneProtection - 1, 0) : 5);
-                            if (childRoom.isPresent()) {
-                                firstStart = false;
-                            }
+                var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), facilityContext.structureContext, nextSpan);
+                ObjectArrayList<GenStep> starts = new ObjectArrayList<>();
+                nextStructure.addSteps(genStack, starts);
+                Util.shuffle(starts, random);
 
-                            childRoom.ifPresent(placedChild -> {
-                                directDependents.add(placedChild);
-                                placedChild.setParent(placed);
-                            });
-                        }
+                boolean firstStart = true;
+                Set<PlacedFacilityPiece> directDependents = new HashSet<>();
+                for (var next : starts) {
+                    if (next.blockInfo().pos().equals(startPos))
+                        continue;
+                    var connectorPos = GluBlock.getConnection(next.blockInfo().pos(), next.blockInfo().state());
+                    if (parentStructure.getBoundingBox().isInside(connectorPos))
+                        continue;
+                    if (directDependents.stream().map(placedDependent -> placedDependent.instance.getBoundingBox())
+                            .anyMatch(box -> box.isInside(connectorPos)))
+                        continue;
 
-                        stack.pop();
+                    var childRoom = treeGenerate(facilityContext, stack, nextStructure, next,
+                            firstStart ? nextSpan : nextSpan - 5,
+                            allowedRegion,
+                            firstStart ? Math.max(zoneProtection - 1, 0) : 5);
+                    if (childRoom.isPresent()) {
+                        firstStart = false;
+                    }
 
-                        facilityContext.registerDependents(placed, directDependents);
-                        if (!nextPiece.isValidGeneration(new PlacedFacilityPiece(zone, configuredParent, parentStructure), directDependents)) {
-                            LOGGER.debug("{} denied generation with {} direct dependent(s)", placed.definition.getName(), directDependents.size());
-                            facilityContext.removePieceAndDependents(placed);
-                            return null;
-                        }
+                    childRoom.ifPresent(placedChild -> {
+                        directDependents.add(placedChild);
+                        placedChild.setParent(placed);
+                    });
+                }
 
-                        return placed;
-                    }).filter(Objects::nonNull);
-        });
+                stack.pop();
 
-        return placedPieceStream.findFirst();
+                facilityContext.registerDependents(placed, directDependents);
+                if (!nextPiece.isValidGeneration(new PlacedFacilityPiece(zone, configuredParent, parentStructure), directDependents)) {
+                    LOGGER.debug("{} denied generation with {} direct dependent(s)", placed.definition.getName(), directDependents.size());
+                    facilityContext.removePieceAndDependents(placed);
+                    continue;
+                }
+
+                return Optional.of(placed); // Found a piece
+            }
+        }
+
+        return Optional.empty();
     }
 
     private static Optional<PlacedFacilityPiece> tryReplaceRoom(FacilityGenerationContext facilityContext, ConfiguredFacilityPiece requiredPiece,
