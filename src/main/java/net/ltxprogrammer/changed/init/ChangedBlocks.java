@@ -183,14 +183,22 @@ public class ChangedBlocks {
     public static final RegistryObject<WhiteLatexFluidBlock> WHITE_LATEX_FLUID = registerNoItem("white_latex_fluid", WhiteLatexFluidBlock::new);
     public static final RegistryObject<WhiteLatexPillar> WHITE_LATEX_PILLAR = register("white_latex_pillar", () -> new WhiteLatexPillar(BlockBehaviour.Properties.of().sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F).noOcclusion()));
 
-    public static final RegistryObject<AbstractLabDoor> BLUE_LAB_DOOR = register("blue_lab_door", () -> new AbstractLabDoor(ChangedSounds.LAB_DOOR_OPEN, ChangedSounds.LAB_DOOR_CLOSE, ChangedSounds.LAB_DOOR_LOCKED, false));
-    public static final RegistryObject<AbstractLabDoor> MAINTENANCE_DOOR = register("maintenance_door", () -> new AbstractLabDoor(ChangedSounds.MAINTENANCE_DOOR_OPEN, ChangedSounds.MAINTENANCE_DOOR_CLOSE, ChangedSounds.MAINTENANCE_DOOR_LOCKED, false));
-    public static final RegistryObject<AbstractLabDoor> LAB_DOOR = register("lab_door", () -> new AbstractLabDoor(ChangedSounds.LAB_DOOR_OPEN, ChangedSounds.LAB_DOOR_CLOSE, ChangedSounds.LAB_DOOR_LOCKED, false));
-    public static final RegistryObject<AbstractLabDoor> LIBRARY_DOOR = register("library_door", () -> new AbstractLabDoor(ChangedSounds.LIBRARY_DOOR_OPEN, ChangedSounds.LIBRARY_DOOR_CLOSE, ChangedSounds.LIBRARY_DOOR_LOCKED, true));
-    public static final RegistryObject<AbstractLargeLabDoor> LARGE_BLUE_LAB_DOOR = register("large_blue_lab_door", () -> new AbstractLargeLabDoor(ChangedSounds.LAB_DOOR_OPEN, ChangedSounds.LAB_DOOR_CLOSE, ChangedSounds.LAB_DOOR_LOCKED, false));
-    public static final RegistryObject<AbstractLargeLabDoor> LARGE_MAINTENANCE_DOOR = register("large_maintenance_door", () -> new AbstractLargeLabDoor(ChangedSounds.MAINTENANCE_DOOR_OPEN, ChangedSounds.MAINTENANCE_DOOR_CLOSE, ChangedSounds.MAINTENANCE_DOOR_LOCKED, false));
-    public static final RegistryObject<AbstractLargeLabDoor> LARGE_LAB_DOOR = register("large_lab_door", () -> new AbstractLargeLabDoor(ChangedSounds.LAB_DOOR_OPEN, ChangedSounds.LAB_DOOR_CLOSE, ChangedSounds.LAB_DOOR_LOCKED, false));
-    public static final RegistryObject<AbstractLargeLabDoor> LARGE_LIBRARY_DOOR = register("large_library_door", () -> new AbstractLargeLabDoor(ChangedSounds.LIBRARY_DOOR_OPEN, ChangedSounds.LIBRARY_DOOR_CLOSE, ChangedSounds.LIBRARY_DOOR_LOCKED, true));
+    public static final RegistryObject<AbstractLabDoor> BLUE_LAB_DOOR = register("blue_lab_door", () -> new AbstractLabDoor(ChangedSounds.LAB_DOOR_OPEN, ChangedSounds.LAB_DOOR_CLOSE, ChangedSounds.LAB_DOOR_LOCKED, false,
+            Changed.modResource("lab_door_blue")));
+    public static final RegistryObject<AbstractLabDoor> MAINTENANCE_DOOR = register("maintenance_door", () -> new AbstractLabDoor(ChangedSounds.MAINTENANCE_DOOR_OPEN, ChangedSounds.MAINTENANCE_DOOR_CLOSE, ChangedSounds.MAINTENANCE_DOOR_LOCKED, false,
+            Changed.modResource("maintenance_door")));
+    public static final RegistryObject<AbstractLabDoor> LAB_DOOR = register("lab_door", () -> new AbstractLabDoor(ChangedSounds.LAB_DOOR_OPEN, ChangedSounds.LAB_DOOR_CLOSE, ChangedSounds.LAB_DOOR_LOCKED, false,
+            Changed.modResource("lab_door")));
+    public static final RegistryObject<AbstractLabDoor> LIBRARY_DOOR = register("library_door", () -> new AbstractLabDoor(ChangedSounds.LIBRARY_DOOR_OPEN, ChangedSounds.LIBRARY_DOOR_CLOSE, ChangedSounds.LIBRARY_DOOR_LOCKED, true,
+            Changed.modResource("library_door")));
+    public static final RegistryObject<AbstractLargeLabDoor> LARGE_BLUE_LAB_DOOR = register("large_blue_lab_door", () -> new AbstractLargeLabDoor(ChangedSounds.LAB_DOOR_OPEN, ChangedSounds.LAB_DOOR_CLOSE, ChangedSounds.LAB_DOOR_LOCKED, false,
+            Changed.modResource("lab_door_blue")));
+    public static final RegistryObject<AbstractLargeLabDoor> LARGE_MAINTENANCE_DOOR = register("large_maintenance_door", () -> new AbstractLargeLabDoor(ChangedSounds.MAINTENANCE_DOOR_OPEN, ChangedSounds.MAINTENANCE_DOOR_CLOSE, ChangedSounds.MAINTENANCE_DOOR_LOCKED, false,
+            Changed.modResource("maintenance_door")));
+    public static final RegistryObject<AbstractLargeLabDoor> LARGE_LAB_DOOR = register("large_lab_door", () -> new AbstractLargeLabDoor(ChangedSounds.LAB_DOOR_OPEN, ChangedSounds.LAB_DOOR_CLOSE, ChangedSounds.LAB_DOOR_LOCKED, false,
+            Changed.modResource("lab_door")));
+    public static final RegistryObject<AbstractLargeLabDoor> LARGE_LIBRARY_DOOR = register("large_library_door", () -> new AbstractLargeLabDoor(ChangedSounds.LIBRARY_DOOR_OPEN, ChangedSounds.LIBRARY_DOOR_CLOSE, ChangedSounds.LIBRARY_DOOR_LOCKED, true,
+            Changed.modResource("library_door")));
 
     public static final RegistryObject<FluidCanisterBlock> EMPTY_CANISTER = register("empty_canister",
             () -> new FluidCanisterBlock(null),

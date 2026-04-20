@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.ComputerScreen;
 import net.ltxprogrammer.changed.computers.UITheme;
 import net.ltxprogrammer.changed.computers.application.DoorControllerApplication;
-import net.ltxprogrammer.changed.computers.application.FileExplorerApplication;
+import net.ltxprogrammer.changed.computers.protocol.LogicalNetworkInterface;
 import net.ltxprogrammer.changed.network.packet.ComputerAppClosePacket;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
@@ -12,13 +12,13 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.file.Path;
-import java.util.Objects;
+import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -26,8 +26,16 @@ import java.util.function.Supplier;
 public class DoorControllerScreen implements ApplicationScreen {
     public static final ResourceLocation ICON_ATLAS = Changed.modResource("file_explorer_icons");
 
-    static Function<Button.Builder, Button> explorerListItemButton(Supplier<UITheme> themeSupplier, int iconX, int iconY) {
-        return ApplicationScreen.listItemButton(themeSupplier, ICON_ATLAS, iconX, iconY, 1, 2, 16, 16, 64, 96, 32);
+    public static ResourceLocation getDeviceIconLocation(ResourceLocation icon) {
+        return ResourceLocation.fromNamespaceAndPath(
+                icon.getNamespace(),
+                "textures/gui/computer/devices/%s.png".formatted(icon.getPath())
+        );
+    }
+
+    static Function<Button.Builder, Button> deviceListItemButton(Supplier<UITheme> themeSupplier, ResourceLocation deviceIcon) {
+        return ApplicationScreen.listItemButtonStatic(themeSupplier,
+                getDeviceIconLocation(deviceIcon), 0, 0, 1, 2, 16, 16, 16, 16, 16);
     }
 
     protected final DoorControllerApplication application;
@@ -96,6 +104,7 @@ public class DoorControllerScreen implements ApplicationScreen {
         AtomicInteger yOffset = new AtomicInteger(0);
 
         ComputerMenu menu = screen.getMenu();
+        BlockPos computerPos = menu.computer.getBlockPos();
 
         screen.addApplicationWidget(Button.builder(Component.literal("Desktop"), (self) -> {
             appCloser.run();
@@ -103,15 +112,24 @@ public class DoorControllerScreen implements ApplicationScreen {
                 .tooltip(Tooltip.create(Component.literal("Exit")))
                 .build(ApplicationScreen.iconButton(screen::getTheme, 200, 0)));
 
-        application.reachableDevices.forEach((logicalDevice, info) -> {
+        application.reachableDevices.entrySet().stream().sorted(
+                Comparator.comparingInt(left -> left.getValue().position().distManhattan(computerPos))
+        ).forEach(entry -> {
+            final var logicalDevice = entry.getKey();
+            final var info = entry.getValue();
             screen.addApplicationWidget(Button.builder(info.deviceName(), (self) -> {
-                this.updateDoorActionButtons(logicalDevice);
-            }).bounds(x, y + yOffset.getAndAdd(23), 100, 20)
+                        this.updateDoorActionButtons(logicalDevice);
+                    }).bounds(x, y + yOffset.getAndAdd(23), 136, 20)
                     .tooltip(Tooltip.create(info.deviceName()))
-                    .build());
+                    .build(deviceListItemButton(screen::getTheme, info.icon())));
         });
 
-        this.doorNameWidget = screen.addApplicationWidget(new StringWidget(x + 103, y + 23, 206, 20, Component.empty(), screen.getMinecraft().font))
+        int operationsPaneX = x + 139;
+        int operationsPaneY = y + 23;
+        int operationsPaneWidth = desktopWidth - 136 - 3 - 8;
+        int operationsPaneHalfWidth = (operationsPaneWidth / 2) - 2;
+
+        this.doorNameWidget = screen.addApplicationWidget(new StringWidget(operationsPaneX, operationsPaneY, operationsPaneWidth, 20, Component.empty(), screen.getMinecraft().font))
                 .alignCenter();
 
         this.openDoorButton = screen.addApplicationWidget(Button.builder(Component.literal("Open Door"), (self) -> {
@@ -121,8 +139,8 @@ public class DoorControllerScreen implements ApplicationScreen {
             this.updateDoorActionButtons(this.selectedDoor);
             if (this.automaticCheckbox != null)
                 this.automaticCheckbox.selected = false;
-        }).bounds(x + 103, y + 46, 100, 20)
-                .build());
+        }).bounds(operationsPaneX, operationsPaneY + 23, operationsPaneHalfWidth, 20)
+                .build(ApplicationScreen.textButton(screen::getTheme)));
 
         this.closeDoorButton = screen.addApplicationWidget(Button.builder(Component.literal("Close Door"), (self) -> {
             if (this.selectedDoor != null)
@@ -131,21 +149,17 @@ public class DoorControllerScreen implements ApplicationScreen {
             this.updateDoorActionButtons(this.selectedDoor);
             if (this.automaticCheckbox != null)
                 this.automaticCheckbox.selected = false;
-        }).bounds(x + 206, y + 46, 100, 20)
-                .build());
+        }).bounds(operationsPaneX + operationsPaneHalfWidth + 3, operationsPaneY + 23, operationsPaneHalfWidth, 20)
+                .build(ApplicationScreen.textButton(screen::getTheme)));
 
-        this.automaticCheckbox = screen.addApplicationWidget(new Checkbox(x + 103, y + 69, 2003, 20, Component.literal("Automatic"), true) {
-            @Override
-            public void onPress() {
-                super.onPress();
-                if (DoorControllerScreen.this.selectedDoor != null)
-                    application.requestCommand(this.selected() ?
-                            DoorControllerApplication.Command.AUTOMATIC :
-                            DoorControllerApplication.Command.MANUAL, DoorControllerScreen.this.selectedDoor);
+        this.automaticCheckbox = screen.addApplicationWidget(ApplicationScreen.checkBox(screen::getTheme, operationsPaneX, operationsPaneY + 46, operationsPaneWidth, 20, Component.literal("Automatic"), true, self -> {
+            if (this.selectedDoor != null)
+                application.requestCommand(self.selected() ?
+                        DoorControllerApplication.Command.AUTOMATIC :
+                        DoorControllerApplication.Command.MANUAL, this.selectedDoor);
 
-                DoorControllerScreen.this.updateDoorActionButtons(DoorControllerScreen.this.selectedDoor);
-            }
-        });
+            this.updateDoorActionButtons(this.selectedDoor);
+        }));
     }
 
     @Override

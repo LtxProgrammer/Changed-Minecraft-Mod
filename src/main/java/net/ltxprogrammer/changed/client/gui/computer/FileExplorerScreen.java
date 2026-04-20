@@ -21,7 +21,7 @@ public class FileExplorerScreen implements ApplicationScreen {
     public static final ResourceLocation ICON_ATLAS = Changed.modResource("file_explorer_icons");
 
     static Function<Button.Builder, Button> explorerListItemButton(Supplier<UITheme> themeSupplier, int iconX, int iconY) {
-        return ApplicationScreen.listItemButton(themeSupplier, ICON_ATLAS, iconX, iconY, 1, 2, 16, 16, 64, 96, 32);
+        return ApplicationScreen.listItemButtonThemed(themeSupplier, ICON_ATLAS, iconX, iconY, 1, 2, 16, 16, 64, 96, 32);
     }
 
     protected final FileExplorerApplication application;
