@@ -1027,5 +1027,8 @@
   "changed.ability_tree.plant_like.photosynthesis2": "Fotoszintézis II",
   "changed.ability_tree.plant_like.photostasis": "Fotosztázis",
   "changed.ability_tree.plant_like.camouflage1": "Álcázás I",
-  "changed.ability_tree.plant_like.camouflage2": "Álcázás II"
+  "changed.ability_tree.plant_like.camouflage2": "Álcázás II",
+  
+  "application.changed.file_explorer": "Fájlkezelő",
+  "application.changed.door_controller": "Ajtóvezérlő"
 }
