@@ -8,7 +8,7 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,6 +31,8 @@ public class LabDoorOpenerEntity extends BlockEntity implements NetworkInterface
     private final Map<BlockState, AABB> detectionSize = new HashMap<>();
     private final BasicNIC nic;
     private boolean automatic = true;
+
+    private static final ResourceLocation FALLBACK_ICON = Changed.modResource("lab_door");
 
     protected static final Set<Class<?>> PROTOCOLS = Set.of(DiscoveryProtocol.class, DoorControlProtocol.class, DeviceInfoProtocol.Query.class);
 
@@ -88,10 +90,13 @@ public class LabDoorOpenerEntity extends BlockEntity implements NetworkInterface
         }
 
         if (packet == DeviceInfoProtocol.Query.INSTANCE) {
+            var state = this.getBlockState();
+            var pos = this.getBlockPos();
+            var icon = door.getDeviceIcon(state, level, pos);
             nic.sendPacket(level, logicalSource, new DeviceInfoProtocol(
                     this.getBlockState().getBlock().getName(),
                     this.getBlockPos(),
-                    Changed.modResource("lab_door")
+                    icon == null ? FALLBACK_ICON : icon
             ));
         }
     }

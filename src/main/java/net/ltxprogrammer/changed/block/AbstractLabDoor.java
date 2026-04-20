@@ -4,9 +4,9 @@ import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.block.entity.LabDoorOpenerEntity;
 import net.ltxprogrammer.changed.block.entity.OpenableDoor;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
-import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -66,8 +66,14 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements Parti
 
     private final VoxelShape shapeFrame;
     private final VoxelShape shapeCollisionClosed;
+    private final ResourceLocation deviceIcon;
 
+    @Deprecated
     public AbstractLabDoor(RegistryObject<SoundEvent> open, RegistryObject<SoundEvent> close, RegistryObject<SoundEvent> locked, boolean slim) {
+        this(open, close, locked, slim, null);
+    }
+
+    public AbstractLabDoor(RegistryObject<SoundEvent> open, RegistryObject<SoundEvent> close, RegistryObject<SoundEvent> locked, boolean slim, ResourceLocation deviceIcon) {
         super(Properties.of().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(6.5F, 9.0F));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
@@ -80,6 +86,7 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements Parti
 
         this.shapeFrame = SHAPE_FRAME;
         this.shapeCollisionClosed = slim ? SHAPE_COLLISION_CLOSED_SLIM : SHAPE_COLLISION_CLOSED;
+        this.deviceIcon = deviceIcon;
     }
 
     @Nullable
@@ -402,5 +409,10 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements Parti
         var aabb = aabbBottomLeft.minmax(aabbTopRight);
 
         return aabb.inflate(facing.getAxis() == Direction.Axis.X ? 1.0 : 0.0, 0.0, facing.getAxis() == Direction.Axis.Z ? 1.0 : 0.0);
+    }
+
+    @Override
+    public ResourceLocation getDeviceIcon(BlockState state, Level level, BlockPos pos) {
+        return deviceIcon;
     }
 }

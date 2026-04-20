@@ -1027,5 +1027,8 @@
   "changed.ability_tree.plant_like.photosynthesis2": "Photosynthesis II",
   "changed.ability_tree.plant_like.photostasis": "Photostasis",
   "changed.ability_tree.plant_like.camouflage1": "Camouflage I",
-  "changed.ability_tree.plant_like.camouflage2": "Camouflage II"
+  "changed.ability_tree.plant_like.camouflage2": "Camouflage II",
+
+  "application.changed.file_explorer": "File Explorer",
+  "application.changed.door_controller": "Door Controller"
 }
