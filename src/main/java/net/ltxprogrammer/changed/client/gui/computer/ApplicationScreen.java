@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
+import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -19,6 +20,41 @@ import java.util.function.Supplier;
 
 public interface ApplicationScreen {
     ResourceLocation WIDGETS = Changed.modResource("widgets");
+
+    static StringWidget shadowlessString(int x, int y, int width, int height, Component text, Font font) {
+        return new StringWidget(x, y, width, height, text, font) {
+            private float alignX = 0.5f;
+
+            private StringWidget horizontalAlignment(float alignX) {
+                this.alignX = alignX;
+                return this;
+            }
+
+            @Override
+            public StringWidget alignLeft() {
+                return this.horizontalAlignment(0.0F);
+            }
+
+            @Override
+            public StringWidget alignCenter() {
+                return this.horizontalAlignment(0.5F);
+            }
+
+            @Override
+            public StringWidget alignRight() {
+                return this.horizontalAlignment(1.0F);
+            }
+
+            @Override
+            public void renderWidget(@NotNull GuiGraphics graphics, int mx, int my, float partialTicks) {
+                Component component = this.getMessage();
+                Font font = this.getFont();
+                int i = this.getX() + Math.round(this.alignX * (float)(this.getWidth() - font.width(component)));
+                int j = this.getY() + (this.getHeight() - 9) / 2;
+                graphics.drawString(font, component, i, j, this.getColor(), false);
+            }
+        };
+    }
 
     static Function<Button.Builder, Button> textButton(Supplier<UITheme> themeSupplier) {
         return builder -> new Button(builder) {
