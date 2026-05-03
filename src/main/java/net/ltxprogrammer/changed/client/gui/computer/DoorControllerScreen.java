@@ -8,10 +8,8 @@ import net.ltxprogrammer.changed.computers.protocol.LogicalNetworkInterface;
 import net.ltxprogrammer.changed.network.packet.ComputerAppClosePacket;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Checkbox;
-import net.minecraft.client.gui.components.StringWidget;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +22,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class DoorControllerScreen implements ApplicationScreen {
-    public static final ResourceLocation ICON_ATLAS = Changed.modResource("file_explorer_icons");
+    public static final ResourceLocation BACKGROUND = Changed.modResource("textures/gui/computer/app_bg/door_controller.png");
 
     public static ResourceLocation getDeviceIconLocation(ResourceLocation icon) {
         return ResourceLocation.fromNamespaceAndPath(
@@ -35,7 +33,7 @@ public class DoorControllerScreen implements ApplicationScreen {
 
     static Function<Button.Builder, Button> deviceListItemButton(Supplier<UITheme> themeSupplier, ResourceLocation deviceIcon) {
         return ApplicationScreen.listItemButtonStatic(themeSupplier,
-                getDeviceIconLocation(deviceIcon), 0, 0, 1, 2, 16, 16, 16, 16, 16);
+                getDeviceIconLocation(deviceIcon), 0, 0, 2, 2, 16, 16, 16, 16, 16);
     }
 
     protected final DoorControllerApplication application;
@@ -44,10 +42,15 @@ public class DoorControllerScreen implements ApplicationScreen {
     protected final SingleRunnable appCloser;
 
     protected @Nullable Integer selectedDoor;
-    protected StringWidget doorNameWidget;
+    protected EditBox doorNameWidget;
     protected Button openDoorButton;
     protected Button closeDoorButton;
     protected Checkbox automaticCheckbox;
+
+    protected int desktopLeft;
+    protected int desktopTop;
+    protected int desktopWidth;
+    protected int desktopHeight;
 
     public DoorControllerScreen(DoorControllerApplication application, ComputerScreen screen) {
         this.application = application;
@@ -83,7 +86,18 @@ public class DoorControllerScreen implements ApplicationScreen {
             return;
         }
 
-        this.doorNameWidget.setMessage(info.deviceName());
+        var doorName = info.deviceName().getString();
+        if (!this.doorNameWidget.isFocused()) {
+            this.doorNameWidget.setResponder(null);
+            this.doorNameWidget.setValue(doorName);
+            this.doorNameWidget.setResponder(text -> {
+                if (text.equals(doorName)) {
+                    // Revert name to translatable component
+                } else {
+                    // Set name to literal component
+                }
+            });
+        }
 
         var blockState = level == null ? null : level.getBlockState(info.position());
         if (blockState != null && blockState.hasProperty(BlockStateProperties.OPEN)) {
@@ -99,12 +113,21 @@ public class DoorControllerScreen implements ApplicationScreen {
     public void initialize(int desktopLeft, int desktopTop, int desktopWidth, int desktopHeight) {
         screen.clearApplicationWidgets();
 
+        this.desktopLeft = desktopLeft;
+        this.desktopTop = desktopTop;
+        this.desktopWidth = desktopWidth;
+        this.desktopHeight = desktopHeight;
+
         int x = desktopLeft + 4;
         int y = desktopTop + 4;
         AtomicInteger yOffset = new AtomicInteger(0);
 
         ComputerMenu menu = screen.getMenu();
         BlockPos computerPos = menu.computer.getBlockPos();
+
+        screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y, desktopWidth - 8, 20,
+                application.getType().getDisplayName(), screen.getMinecraft().font)
+                .alignCenter().setColor(0x404040));
 
         screen.addApplicationWidget(Button.builder(Component.literal("Desktop"), (self) -> {
             appCloser.run();
@@ -124,13 +147,12 @@ public class DoorControllerScreen implements ApplicationScreen {
                     .build(deviceListItemButton(screen::getTheme, info.icon())));
         });
 
-        int operationsPaneX = x + 139;
+        int operationsPaneX = x + 141;
         int operationsPaneY = y + 23;
-        int operationsPaneWidth = desktopWidth - 136 - 3 - 8;
+        int operationsPaneWidth = desktopWidth - (operationsPaneX - x) - 8;
         int operationsPaneHalfWidth = (operationsPaneWidth / 2) - 2;
 
-        this.doorNameWidget = screen.addApplicationWidget(new StringWidget(operationsPaneX, operationsPaneY, operationsPaneWidth, 20, Component.empty(), screen.getMinecraft().font))
-                .alignCenter();
+        this.doorNameWidget = screen.addApplicationWidget(new EditBox(screen.getMinecraft().font, operationsPaneX, operationsPaneY, operationsPaneWidth, 20, Component.literal("Door Name")));
 
         this.openDoorButton = screen.addApplicationWidget(Button.builder(Component.literal("Open Door"), (self) -> {
             if (this.selectedDoor != null)
@@ -170,5 +192,11 @@ public class DoorControllerScreen implements ApplicationScreen {
         }
 
         this.updateDoorActionButtons(this.selectedDoor);
+    }
+
+    @Override
+    public void render(GuiGraphics graphics, int cursorX, int cursorY, float partialTicks) {
+        graphics.blit(BACKGROUND, this.desktopLeft, this.desktopTop, 0, 0,
+                this.desktopWidth, this.desktopHeight, this.desktopWidth, this.desktopHeight);
     }
 }
