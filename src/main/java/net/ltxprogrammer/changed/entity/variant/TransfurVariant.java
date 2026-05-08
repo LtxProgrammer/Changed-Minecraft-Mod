@@ -277,6 +277,8 @@ public class TransfurVariant<T extends ChangedEntity> {
             entity.discard();
         }
 
+        entity.invulnerableTime = 30;
+
         return IAbstractChangedEntity.forEntity(newEntity);
     }
 

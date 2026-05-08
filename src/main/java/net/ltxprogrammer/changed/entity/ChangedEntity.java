@@ -867,8 +867,6 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
-        if (this.tickCount < 30)
-            return false; //
         return super.hurt(source, amount);
     }
 
