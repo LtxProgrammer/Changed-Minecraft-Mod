@@ -865,13 +865,6 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         return 0f;
     }
 
-    @Override
-    public boolean hurt(@NotNull DamageSource source, float amount) {
-        if (this.tickCount < 30)
-            return false; //
-        return super.hurt(source, amount);
-    }
-
     public double getPassengersRidingOffset() {
         return this.isCrouching() ? -0.4 : 0.0;
     }
