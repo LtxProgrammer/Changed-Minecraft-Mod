@@ -1,0 +1,16 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:phage_crystal"
+    },
+    {
+      "item": "changed:dark_latex_goo"
+    }
+  ],
+  "gendered": true,
+  "form": "changed:form_phage_latex_wolf"
+}
