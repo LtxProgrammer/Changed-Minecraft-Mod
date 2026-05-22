@@ -32,6 +32,11 @@
           "name": "changed:dark_dragon_crystal_fragment"
         },
         {
+          "type":"minecraft:item",
+          "weight": 1,
+          "name": "changed:phage_crystal"
+        },
+        {
           "type": "minecraft:item",
           "weight": 2,
           "name": "minecraft:phantom_membrane"
