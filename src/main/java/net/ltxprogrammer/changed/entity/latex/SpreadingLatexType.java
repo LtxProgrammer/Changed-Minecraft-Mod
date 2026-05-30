@@ -471,6 +471,55 @@ public abstract class SpreadingLatexType extends LatexType {
         return block.defaultBlockState().getSoundType(level, pos, entity);
     }
 
+    @Override
+    public void animateTick(LatexCoverState coverState, Level level, BlockPos blockPos, RandomSource random) {
+        for (int i = 0; i < random.nextInt(1) + 1; ++i) {
+            this.trySpawnDripParticles(level, blockPos, coverState, level.getBlockState(blockPos));
+        }
+    }
+
+    private void trySpawnDripParticles(Level level, BlockPos blockPos, LatexCoverState coverState, BlockState blockState) {
+        if (blockState.getFluidState().isEmpty() && !(level.random.nextFloat() < 0.95F)) {
+            VoxelShape shape;
+            if (blockState.getBlock() instanceof LatexCoveringSource)
+                shape = blockState.getCollisionShape(level, blockPos);
+            else {
+                if (!coverState.getValue(UP))
+                    return;
+
+                shape = coverState.setValue(DOWN, false)
+                        .setValue(NORTH, false)
+                        .setValue(EAST, false)
+                        .setValue(SOUTH, false)
+                        .setValue(WEST, false)
+                        .getCollisionShape(LatexCoverGetter.wrap(level), blockPos);
+            }
+
+            double d0 = shape.max(Direction.Axis.Y);
+            if (d0 >= 1.0D && !blockState.is(BlockTags.IMPERMEABLE)) {
+                double d1 = shape.min(Direction.Axis.Y);
+                if (d1 > 0.0D) {
+                    this.spawnParticle(level, blockPos, shape, (double)blockPos.getY() + d1 - 0.05D);
+                } else {
+                    BlockPos blockpos = blockPos.below();
+                    BlockState blockstate = level.getBlockState(blockpos);
+                    VoxelShape voxelshape1 = blockstate.getCollisionShape(level, blockpos);
+                    double d2 = voxelshape1.max(Direction.Axis.Y);
+                    if ((d2 < 1.0D || !blockstate.isCollisionShapeFullBlock(level, blockpos)) && blockstate.getFluidState().isEmpty()) {
+                        this.spawnParticle(level, blockPos, shape, (double)blockPos.getY() - 0.05D);
+                    }
+                }
+            }
+
+        }
+    }
+
+    private void spawnParticle(Level level, BlockPos blockPos, VoxelShape shape, double yOffset) {
+        this.spawnFluidParticle(level, (double)blockPos.getX() + shape.min(Direction.Axis.X), (double)blockPos.getX() + shape.max(Direction.Axis.X), (double)blockPos.getZ() + shape.min(Direction.Axis.Z), (double)blockPos.getZ() + shape.max(Direction.Axis.Z), yOffset);
+    }
+
+    protected void spawnFluidParticle(Level level, double minX, double maxX, double minZ, double maxZ, double y) {}
+
     public static class DarkLatex extends SpreadingLatexType {
         private static final List<Supplier<? extends TransfurVariant<?>>> VARIANTS = Util.make(new ArrayList<>(), list -> {
             list.add(ChangedTransfurVariants.DARK_LATEX_WOLF_MALE);
@@ -596,6 +645,11 @@ public abstract class SpreadingLatexType extends LatexType {
                     level.setBlockAndUpdate(above, newBlockState.setValue(AbstractDoubleTransfurCrystal.HALF, DoubleBlockHalf.UPPER));
                 }
             }
+        }
+
+        @Override
+        protected void spawnFluidParticle(Level level, double minX, double maxX, double minZ, double maxZ, double y) {
+            level.addParticle(ChangedParticles.drippingLatex(Color3.DARK), Mth.lerp(level.random.nextDouble(), minX, maxX), y, Mth.lerp(level.random.nextDouble(), minZ, maxZ), 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -725,6 +779,11 @@ public abstract class SpreadingLatexType extends LatexType {
                     ChangedEntities.PURE_WHITE_LATEX_WOLF.get().spawn(level, (CompoundTag) null, null, above, MobSpawnType.NATURAL, true, true);
                 }
             }
+        }
+
+        @Override
+        protected void spawnFluidParticle(Level level, double minX, double maxX, double minZ, double maxZ, double y) {
+            level.addParticle(ChangedParticles.drippingLatex(Color3.WHITE), Mth.lerp(level.random.nextDouble(), minX, maxX), y, Mth.lerp(level.random.nextDouble(), minZ, maxZ), 0.0D, 0.0D, 0.0D);
         }
     }
 

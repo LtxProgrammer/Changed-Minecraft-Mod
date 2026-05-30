@@ -92,8 +92,8 @@ public abstract class AbstractLatexBlock extends Block implements LatexCoveringS
         return getSurfaceType(level, blockPos, face, supportType) == type;
     }
 
-    public AbstractLatexBlock(Properties p_49795_, Supplier<? extends SpreadingLatexType> latexType, Supplier<? extends Item> goo) {
-        super(p_49795_.randomTicks().dynamicShape());
+    public AbstractLatexBlock(Properties properties, Supplier<? extends SpreadingLatexType> latexType, Supplier<? extends Item> goo) {
+        super(properties);
         this.latexType = latexType;
         this.goo = goo;
         this.simulatedCoverState = Cacheable.of(() -> latexType.get().sourceCoverState().setValue(SpreadingLatexType.DOWN, true));
