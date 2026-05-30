@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3fc;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
@@ -65,7 +66,10 @@ public class CameraUtil {
             buffer.writeInt(ticksExpire);
         }
 
-        protected LivingEntity getEntity(Level level) {
+        protected @Nullable LivingEntity getEntity(Level level) {
+            if (lookAt.left().isPresent())
+                return null;
+
             if (cachedEntity == null)
                 cachedEntity = (LivingEntity)level.getEntity(lookAt.right().orElseThrow());
             return cachedEntity;
@@ -75,12 +79,16 @@ public class CameraUtil {
             if (lookAt.left().isPresent())
                 return lookAt.left().get();
             else {
-                return getEntity(source.level()).getEyePosition().subtract(source.getEyePosition(partialTicks)).normalize();
+                var targetEntity = getEntity(source.level());
+                if (targetEntity == null)
+                    return source.getLookAngle(); // Default to source's look angle
+                return targetEntity.getEyePosition().subtract(source.getEyePosition(partialTicks)).normalize();
             }
         }
 
         public boolean shouldExpire(LivingEntity source) {
-            if (this.lookAt.right().isPresent() && getEntity(source.level()).isDeadOrDying())
+            var targetEntity = getEntity(source.level());
+            if (this.lookAt.right().isPresent() && (targetEntity == null || targetEntity.isDeadOrDying()))
                 return true;
             if (source instanceof Player player && (player.isCreative() || player.isSpectator()))
                 return true;
