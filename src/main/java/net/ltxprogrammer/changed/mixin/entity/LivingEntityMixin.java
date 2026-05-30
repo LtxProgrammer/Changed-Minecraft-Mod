@@ -499,7 +499,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
     public void addExtendedData(CompoundTag tag, CallbackInfo ci) {
         tag.put("ChangedAccessorySlots", accessorySlots.save());
-        if (this instanceof PathFinderMobDataExtension ext && ext.isLatexAssimilated()) {
+        if (this instanceof PathFinderMobDataExtension ext && ext.isLatexAssimilated() && Changed.config.server.doMobAssimilation.get()) {
             tag.putBoolean("ChangedIsAssimilated", true);
         }
     }
@@ -513,7 +513,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 tag.contains("ChangedIsAssimilated") &&
                 tag.getBoolean("ChangedIsAssimilated")) {
             if (!ext.isLatexAssimilated() && ProcessTransfur.getEntityAssimilationBehavior(pathfinder) instanceof EntityAssimilationBehavior.InjectEntityWithTransfurGoals behavior) {
-                behavior.assimilate(pathfinder);
+                if (Changed.config.server.doMobAssimilation.get())
+                    behavior.assimilate(pathfinder);
             }
         }
     }

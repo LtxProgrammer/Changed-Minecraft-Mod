@@ -205,13 +205,6 @@ public class ChangedTransfurVariants {
         return REGISTRY.register(name, builder::build);
     }
 
-    static {
-        ProcessTransfur.registerMobAssimilation(EntityType.BEE, EntityAssimilationBehavior.latexAssimilation(1.4, true,
-                TransfurDecider.simpleMobDecider(LATEX_BEE, 3.0f)));
-        ProcessTransfur.registerMobAssimilation(EntityType.RABBIT, EntityAssimilationBehavior.latexAssimilation(2.0, true,
-                TransfurDecider.simpleMobDecider(Gendered.LATEX_RABBITS, 3.0f)));
-    }
-
     public static class Gendered {
         private static final List<GenderedPair<?, ?>> PAIRS = new ArrayList<>();
 
@@ -249,5 +242,12 @@ public class ChangedTransfurVariants {
         public static boolean hasOpposite(TransfurVariant<?> variant) {
             return getPairs().anyMatch(pair -> pair.contains(variant));
         }
+    }
+
+    static {
+        ProcessTransfur.registerMobAssimilation(EntityType.BEE, EntityAssimilationBehavior.latexAssimilation(1.4, true,
+                TransfurDecider.simpleMobDecider(LATEX_BEE, 3.0f)));
+        ProcessTransfur.registerMobAssimilation(EntityType.RABBIT, EntityAssimilationBehavior.latexAssimilation(2.0, true,
+                TransfurDecider.simpleMobDecider(Gendered.LATEX_RABBITS, 3.0f)));
     }
 }
