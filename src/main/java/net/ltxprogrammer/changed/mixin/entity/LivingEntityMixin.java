@@ -63,7 +63,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -423,9 +422,9 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         }
     }
 
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getFriction(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/Entity;)F", remap = false))
-    public float getFrictionForEntity(BlockState instance, LevelReader levelReader, BlockPos pos, Entity entity) {
-        return EntityUtil.getFrictionOnBlock(instance, levelReader, pos, entity);
+    @WrapOperation(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getFriction(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/Entity;)F", remap = false))
+    public float getFrictionForEntity(BlockState instance, LevelReader levelReader, BlockPos pos, Entity entity, Operation<Float> original) {
+        return EntityUtil.getFrictionOnBlock(instance, instance.getFriction(levelReader, pos, entity), levelReader, pos, entity);
     }
 
     @Inject(method = "push", at = @At("HEAD"), cancellable = true)

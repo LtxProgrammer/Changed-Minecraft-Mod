@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.block.CustomFallable;
 import net.minecraft.client.Minecraft;
@@ -15,20 +17,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FallingBlockRenderer.class)
 public abstract class FallingBlockRendererMixin {
-    @Redirect(method = "render(Lnet/minecraft/world/entity/item/FallingBlockEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+    @WrapOperation(method = "render(Lnet/minecraft/world/entity/item/FallingBlockEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/resources/model/BakedModel;"))
-    public BakedModel overrideBlockModel(BlockRenderDispatcher instance, BlockState state) {
-        BakedModel original = instance.getBlockModel(state);
+    public BakedModel overrideBlockModel(BlockRenderDispatcher instance, BlockState state, Operation<BakedModel> original) {
+        BakedModel originalModel = original.call(instance, state);
 
         if (state.getBlock() instanceof CustomFallable customFallable) {
             return Minecraft.getInstance().getModelManager().getModel(customFallable.getModelName());
         } else {
-            return original;
+            return originalModel;
         }
     }
 
