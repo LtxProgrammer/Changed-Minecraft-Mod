@@ -605,7 +605,7 @@
   "entity.changed.latex_squid_dog_female": "Kvinnelig lateks blekkspruthund",
   "entity.changed.latex_squid_dog_male": "Mannlig lateks blekkspruthund",
   "entity.changed.latex_squirrel": "Lateks ekorn",
-  "entity.changed.latex_stiger": "Lateks edderkopp tiger",
+  "entity.changed.latex_stiger": "Lateks edderkopptiger",
   "entity.changed.latex_tiger_shark": "Lateks tigerhai",
   "entity.changed.latex_traffic_cone_dragon": "Lateks trafikk-kjegle drage",
   "entity.changed.latex_translucent_lizard": "Lateks gjennomsiktig øgle",
@@ -697,7 +697,7 @@
   "item.changed.latex_squid_dog_female_spawn_egg": "Fremkallingsegg for kvinnelig lateks blekkspruthund",
   "item.changed.latex_squid_dog_male_spawn_egg": "Fremkallingsegg for mannlig lateks blekkspruthund",
   "item.changed.latex_squirrel_spawn_egg": "Fremkallingsegg for lateks ekorn",
-  "item.changed.latex_stiger_spawn_egg": "Fremkallingsegg for lateks edderkopp tiger",
+  "item.changed.latex_stiger_spawn_egg": "Fremkallingsegg for lateks edderkopptiger",
   "item.changed.latex_tiger_shark_spawn_egg": "Fremkallingsegg for lateks tigerhai",
   "item.changed.latex_traffic_cone_dragon_spawn_egg": "Fremkallingsegg for lateks trafikk-kjegle drage",
   "item.changed.latex_translucent_lizard_spawn_egg": "Fremkallingsegg for lateks gjennomsiktig øgle",
@@ -735,7 +735,7 @@
   "changed.compact_disc.content.aerosol_latex_wolf": "Etter lange urolige netter ga jeg endelig mitt bidrag til databasen. Jeg syntes de lette latexulvene var kjedelige, så jeg blandet inn litt brunt fargestoff og skapte, vel, noe ikke så kjedelig.",
 
   "changed.compact_disc.title.dark_latex_wolf": "Maskerte mysterier",
-  "changed.compact_disc.content.dark_latex_wolf": "Som nevnt tidligere, kan bare dyr motta behandling for utbruddet. I våre forsøk på transpels mennesker, vi har laget en maskert ulvlignende skapning ved å blande lateksbase og svart fargestoff i en sprøyte. Ytterligere testing anbefales.",
+  "changed.compact_disc.content.dark_latex_wolf": "Som nevnt tidligere, kan bare dyr motta behandling for utbruddet. I våre forsøk på forvandpels mennesker, vi har laget en maskert ulvlignende skapning ved å blande lateksbase og svart fargestoff i en sprøyte. Ytterligere testing anbefales.",
   "changed.compact_disc.title.dark_latex_yufeng": "Maskerte drager?",
   "changed.compact_disc.content.dark_latex_yufeng": "Etter å ha brukt samme base for den mørke lateksulven, men også lagt til en fjær, skapte vi en skapning som er i stand til å gli, men som ikke kan fly. Skapningen ligner litt på en drage, og har også en maske.",
   "changed.compact_disc.title.dark_dragon": "Tobente drager",
@@ -930,7 +930,7 @@
   "changed.tamed_dark_latex.title.favor_suit_owner": "Utfør tjeneste: Innkapsle eier",
   "changed.tamed_dark_latex.wander": "Vandrer",
   "changed.tamed_dark_latex.follow": "Følger",
-  "changed.tamed_dark_latex.targeting.transfurable_entities": "Forvandpelsende enheter",
+  "changed.tamed_dark_latex.targeting.transfurable_entities": "Forvandpelsbare enheter",
   "changed.tamed_dark_latex.targeting.monsters": "Monstre",
   "changed.tamed_dark_latex.targeting.hostile_to_owner": "Ta fiender til eieren",
   "changed.tamed_dark_latex.attacking.always_kill": "Alltid drep fiend",
@@ -940,7 +940,97 @@
   "changed.tamed_dark_latex.attack_condition.owner_is_hostile": "Angrip når eier er fiendtlig",
 
   "builtin_resources.changed:beyond_earth_extra": "Changed Beyond Earth Ekstra",
-  "builtin_resources.changed:experiment_ability_tree": "Changed Ferdighetstre",
   "builtin_resources.changed:instant_transfur": "Changed Øyeblikkelig Forvandpels",
-  "builtin_resources.changed:changed_pbr": "Changed PBR"
+  "builtin_resources.changed:changed_pbr": "Changed PBR",
+
+  "changed.ability_tree.latex": "Lateksmestring",
+  "changed.ability_tree.latex.flavor": "Det goo som flyter under huden din har erstattet ditt kjøtt og blod. Du føler deg svak, likevel kroppen din drypper med uutnyttet potensial.",
+
+  "changed.ability_tree.digitigrade_mobility": "Tågjengermobilitet",
+  "changed.ability_tree.digitigrade_mobility.flavor": "Du oppdager at beina dine er mer dyriske enn du husker.",
+  "changed.ability_tree.quadrupedal_mobility": "Firbentemobilitet",
+  "changed.ability_tree.quadrupedal_mobility.flavor": "Du føler som om du konstant er bøyd over. Det som en gang var hendene dine hindrer dig nå i å falle fremover.",
+  "changed.ability_tree.taur_mobility": "Taurmobilitet",
+  "changed.ability_tree.taur_mobility.flavor": "Du stå oppreist, men du finner deg selv på alle fire. Du snubler når du prøve å få fotfeste.",
+  "changed.ability_tree.naga_mobility": "Nagamobilitet",
+  "changed.ability_tree.naga_mobility.flavor": "Begge beina dine har smeltet sammen til en lang, slangelignende hale. Du kommer garantert ikke til å gå lenger.",
+  "changed.ability_tree.mer_mobility": "Mermobilitet",
+  "changed.ability_tree.mer_mobility.flavor": "Begge beina dine har smeltet sammen til en hale prydet med store finner. Du kommer garantert ikke til å gå lenger.",
+
+  "changed.ability_tree.arm_wing": "Armvingemestring",
+  "changed.ability_tree.arm_wing.flavor": "Tykk hinner har dannet seg langs siden av armene dine og opp til ryggen. Det kribler mot luften.",
+  "changed.ability_tree.back_wing": "Ryggvingemestring",
+  "changed.ability_tree.back_wing.flavor": "Store vinger pryder nå ryggen din. De dytte deg rundt mer enn de dytter luft.",
+
+  "changed.ability_tree.aquatic": "Akvatiskmestring",
+  "changed.ability_tree.aquatic.flavor": "Gjeller har dannet seg på din nå glatte hud. Du kveles av luften mens du lengter etter ditt nye habitat: vann.",
+
+  "changed.ability_tree.multi_arm": "Flerarmmestring",
+  "changed.ability_tree.multi_arm.flavor": "Du har flere armer enn før. De føles som om de bare er i veien.",
+
+  "changed.ability_tree.hypnosis": "Hypnosemestring",
+  "changed.ability_tree.hypnosis.flavor": "Din hypnotiske blikk forsteiner ethvert vesen som møter blikket ditt, fastlåst i transe mens du trenger inn i sinnet deres.",
+
+  "changed.ability_tree.chlorophyll": "Klorofyllmestring",
+  "changed.ability_tree.chlorophyll.flavor": "Din grønne hud suger lett opp sollys. Det hadde aldri føltes så godt før.",
+
+  "changed.ability_tree.apidae": "Biemestring",
+  "changed.ability_tree.apidae.flavor": "Svart og gult; fargene til en ekte arbeider hardt. Du må gjøre din del for kolonien.",
+
+  "changed.ability_tree.arachnidae": "Edderkoppmestring",
+  "changed.ability_tree.arachnidae.flavor": "Grotter og spindelvev føles som hjemme for deg. Gjør ethvert sted til ditt hjem med din spinnvorte.",
+
+  "changed.ability_tree.lamnidae": "Haimestring",
+  "changed.ability_tree.lamnidae.flavor": "Havet er ditt rike. Styr det med jernhånd!",
+
+  "changed.ability_tree.coleoidae": "Blekksprutmestring",
+  "changed.ability_tree.coleoidae.flavor": "Når livet gir deg 10 lemmer, gjør du det beste ut av det.",
+
+  "changed.ability_tree.practice1": "Trening I",
+  "changed.ability_tree.practice2": "Trening II",
+  "changed.ability_tree.practice3": "Trening III",
+  "changed.ability_tree.practice4": "Trening IV",
+  "changed.ability_tree.practice5": "Trening V",
+  "changed.ability_tree.practice6": "Trening VI",
+  "changed.ability_tree.practice7": "Trening VII",
+  "changed.ability_tree.practice8": "Trening VIII",
+  "changed.ability_tree.practice9": "Trening IX",
+  "changed.ability_tree.practice10": "Trening X",
+
+  "changed.ability_tree.aquatic.aqua_affinity": "Vannarbeider",
+  "changed.ability_tree.aquatic.depth_compression": "Dybdekompresjon",
+  "changed.ability_tree.aquatic.oxygen_symbiosis": "Oksygensymbiose",
+  "changed.ability_tree.aquatic.underwater_dash": "Undervannsspurt",
+
+  "changed.ability_tree.arachnidae.adapted_vision": "Tilpasset syn",
+  "changed.ability_tree.arachnidae.rappel": "Rappell",
+  "changed.ability_tree.arachnidae.spinneret_practice1": "Spinnvortestrening I",
+  "changed.ability_tree.arachnidae.spinneret_practice2": "Spinnvortestrening II",
+  "changed.ability_tree.arachnidae.spinneret_practice3": "Spinnvortestrening III",
+
+  "changed.ability_tree.movement.run_faster": "Løpe raskere",
+  "changed.ability_tree.movement.swim_faster": "Svømme raskere",
+  "changed.ability_tree.movement.jump_higher": "Hoppe høyere",
+
+  "changed.ability_tree.latex.absorption": "Absorpsjon",
+  "changed.ability_tree.latex.aftertaste1": "Ettersmak I",
+  "changed.ability_tree.latex.aftertaste2": "Ettersmak II",
+  "changed.ability_tree.latex.aftertaste3": "Ettersmak III",
+  "changed.ability_tree.latex.friendly_transfur": "Vennlig forvandpels",
+  "changed.ability_tree.latex.grab": "Gripe",
+  "changed.ability_tree.latex.hardened_skin1": "Herdet hud I",
+  "changed.ability_tree.latex.hardened_skin2": "Herdet hud II",
+  "changed.ability_tree.latex.hardened_skin3": "Herdet hud III",
+  "changed.ability_tree.latex.like_a_tank": "Bygget som en tank",
+  "changed.ability_tree.latex.stability1": "Stabilitet I",
+  "changed.ability_tree.latex.stability2": "Stabilitet II",
+
+  "changed.ability_tree.plant_like.photosynthesis1": "Fotosyntese I",
+  "changed.ability_tree.plant_like.photosynthesis2": "Fotosyntese II",
+  "changed.ability_tree.plant_like.photostasis": "Fotostase",
+  "changed.ability_tree.plant_like.camouflage1": "Kamuflasje I",
+  "changed.ability_tree.plant_like.camouflage2": "Kamuflasje II",
+
+  "application.changed.file_explorer": "Filutforsker",
+  "application.changed.door_controller": "Dørkontroller"
 }

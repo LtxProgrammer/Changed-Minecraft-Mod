@@ -940,7 +940,97 @@
   "changed.tamed_dark_latex.attack_condition.owner_is_hostile": "Támad, amikor a tulajdonos is támad",
 
   "builtin_resources.changed:beyond_earth_extra": "Changed Beyond Earth Extra",
-  "builtin_resources.changed:experiment_ability_tree": "Kísérleti: Changed Képességfák",
   "builtin_resources.changed:instant_transfur": "Changed Azonnali transzfur",
-  "builtin_resources.changed:changed_pbr": "Changed PBR"
+  "builtin_resources.changed:changed_pbr": "Changed PBR",
+
+  "changed.ability_tree.latex": "Latex elsajátítása",
+  "changed.ability_tree.latex.flavor": "A bőröd alatt folyó ragacs felváltotta a húsodat és a véredet. Gyengének érzed magad, mégis testedből felismeretlen lehetőségek csöpögnek.",
+
+  "changed.ability_tree.digitigrade_mobility": "Ujjonjáró mobilitás",
+  "changed.ability_tree.digitigrade_mobility.flavor": "Állatiasabbnak találod a lábaidat, mint amire emlékeztél.",
+  "changed.ability_tree.quadrupedal_mobility": "Négylábú mobilitás",
+  "changed.ability_tree.quadrupedal_mobility.flavor": "Úgy érzed, mintha folyamatosan görnyednél. Amilyen kezeid most voltak, azok stabilizálnak, hogy ne ess előre.",
+  "changed.ability_tree.taur_mobility": "Taur mobilitás",
+  "changed.ability_tree.taur_mobility.flavor": "Egyenesen állsz, mégis négykézlábra kerülsz. Megbotlasz, miközben próbálsz megállni a lábadon.",
+  "changed.ability_tree.naga_mobility": "Nága mobilitás",
+  "changed.ability_tree.naga_mobility.flavor": "Mindkét lábad egy hosszú, kígyózó farokká olvadt össze. Biztosan nem fogsz tudni többé járni.",
+  "changed.ability_tree.mer_mobility": "Sellő mobilitás",
+  "changed.ability_tree.mer_mobility.flavor": "Mindkét lábad egy nagy uszonyokkal díszített farokká olvadt össze. Biztosan nem fogsz tudni többé járni.",
+
+  "changed.ability_tree.arm_wing": "Szárnykarok elsajátítása",
+  "changed.ability_tree.arm_wing.flavor": "Vastag háló képződött a karodtól a hátadig. Bizsergés fut a levegőben.",
+  "changed.ability_tree.back_wing": "Háton levő szárnyak elsajátítása",
+  "changed.ability_tree.back_wing.flavor": "Nagy szárnyak díszítik most a hátadat. Jobban tolnak, mint a levegőt.",
+
+  "changed.ability_tree.aquatic": "Vízi elsajátítás",
+  "changed.ability_tree.aquatic.flavor": "Kopoltyúk képződtek most már sima bőrödön. Levegőtől fulladozol, miközben új élőhelyedet, a vizet kívánod.",
+
+  "changed.ability_tree.multi_arm": "Többkaros elsajátítás",
+  "changed.ability_tree.multi_arm.flavor": "Több karod van, mint korábban. Olyan érzés, mintha csak útban lennének.",
+
+  "changed.ability_tree.hypnosis": "Hipnózis elsajátítása",
+  "changed.ability_tree.hypnosis.flavor": "Hipnotikus tekinteted megkövesít minden lényt, aki a szemedbe kerül, transzba zárva, miközben behatolsz az elméjükbe.",
+
+  "changed.ability_tree.chlorophyll": "Klorofilos elsajátítás",
+  "changed.ability_tree.chlorophyll.flavor": "Zöld bőröd könnyen elnyeli a napfényt. Még soha nem volt ilyen kellemes.",
+
+  "changed.ability_tree.apidae": "Méhes elsajátítás",
+  "changed.ability_tree.apidae.flavor": "Fekete és sárga; egy igazi keményen dolgozó munkás színei. Tenned kell a dolgod a kolóniáért.",
+
+  "changed.ability_tree.arachnidae": "Pókos elsajátítás",
+  "changed.ability_tree.arachnidae.flavor": "A barlangok és pókhálók olyanok számodra, mint az otthon. Válts otthonná bárhol a saját szövőmirigyeddel.",
+
+  "changed.ability_tree.lamnidae": "Cápás elsajátítás",
+  "changed.ability_tree.lamnidae.flavor": "Az óceán a te királyságod. Urald vasököllel!",
+
+  "changed.ability_tree.coleoidae": "Tintahalas elsajátítás",
+  "changed.ability_tree.coleoidae.flavor": "Amikor az élet 10 végtagot ad, kihozod belőle a legtöbbet.",
+
+  "changed.ability_tree.practice1": "Gyakorlat I",
+  "changed.ability_tree.practice2": "Gyakorlat II",
+  "changed.ability_tree.practice3": "Gyakorlat III",
+  "changed.ability_tree.practice4": "Gyakorlat IV",
+  "changed.ability_tree.practice5": "Gyakorlat V",
+  "changed.ability_tree.practice6": "Gyakorlat VI",
+  "changed.ability_tree.practice7": "Gyakorlat VII",
+  "changed.ability_tree.practice8": "Gyakorlat VIII",
+  "changed.ability_tree.practice9": "Gyakorlat IX",
+  "changed.ability_tree.practice10": "Gyakorlat X",
+
+  "changed.ability_tree.aquatic.aqua_affinity": "Vízaffinitás",
+  "changed.ability_tree.aquatic.depth_compression": "Mélységi tömörítés",
+  "changed.ability_tree.aquatic.oxygen_symbiosis": "Oxigén szimbiózis",
+  "changed.ability_tree.aquatic.underwater_dash": "Víz alatti iramodás",
+
+  "changed.ability_tree.arachnidae.adapted_vision": "Hozzáillesztett látás",
+  "changed.ability_tree.arachnidae.rappel": "Ereszkedés",
+  "changed.ability_tree.arachnidae.spinneret_practice1": "Szövőgyakorlat I",
+  "changed.ability_tree.arachnidae.spinneret_practice2": "Szövőgyakorlat II",
+  "changed.ability_tree.arachnidae.spinneret_practice3": "Szövőgyakorlat III",
+
+  "changed.ability_tree.movement.run_faster": "Gyorsabb futás",
+  "changed.ability_tree.movement.swim_faster": "Gyorsabb úszás",
+  "changed.ability_tree.movement.jump_higher": "Magasabb ugrás",
+
+  "changed.ability_tree.latex.absorption": "Elnyelés",
+  "changed.ability_tree.latex.aftertaste1": "Utóíz I",
+  "changed.ability_tree.latex.aftertaste2": "Utóíz II",
+  "changed.ability_tree.latex.aftertaste3": "Utóíz III",
+  "changed.ability_tree.latex.friendly_transfur": "Barátságos transzfur",
+  "changed.ability_tree.latex.grab": "Megragadás",
+  "changed.ability_tree.latex.hardened_skin1": "Keményedett bőr I",
+  "changed.ability_tree.latex.hardened_skin2": "Keményedett bőr II",
+  "changed.ability_tree.latex.hardened_skin3": "Keményedett bőr III",
+  "changed.ability_tree.latex.like_a_tank": "Tank-szerű",
+  "changed.ability_tree.latex.stability1": "Stabilitás I",
+  "changed.ability_tree.latex.stability2": "Stabilitás II",
+
+  "changed.ability_tree.plant_like.photosynthesis1": "Fotoszintézis I",
+  "changed.ability_tree.plant_like.photosynthesis2": "Fotoszintézis II",
+  "changed.ability_tree.plant_like.photostasis": "Fotosztázis",
+  "changed.ability_tree.plant_like.camouflage1": "Álcázás I",
+  "changed.ability_tree.plant_like.camouflage2": "Álcázás II",
+  
+  "application.changed.file_explorer": "Fájlkezelő",
+  "application.changed.door_controller": "Ajtóvezérlő"
 }

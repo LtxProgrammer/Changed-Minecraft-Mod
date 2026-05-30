@@ -605,7 +605,7 @@
   "entity.changed.latex_squid_dog_female": "Kvinnlig latex bläckfiskhund",
   "entity.changed.latex_squid_dog_male": "Manlig latex bläckfiskhund",
   "entity.changed.latex_squirrel": "Latex Squirrel",
-  "entity.changed.latex_stiger": "Latex spindel tiger",
+  "entity.changed.latex_stiger": "Latex spindeltiger",
   "entity.changed.latex_tiger_shark": "Lateks tigerhaj",
   "entity.changed.latex_traffic_cone_dragon": "Latex trafikkon drake",
   "entity.changed.latex_translucent_lizard": "Latex genomskinlig ödla",
@@ -697,7 +697,7 @@
   "item.changed.latex_squid_dog_female_spawn_egg": "Skapelseägg för kvinnlig latex bläckfiskhund",
   "item.changed.latex_squid_dog_male_spawn_egg": "Skapelseägg för manlig latex bläckfiskhund",
   "item.changed.latex_squirrel_spawn_egg": "Skapelseägg för latex ekorre",
-  "item.changed.latex_stiger_spawn_egg": "Skapelseägg för latex spindel tiger",
+  "item.changed.latex_stiger_spawn_egg": "Skapelseägg för latex spindeltiger",
   "item.changed.latex_tiger_shark_spawn_egg": "Skapelseägg för lateks tigerhaj",
   "item.changed.latex_traffic_cone_dragon_spawn_egg": "Skapelseägg för latex trafikkon drake",
   "item.changed.latex_translucent_lizard_spawn_egg": "Skapelseägg för Latex genomskinlig ödla",
@@ -940,7 +940,97 @@
   "changed.tamed_dark_latex.attack_condition.owner_is_hostile": "Attackera när ägare är fientlig",
 
   "builtin_resources.changed:beyond_earth_extra": "Changed Beyond Earth Extra",
-  "builtin_resources.changed:experiment_ability_tree": "Changed Färdighetsträd",
   "builtin_resources.changed:instant_transfur": "Changed Omedelbar Förpälsvandla",
-  "builtin_resources.changed:changed_pbr": "Changed PBR"
+  "builtin_resources.changed:changed_pbr": "Changed PBR",
+
+  "changed.ability_tree.latex": "Latexbehärskning",
+  "changed.ability_tree.latex.flavor": "Det goo som flyter under din hud har ersatt ditt kött och blod. Du känner dig svag, men din kropp dryper med outnyttjad potential.",
+
+  "changed.ability_tree.digitigrade_mobility": "Tågångarmobilitet",
+  "changed.ability_tree.digitigrade_mobility.flavor": "Du upptäcker att dina ben är mer djuriska än du minns.",
+  "changed.ability_tree.quadrupedal_mobility": "Fyrfotademobilitet",
+  "changed.ability_tree.quadrupedal_mobility.flavor": "Du känner som om du konstant är böjd över. Det som en gång var dina händer hindrar dig nu från att falla framåt.",
+  "changed.ability_tree.taur_mobility": "Taurmobilitet",
+  "changed.ability_tree.taur_mobility.flavor": "Du står upprätt, men finner dig själv på alla fyra. Du stapplar när du försök att få fotfäste.",
+  "changed.ability_tree.naga_mobility": "Nagamobilitet",
+  "changed.ability_tree.naga_mobility.flavor": "Dina båda ben har smälter ihop till en lång, ormliknande stjärt. Du kommer definitivt inte gå längre.",
+  "changed.ability_tree.mer_mobility": "Mermobilitet",
+  "changed.ability_tree.mer_mobility.flavor": "Dina båda ben har smälter ihop till en stjärt prydd med stora fenor. Du kommer definitivt inte gå längre.",
+
+  "changed.ability_tree.arm_wing": "Armvingebehärskning",
+  "changed.ability_tree.arm_wing.flavor": "Tjock membran har bildats längs sidan av dina armar upp till ryggen. Det kittlas mot luften.",
+  "changed.ability_tree.back_wing": "Ryggvingebehärskning",
+  "changed.ability_tree.back_wing.flavor": "Stora vingar pryder nu din rygg. De knuffa dig runt mer än de knuffar luft.",
+
+  "changed.ability_tree.aquatic": "Akvatiskbehärskning",
+  "changed.ability_tree.aquatic.flavor": "Gälar har bildats på din nu glatta hud. Du kvävs av luften medan du längtar efter ditt nya habitat: vatten.",
+
+  "changed.ability_tree.multi_arm": "Flerarmsbehärskning",
+  "changed.ability_tree.multi_arm.flavor": "Du har fler armar än förut. De känns som om de bara i vägen.",
+
+  "changed.ability_tree.hypnosis": "Hypnosbehärskning",
+  "changed.ability_tree.hypnosis.flavor": "Din hypnotiska blikk förstenar varje varelse som möter dina ögon, fastlåst i trans medan du tränger in i deras sinne.",
+
+  "changed.ability_tree.chlorophyll": "Klorofyllbehärskning",
+  "changed.ability_tree.chlorophyll.flavor": "Din gröna hud suger lätt upp solljus. Det hade aldrig känts så skönt förut.",
+
+  "changed.ability_tree.apidae": "Bibehärskning",
+  "changed.ability_tree.apidae.flavor": "Svart och gult; färgerna hos en riktig arbetar hårt. Du måste göra din del för kolonin.",
+
+  "changed.ability_tree.arachnidae": "Spindelbehärskning",
+  "changed.ability_tree.arachnidae.flavor": "Grottor och spindelnät känns som hemma för dig. Gör vilken plats som helst till ditt hem med din spinnvårt.",
+
+  "changed.ability_tree.lamnidae": "Hajbehärskning",
+  "changed.ability_tree.lamnidae.flavor": "Havet är ditt rike. Styr det med järnhand!",
+
+  "changed.ability_tree.coleoidae": "bläckfiskbehärskning",
+  "changed.ability_tree.coleoidae.flavor": "När livet ger dig 10 lemmar, gör du det bästa av det.",
+
+  "changed.ability_tree.practice1": "Träning I",
+  "changed.ability_tree.practice2": "Träning II",
+  "changed.ability_tree.practice3": "Träning III",
+  "changed.ability_tree.practice4": "Träning IV",
+  "changed.ability_tree.practice5": "Träning V",
+  "changed.ability_tree.practice6": "Träning VI",
+  "changed.ability_tree.practice7": "Träning VII",
+  "changed.ability_tree.practice8": "Träning VIII",
+  "changed.ability_tree.practice9": "Träning IX",
+  "changed.ability_tree.practice10": "Träning X",
+
+  "changed.ability_tree.aquatic.aqua_affinity": "Vattenvana",
+  "changed.ability_tree.aquatic.depth_compression": "Djupkompression",
+  "changed.ability_tree.aquatic.oxygen_symbiosis": "Syresymbios",
+  "changed.ability_tree.aquatic.underwater_dash": "Undervattensspurt",
+
+  "changed.ability_tree.arachnidae.adapted_vision": "Anpassad syn",
+  "changed.ability_tree.arachnidae.rappel": "Rappell",
+  "changed.ability_tree.arachnidae.spinneret_practice1": "Spinnvårtaträning I",
+  "changed.ability_tree.arachnidae.spinneret_practice2": "Spinnvårtaträning II",
+  "changed.ability_tree.arachnidae.spinneret_practice3": "Spinnvårtaträning III",
+
+  "changed.ability_tree.movement.run_faster": "Springa snabbare",
+  "changed.ability_tree.movement.swim_faster": "Simma snabbare",
+  "changed.ability_tree.movement.jump_higher": "Hoppa högre",
+
+  "changed.ability_tree.latex.absorption": "Absorption",
+  "changed.ability_tree.latex.aftertaste1": "Eftersmak I",
+  "changed.ability_tree.latex.aftertaste2": "Eftersmak II",
+  "changed.ability_tree.latex.aftertaste3": "Eftersmak III",
+  "changed.ability_tree.latex.friendly_transfur": "Vänlig förpälsvandla",
+  "changed.ability_tree.latex.grab": "Gripa",
+  "changed.ability_tree.latex.hardened_skin1": "Härdad hud I",
+  "changed.ability_tree.latex.hardened_skin2": "Härdad hud II",
+  "changed.ability_tree.latex.hardened_skin3": "Härdad hud III",
+  "changed.ability_tree.latex.like_a_tank": "Byggd som en stridsvagn",
+  "changed.ability_tree.latex.stability1": "Stabilitet I",
+  "changed.ability_tree.latex.stability2": "Stabilitet II",
+
+  "changed.ability_tree.plant_like.photosynthesis1": "Fotosyntes I",
+  "changed.ability_tree.plant_like.photosynthesis2": "Fotosyntes II",
+  "changed.ability_tree.plant_like.photostasis": "Fotostasis",
+  "changed.ability_tree.plant_like.camouflage1": "Kamouflage I",
+  "changed.ability_tree.plant_like.camouflage2": "Kamouflage II",
+
+  "application.changed.file_explorer": "Filutforskare",
+  "application.changed.door_controller": "Dörrkontroll"
 }
