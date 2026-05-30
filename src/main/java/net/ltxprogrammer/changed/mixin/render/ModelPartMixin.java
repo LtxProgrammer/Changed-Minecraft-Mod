@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin.render;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.CubeExtender;
@@ -18,7 +19,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
@@ -42,9 +42,9 @@ public abstract class ModelPartMixin implements ModelPartExtender {
         triangles.forEach(triangle -> triangle.compile(pose, consumer, packedLight, packedOverlay, red, green, blue, alpha));
     }
 
-    @Redirect(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
-    public boolean hasNoCubesOrTriangles(List<ModelPart.Cube> cubes) {
-        return cubes.isEmpty() && triangles.isEmpty();
+    @WrapOperation(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
+    public boolean hasNoCubesOrTriangles(List<ModelPart.Cube> instance, Operation<Boolean> original) {
+        return original.call(instance) && triangles.isEmpty();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
@@ -33,7 +35,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -100,13 +101,13 @@ public abstract class GameRendererMixin {
         });
     }
 
-    @Redirect(
+    @WrapOperation(
             method = "renderLevel",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getCameraEntity()Lnet/minecraft/world/entity/Entity;"),
             require = 0
     )
-    public Entity overrideGrabbedEntity(Minecraft instance) {
-        final var entity = instance.getCameraEntity();
+    public Entity overrideGrabbedEntity(Minecraft instance, Operation<Entity> original) {
+        final var entity = original.call(instance);
 
         if (entity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
             return AbstractAbility.getAbilityInstanceSafe(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get())

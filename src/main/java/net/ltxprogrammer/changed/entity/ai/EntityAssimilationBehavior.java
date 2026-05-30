@@ -25,6 +25,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -68,17 +69,22 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
                 return ProcessTransfur.computeAssimilationBehavior(target, decision) != null;
             };
 
-            var targetGoal = new NearestAttackableTargetGoal<>(entity, LivingEntity.class, 10, mustSeeTarget, mustReachTarget, canTransfurTarget);
+            var targetGoal = new NearestAttackableTargetGoal<>(entity, LivingEntity.class, 10, mustSeeTarget, mustReachTarget, canTransfurTarget) {
+                @Override
+                public boolean canUse() {
+                    return super.canUse();
+                }
+            };
 
             var assimilateGoal = new MeleeAttackGoal(entity, speedModifier, followingTargetEvenIfNotSeen) {
                 @Override
                 public boolean canUse() {
-                    return super.canUse() && canTransfurTarget.test(mob.getTarget());
+                    return super.canUse() && Changed.config.server.doMobAssimilation.get() && canTransfurTarget.test(mob.getTarget());
                 }
 
                 @Override
                 public boolean canContinueToUse() {
-                    return super.canContinueToUse() && canTransfurTarget.test(mob.getTarget());
+                    return super.canContinueToUse() && Changed.config.server.doMobAssimilation.get() && canTransfurTarget.test(mob.getTarget());
                 }
 
                 @Override
@@ -102,7 +108,7 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
 
         @Override
         public @Nullable AssimilationBehavior latexAssimilateVictimBehavior(T assimilationVictim, @NotNull LatexAssimilationDecision<?> decision) {
-            if (!ProcessTransfur.isMobAssimilated(assimilationVictim)) {
+            if (Changed.config.server.doMobAssimilation.get() && !ProcessTransfur.isMobAssimilated(assimilationVictim)) {
                 return AssimilationBehavior.instant(assimilationVictim.level(), () -> {
                     assimilate(assimilationVictim);
                     ChangedSounds.broadcastSound(assimilationVictim, ChangedSounds.TRANSFUR_BY_LATEX, 1.0f, 1.0f);
@@ -126,6 +132,9 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
 
         @Override
         public @Nullable AssimilationBehavior immediateTransfurTargetBehavior(T assimilateTarget, @NotNull ImmediateTransfurDecision<?> decision) {
+            if (!Changed.config.server.doMobAssimilation.get())
+                return null;
+
             return AssimilationBehavior.instant(assimilateTarget.level(), () -> {
                 assimilate(assimilateTarget);
                 return null;
@@ -372,6 +381,8 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
     }
 
     static <T extends PathfinderMob> EntityAssimilationBehavior<T> latexAssimilation(boolean mustSeeTarget, boolean mustReachTarget, double speedModifier, boolean followingTargetEvenIfNotSeen, TransfurDecider<T> decider) {
+        Objects.requireNonNull(decider);
+
         return new InjectEntityWithTransfurGoals<>(mustSeeTarget, mustReachTarget, speedModifier, followingTargetEvenIfNotSeen, decider);
     }
 

@@ -2,10 +2,13 @@ package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.DoubleHeadedEntity;
+import net.ltxprogrammer.changed.entity.beast.TripleHeadedEntity;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
@@ -50,15 +53,22 @@ public class MultiRotateHeadPacket implements ChangedPacket {
         if (context.getDirection().getReceptionSide() == LogicalSide.CLIENT) {
             context.setPacketHandled(true);
             return levelFuture.thenAccept(level -> {
-                IAbstractChangedEntity.forEitherSafe(this.getEntity(level))
-                        .map(IAbstractChangedEntity::getChangedEntity)
-                        .ifPresent(effectedEntity -> {
-                            if (effectedEntity instanceof DoubleHeadedEntity doubleHeadedEntity) {
-                                float yRot = (float)(this.yHeadRot2 * 360) / 256.0F;
-                                float xRot = (float)(this.xHeadRot2 * 360) / 256.0F;
-                                doubleHeadedEntity.lerpHead2To(yRot, xRot, 3);
-                            }
-                        });
+                if (!(this.getEntity(level) instanceof LivingEntity livingEntity))
+                    return;
+
+                var effectedEntity = EntityUtil.maybeGetOverlaying(livingEntity);
+
+                if (effectedEntity instanceof DoubleHeadedEntity doubleHeadedEntity) {
+                    float yRot = (float)(this.yHeadRot2 * 360) / 256.0F;
+                    float xRot = (float)(this.xHeadRot2 * 360) / 256.0F;
+                    doubleHeadedEntity.lerpHead2To(yRot, xRot, 3);
+                }
+
+                if (effectedEntity instanceof TripleHeadedEntity tripleHeadedEntity) {
+                    float yRot = (float)(this.yHeadRot3 * 360) / 256.0F;
+                    float xRot = (float)(this.xHeadRot3 * 360) / 256.0F;
+                    tripleHeadedEntity.lerpRightHeadTo(yRot, xRot, 3);
+                }
             });
         }
 

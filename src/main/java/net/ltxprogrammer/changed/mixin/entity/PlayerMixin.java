@@ -226,9 +226,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         foodEfficiency = 1.0f;
     }
 
-    @Redirect(method = "causeFoodExhaustion", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;addExhaustion(F)V"), require = 0)
-    public void efficientFoodExhaustion(FoodData instance, float amount) {
-        instance.addExhaustion(amount * foodEfficiency);
+    @WrapOperation(method = "causeFoodExhaustion", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;addExhaustion(F)V"))
+    public void efficientFoodExhaustion(FoodData instance, float amount, Operation<Void> original) {
+        original.call(instance, amount * foodEfficiency);
     }
 
     @Inject(method = "getDimensions", at = @At("RETURN"), cancellable = true)
