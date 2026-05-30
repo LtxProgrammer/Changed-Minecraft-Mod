@@ -30,8 +30,8 @@ public abstract class CubeDefinitionMixin implements CubeDefinitionExtender {
 
         var overrideFaceTexOffs = this.getOverrideFaceTexOffs();
 
-        if (overrideFaceTexOffs != null) {
-            ModelCuboidExtender cubeExtender = (ModelCuboidExtender)((ModelCuboidAccessor) cube).sodium$copy();
+        if (overrideFaceTexOffs != null && cube instanceof ModelCuboidAccessor cuboidAccessor) {
+            ModelCuboidExtender cubeExtender = (ModelCuboidExtender)cuboidAccessor.sodium$copy();
             cubeExtender.overrideFaceTexOffs(overrideFaceTexOffs, texWidth * this.texScale.u(), texHeight * this.texScale.v(),
                     this.dimensions.x, this.dimensions.y, this.dimensions.z);
         }
