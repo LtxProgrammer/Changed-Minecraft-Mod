@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -33,6 +34,9 @@ public interface TransfurDecider<T extends LivingEntity> {
     }
 
     static <T extends LivingEntity, V extends ChangedEntity> TransfurDecider<T> simpleMobDecider(TransfurVariant<V> variant, float damage, BiConsumer<T, IAbstractChangedEntity> postTransfurListener) {
+        Objects.requireNonNull(variant);
+        Objects.requireNonNull(postTransfurListener);
+
         return (assimilatedMob, target) -> {
             ILatexAssimilatedEntity self = ILatexAssimilatedEntity.forEntity(assimilatedMob);
 
@@ -43,6 +47,9 @@ public interface TransfurDecider<T extends LivingEntity> {
     }
 
     static <T extends LivingEntity, V extends ChangedEntity> TransfurDecider<T> simpleMobDecider(RegistryObject<TransfurVariant<V>> variant, float damage, BiConsumer<T, IAbstractChangedEntity> postTransfurListener) {
+        Objects.requireNonNull(variant);
+        Objects.requireNonNull(postTransfurListener);
+
         return (assimilatedMob, target) -> {
             ILatexAssimilatedEntity self = ILatexAssimilatedEntity.forEntity(assimilatedMob);
 
@@ -53,6 +60,9 @@ public interface TransfurDecider<T extends LivingEntity> {
     }
 
     static <T extends LivingEntity, VM extends ChangedEntity, VF extends ChangedEntity> TransfurDecider<T> simpleMobDecider(GenderedPair<VM, VF> variant, float damage, BiConsumer<T, IAbstractChangedEntity> postTransfurListener) {
+        Objects.requireNonNull(variant);
+        Objects.requireNonNull(postTransfurListener);
+
         return (assimilatedMob, target) -> {
             ILatexAssimilatedEntity self = ILatexAssimilatedEntity.forEntity(assimilatedMob);
 

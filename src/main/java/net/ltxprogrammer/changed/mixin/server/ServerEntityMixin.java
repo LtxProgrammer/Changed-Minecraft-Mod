@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PathFinderMobDataExtension;
 import net.ltxprogrammer.changed.entity.beast.DoubleHeadedEntity;
+import net.ltxprogrammer.changed.entity.beast.TripleHeadedEntity;
 import net.ltxprogrammer.changed.network.packet.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -86,6 +87,8 @@ public abstract class ServerEntityMixin {
 
     @Unique private int yHead2Rotp;
     @Unique private int xHead2Rotp;
+    @Unique private int yHead3Rotp;
+    @Unique private int xHead3Rotp;
 
     @Inject(method = "sendChanges", at = @At("RETURN"))
     private void andSendCustomChanges(CallbackInfo ci) {
@@ -111,9 +114,19 @@ public abstract class ServerEntityMixin {
                         this.xHead2Rotp = xH2;
                     }
 
-                    if (!send) return;
+                    if (effectedEntity instanceof TripleHeadedEntity tripleHeadedEntity) {
+                        yH3 = Mth.floor(tripleHeadedEntity.getRightHeadYRot() * 256.0F / 360.0F);
+                        if (Math.abs(yH3 - this.yHead3Rotp) >= 1)
+                            send = true;
+                        this.yHead3Rotp = yH3;
 
-                    // Triple Head check
+                        xH3 = Mth.floor(tripleHeadedEntity.getRightHeadXRot() * 256.0F / 360.0F);
+                        if (Math.abs(xH3 - this.xHead3Rotp) >= 1)
+                            send = true;
+                        this.xHead3Rotp = xH3;
+                    }
+
+                    if (!send) return;
 
                     Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity),
                             new MultiRotateHeadPacket(this.entity, (byte)yH2, (byte)xH2, (byte)yH3, (byte)xH3));

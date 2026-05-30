@@ -1,25 +1,17 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
 import net.ltxprogrammer.changed.client.LivingEntityRendererExtender;
-import net.ltxprogrammer.changed.client.animations.AnimationContainer;
-import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.renderer.accessory.WornExoskeletonRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.AccessoryLayer;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.entity.robot.Exoskeleton;
-import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +19,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;

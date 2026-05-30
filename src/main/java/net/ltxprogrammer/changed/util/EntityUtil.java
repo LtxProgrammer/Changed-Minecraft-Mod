@@ -47,9 +47,7 @@ public class EntityUtil {
                 .orElse(entity);
     }
 
-    public static float getFrictionOnBlock(BlockState instance, LevelReader level, BlockPos pos, @Nullable Entity entity) {
-        final float originalFriction = instance.getFriction(level, pos, entity);
-
+    public static float getFrictionOnBlock(BlockState instance, float originalFriction, LevelReader level, BlockPos pos, @Nullable Entity entity) {
         if (instance.is(BlockTags.ICE) && entity instanceof LivingEntity livingEntity) {
             return ProcessTransfur.getEntityVariant(livingEntity).map(variant -> {
                 if (livingEntity.getAttributeValue(Attributes.MOVEMENT_SPEED) > 0.1f) // TODO replace with variant builder property for affected by friction

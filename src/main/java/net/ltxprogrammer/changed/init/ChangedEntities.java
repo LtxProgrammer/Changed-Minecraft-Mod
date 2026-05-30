@@ -360,6 +360,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<FeralShark>> FERAL_LATEX_SHARK = registerSpawning("latex_shark_feral", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(FeralShark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.9F, 0.6F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, FeralShark::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<PureWhiteLatexCerberus>> PURE_WHITE_LATEX_CERBERUS = registerSpawning("pure_white_latex_cerberus", 0xFFFFFF, 0xFAFAFA,
+            EntityType.Builder.of(PureWhiteLatexCerberus::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F * PureWhiteLatexCerberus.SCALE, 1.93F * PureWhiteLatexCerberus.SCALE),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PureWhiteLatexCerberus::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<PureWhiteLatexWolf>> PURE_WHITE_LATEX_WOLF = registerSpawning("pure_white_latex_wolf", 0xFFFFFF, 0xFAFAFA,
             EntityType.Builder.of(PureWhiteLatexWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PureWhiteLatexWolf::checkEntitySpawnRules);

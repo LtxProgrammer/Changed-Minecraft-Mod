@@ -32,12 +32,7 @@ public class DarkLatexDoubleYufeng extends DarkLatexYufeng implements DoubleHead
     protected int lerpHead2Steps;
 
     public final GoalSelector head2Goals;
-    protected LookControl head2LookControl = new LookControl(this) {
-        @Override
-        protected boolean resetXRotOnTick() {
-            return false;
-        }
-    };
+    protected LookControl head2LookControl = new NamedLookControl(this, "AltHeadLookControl");
 
     public DarkLatexDoubleYufeng(EntityType<? extends DarkLatexDoubleYufeng> p_19870_, Level level) {
         super(p_19870_, level);
