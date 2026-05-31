@@ -21,9 +21,6 @@ public abstract class RenderTypeMixin extends RenderStateShard {
 
     @WrapMethod(method = "chunkBufferLayers")
     private static List<RenderType> appendChunkBufferLayers(Operation<List<RenderType>> original) {
-        if (!ChangedClient.shouldBeRenderingWaveVision())
-            return original.call();
-
         var layers = new ArrayList<>(original.call());
         layers.add(layers.indexOf(RenderType.solid()) + 1, ChangedShaders.waveVisionResonantSolidFixed());
         layers.add(layers.indexOf(RenderType.cutoutMipped()) + 1, ChangedShaders.waveVisionResonantCutoutMippedFixed());

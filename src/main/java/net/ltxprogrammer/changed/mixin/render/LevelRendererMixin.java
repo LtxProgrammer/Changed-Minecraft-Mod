@@ -251,11 +251,11 @@ public abstract class LevelRendererMixin {
         if (this.level != null) {
             this.graphicsChanged();
             this.level.clearTintCaches();
-            //if (this.chunkRenderDispatcher == null) {
+            if (this.chunkRenderDispatcher == null) {
                 this.chunkRenderDispatcher = new ChunkRenderDispatcher(this.level, (LevelRenderer)(Object)this, Util.backgroundExecutor(), this.minecraft.is64Bit(), this.renderBuffers.fixedBufferPack());
-            /*} else {
+            } else {
                 this.chunkRenderDispatcher.setLevel(this.level);
-            }*/
+            }
 
             this.needsFullRenderChunkUpdate = true;
             this.generateClouds = true;

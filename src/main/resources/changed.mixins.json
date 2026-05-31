@@ -82,7 +82,6 @@
     "network.ClientPacketListenerMixin",
     "render.BlockRenderDispatcherMixin",
     "render.CameraMixin",
-    "render.ChunkBufferBuilderPackMixin",
     "render.CubeDefinitionMixin",
     "render.CubeListBuilderMixin",
     "render.CubeMixin",
