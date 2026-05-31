@@ -65,7 +65,10 @@ public interface IAbstractChangedEntity {
 
     void setTransfurMode(TransfurMode mode);
     void displayClientMessage(Component message, boolean overlayMessage);
-    void drop(ItemStack stack, boolean includeName);
+    default void drop(ItemStack stack, boolean includeName) {
+        this.drop(stack, false, includeName);
+    }
+    void drop(ItemStack stack, boolean randomDirection, boolean includeName);
     void openMenu(MenuProvider menuProvider);
     void closeContainer();
     void setHairStyle(HairStyle style);
@@ -279,7 +282,7 @@ public interface IAbstractChangedEntity {
             }
 
             @Override
-            public void drop(ItemStack stack, boolean includeName) {
+            public void drop(ItemStack stack, boolean randomDirection, boolean includeName) {
                 player.drop(stack, includeName);
             }
 
@@ -495,7 +498,7 @@ public interface IAbstractChangedEntity {
             }
 
             @Override
-            public void drop(ItemStack stack, boolean includeName) {
+            public void drop(ItemStack stack, boolean randomDirection, boolean includeName) {
                 if (stack.isEmpty()) {
                     return;
                 } else {
@@ -510,14 +513,22 @@ public interface IAbstractChangedEntity {
                         itementity.setThrower(cached.get().getUUID());
                     }
 
-                    float f7 = 0.3F;
-                    float f8 = Mth.sin(cached.get().getXRot() * ((float)Math.PI / 180F));
-                    float f2 = Mth.cos(cached.get().getXRot() * ((float)Math.PI / 180F));
-                    float f3 = Mth.sin(cached.get().getYRot() * ((float)Math.PI / 180F));
-                    float f4 = Mth.cos(cached.get().getYRot() * ((float)Math.PI / 180F));
-                    float f5 = cached.get().level().random.nextFloat() * ((float)Math.PI * 2F);
-                    float f6 = 0.02F * cached.get().level().random.nextFloat();
-                    itementity.setDeltaMovement((double)(-f3 * f2 * 0.3F) + Math.cos((double)f5) * (double)f6, (double)(-f8 * 0.3F + 0.1F + (cached.get().level().random.nextFloat() - cached.get().level().random.nextFloat()) * 0.1F), (double)(f4 * f2 * 0.3F) + Math.sin((double)f5) * (double)f6);
+                    if (randomDirection) {
+                        float distance = cached.get().getRandom().nextFloat() * 0.5F;
+                        float angle = cached.get().getRandom().nextFloat() * ((float)Math.PI * 2F);
+                        itementity.setDeltaMovement((double)(-Mth.sin(angle) * distance), (double)0.2F, (double)(Mth.cos(angle) * distance));
+                    } else {
+                        float f7 = 0.3F;
+                        float f8 = Mth.sin(cached.get().getXRot() * ((float)Math.PI / 180F));
+                        float f2 = Mth.cos(cached.get().getXRot() * ((float)Math.PI / 180F));
+                        float f3 = Mth.sin(cached.get().getYRot() * ((float)Math.PI / 180F));
+                        float f4 = Mth.cos(cached.get().getYRot() * ((float)Math.PI / 180F));
+                        float f5 = cached.get().level().random.nextFloat() * ((float)Math.PI * 2F);
+                        float f6 = 0.02F * cached.get().level().random.nextFloat();
+                        itementity.setDeltaMovement((double)(-f3 * f2 * 0.3F) + Math.cos((double)f5) * (double)f6, (double)(-f8 * 0.3F + 0.1F + (cached.get().level().random.nextFloat() - cached.get().level().random.nextFloat()) * 0.1F), (double)(f4 * f2 * 0.3F) + Math.sin((double)f5) * (double)f6);
+                    }
+
+                    cached.get().level().addFreshEntity(itementity);
                 }
             }
 
