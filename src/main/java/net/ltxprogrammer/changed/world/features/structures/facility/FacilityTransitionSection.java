@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,6 +22,10 @@ public class FacilityTransitionSection extends FacilitySinglePiece {
 
     public FacilityTransitionSection(ResourceLocation templateName, Optional<ResourceLocation> lootTable) {
         super(ChangedFacilityPieceTypes.TRANSITION.get(), templateName, lootTable);
+    }
+
+    public FacilityTransitionSection(ResourceLocation templateName, Optional<ResourceLocation> lootTable, List<FacilityPieceEvent> events) {
+        super(ChangedFacilityPieceTypes.TRANSITION.get(), templateName, lootTable, events);
     }
 
     @Override
