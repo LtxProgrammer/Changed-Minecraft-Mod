@@ -21,6 +21,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.UniversalDist;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,8 +32,8 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -64,7 +65,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -198,8 +198,28 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_TARGET_ID, OptionalInt.empty());
-        this.entityData.define(DATA_LOCAL_VARIANT_INFO, BasicPlayerInfo.random(this.random, this));
+        this.entityData.define(DATA_LOCAL_VARIANT_INFO, new BasicPlayerInfo());
         this.entityData.define(DATA_CHANGED_ENTITY_FLAGS, (byte)0);
+    }
+
+    protected void initializeBPI(BasicPlayerInfo info, RandomSource random) {
+        info.setHairColor(Util.getRandom(BasicPlayerInfo.HAIR_COLORS, random));
+        info.setLeftIrisColor(Util.getRandom(BasicPlayerInfo.IRIS_COLORS, random));
+        info.setRightIrisColor(random.nextFloat() > 0.05f ? info.getLeftIrisColor() : Util.getRandom(BasicPlayerInfo.IRIS_COLORS, random)); // 5% for dichrome eyes
+        info.setEyeStyle(Util.getRandom(EyeStyle.values(), random));
+        info.setOverrideOthersToMatchStyle(false);
+        float min = BasicPlayerInfo.getSizeMinimum(this);
+        float max = BasicPlayerInfo.getSizeMaximum(this);
+        info.setSize(random.nextFloat() * (max - min) + min);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroup, @Nullable CompoundTag tag) {
+        var info = new BasicPlayerInfo();
+        initializeBPI(info, this.random);
+        this.entityData.set(DATA_LOCAL_VARIANT_INFO, info);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroup, tag);
     }
 
     @Override
