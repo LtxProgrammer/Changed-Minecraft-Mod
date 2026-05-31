@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.phys.Vec3;
 
 public interface DoubleHeadedEntity {
@@ -19,4 +21,23 @@ public interface DoubleHeadedEntity {
     Vec3 getLookAngle2();
 
     void lerpHead2To(float yRot, float xRot, int steps);
+
+    class NamedLookControl extends LookControl {
+        protected final String name;
+
+        public NamedLookControl(Mob mob, String name) {
+            super(mob);
+            this.name = name;
+        }
+
+        @Override
+        protected boolean resetXRotOnTick() {
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
 }

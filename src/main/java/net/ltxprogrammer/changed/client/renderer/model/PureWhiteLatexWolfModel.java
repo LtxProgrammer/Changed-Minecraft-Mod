@@ -1,7 +1,4 @@
 package net.ltxprogrammer.changed.client.renderer.model;
-// Made with Blockbench 4.1.5
-// Exported for Minecraft version 1.17 with Mojang mappings
-// Paste this class into your mod and generate all required imports
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -21,7 +18,6 @@ import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class PureWhiteLatexWolfModel extends AdvancedHumanoidModel<PureWhiteLatexWolf> {
-    // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("pure_white_latex_wolf"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;

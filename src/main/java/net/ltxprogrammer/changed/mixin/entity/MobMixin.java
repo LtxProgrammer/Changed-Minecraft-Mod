@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -17,7 +19,6 @@ import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Mob.class)
@@ -41,19 +42,19 @@ public abstract class MobMixin extends LivingEntity {
             }));
     }
 
-    @Redirect(method = "dropLeash", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerChunkCache;broadcast(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/network/protocol/Packet;)V"))
-    public void dropLeashForUnderlying(ServerChunkCache instance, Entity entity, Packet<?> packet) {
+    @WrapOperation(method = "dropLeash", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerChunkCache;broadcast(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/network/protocol/Packet;)V"))
+    public void dropLeashForUnderlying(ServerChunkCache instance, Entity entity, Packet<?> packet, Operation<Void> original) {
         if (entity instanceof ChangedEntity changedEntity && changedEntity.getUnderlyingPlayer() != null) {
             instance.broadcastAndSend(changedEntity.getUnderlyingPlayer(), packet);
         } else
-            instance.broadcast(entity, packet);
+            original.call(instance, entity, packet);
     }
 
-    @Redirect(method = "setLeashedTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerChunkCache;broadcast(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/network/protocol/Packet;)V"))
-    public void setLeashedForUnderlying(ServerChunkCache instance, Entity entity, Packet<?> packet) {
+    @WrapOperation(method = "setLeashedTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerChunkCache;broadcast(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/network/protocol/Packet;)V"))
+    public void setLeashedForUnderlying(ServerChunkCache instance, Entity entity, Packet<?> packet, Operation<Void> original) {
         if (entity instanceof ChangedEntity changedEntity && changedEntity.getUnderlyingPlayer() != null) {
             instance.broadcastAndSend(changedEntity.getUnderlyingPlayer(), packet);
         } else
-            instance.broadcast(entity, packet);
+            original.call(instance, entity, packet);
     }
 }

@@ -119,6 +119,7 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(WhiteLatexWolfMaleModel.LAYER_LOCATION, WhiteLatexWolfMaleModel::createBodyLayer);
         event.registerLayerDefinition(MilkPuddingModel.LAYER_LOCATION, MilkPuddingModel::createBodyLayer);
         event.registerLayerDefinition(SharkModel.LAYER_LOCATION, SharkModel::createBodyLayer);
+        event.registerLayerDefinition(PureWhiteLatexCerberusModel.LAYER_LOCATION, PureWhiteLatexCerberusModel::createBodyLayer);
         event.registerLayerDefinition(PureWhiteLatexWolfModel.LAYER_LOCATION, PureWhiteLatexWolfModel::createBodyLayer);
         event.registerLayerDefinition(PureWhiteLatexWolfPupModel.LAYER_LOCATION, PureWhiteLatexWolfPupModel::createBodyLayer);
 
@@ -183,6 +184,7 @@ public class ChangedLayerDefinitions {
         ArmorLatexOtterModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexStigerModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorPooltoyWolfModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorPureWhiteLatexCerberusModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
 
         // TODO maybe revisit custom hair in the future
         /*event.registerLayerDefinition(HairRemodel.RIG_UPPER_LOCATION, HairRemodel::createUpperHair);

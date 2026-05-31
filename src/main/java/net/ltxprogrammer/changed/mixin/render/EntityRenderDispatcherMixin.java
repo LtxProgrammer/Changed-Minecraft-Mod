@@ -2,12 +2,12 @@ package net.ltxprogrammer.changed.mixin.render;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.ChangedClient;
-import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.client.animations.AnimationContainer;
 import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
@@ -30,12 +30,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -94,8 +92,8 @@ public abstract class EntityRenderDispatcherMixin {
                 });
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;renderShadow(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/Entity;FFLnet/minecraft/world/level/LevelReader;F)V"))
-    public <E extends Entity> void maybeRenderShadow(PoseStack stack, MultiBufferSource blockpos, E entity, float shadowStrength, float partialTicks, LevelReader level, float radius) {
+    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;renderShadow(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/Entity;FFLnet/minecraft/world/level/LevelReader;F)V"))
+    public <E extends Entity> void maybeRenderShadow(PoseStack stack, MultiBufferSource blockpos, E entity, float shadowStrength, float partialTicks, LevelReader level, float radius, Operation<Void> original) {
         if (ChangedClient.isRenderingWaveVision()) {
             return;
         }
@@ -116,9 +114,9 @@ public abstract class EntityRenderDispatcherMixin {
             float morph = variant.getMorphProgression(partialTicks);
             float morphRadius = Mth.lerp(morph, radius, this.getRenderer(variant.getChangedEntity()).shadowRadius);
 
-            renderShadow(stack, blockpos, entity, shadowStrength, partialTicks, level, morphRadius);
+            original.call(stack, blockpos, entity, shadowStrength, partialTicks, level, morphRadius);
         },() -> {
-            renderShadow(stack, blockpos, entity, shadowStrength, partialTicks, level, radius);
+            original.call(stack, blockpos, entity, shadowStrength, partialTicks, level, radius);
         });
     }
 
