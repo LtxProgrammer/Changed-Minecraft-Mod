@@ -292,8 +292,11 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
 
         @Override
         public @Nullable AssimilationBehavior latexAssimilateVictimBehavior(Player assimilationVictim, @NotNull LatexAssimilationDecision<?> decision) {
-            if (isPlayerTransfurred(assimilationVictim))
-                return null;
+            if (isPlayerTransfurred(assimilationVictim)) {
+                var variant = ProcessTransfur.getPlayerTransfurVariant(assimilationVictim);
+                if (variant != null && !variant.isTemporaryFromSuit())
+                    return null;
+            }
 
             // Cannot override absorption behavior if absorbing latex is actually a player.
             if (decision.context().isFromPlayer() && decision.method() == LatexAssimilationDecision.Method.ABSORPTION)

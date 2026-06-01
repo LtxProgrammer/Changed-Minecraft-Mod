@@ -6,6 +6,7 @@ import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
+import java.util.List;
 import java.util.Set;
 
 public abstract class FacilityPiece {
@@ -23,4 +24,8 @@ public abstract class FacilityPiece {
     public abstract FacilityPieceInstance createStructurePiece(StructureTemplateManager structures, int genDepth);
 
     public abstract boolean isValidGeneration(FacilityPieces.PlacedFacilityPiece parent, Set<FacilityPieces.PlacedFacilityPiece> directDependents);
+
+    public List<FacilityPieceEvent> getEvents() {
+        return List.of();
+    }
 }

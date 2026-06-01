@@ -2,10 +2,13 @@ package net.ltxprogrammer.changed.effect.particle;
 
 
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +38,8 @@ public class LatexDripParticle extends TextureSheetParticle {
     public void tick() {
         super.tick();
         if (!lastOnGround && this.onGround) {
-            level.playLocalSound(x, y, z, ChangedSounds.LATEX_DRIP.get(), SoundSource.HOSTILE, 0.025f, 1.0f, true);
+            Player localPlayer = UniversalDist.getLocalPlayer();
+            level.playLocalSound(x, y, z, ChangedSounds.LATEX_DRIP.get(), ProcessTransfur.isPlayerTransfurred(localPlayer) ? SoundSource.AMBIENT : SoundSource.HOSTILE, 0.05f, 1.0f, true);
             lastOnGround = this.onGround;
         }
     }

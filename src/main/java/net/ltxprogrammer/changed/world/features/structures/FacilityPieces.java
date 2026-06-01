@@ -545,10 +545,10 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
             }
         });
 
-        Map<Zone, List<Pair<ResourceLocation, BoundingBox>>> zoneBoundingBoxes = new HashMap<>();
+        Map<Zone, List<FacilityKeystone.PieceEntry>> zoneBoundingBoxes = new HashMap<>();
         facilityGenerationContext.piecesByZone.forEach((zone, pieces) -> {
             zoneBoundingBoxes.put(zone, pieces.stream().map(pair ->
-                    Pair.of(pair.definition.getName(), pair.instance.getBoundingBox())).toList());
+                    new FacilityKeystone.PieceEntry(pair.definition.getName(), pair.instance.getBoundingBox(), pair.definition.getEvents())).toList());
         });
 
         try {

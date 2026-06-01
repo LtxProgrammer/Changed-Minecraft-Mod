@@ -207,7 +207,7 @@ public class LatexDripParticle extends LatexParticle {
         if (!shouldRender())
             return; // No sound
         Player localPlayer = UniversalDist.getLocalPlayer();
-        level.playLocalSound(x, y, z, ChangedSounds.LATEX_DRIP.get(), ProcessTransfur.isPlayerTransfurred(localPlayer) ? SoundSource.NEUTRAL : SoundSource.HOSTILE, 0.025f, 1.0f, true);
+        level.playLocalSound(x, y, z, ChangedSounds.LATEX_DRIP.get(), ProcessTransfur.isPlayerTransfurred(localPlayer) ? SoundSource.AMBIENT : SoundSource.HOSTILE, 0.025f, 1.0f, true);
     }
 
     @Override

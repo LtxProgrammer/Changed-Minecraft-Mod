@@ -3,19 +3,22 @@ package net.ltxprogrammer.changed.world.data;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.util.Cacheable;
+import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.world.features.structures.facility.FacilityPieceEvent;
 import net.ltxprogrammer.changed.world.features.structures.facility.FacilityZoneEntities;
 import net.ltxprogrammer.changed.world.features.structures.facility.Zone;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.Weight;
@@ -231,6 +234,8 @@ public class ActiveFacilityInstance {
         public final int availableSpawns;
         public int spawnedEntities;
         @Nullable private CompoundTag persistentData;
+        private final List<FacilityPieceEvent> pieceEvents = new ReferenceArrayList<>();
+        private List<ServerPlayer> playersInside = List.of();
 
         public static final Codec<PieceInfo> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ResourceLocation.CODEC.fieldOf("pieceName").forGetter(info -> info.pieceName),
@@ -262,12 +267,21 @@ public class ActiveFacilityInstance {
             });
         }
 
-        public PieceInfo(ResourceLocation pieceName, BoundingBox region) {
+        public PieceInfo(ResourceLocation pieceName, BoundingBox region, List<FacilityPieceEvent> events) {
             this(pieceName, region, getAvailableSpawns(region), 0, Optional.empty());
+            this.pieceEvents.addAll(events);
+        }
+
+        public BoundingBox getRegion() {
+            return region;
         }
 
         public boolean isInside(Vec3i position) {
             return region.isInside(position);
+        }
+
+        public boolean isInside(Entity entity) {
+            return BlockPos.betweenClosedStream(entity.getBoundingBox()).anyMatch(this::isInside);
         }
 
         private static int getAvailableSpawns(BoundingBox region) {
@@ -294,7 +308,15 @@ public class ActiveFacilityInstance {
          * @param tag CompoundTag to save to.
          */
         public void saveAdditionalData(@NotNull CompoundTag tag) {
+            if (!pieceEvents.isEmpty()) {
+                ListTag eventsListTag = new ListTag();
 
+                for (FacilityPieceEvent event : pieceEvents) {
+                    eventsListTag.add(StringTag.valueOf(ChangedRegistry.FACILITY_EVENTS.getKey(event).toString()));
+                }
+
+                tag.put("events", eventsListTag);
+            }
         }
 
         /**
@@ -303,18 +325,77 @@ public class ActiveFacilityInstance {
          * @param tag CompoundTag to read from.
          */
         public void readAdditionalData(@NotNull CompoundTag tag) {
+            pieceEvents.clear();
 
+            if (tag.contains("events")) {
+                tag.getList("events", 8).stream().map(StringTag.class::cast).map(StringTag::getAsString).map(ResourceLocation::parse).forEach(key -> {
+                    var event = ChangedRegistry.FACILITY_EVENTS.getValue(key);
+                    if (event != null)
+                        pieceEvents.add(event);
+                });
+            }
+        }
+
+        public boolean removeEvent(FacilityPieceEvent event) {
+            return pieceEvents.remove(event);
         }
 
         @Override
         public String toString() {
             return pieceName.toString();
         }
+
+        public List<ServerPlayer> getPlayersInside() {
+            return List.copyOf(playersInside);
+        }
+
+        public void tick(ServerLevel level, Runnable markDirty, Zone zone, List<ServerPlayer> playersInZone) {
+            if (!pieceEvents.isEmpty()) {
+                List<FacilityPieceEvent> pieceEventsCopy = new ReferenceArrayList<>(pieceEvents);
+                pieceEventsCopy.forEach(event -> event.onPieceTick(level, this, zone, markDirty));
+            }
+
+            List<ServerPlayer> nextPlayersInPiece = new ReferenceArrayList<>();
+            playersInZone.forEach(serverPlayer -> {
+                if (this.isInside(serverPlayer)) {
+                    nextPlayersInPiece.add(serverPlayer);
+                }
+            });
+
+            playersInside.forEach(serverPlayer -> {
+                if (!nextPlayersInPiece.contains(serverPlayer))
+                    this.onPlayerLeave(level, serverPlayer, zone, markDirty);
+            });
+
+            nextPlayersInPiece.forEach(serverPlayer -> {
+                if (!playersInside.contains(serverPlayer))
+                    this.onPlayerEnter(level, serverPlayer, zone, markDirty);
+            });
+
+            playersInside = nextPlayersInPiece;
+        }
+
+        protected void onPlayerEnter(ServerLevel level, ServerPlayer player, Zone zone, Runnable markDirty) {
+            if (pieceEvents.isEmpty())
+                return;
+
+            List<FacilityPieceEvent> pieceEventsCopy = new ReferenceArrayList<>(pieceEvents);
+            pieceEventsCopy.forEach(event -> event.onPlayerEnterPiece(level, player, this, zone, markDirty));
+        }
+
+        protected void onPlayerLeave(ServerLevel level, ServerPlayer player, Zone zone, Runnable markDirty) {
+            if (pieceEvents.isEmpty())
+                return;
+
+            List<FacilityPieceEvent> pieceEventsCopy = new ReferenceArrayList<>(pieceEvents);
+            pieceEventsCopy.forEach(event -> event.onPlayerLeavePiece(level, player, this, zone, markDirty));
+        }
     }
 
     public static class ZoneInfo {
         public final List<SpawnInfo> spawnLists;
         public final List<PieceInfo> pieceRegions;
+        public final @Nullable BoundingBox zoneRegion;
         private @Nullable CompoundTag persistentData;
 
         public static final Codec<ZoneInfo> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -334,6 +415,7 @@ public class ActiveFacilityInstance {
         public ZoneInfo(List<SpawnInfo> spawnLists, List<PieceInfo> pieceRegions, Optional<CompoundTag> persistentData) {
             this.spawnLists = spawnLists;
             this.pieceRegions = pieceRegions;
+            this.zoneRegion = BoundingBox.encapsulatingBoxes(pieceRegions.stream().map(PieceInfo::getRegion)::iterator).orElse(null);
             this.persistentData = persistentData.orElse(null);
 
             persistentData.ifPresent(tag -> {
@@ -429,6 +511,21 @@ public class ActiveFacilityInstance {
         public void readAdditionalData(@NotNull CompoundTag tag) {
 
         }
+
+        public void tick(ServerLevel level, Runnable markDirty, Zone zone) {
+            var entity = spawnRandom(level);
+            if (entity != null)
+                markDirty.run();
+
+            if (zoneRegion == null)
+                return;
+
+            var playersInZone = level.getPlayers(serverPlayer -> {
+                return BlockPos.betweenClosedStream(serverPlayer.getBoundingBox()).anyMatch(zoneRegion::isInside);
+            });
+
+            pieceRegions.forEach(info -> info.tick(level, markDirty, zone, playersInZone));
+        }
     }
 
     private Header header;
@@ -497,10 +594,9 @@ public class ActiveFacilityInstance {
     }
 
     public void tick(ServerLevel level) {
+        Runnable markDirty = () -> this.setDirty(true);
         zoneInfos.forEach((zone, info) -> {
-            var entity = info.spawnRandom(level);
-            if (entity != null)
-                this.setDirty(true);
+            info.tick(level, markDirty, zone);
         });
     }
 
