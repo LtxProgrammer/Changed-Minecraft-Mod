@@ -473,8 +473,10 @@ public abstract class SpreadingLatexType extends LatexType {
 
     @Override
     public void animateTick(LatexCoverState coverState, Level level, BlockPos blockPos, RandomSource random) {
-        for (int i = 0; i < random.nextInt(1) + 1; ++i) {
-            this.trySpawnDripParticles(level, blockPos, coverState, level.getBlockState(blockPos));
+        if (Changed.config.client.latexBlocksDrip.get()) {
+            for (int i = 0; i < random.nextInt(1) + 1; ++i) {
+                this.trySpawnDripParticles(level, blockPos, coverState, level.getBlockState(blockPos));
+            }
         }
     }
 
