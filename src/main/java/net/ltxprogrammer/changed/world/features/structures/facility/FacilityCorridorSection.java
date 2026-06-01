@@ -9,6 +9,7 @@ import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -48,6 +49,10 @@ public class  FacilityCorridorSection extends FacilitySinglePiece {
 
     public FacilityCorridorSection(ResourceLocation templateName, Optional<ResourceLocation> lootTable) {
         super(ChangedFacilityPieceTypes.CORRIDOR.get(), templateName, lootTable);
+    }
+
+    public FacilityCorridorSection(ResourceLocation templateName, Optional<ResourceLocation> lootTable, List<FacilityPieceEvent> events) {
+        super(ChangedFacilityPieceTypes.CORRIDOR.get(), templateName, lootTable, events);
     }
 
     @Override

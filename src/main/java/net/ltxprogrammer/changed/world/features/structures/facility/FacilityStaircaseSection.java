@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,6 +30,10 @@ public class FacilityStaircaseSection extends FacilitySinglePiece {
 
     public FacilityStaircaseSection(ResourceLocation templateName, Optional<ResourceLocation> lootTable) {
         super(ChangedFacilityPieceTypes.STAIRCASE_SECTION.get(), templateName, lootTable);
+    }
+
+    public FacilityStaircaseSection(ResourceLocation templateName, Optional<ResourceLocation> lootTable, List<FacilityPieceEvent> events) {
+        super(ChangedFacilityPieceTypes.STAIRCASE_SECTION.get(), templateName, lootTable, events);
     }
 
     @Override

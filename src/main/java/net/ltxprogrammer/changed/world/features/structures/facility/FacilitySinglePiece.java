@@ -37,17 +37,32 @@ import java.util.function.BiConsumer;
 public abstract class FacilitySinglePiece extends FacilityPiece {
     public final ResourceLocation templateName;
     public final Optional<ResourceLocation> lootTable;
+    public final List<FacilityPieceEvent> events;
 
     protected FacilitySinglePiece(PieceType<?> type, ResourceLocation templateName) {
         super(type);
         this.templateName = templateName;
         this.lootTable = Optional.empty();
+        this.events = List.of();
     }
 
     protected FacilitySinglePiece(PieceType<?> type, ResourceLocation templateName, Optional<ResourceLocation> lootTable) {
         super(type);
         this.templateName = templateName;
         this.lootTable = lootTable;
+        this.events = List.of();
+    }
+
+    protected FacilitySinglePiece(PieceType<?> type, ResourceLocation templateName, Optional<ResourceLocation> lootTable, List<FacilityPieceEvent> events) {
+        super(type);
+        this.templateName = templateName;
+        this.lootTable = lootTable;
+        this.events = events;
+    }
+
+    @Override
+    public List<FacilityPieceEvent> getEvents() {
+        return events;
     }
 
     public static class StructureInstance extends FacilityPieceInstance {

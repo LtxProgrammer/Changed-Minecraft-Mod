@@ -90,6 +90,10 @@ public class ConfiguredFacilityPiece implements WeightedEntry {
         return this;
     }
 
+    public List<FacilityPieceEvent> getEvents() {
+        return facilityPiece.getEvents();
+    }
+
     @Override
     public String toString() {
         return name.toString();

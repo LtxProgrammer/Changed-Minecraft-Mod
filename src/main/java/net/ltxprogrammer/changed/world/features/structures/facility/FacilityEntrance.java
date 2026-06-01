@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,6 +21,10 @@ public class FacilityEntrance extends FacilitySinglePiece {
 
     public FacilityEntrance(ResourceLocation templateName, Optional<ResourceLocation> lootTable) {
         super(ChangedFacilityPieceTypes.ENTRANCE.get(), templateName, lootTable);
+    }
+
+    public FacilityEntrance(ResourceLocation templateName, Optional<ResourceLocation> lootTable, List<FacilityPieceEvent> events) {
+        super(ChangedFacilityPieceTypes.ENTRANCE.get(), templateName, lootTable, events);
     }
 
     @Override

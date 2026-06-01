@@ -204,7 +204,10 @@ public abstract class CameraMixin implements CameraExtender {
             yRot = Mth.lerp(0.05f, lastYRot, yRot);
             lastYRot = yRot;
             original.call(self, x + (-Math.sin(yRot) * zOffset), y, z + (Math.cos(yRot) * zOffset));
+            return;
         }
+
+        original.call(self, x, y, z);
     }
 
     /*@Inject(method = "setPosition(Lnet/minecraft/world/phys/Vec3;)V", at = @At("HEAD"), cancellable = true)
