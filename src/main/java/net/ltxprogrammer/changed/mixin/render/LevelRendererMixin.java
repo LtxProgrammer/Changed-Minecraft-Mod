@@ -16,6 +16,7 @@ import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.ltxprogrammer.changed.client.*;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.item.LoopedRecordItem;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.CameraUtil;
@@ -251,7 +252,7 @@ public abstract class LevelRendererMixin {
         if (this.level != null) {
             this.graphicsChanged();
             this.level.clearTintCaches();
-            if (this.chunkRenderDispatcher == null) {
+            if (this.chunkRenderDispatcher == null || ChangedCompatibility.shouldIgnoreWaveVisionRenderTypesOutsideOfWaveVision()) {
                 this.chunkRenderDispatcher = new ChunkRenderDispatcher(this.level, (LevelRenderer)(Object)this, Util.backgroundExecutor(), this.minecraft.is64Bit(), this.renderBuffers.fixedBufferPack());
             } else {
                 this.chunkRenderDispatcher.setLevel(this.level);

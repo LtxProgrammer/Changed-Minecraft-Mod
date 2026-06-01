@@ -6,6 +6,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.ChangedShaders;
 import net.ltxprogrammer.changed.client.WaveVisionRenderer;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,6 +22,9 @@ public abstract class RenderTypeMixin extends RenderStateShard {
 
     @WrapMethod(method = "chunkBufferLayers")
     private static List<RenderType> appendChunkBufferLayers(Operation<List<RenderType>> original) {
+        if (ChangedCompatibility.shouldIgnoreWaveVisionRenderTypesOutsideOfWaveVision() && !ChangedClient.shouldBeRenderingWaveVision())
+            return original.call();
+
         var layers = new ArrayList<>(original.call());
         layers.add(layers.indexOf(RenderType.solid()) + 1, ChangedShaders.waveVisionResonantSolidFixed());
         layers.add(layers.indexOf(RenderType.cutoutMipped()) + 1, ChangedShaders.waveVisionResonantCutoutMippedFixed());

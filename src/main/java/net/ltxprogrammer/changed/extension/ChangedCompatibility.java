@@ -281,4 +281,8 @@ public class ChangedCompatibility {
             return original + 0.6; // Apothic Attributes ignores maxStepUp (default: 0.6), so compensate
         return original;
     }
+
+    public static boolean shouldIgnoreWaveVisionRenderTypesOutsideOfWaveVision() {
+        return isModPresent("rubidium");
+    }
 }
