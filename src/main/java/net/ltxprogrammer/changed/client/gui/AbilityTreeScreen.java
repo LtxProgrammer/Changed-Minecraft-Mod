@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.client.gui;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
@@ -21,10 +23,13 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.event.ContainerScreenEvent;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
@@ -33,6 +38,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> {
+    protected static void drawLine(BufferBuilder bufferBuilder, Matrix4f matrix4f, float x0, float x1, float y0, float y1, float width, float red, float green, float blue, float alpha) {
+        float dx = x0 - x1;
+        float dy = y0 - y1;
+
+        if (Mth.abs(dx) < Mth.EPSILON && Mth.abs(dy) < Mth.EPSILON)
+            return;
+
+        float mag = (float)Mth.length(dx, dy);
+        float dxOffset = dx / mag * (width * 0.5f);
+        float dyOffset = dy / mag * (width * 0.5f);
+
+        bufferBuilder.vertex(matrix4f, x0 + dyOffset, y0 - dxOffset, (float)0).color(red, green, blue, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, x1 + dyOffset, y1 - dxOffset, (float)0).color(red, green, blue, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, x1 - dyOffset, y1 + dxOffset, (float)0).color(red, green, blue, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, x0 - dyOffset, y0 + dxOffset, (float)0).color(red, green, blue, alpha).endVertex();
+    }
+
     public static class TreeButton extends AbstractButton {
         protected final TransfurVariant<?> variant;
         protected final AbilityTree tree;
@@ -96,21 +118,23 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             // Dev idea: animate node elements moving around in place slightly for biological "cell"
         }
 
-        public void renderGraphLine(GuiGraphics graphics, float partialTicks) {
+        public void renderGraphLine(GuiGraphics graphics, BufferBuilder bufferBuilder, float partialTicks) {
             // TODO render line to parent
             if (parent == null)
                 return;
-            /*Matrix4f matrix4f = graphics.pose().last().pose();
+            Matrix4f matrix4f = graphics.pose().last().pose();
 
             float alpha = 1.0f;
-            float red = 0.25f;
-            float green = 0.25f;
-            float blue = 0.25f;
-            VertexConsumer vertexconsumer = graphics.bufferSource().getBuffer(RenderType.gui());
-            vertexconsumer.vertex(matrix4f, (float)this.getX(), (float)this.getY(), (float)0).color(red, green, blue, alpha).endVertex();
-            vertexconsumer.vertex(matrix4f, (float)parent.getX(), (float)parent.getY(), (float)0).color(red, green, blue, alpha).endVertex();
-            vertexconsumer.vertex(matrix4f, (float)parent.getX() + 1, (float)parent.getY() + 1, (float)0).color(red, green, blue, alpha).endVertex();
-            vertexconsumer.vertex(matrix4f, (float)this.getX() + 1, (float)this.getY() + 1, (float)0).color(red, green, blue, alpha).endVertex();*/
+            float red = 0.4f;
+            float green = 0.4f;
+            float blue = 0.4f;
+
+            int centerXthis = this.getX() + (this.getWidth() / 2);
+            int centerYthis = this.getY() + (this.getHeight() / 2);
+            int centerXparent = parent.getX() + (parent.getWidth() / 2);
+            int centerYparent = parent.getY() + (parent.getHeight() / 2);
+
+            drawLine(bufferBuilder, matrix4f, centerXthis, centerXparent, centerYthis, centerYparent, 1.25f, red, green, blue, alpha);
         }
     }
 
@@ -168,24 +192,42 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
     }
 
     private interface GraphLayerRenderer {
-        void drawLayerLines(GuiGraphics graphics, int centerX, int centerY, int layerCount);
+        void drawLayerLines(GuiGraphics graphics, BufferBuilder bufferBuilder, int centerX, int centerY, int layerCount);
     }
+
+    private static final double RADIAL_LAYOUT_GAP = 48d;
 
     public enum GraphLayout implements GraphLayerRenderer {
         RADIAL((layerIndex, nodesInSection, nodeIndex, treesInLayer, treeIndex) -> { // Compute X
             double treeSection = ((treeIndex - 0.5) / (double)treesInLayer) * Math.PI * 2d;
 
             double radians = ((double)(nodeIndex + 1) / (double)(nodesInSection + 1)) * Math.PI * 2d / (double)treesInLayer;
-            return (int)((layerIndex + 1) * 32d * Math.sin(radians + treeSection));
+            return (int)((layerIndex + 1) * RADIAL_LAYOUT_GAP * Math.sin(radians + treeSection));
         }, (layerIndex, nodesInSection, nodeIndex, treesInLayer, treeIndex) -> { // Compute Y
             double treeSection = ((treeIndex - 0.5) / (double)treesInLayer) * Math.PI * 2d;
 
             double radians = ((double)(nodeIndex + 1) / (double)(nodesInSection + 1)) * Math.PI * 2d / (double)treesInLayer;
-            return (int)((layerIndex + 1) * 32d * -Math.cos(radians + treeSection));
-        }, (graphics, centerX, centerY, layerCount) -> {
-            // TODO divide each layer ring into 32 segments, line raster
-            for (int i = 0; i < layerCount; ++i) {
+            return (int)((layerIndex + 1) * RADIAL_LAYOUT_GAP * -Math.cos(radians + treeSection));
+        }, (graphics, bufferBuilder, centerX, centerY, layerCount) -> {
+            Matrix4f matrix4f = graphics.pose().last().pose();
 
+            float alpha = 1.0f;
+            float red = 0.2f;
+            float green = 0.2f;
+            float blue = 0.2f;
+
+            for (int layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
+                for (int seg = 0; seg < 32; ++seg) {
+                    double r0 = (seg / 32d * Math.PI * 2d);
+                    double r1 = ((seg + 1) / 32d * Math.PI * 2d);
+
+                    float x0 = (float)Math.sin(r0) * ((layerIndex + 1) * (float)RADIAL_LAYOUT_GAP) + centerX;
+                    float y0 = (float)Math.cos(r0) * ((layerIndex + 1) * (float)RADIAL_LAYOUT_GAP) + centerY;
+                    float x1 = (float)Math.sin(r1) * ((layerIndex + 1) * (float)RADIAL_LAYOUT_GAP) + centerX;
+                    float y1 = (float)Math.cos(r1) * ((layerIndex + 1) * (float)RADIAL_LAYOUT_GAP) + centerY;
+
+                    drawLine(bufferBuilder, matrix4f, x0, x1, y0, y1, 0.75f, red, green, blue, alpha);
+                }
             }
         }),
         LATERAL((layerIndex, nodesInSection, nodeIndex, treesInLayer, treeIndex) -> { // Compute X
@@ -195,7 +237,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             double nodePlacement = (((double)nodeIndex / (double)nodesInSection / (double)treesInLayer) * 64d) - 32;
 
             return (int)(treeSection + nodePlacement);
-        }, (graphics, centerX, centerY, layerCount) -> {
+        }, (graphics, bufferBuilder, centerX, centerY, layerCount) -> {
 
         });
 
@@ -217,8 +259,8 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             return nodeYComputer.apply(layerIndex, nodesInLayer, nodeIndex, treesInGraph, treeIndex);
         }
 
-        public void drawLayerLines(GuiGraphics graphics, int centerX, int centerY, int layerCount) {
-            graphLayerRenderer.drawLayerLines(graphics, centerX, centerY, layerCount);
+        public void drawLayerLines(GuiGraphics graphics, BufferBuilder bufferBuilder, int centerX, int centerY, int layerCount) {
+            graphLayerRenderer.drawLayerLines(graphics, bufferBuilder, centerX, centerY, layerCount);
         }
     }
 
@@ -378,12 +420,18 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
-        graphLayout.drawLayerLines(graphics,
-                (int)(centerX + panX),
-                (int)(centerY + panY),
-                layerCount);
+        RenderSystem.setShaderTexture(0, 0);
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-        nodeGraph.values().forEach(button -> button.renderGraphLine(graphics, partialTicks));
+        graphLayout.drawLayerLines(graphics, bufferbuilder,
+                (int)(centerX + panX),
+                (int)(centerY + panY), layerCount);
+
+        nodeGraph.values().forEach(button -> button.renderGraphLine(graphics, bufferbuilder, partialTicks));
+
+        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 
     @Override

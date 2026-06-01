@@ -69,6 +69,9 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
             ServerPlayer sender = context.getSender();
             if (sender != null) {
                 var variantInstance = ProcessTransfur.getPlayerTransfurVariant(sender);
+                if (variantInstance == null)
+                    return CompletableFuture.failedFuture(new IllegalStateException("Sender is not transfurred"));
+
                 var variant = variantInstance.getParent();
                 switch (opcode) {
                     case OPEN_MENU -> {
