@@ -27,7 +27,7 @@ public class SimpleCreateItemAbility extends SimpleAbility {
     public void startUsing(IAbstractChangedEntity entity) {
         var item = itemSupplier.get();
         if (!entity.addItem(item))
-            entity.drop(item, false);
+            entity.drop(item, false, false);
         if (!entity.isCreative())
             entity.causeFoodExhaustion(exhaustion);
     }

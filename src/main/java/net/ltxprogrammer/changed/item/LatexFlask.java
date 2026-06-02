@@ -16,6 +16,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -26,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class LatexFlask extends PotionItem implements VariantHoldingBase {
+public class LatexFlask extends Item implements VariantHoldingBase {
     public LatexFlask(Properties properties) {
         super(properties);
     }
@@ -96,5 +98,17 @@ public class LatexFlask extends PotionItem implements VariantHoldingBase {
 
         //entity.gameEvent(entity, GameEvent.DRINKING_FINISH, entity.eyeBlockPosition());
         return stack;
+    }
+
+    public int getUseDuration(ItemStack p_43001_) {
+        return 32;
+    }
+
+    public UseAnim getUseAnimation(ItemStack p_42997_) {
+        return UseAnim.DRINK;
+    }
+
+    public InteractionResultHolder<ItemStack> use(Level p_42993_, Player p_42994_, InteractionHand p_42995_) {
+        return ItemUtils.startUsingInstantly(p_42993_, p_42994_, p_42995_);
     }
 }

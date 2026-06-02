@@ -18,6 +18,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.animation.AnimationEvent;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantFeature;
 import net.ltxprogrammer.changed.world.LatexCoverState;
+import net.ltxprogrammer.changed.world.features.structures.facility.FacilityPieceEvent;
 import net.ltxprogrammer.changed.world.features.structures.facility.types.PieceType;
 import net.ltxprogrammer.changed.world.features.structures.facility.Zone;
 import net.minecraft.core.*;
@@ -204,6 +205,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
 
     public static final RegistryHolder<PieceType<?>> FACILITY_PIECE_TYPES = new RegistryHolder<>(registryKey("facility/piece_types"));
     public static final RegistryHolder<Zone> FACILITY_ZONES = new RegistryHolder<>(registryKey("facility/zones"));
+    public static final RegistryHolder<FacilityPieceEvent> FACILITY_EVENTS = new RegistryHolder<>(registryKey("facility/events"));
 
     public static final RegistryHolder<Codec<? extends NodeEffect>> ABILITY_NODE_EFFECTS = new RegistryHolder<>(registryKey("ability/node_effects"));
     public static final RegistryHolder<Codec<? extends AbstractCondition>> ABILITY_EFFECT_CONDITIONS = new RegistryHolder<>(registryKey("ability/effect_conditions"));
@@ -278,6 +280,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
         createRegistry(event, WALL_SIGN_VARIANT.key);
         createRegistry(event, FACILITY_PIECE_TYPES.key);
         createRegistry(event, FACILITY_ZONES.key);
+        createRegistry(event, FACILITY_EVENTS.key);
         createRegistry(event, ABILITY_NODE_EFFECTS.key);
         createRegistry(event, ABILITY_EFFECT_CONDITIONS.key);
         createRegistry(event, PURCHASE_REQUIREMENTS.key);

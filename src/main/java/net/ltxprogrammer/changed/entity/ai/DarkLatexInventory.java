@@ -298,7 +298,7 @@ public class DarkLatexInventory implements Container, Nameable {
                     continue;
                 }
 
-                this.entityWrapper.drop(itemStack, false);
+                this.entityWrapper.drop(itemStack, false, false);
             }
 
             return;
@@ -501,7 +501,7 @@ public class DarkLatexInventory implements Container, Nameable {
             for(int i = 0; i < list.size(); ++i) {
                 ItemStack itemstack = list.get(i);
                 if (!itemstack.isEmpty()) {
-                    this.entityWrapper.drop(itemstack, true);
+                    this.entityWrapper.drop(itemstack, true, true);
                     list.set(i, ItemStack.EMPTY);
                 }
             }

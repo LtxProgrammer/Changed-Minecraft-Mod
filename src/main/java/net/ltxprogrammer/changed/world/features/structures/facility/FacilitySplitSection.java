@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.world.features.structures.LootTables;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedRandomList;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -37,7 +38,11 @@ public class FacilitySplitSection extends FacilitySinglePiece {
     }
 
     public FacilitySplitSection(ResourceLocation templateName, int expectedDependents, Optional<ResourceLocation> lootTable) {
-        super(ChangedFacilityPieceTypes.SPLIT.get(), templateName, lootTable);
+        this(templateName, expectedDependents, lootTable, List.of());
+    }
+
+    public FacilitySplitSection(ResourceLocation templateName, int expectedDependents, Optional<ResourceLocation> lootTable, List<FacilityPieceEvent> events) {
+        super(ChangedFacilityPieceTypes.SPLIT.get(), templateName, lootTable, events);
         this.expectedDependents = expectedDependents;
     }
 

@@ -508,15 +508,17 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 useDown = useKeyDown;
             }
 
-            var assimilationDecision = this.makeAssimilationDecision();
-            if (assimilationDecision != null && attackDown && useDown && suited) {
-                if (ProcessTransfur.progressTransfur(this.grabbedEntity, assimilationDecision.withTransfurProgress(assimilationDecision.transfurProgress() * 1.5f)))
-                    this.releaseEntity(false);
-            }
+            if (!entity.getLevel().isClientSide) {
+                var assimilationDecision = this.makeAssimilationDecision();
+                if (assimilationDecision != null && attackDown && useDown && suited) {
+                    if (ProcessTransfur.progressTransfur(this.grabbedEntity, assimilationDecision.withTransfurProgress(assimilationDecision.transfurProgress() * 1.5f)))
+                        this.releaseEntity(false);
+                }
 
-            if (assimilationDecision != null && attackDown && !suited) {
-                if (ProcessTransfur.progressTransfur(this.grabbedEntity, assimilationDecision))
-                    this.releaseEntity(false);
+                if (assimilationDecision != null && attackDown && !suited) {
+                    if (ProcessTransfur.progressTransfur(this.grabbedEntity, assimilationDecision))
+                        this.releaseEntity(false);
+                }
             }
 
             else if (useDown) {

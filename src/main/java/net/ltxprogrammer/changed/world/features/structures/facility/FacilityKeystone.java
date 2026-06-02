@@ -35,25 +35,28 @@ import java.util.concurrent.CompletableFuture;
  * Is used to create a facility data object to handle spawns and facility operations
  */
 public class FacilityKeystone extends StructurePiece {
+    public record PieceEntry(ResourceLocation pieceName, BoundingBox region, List<FacilityPieceEvent> events) {
+        private static final Codec<PieceEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                ResourceLocation.CODEC.fieldOf("name").forGetter(PieceEntry::pieceName),
+                BoundingBox.CODEC.fieldOf("region").forGetter(PieceEntry::region),
+                ChangedRegistry.FACILITY_EVENTS.get().getCodec().listOf().fieldOf("events").orElseGet(List::of).forGetter(PieceEntry::events)
+        ).apply(instance, PieceEntry::new));
+    }
+
     private ActiveFacilityInstance.Header header;
-    private Map<Zone, List<Pair<ResourceLocation, BoundingBox>>> piecesByZone;
+    private Map<Zone, List<PieceEntry>> piecesByZone;
 
-    private static final Codec<Pair<ResourceLocation, BoundingBox>> PIECE_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ResourceLocation.CODEC.fieldOf("name").forGetter(Pair::getFirst),
-            BoundingBox.CODEC.fieldOf("region").forGetter(Pair::getSecond)
-    ).apply(instance, Pair::of));
-
-    private static final Codec<Map<Zone, List<Pair<ResourceLocation, BoundingBox>>>> PIECES_BY_ZONE_CODEC = Codec.unboundedMap(
+    private static final Codec<Map<Zone, List<PieceEntry>>> PIECES_BY_ZONE_CODEC = Codec.unboundedMap(
             ChangedRegistry.FACILITY_ZONES.get().getCodec(),
-            Codec.list(PIECE_CODEC)
+            Codec.list(PieceEntry.CODEC)
     );
 
-    public FacilityKeystone(int genDepth, Map<Zone, List<Pair<ResourceLocation, BoundingBox>>> piecesByZone, BoundingBox entrance, RandomSource random) {
+    public FacilityKeystone(int genDepth, Map<Zone, List<PieceEntry>> piecesByZone, BoundingBox entrance, RandomSource random) {
         super(ChangedStructurePieceTypes.FACILITY_KEYSTONE.get(), genDepth, entrance);
 
         this.piecesByZone = piecesByZone;
         header = new ActiveFacilityInstance.Header();
-        header.initialize(BoundingBox.encapsulatingBoxes(piecesByZone.values().stream().flatMap(List::stream).map(Pair::getSecond)::iterator).orElseThrow(() -> {
+        header.initialize(BoundingBox.encapsulatingBoxes(piecesByZone.values().stream().flatMap(List::stream).map(PieceEntry::region)::iterator).orElseThrow(() -> {
             return new IllegalStateException("Unable to calculate BoundingBox without pieces");
         }), random);
     }
@@ -94,7 +97,7 @@ public class FacilityKeystone extends StructurePiece {
             piecesByZone.forEach((zone, boundingBox) -> {
                 zoneInfoBuilder.put(zone, new ActiveFacilityInstance.ZoneInfo(
                         FacilityZoneEntities.INSTANCE.getSpawns(zone).stream().map(ActiveFacilityInstance.SpawnInfo::new).toList(),
-                        boundingBox.stream().map(pair -> new ActiveFacilityInstance.PieceInfo(pair.getFirst(), pair.getSecond())).toList(),
+                        boundingBox.stream().map(entry -> new ActiveFacilityInstance.PieceInfo(entry.pieceName, entry.region, entry.events)).toList(),
                         Optional.empty()));
             });
 
