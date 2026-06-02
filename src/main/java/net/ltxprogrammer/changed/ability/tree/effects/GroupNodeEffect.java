@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -36,5 +37,12 @@ public class GroupNodeEffect extends NodeEffect {
     @Override
     public Codec<? extends NodeEffect> getCodec() {
         return CODEC;
+    }
+
+    @Override
+    public void buildDescription(Consumer<Component> componentConsumer, boolean negate) {
+        super.buildDescription(componentConsumer, negate);
+
+        effects.forEach(effect -> effect.buildDescription(componentConsumer, negate));
     }
 }

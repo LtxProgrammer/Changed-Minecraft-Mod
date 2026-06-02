@@ -25,6 +25,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -63,6 +64,39 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
         public final int initX, initY;
 
+        public NodeRenderState renderState = NodeRenderState.DISTANT;
+
+        public enum BackgroundState {
+            DARKENED,
+            REGULAR,
+            HIGHLIGHTED
+        }
+
+        public enum NodeRenderState {
+            /// Distant node (parent node is not connected to an unlocked node). Darkened, icon and details hidden.
+            DISTANT(BackgroundState.DARKENED, true, true, ChatFormatting.RED),
+            /// Pre-requisites locked (parent node and conditions). Darkened, icon and details visible.
+            PRE_REQ_LOCKED(BackgroundState.DARKENED, false, false, ChatFormatting.RED),
+            /// Pre-requisites met, but cannot afford. Regular color, icon and details visible: cost tinted red
+            PRE_REQ_MET(BackgroundState.REGULAR, false, false, ChatFormatting.RED),
+            /// Pre-requisites met and can afford. Regular color, icon and details visible
+            CAN_ACQUIRE(BackgroundState.REGULAR, false, false, ChatFormatting.GREEN),
+            /// Node unlocked. Highlighted color, icon and details visible
+            UNLOCKED(BackgroundState.HIGHLIGHTED, false, false, ChatFormatting.GRAY);
+
+            public final BackgroundState backgroundState;
+            public final boolean hideIcon;
+            public final boolean hideTooltipDetails;
+            public final ChatFormatting costFormatting;
+
+            NodeRenderState(BackgroundState backgroundState, boolean hideIcon, boolean hideTooltipDetails, ChatFormatting costFormatting) {
+                this.backgroundState = backgroundState;
+                this.hideIcon = hideIcon;
+                this.hideTooltipDetails = hideTooltipDetails;
+                this.costFormatting = costFormatting;
+            }
+        }
+
         public TreeButton(TransfurVariant<?> variant,
                           AbilityTree tree,
                           int x, int y, int width, int height, Component message,
@@ -76,6 +110,22 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             this.initY = y;
 
             this.tooltip = Cacheable.of(this::createTooltip);
+        }
+
+        public final void checkRenderState() {
+            var prev = renderState;
+            renderState = determineRenderState();
+            if (prev != renderState) {
+                this.tooltip.clear();
+            }
+        }
+
+        protected NodeRenderState determineRenderState() {
+            return NodeRenderState.UNLOCKED;
+        }
+
+        protected boolean isUnlocked() {
+            return true;
         }
 
         public List<Component> createTooltip() {
@@ -102,18 +152,6 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
             // TODO Make background, and tint to variant color
             // TODO Either make icons, or have tree specify item
-            /* TODO Special render conditions for:
-            - Distant node (parent node is not connected to an unlocked node)
-                - Darkened, icon and details hidden
-            - Pre-requisites locked (parent node and conditions)
-                - Darkened, icon and details visible
-            - Pre-requisites met, but cannot afford
-                - Regular color, icon and details visible: cost tinted red
-            - Pre-requisites met and can afford
-                - Regular color, icon and details visible
-            - Node unlocked
-                - Highlighted color, icon and details visible
-            */
 
             // Dev idea: animate node elements moving around in place slightly for biological "cell"
         }
@@ -139,6 +177,13 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
     }
 
     public static class NodeButton extends TreeButton {
+        protected static final Component DISTANT_NODE_TEXT = Component.literal("\"")
+                .append(Component.translatable("text.changed.ability_tree.distant_node"))
+                .append(Component.literal("\""))
+                .withStyle(Style.EMPTY
+                        .withColor(ChatFormatting.GRAY)
+                        .withItalic(true));
+
         protected final AbilityTreeInstance.AccountedTree accountedTree;
         private final AbilityNode node;
         private final ResourceLocation nodeName;
@@ -155,12 +200,31 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         }
 
         @Override
+        protected NodeRenderState determineRenderState() {
+            if (isUnlocked())
+                return NodeRenderState.UNLOCKED;
+            if (parent != null && !parent.isUnlocked())
+                return NodeRenderState.DISTANT;
+            if (!accountedTree.hasPrerequisites(variant, nodeName))
+                return NodeRenderState.PRE_REQ_LOCKED;
+            if (!accountedTree.canAfford(variant, nodeName))
+                return NodeRenderState.PRE_REQ_MET;
+            return NodeRenderState.CAN_ACQUIRE;
+        }
+
+        @Override
         public List<Component> createTooltip() {
             var tooltipBuilder = ImmutableList.<Component>builder();
-            tooltipBuilder.add(node.getTitle());
-            tooltipBuilder.add(Component.literal("Generated Cost").withStyle(ChatFormatting.GRAY));
-            tooltipBuilder.add(Component.literal("Generated Description").withStyle(ChatFormatting.BLUE));
-            node.getFlavorText().ifPresent(tooltipBuilder::add);
+
+            if (renderState.hideTooltipDetails) {
+                tooltipBuilder.add(DISTANT_NODE_TEXT);
+            } else {
+                tooltipBuilder.add(node.getTitle());
+                tooltipBuilder.add(accountedTree.getEffectivePriceText(variant, nodeName).withStyle(renderState.costFormatting));
+                node.buildDescription(tooltipBuilder::add);
+                node.getFlavorText().ifPresent(tooltipBuilder::add);
+            }
+
             return tooltipBuilder.build();
         }
 
@@ -172,7 +236,8 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             return true;
         }
 
-        protected boolean isOwned() {
+        @Override
+        protected boolean isUnlocked() {
             return accountedTree.getNodeState(variant, node).map(AbilityTreeInstance.NodeState::unlocked).orElse(false);
         }
 
@@ -387,6 +452,8 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         this.nodeGraph = buildNodeGraph(menu.variant.getParent(), graphLayout, layerCount);
         this.nodeGraph.values().forEach(this::addRenderableWidget);
         this.layerCount = layerCount.getAcquire();
+        this.imageWidth = this.width;
+        this.imageHeight = this.height;
     }
 
     @Override
@@ -397,6 +464,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         this.nodeGraph.values().forEach(button -> {
             button.setX((int)(button.initX + centerX + panX - (button.getWidth() / 2)));
             button.setY((int)(button.initY + centerY + panY - (button.getHeight() / 2)));
+            button.checkRenderState();
         });
 
         Changed.postModEvent(new ContainerScreenEvent.Render.Background(this, graphics, mouseX, mouseY));

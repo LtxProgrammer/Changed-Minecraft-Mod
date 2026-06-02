@@ -3,14 +3,13 @@ package net.ltxprogrammer.changed.entity.ai;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
+import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
+import net.ltxprogrammer.changed.ability.tree.events.OnTransfurOther;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.PathFinderMobDataExtension;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
-import net.ltxprogrammer.changed.init.ChangedAnimationEvents;
-import net.ltxprogrammer.changed.init.ChangedGameRules;
-import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.packet.AssimilatedEntitySyncPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.InteractionHand;
@@ -307,7 +306,10 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
                 case REPLICATION -> AssimilationBehavior.progressPlayerThenTransfur(assimilationVictim, decision.getDamageSource(assimilationVictim.level().registryAccess()), decision.transfurProgress(), () -> {
                     var newEntity = this.transfurPlayer(assimilationVictim, decision.transfurVariant(), decision.context(), false);
                     if (decision.context().source() != null)
-                        decision.context().source().ifLeft(ProcessTransfur::onAssimilateEntity);
+                        decision.context().source().ifLeft(sourceEntity -> {
+                            AbilityTreeInstance.offerPointEvent(sourceEntity, ChangedAbilityPointEvents.ON_TRANSFUR_OTHER.get(), new OnTransfurOther.Criteria(assimilationVictim));
+                            ProcessTransfur.onAssimilateEntity(sourceEntity);
+                        });
                     decision.postTransfurListener().accept(newEntity);
                     return newEntity;
                 });

@@ -108,7 +108,7 @@ public class SyncTransfurPacket implements ChangedPacket {
                                 variant.transfurContext.cause(),
                                 variant.transfurProgression,
                                 variant.isTemporaryFromSuit(),
-                                variant.save()));
+                                variant.saveForNetwork()));
             }, () -> {
                 if (!excludeNormal)
                     changedForms.put(player.getId(),

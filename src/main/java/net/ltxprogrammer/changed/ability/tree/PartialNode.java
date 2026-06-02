@@ -21,6 +21,7 @@ public class PartialNode {
             Codec.either(ResourceLocation.CODEC, TreeReference.CODEC).fieldOf("parent").forGetter(node -> node.parent),
             Codec.STRING.fieldOf("titleId").forGetter(node -> node.titleId),
             Codec.STRING.fieldOf("requirementsId").orElse("").forGetter(node -> node.requirementsId),
+            Codec.STRING.fieldOf("descriptionId").orElse("").forGetter(node -> node.descriptionId),
             Codec.STRING.fieldOf("flavorId").orElse("").forGetter(node -> node.flavorId),
             Codec.INT.fieldOf("price").forGetter(node -> node.price),
             Codec.INT.fieldOf("groupDiscount").orElse(0).forGetter(node -> node.groupDiscount)
@@ -29,16 +30,18 @@ public class PartialNode {
     public final Either<ResourceLocation, TreeReference> parent;
     public final String titleId;
     public final String requirementsId;
+    public final String descriptionId;
     public final String flavorId;
     public final int price;
     public final int groupDiscount;
 
     private ResourceLocation nodeLocation;
 
-    public PartialNode(Either<ResourceLocation, TreeReference> parent, String titleId, String requirementsId, String flavorId, int price, int groupDiscount) {
+    public PartialNode(Either<ResourceLocation, TreeReference> parent, String titleId, String requirementsId, String descriptionId, String flavorId, int price, int groupDiscount) {
         this.parent = parent;
         this.titleId = titleId;
         this.requirementsId = requirementsId;
+        this.descriptionId = descriptionId;
         this.flavorId = flavorId;
         this.price = price;
         this.groupDiscount = groupDiscount;

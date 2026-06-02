@@ -78,10 +78,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public MiningStrength miningStrength;
     public UseItemMode itemUseMode;
     public int ageAsVariant = 0;
-    protected int air = -100;
     protected int jumpCharges = 0;
     private boolean dead;
-    public int ticksBreathingUnderwater;
     public int ticksFlying;
     protected int ticksSinceLastAbilityActivity = 0;
     private int ticksInWaveVision = 0;
@@ -148,12 +146,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         return map;
     }
 
-    public CompoundTag save() {
+    public CompoundTag saveForNetwork() {
         CompoundTag tag = new CompoundTag();
         tag.putInt("ageAsVariant", ageAsVariant);
         tag.putInt("jumpCharges", jumpCharges);
         tag.putBoolean("dead", dead);
-        tag.putInt("ticksBreathingUnderwater", ticksBreathingUnderwater);
         tag.putInt("ticksFlying", ticksFlying);
 
         tag.put("previousAttributes", TagUtil.createMap(previousAttributes, (attribute, base, map) ->
@@ -178,11 +175,14 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         return tag;
     }
 
+    public CompoundTag saveForStorage() {
+        return this.saveForNetwork();
+    }
+
     public void load(CompoundTag tag) {
         ageAsVariant = tag.getInt("ageAsVariant");
         jumpCharges = tag.getInt("jumpCharges");
         dead = tag.getBoolean("dead");
-        ticksBreathingUnderwater = tag.getInt("ticksBreathingUnderwater");
         ticksFlying = tag.getInt("ticksFlying");
 
         TagUtil.readMap(tag.getCompound("previousAttributes"), (key, map) ->
@@ -844,28 +844,18 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         }
 
         if (breatheMode == TransfurVariant.BreatheMode.NONE) {
-            this.ticksBreathingUnderwater = 0;
-
             event.setCanBreathe(true);
             event.setCanRefillAir(false);
         } else if (host.isEyeInFluidType(Fluids.WATER.getFluidType())) {
             if (breatheMode.canBreatheWater()) {
-                this.ticksBreathingUnderwater++;
-
                 event.setCanBreathe(true);
                 event.setCanRefillAir(true);
-            }
-
-            else {
-                this.ticksBreathingUnderwater = 0;
             }
         } else {
             if (!breatheMode.canBreatheAir()) {
                 event.setCanBreathe(oxygenSymbiosis);
                 event.setCanRefillAir(oxygenSymbiosis);
             }
-
-            this.ticksBreathingUnderwater = 0;
         }
     }
 
@@ -906,6 +896,10 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         }
     }
 
+    public void tickAge() {
+        ageAsVariant++;
+    }
+
     public void tick() {
         if (checkForTemporary())
             return;
@@ -913,7 +907,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         if (ageAsVariant == 0 && transfurProgression >= 1f)
             checkBreakItems(host);
 
-        ageAsVariant++;
+        this.tickAge();
 
         if (previousAttributes.isEmpty()) {
             if (transfurProgression == 0.0f)

@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
-import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.inventory.AbilityTreeMenu;
@@ -11,13 +10,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -40,7 +38,7 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
     public enum Opcode {
         OPEN_MENU,
         MAKE_PURCHASE,
-        AFFIRM_PURCHASE
+        CONFIRM_PURCHASE
     }
 
     private final Opcode opcode;
@@ -75,6 +73,9 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
                 var variant = variantInstance.getParent();
                 switch (opcode) {
                     case OPEN_MENU -> {
+                        sender.connection.send(
+                                Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofActiveTrees(AbilityTreeInstance.getForPlayer(sender), variantInstance.getParent()), NetworkDirection.PLAY_TO_CLIENT)
+                        );
                         sender.openMenu(new SimpleMenuProvider(
                                 (id, inv, viewer) -> new AbilityTreeMenu(id, inv),
                                 Component.empty()
@@ -96,14 +97,15 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
 
                             int price = tree.get().getEffectivePrice(variant, nodeName.get());
                             if (tree.get().makePurchase(variant, nodeName.get(), price)) {
-                                Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(context::getSender),
-                                        new AbilityTreeMenuPacket(Opcode.AFFIRM_PURCHASE, treeName, nodeName, Optional.of(price)));
+                                sender.connection.send(
+                                        Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofTree(AbilityTreeInstance.getForPlayer(sender), tree.get().getTree()), NetworkDirection.PLAY_TO_CLIENT)
+                                );
                             } else {
                                 return;
                             }
                         });
                     }
-                    case AFFIRM_PURCHASE -> {
+                    case CONFIRM_PURCHASE -> {
                         if (treeName.isEmpty() || nodeName.isEmpty())
                             return CompletableFuture.failedFuture(new IllegalArgumentException("TreeName and NodeName must be specified"));
                         var treeId = treeName.get();
@@ -111,7 +113,7 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
                         if (tree.isEmpty())
                             return CompletableFuture.failedFuture(new IllegalArgumentException("Cannot find TreeName"));
                         Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(context::getSender),
-                                new AbilityTreeMenuPacket(Opcode.AFFIRM_PURCHASE, treeName, nodeName,
+                                new AbilityTreeMenuPacket(Opcode.CONFIRM_PURCHASE, treeName, nodeName,
                                         tree.get().getNodeState(variant, nodeName.get()).map(state -> 1)));
                     }
                 }

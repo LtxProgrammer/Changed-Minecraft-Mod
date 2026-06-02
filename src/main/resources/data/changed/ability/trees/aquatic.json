@@ -3,5 +3,18 @@
     "#changed:aquatic"
   ],
   "titleId": "changed.ability_tree.aquatic",
-  "flavorId": "changed.ability_tree.aquatic.flavor"
+  "flavorId": "changed.ability_tree.aquatic.flavor",
+  "pointEvents": [
+    {
+      "type": "changed:distance_swam",
+      "centimeters": 1000,
+      "reward": 1
+    },
+    {
+      "type": "changed:time_breathing_fluid",
+      "fluid": "minecraft:water",
+      "ticks": 200,
+      "reward": 1
+    }
+  ]
 }

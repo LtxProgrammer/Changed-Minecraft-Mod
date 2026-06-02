@@ -7,8 +7,17 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
@@ -43,6 +52,10 @@ public class AttributeModifierNodeEffect extends NodeEffect {
             return Arrays.stream(values()).filter(type -> type.serialName.equals(name))
                     .findFirst().map(DataResult::success).orElseGet(() -> DataResult.error(() -> name + " is not a valid Method"));
         }
+
+        public int toValue() {
+            return this == ADD ? 0 : 1;
+        }
     }
 
     public final AbstractCondition condition;
@@ -66,5 +79,32 @@ public class AttributeModifierNodeEffect extends NodeEffect {
     @Override
     public Codec<? extends NodeEffect> getCodec() {
         return CODEC;
+    }
+
+    @Override
+    public void buildDescription(Consumer<Component> componentConsumer, boolean negate) {
+        super.buildDescription(componentConsumer, negate);
+
+        double d0 = this.factor;
+        if (negate)
+            d0 = -d0;
+
+        double d1;
+        if (method != Method.MULTIPLY_BASE) {
+            if (attribute.equals(Attributes.KNOCKBACK_RESISTANCE)) {
+                d1 = d0 * 10.0D;
+            } else {
+                d1 = d0;
+            }
+        } else {
+            d1 = d0 * 100.0D;
+        }
+
+        if (d0 > 0.0D) {
+            componentConsumer.accept(Component.translatable("attribute.modifier.plus." + method.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.BLUE));
+        } else if (d0 < 0.0D) {
+            d1 *= -1.0D;
+            componentConsumer.accept(Component.translatable("attribute.modifier.take." + method.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.RED));
+        }
     }
 }

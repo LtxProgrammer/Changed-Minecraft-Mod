@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.ability.tree;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.DisplayInfo;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class AbilityNode extends PartialNode {
     public static final Codec<AbilityNode> CODEC = RecordCodecBuilder.create(builder -> builder.group(
@@ -20,6 +22,7 @@ public class AbilityNode extends PartialNode {
             Codec.list(ResourceLocation.CODEC).fieldOf("occludes").orElseGet(List::of).forGetter(node -> node.occludes),
             Codec.STRING.fieldOf("titleId").forGetter(node -> node.titleId),
             Codec.STRING.fieldOf("requirementsId").orElse("").forGetter(node -> node.requirementsId),
+            Codec.STRING.fieldOf("descriptionId").orElse("").forGetter(node -> node.descriptionId),
             Codec.STRING.fieldOf("flavorId").forGetter(node -> node.flavorId),
             Codec.INT.fieldOf("price").forGetter(node -> node.price),
             Codec.INT.fieldOf("groupDiscount").orElse(0).forGetter(node -> node.groupDiscount),
@@ -35,14 +38,29 @@ public class AbilityNode extends PartialNode {
     public final String[][] requirements;*/
 
     public AbilityNode(Either<ResourceLocation, TreeReference> parent, List<ResourceLocation> occludes,
-                       String titleId, String requirementsId, String flavorId,
+                       String titleId, String requirementsId, String descriptionId, String flavorId,
                        int price, int groupDiscount,
                        List<NodeEffect> acquiredEffects, List<NodeEffect> missingEffects) {
-        super(parent, titleId, requirementsId, flavorId, price, groupDiscount);
+        super(parent, titleId, requirementsId, descriptionId, flavorId, price, groupDiscount);
 
         this.occludes = occludes;
         this.acquiredEffects = acquiredEffects;
         this.missingEffects = missingEffects;
+    }
+
+    public void buildDescription(Consumer<Component> componentConsumer) {
+        if (!descriptionId.isEmpty()) {
+            componentConsumer.accept(Component.translatable(descriptionId).withStyle(ChatFormatting.BLUE));
+            return;
+        }
+
+        for (var effect : missingEffects) {
+            effect.buildDescription(componentConsumer, true);
+        }
+
+        for (var effect : acquiredEffects) {
+            effect.buildDescription(componentConsumer, false);
+        }
     }
 
     /*public Advancement.Builder createAdvancement() {

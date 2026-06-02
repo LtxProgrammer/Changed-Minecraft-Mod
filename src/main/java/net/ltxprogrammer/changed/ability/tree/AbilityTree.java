@@ -4,8 +4,10 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.tree.events.AbstractPointEvent;
 import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -15,20 +17,25 @@ import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AbilityTree {
+    protected static final Codec<AbstractPointEvent<?>> POINT_EVENT_CODEC = ChangedRegistry.POINT_EVENTS.get().getCodec().dispatch("type", AbstractPointEvent::getCodec, Function.identity());
+
     public static final Codec<AbilityTree> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.list(RegistryElementPredicate.codec(ChangedRegistry.TRANSFUR_VARIANT.get())).fieldOf("variants")
                     .forGetter(tree -> List.copyOf(tree.variants)),
-            Codec.STRING.fieldOf("titleId").forGetter(node -> node.titleId),
-            Codec.STRING.fieldOf("flavorId").orElse("").forGetter(node -> node.flavorId)
+            Codec.list(POINT_EVENT_CODEC).fieldOf("pointEvents").orElse(List.of()).forGetter(node -> List.copyOf(node.pointEvents)),
+            Codec.STRING.fieldOf("titleId").forGetter(tree -> tree.titleId),
+            Codec.STRING.fieldOf("flavorId").orElse("").forGetter(tree -> tree.flavorId)
     ).apply(builder, AbilityTree::new));
 
     public static final ResourceLocation ROOT_NAME = Changed.modResource("root");
 
     private final Set<RegistryElementPredicate<TransfurVariant<?>>> variants;
+    private final Set<AbstractPointEvent<?>> pointEvents;
     private final String titleId;
     private final String flavorId;
 
@@ -37,10 +44,18 @@ public class AbilityTree {
     private Map<ResourceLocation, AbilityNode> treeNodes;
     private boolean isRemote = false;
 
-    public AbilityTree(List<RegistryElementPredicate<TransfurVariant<?>>> variants, String titleId, String flavorId) {
+    public AbilityTree(List<RegistryElementPredicate<TransfurVariant<?>>> variants, List<AbstractPointEvent<?>> pointEvents, String titleId, String flavorId) {
         this.variants = Set.copyOf(variants);
+        this.pointEvents = Set.copyOf(pointEvents);
         this.titleId = titleId;
         this.flavorId = flavorId;
+    }
+
+    public <T> int sumPointsForEvent(Codec<? extends AbstractPointEvent<T>> pointEventType, T criteria) {
+        return pointEvents.stream().filter(event -> event.getCodec() == pointEventType)
+                .filter(event -> ((AbstractPointEvent)event).test(criteria))
+                .mapToInt(AbstractPointEvent::getPoints)
+                .sum();
     }
 
     public void markRemote() {
