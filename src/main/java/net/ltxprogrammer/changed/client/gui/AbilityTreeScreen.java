@@ -57,7 +57,10 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
     }
 
     public static class TreeButton extends AbstractButton {
+        public static final ResourceLocation WIDGETS = Changed.modResource("textures/gui/node_frames.png");
+
         protected final TransfurVariant<?> variant;
+        protected final AbilityTreeInstance.AccountedTree accountedTree;
         protected final AbilityTree tree;
         protected final Cacheable<List<Component>> tooltip;
         protected final @Nullable TreeButton parent;
@@ -98,12 +101,13 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         }
 
         public TreeButton(TransfurVariant<?> variant,
-                          AbilityTree tree,
+                          AbilityTreeInstance.AccountedTree accountedTree,
                           int x, int y, int width, int height, Component message,
                           @Nullable TreeButton parent) {
             super(x, y, width, height, message);
             this.variant = variant;
-            this.tree = tree;
+            this.accountedTree = accountedTree;
+            this.tree = accountedTree.getTree();
             this.parent = parent;
 
             this.initX = x;
@@ -145,15 +149,27 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
         }
 
+        protected int getFrameY() {
+            return 0;
+        }
+
+        protected int getFrameX() {
+            if (accountedTree.hasAllNodes(variant))
+                return 24;
+            return 0;
+        }
+
         @Override
         protected void renderWidget(GuiGraphics graphics, int mx, int my, float partialTicks) {
-            Minecraft minecraft = Minecraft.getInstance();
-            super.renderWidget(graphics, mx, my, partialTicks);
+            this.active = this.renderState == NodeRenderState.CAN_ACQUIRE;
 
-            // TODO Make background, and tint to variant color
-            // TODO Either make icons, or have tree specify item
-
-            // Dev idea: animate node elements moving around in place slightly for biological "cell"
+            graphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
+            RenderSystem.enableBlend();
+            RenderSystem.enableDepthTest();
+            graphics.blit(WIDGETS, this.getX(), this.getY(), this.getFrameX(), this.getFrameY(), this.getWidth(), this.getHeight(), 96, 96);
+            if (this.isHovered)
+                graphics.blit(WIDGETS, this.getX(), this.getY(), 72, this.getFrameY(), this.getWidth(), this.getHeight(), 96, 96);
+            graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
 
         public void renderGraphLine(GuiGraphics graphics, BufferBuilder bufferBuilder, float partialTicks) {
@@ -177,6 +193,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
     }
 
     public static class NodeButton extends TreeButton {
+        public static final ResourceLocation DISTANT_NODE_ICON = Changed.modResource("textures/gui/nodes/distant.png");
         protected static final Component DISTANT_NODE_TEXT = Component.literal("\"")
                 .append(Component.translatable("text.changed.ability_tree.distant_node"))
                 .append(Component.literal("\""))
@@ -184,7 +201,6 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                         .withColor(ChatFormatting.GRAY)
                         .withItalic(true));
 
-        protected final AbilityTreeInstance.AccountedTree accountedTree;
         private final AbilityNode node;
         private final ResourceLocation nodeName;
 
@@ -193,8 +209,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                           AbilityNode node,
                           int x, int y, int width, int height, Component message,
                           @Nullable TreeButton parent) {
-            super(variant, accountedTree.getTree(), x, y, width, height, message, parent);
-            this.accountedTree = accountedTree;
+            super(variant, accountedTree, x, y, width, height, message, parent);
             this.node = node;
             this.nodeName = node.getNodeLocation();
         }
@@ -219,7 +234,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             if (renderState.hideTooltipDetails) {
                 tooltipBuilder.add(DISTANT_NODE_TEXT);
             } else {
-                tooltipBuilder.add(node.getTitle());
+                tooltipBuilder.add(node.getTitle().withStyle(node.displayInfo.frameType().titleColor));
                 tooltipBuilder.add(accountedTree.getEffectivePriceText(variant, nodeName).withStyle(renderState.costFormatting));
                 node.buildDescription(tooltipBuilder::add);
                 node.getFlavorText().ifPresent(tooltipBuilder::add);
@@ -249,6 +264,36 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                         Optional.of(nodeName),
                         Optional.empty()));
             }
+        }
+
+        @Override
+        protected int getFrameY() {
+            return node.displayInfo.frameType().yPos;
+        }
+
+        @Override
+        protected int getFrameX() {
+            return switch (this.renderState.backgroundState) {
+                case HIGHLIGHTED -> 24;
+                case DARKENED -> 48;
+                default -> 0;
+            };
+        }
+
+        @Override
+        protected void renderWidget(GuiGraphics graphics, int mx, int my, float partialTicks) {
+            super.renderWidget(graphics, mx, my, partialTicks);
+
+            if (this.renderState.hideIcon) {
+                graphics.blit(DISTANT_NODE_ICON, this.getX() + 4, this.getY() + 4, 0, 0, 16, 16, 16, 16);
+                return;
+            }
+
+            node.displayInfo.icon().ifLeft(iconLocation -> {
+                graphics.blit(iconLocation, this.getX() + 4, this.getY() + 4, 0, 0, 16, 16, 16, 16);
+            }).ifRight(itemStack -> {
+                graphics.renderFakeItem(itemStack, this.getX() + 4, this.getY() + 4);
+            });
         }
     }
 
@@ -332,6 +377,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
     private Map<Either<AbilityTree, AbilityNode>, TreeButton> buildNodeGraph(TransfurVariant<?> variant, GraphLayout layout,
                                                                              @Nullable AtomicInteger layerCountOut) {
         List<AbilityTree> orderedTrees = new ArrayList<>();
+        Map<AbilityTree, AbilityTreeInstance.AccountedTree> treeToAccountedTree = new HashMap<>();
         List<Pair<AbilityTreeInstance.AccountedTree, AbilityNode>> graphRoots = new ArrayList<>();
         List<Multimap<AbilityNode, Pair<AbilityTreeInstance.AccountedTree, AbilityNode>>> graph = new ArrayList<>();
         AtomicReference<AbilityTreeInstance.AccountedTree> currentTree = new AtomicReference<>(null);
@@ -349,6 +395,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
         var accountedTrees = menu.abilityTree.getTrees(variant);
         accountedTrees.forEach(accountedTree -> {
+            treeToAccountedTree.put(accountedTree.getTree(), accountedTree);
             orderedTrees.add(accountedTree.getTree());
             currentTree.set(accountedTree);
             accountedTree.getTree().visitNodes(graphBuilder);
@@ -382,10 +429,11 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
         for (int treeIndex = 0; treeIndex < orderedTrees.size(); ++treeIndex) {
             var tree = orderedTrees.get(treeIndex);
+            var accountedTree = treeToAccountedTree.get(tree);
 
             nodeButtons.put(Either.left(tree),
                     new TreeButton(variant,
-                            tree,
+                            accountedTree,
                             layout.getNodeX(0, 1, 0, orderedTrees.size(), treeIndex),
                             layout.getNodeY(0, 1, 0, orderedTrees.size(), treeIndex),
                             24,

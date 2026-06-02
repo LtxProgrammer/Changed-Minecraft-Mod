@@ -2,6 +2,7 @@
   "parent": "changed:latex/hardened_skin1",
   "titleId": "changed.ability_tree.latex.hardened_skin2",
   "flavorId": "changed.ability_tree.latex.hardened_skin2.flavor",
+  "display": { "icon": { "item": "minecraft:diamond_chestplate" } },
   "price": 2,
   "groupDiscount": -1,
 

@@ -163,6 +163,10 @@ public class AbilityTreeInstance {
                     .map(namedNode -> this.computeNodeState(forVariant, namedNode));
         }
 
+        public boolean hasAllNodes(TransfurVariant<?> variant) {
+            return getNodeStates(variant).allMatch(NodeState::unlocked);
+        }
+
         public int getEffectivePrice(TransfurVariant<?> forVariant, AbilityNode node) {
             if (!tree.hasNode(node))
                 throw new IllegalArgumentException("Node does not exist in tree: " + node.getNodeLocation());

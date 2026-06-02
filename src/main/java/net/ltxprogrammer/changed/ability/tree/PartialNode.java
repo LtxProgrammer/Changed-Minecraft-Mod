@@ -4,9 +4,15 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Optional;
 
@@ -19,6 +25,7 @@ public class PartialNode {
 
     public static final Codec<PartialNode> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.either(ResourceLocation.CODEC, TreeReference.CODEC).fieldOf("parent").forGetter(node -> node.parent),
+            NodeDisplayInfo.CODEC.fieldOf("display").orElse(NodeDisplayInfo.MISSING).forGetter(node -> node.displayInfo),
             Codec.STRING.fieldOf("titleId").forGetter(node -> node.titleId),
             Codec.STRING.fieldOf("requirementsId").orElse("").forGetter(node -> node.requirementsId),
             Codec.STRING.fieldOf("descriptionId").orElse("").forGetter(node -> node.descriptionId),
@@ -28,6 +35,7 @@ public class PartialNode {
     ).apply(builder, PartialNode::new));
 
     public final Either<ResourceLocation, TreeReference> parent;
+    public final NodeDisplayInfo displayInfo;
     public final String titleId;
     public final String requirementsId;
     public final String descriptionId;
@@ -37,8 +45,9 @@ public class PartialNode {
 
     private ResourceLocation nodeLocation;
 
-    public PartialNode(Either<ResourceLocation, TreeReference> parent, String titleId, String requirementsId, String descriptionId, String flavorId, int price, int groupDiscount) {
+    public PartialNode(Either<ResourceLocation, TreeReference> parent, NodeDisplayInfo displayInfo, String titleId, String requirementsId, String descriptionId, String flavorId, int price, int groupDiscount) {
         this.parent = parent;
+        this.displayInfo = displayInfo;
         this.titleId = titleId;
         this.requirementsId = requirementsId;
         this.descriptionId = descriptionId;
@@ -55,7 +64,7 @@ public class PartialNode {
         return nodeLocation;
     }
 
-    public Component getTitle() {
+    public MutableComponent getTitle() {
         return Component.translatable(titleId)
                 .withStyle(Style.EMPTY.withColor(ChatFormatting.WHITE));
     }

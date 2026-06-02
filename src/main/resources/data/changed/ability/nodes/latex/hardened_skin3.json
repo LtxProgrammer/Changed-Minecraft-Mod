@@ -2,6 +2,10 @@
   "parent": "changed:latex/hardened_skin2",
   "titleId": "changed.ability_tree.latex.hardened_skin3",
   "flavorId": "changed.ability_tree.latex.hardened_skin3.flavor",
+  "display": {
+    "icon": { "item": "minecraft:netherite_chestplate" },
+    "frame": "strong"
+  },
   "price": 2,
 
   "acquiredEffects": [
