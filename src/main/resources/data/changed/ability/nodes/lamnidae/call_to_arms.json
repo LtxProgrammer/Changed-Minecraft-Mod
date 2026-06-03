@@ -1,0 +1,14 @@
+{
+  "parent": "changed:lamnidae/summon_sharks2",
+  "titleId": "changed.ability_tree.lamnidae.call_to_arms",
+  "flavorId": "changed.ability_tree.lamnidae.call_to_arms.flavor",
+  "price": 1,
+
+  "comment": "Summon sharks ability will also retarget nearby sharks to your enemy",
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:summon_sharks/call_to_arms"
+    }
+  ]
+}

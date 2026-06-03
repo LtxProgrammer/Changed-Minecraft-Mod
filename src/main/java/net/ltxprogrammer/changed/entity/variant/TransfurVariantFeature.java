@@ -7,6 +7,24 @@ import net.minecraft.network.chat.Component;
 import javax.annotation.Nullable;
 
 public class TransfurVariantFeature {
+    public TransfurVariantFeature(Combinator combinator) {
+        this.combinator = combinator;
+    }
+
+    public static TransfurVariantFeature maxPresent() {
+        return new TransfurVariantFeature(Combinator.MAX);
+    }
+
+    public static TransfurVariantFeature sumPresent() {
+        return new TransfurVariantFeature(Combinator.SUM);
+    }
+
+    public enum Combinator {
+        MAX,
+        SUM
+    }
+
+    public final Combinator combinator;
     @Nullable
     private String descriptionId;
 

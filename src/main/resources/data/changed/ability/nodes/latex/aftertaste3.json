@@ -2,6 +2,7 @@
   "parent": "changed:latex/aftertaste2",
   "titleId": "changed.ability_tree.latex.aftertaste3",
   "flavorId": "changed.ability_tree.latex.aftertaste3.flavor",
+  "display": { "icon": { "item": "minecraft:enchanted_golden_apple" } },
   "price": 1,
   "groupDiscount": -1,
 

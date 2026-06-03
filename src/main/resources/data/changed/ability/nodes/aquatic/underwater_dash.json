@@ -2,6 +2,10 @@
   "parent": "changed:aquatic/practice2",
   "titleId": "changed.ability_tree.aquatic.underwater_dash",
   "flavorId": "changed.ability_tree.aquatic.underwater_dash.flavor",
+  "display": {
+    "icon": "minecraft:textures/mob_effect/dash.png", "iconWidth": 18, "iconHeight": 18,
+    "frame": "strong"
+  },
   "price": 2,
   "groupDiscount": -1,
 

@@ -1,0 +1,14 @@
+{
+  "parent": "changed:lamnidae/summon_sharks2",
+  "titleId": "changed.ability_tree.lamnidae.summon_sharks3",
+  "flavorId": "changed.ability_tree.lamnidae.summon_sharks3.flavor",
+  "price": 1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:summon_sharks/bonus_sharks",
+      "factor": 2.0
+    }
+  ]
+}

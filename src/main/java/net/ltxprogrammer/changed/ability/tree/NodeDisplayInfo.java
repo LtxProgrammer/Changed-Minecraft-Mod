@@ -14,7 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Arrays;
 import java.util.Optional;
 
-public record NodeDisplayInfo(Either<ResourceLocation, ItemStack> icon, FrameType frameType) {
+public record NodeDisplayInfo(Either<ResourceLocation, ItemStack> icon, FrameType frameType, int iconWidth, int iconHeight) {
     public enum FrameType implements StringRepresentable {
         BASIC("basic", 24, ChatFormatting.WHITE),
         STRONG("strong", 48, ChatFormatting.AQUA),
@@ -55,8 +55,10 @@ public record NodeDisplayInfo(Either<ResourceLocation, ItemStack> icon, FrameTyp
 
     public static final Codec<NodeDisplayInfo> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.either(ResourceLocation.CODEC, ITEMSTACK_CODEC).fieldOf("icon").orElse(Either.left(ResourceLocation.withDefaultNamespace("missingno"))).forGetter(NodeDisplayInfo::icon),
-            FrameType.CODEC.fieldOf("frame").orElse(FrameType.BASIC).forGetter(NodeDisplayInfo::frameType)
+            FrameType.CODEC.fieldOf("frame").orElse(FrameType.BASIC).forGetter(NodeDisplayInfo::frameType),
+            Codec.INT.fieldOf("iconWidth").orElse(16).forGetter(NodeDisplayInfo::iconWidth),
+            Codec.INT.fieldOf("iconHeight").orElse(16).forGetter(NodeDisplayInfo::iconHeight)
     ).apply(builder, NodeDisplayInfo::new));
 
-    public static final NodeDisplayInfo MISSING = new NodeDisplayInfo(Either.left(ResourceLocation.withDefaultNamespace("missingno")), FrameType.BASIC);
+    public static final NodeDisplayInfo MISSING = new NodeDisplayInfo(Either.left(ResourceLocation.withDefaultNamespace("missingno")), FrameType.BASIC, 16, 16);
 }

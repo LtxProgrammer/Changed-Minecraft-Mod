@@ -1,0 +1,8 @@
+{
+  "parent": { "tree": "changed:lamnidae" },
+  "titleId": "changed.ability_tree.lamnidae.summon_sharks1",
+  "flavorId": "changed.ability_tree.lamnidae.summon_sharks1.flavor",
+  "price": 1,
+
+  "comment": "Grants ability to summon sharks"
+}

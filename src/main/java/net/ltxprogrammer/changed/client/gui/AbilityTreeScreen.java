@@ -28,6 +28,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.event.ContainerScreenEvent;
 import org.joml.Matrix4f;
@@ -66,6 +67,10 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         protected final @Nullable TreeButton parent;
 
         public final int initX, initY;
+        public float waveOffsetX = 0.0f;
+        public float waveSpeedX = 0.0f;
+        public float waveOffsetY = 0.0f;
+        public float waveSpeedY = 0.0f;
 
         public NodeRenderState renderState = NodeRenderState.DISTANT;
 
@@ -103,7 +108,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         public TreeButton(TransfurVariant<?> variant,
                           AbilityTreeInstance.AccountedTree accountedTree,
                           int x, int y, int width, int height, Component message,
-                          @Nullable TreeButton parent) {
+                          @Nullable TreeButton parent, RandomSource random) {
             super(x, y, width, height, message);
             this.variant = variant;
             this.accountedTree = accountedTree;
@@ -114,6 +119,16 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             this.initY = y;
 
             this.tooltip = Cacheable.of(this::createTooltip);
+
+            this.waveSpeedX = (random.nextFloat() + 0.25f) * (random.nextBoolean() ? 0.1f : -0.1f);
+            this.waveSpeedY = (random.nextFloat() + 0.25f) * (random.nextBoolean() ? 0.1f : -0.1f);
+            this.waveOffsetX = random.nextFloat() * 10.0f;
+            this.waveOffsetY = random.nextFloat() * 10.0f;
+        }
+
+        public final void setPosition(int xPos, int yPos, float waveParameter) {
+            this.setX(xPos + (int)(Mth.sin(waveParameter * waveSpeedX + waveOffsetX) * 2f));
+            this.setY(yPos + (int)(Mth.cos(waveParameter * waveSpeedY + waveOffsetY) * 2f));
         }
 
         public final void checkRenderState() {
@@ -208,8 +223,8 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                           AbilityTreeInstance.AccountedTree accountedTree,
                           AbilityNode node,
                           int x, int y, int width, int height, Component message,
-                          @Nullable TreeButton parent) {
-            super(variant, accountedTree, x, y, width, height, message, parent);
+                          @Nullable TreeButton parent, RandomSource random) {
+            super(variant, accountedTree, x, y, width, height, message, parent, random);
             this.node = node;
             this.nodeName = node.getNodeLocation();
         }
@@ -290,7 +305,12 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             }
 
             node.displayInfo.icon().ifLeft(iconLocation -> {
-                graphics.blit(iconLocation, this.getX() + 4, this.getY() + 4, 0, 0, 16, 16, 16, 16);
+                int dWidth = this.getWidth() - node.displayInfo.iconWidth();
+                int dHeight = this.getHeight() - node.displayInfo.iconHeight();
+                graphics.blit(iconLocation, this.getX() + (dWidth / 2), this.getY() + (dHeight / 2),
+                        0, 0,
+                        node.displayInfo.iconWidth(), node.displayInfo.iconHeight(),
+                        node.displayInfo.iconWidth(), node.displayInfo.iconHeight());
             }).ifRight(itemStack -> {
                 graphics.renderFakeItem(itemStack, this.getX() + 4, this.getY() + 4);
             });
@@ -375,7 +395,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
     }
 
     private Map<Either<AbilityTree, AbilityNode>, TreeButton> buildNodeGraph(TransfurVariant<?> variant, GraphLayout layout,
-                                                                             @Nullable AtomicInteger layerCountOut) {
+                                                                             @Nullable AtomicInteger layerCountOut, RandomSource random) {
         List<AbilityTree> orderedTrees = new ArrayList<>();
         Map<AbilityTree, AbilityTreeInstance.AccountedTree> treeToAccountedTree = new HashMap<>();
         List<Pair<AbilityTreeInstance.AccountedTree, AbilityNode>> graphRoots = new ArrayList<>();
@@ -439,7 +459,8 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                             24,
                             24,
                             tree.getTitle(),
-                            null));
+                            null,
+                            random));
         }
 
         for (int layerIndex = 0; layerIndex < orderedGraph.size(); ++layerIndex) {
@@ -477,7 +498,8 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                                 node.getTitle(),
                                 parent == null ?
                                         nodeButtons.get(Either.left(tree.getTree())) :
-                                        nodeButtons.get(Either.right(parent))));
+                                        nodeButtons.get(Either.right(parent)),
+                                random));
             }
         }
 
@@ -492,16 +514,23 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
     private final int layerCount;
     private double panX = 0d, panY = 0d;
     private float zoom = 1.0f;
+    private int tickCount = 0;
 
     public AbilityTreeScreen(AbilityTreeMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.graphLayout = GraphLayout.RADIAL;
         AtomicInteger layerCount = new AtomicInteger(0);
-        this.nodeGraph = buildNodeGraph(menu.variant.getParent(), graphLayout, layerCount);
+        this.nodeGraph = buildNodeGraph(menu.variant.getParent(), graphLayout, layerCount, inventory.player.getRandom());
         this.nodeGraph.values().forEach(this::addRenderableWidget);
         this.layerCount = layerCount.getAcquire();
         this.imageWidth = this.width;
         this.imageHeight = this.height;
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        tickCount++;
     }
 
     @Override
@@ -510,8 +539,11 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         int centerY = this.height / 2;
 
         this.nodeGraph.values().forEach(button -> {
-            button.setX((int)(button.initX + centerX + panX - (button.getWidth() / 2)));
-            button.setY((int)(button.initY + centerY + panY - (button.getHeight() / 2)));
+            button.setPosition(
+                    (int)(button.initX + centerX + panX - (button.getWidth() / 2)),
+                    (int)(button.initY + centerY + panY - (button.getHeight() / 2)),
+                    tickCount + partialTicks
+            );
             button.checkRenderState();
         });
 

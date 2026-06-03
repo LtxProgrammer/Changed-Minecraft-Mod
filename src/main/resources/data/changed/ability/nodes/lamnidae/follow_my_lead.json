@@ -1,0 +1,14 @@
+{
+  "parent": "changed:lamnidae/summon_sharks1",
+  "titleId": "changed.ability_tree.lamnidae.follow_my_lead",
+  "flavorId": "changed.ability_tree.lamnidae.follow_my_lead.flavor",
+  "price": 1,
+
+  "comment": "Summoned sharks will target your current enemy for the duration of the cooldown",
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:summon_sharks/follow_my_lead"
+    }
+  ]
+}

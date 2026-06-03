@@ -7,26 +7,22 @@
   "pointEvents": [
     {
       "type": "changed:distance_walked",
-      "centimeters": 100,
+      "centimeters": 1000,
       "reward": 1
     },
     {
       "type": "changed:distance_swam",
-      "centimeters": 100,
+      "centimeters": 1000,
       "reward": 1
     },
     {
       "type": "changed:distance_sprinted",
-      "centimeters": 100,
+      "centimeters": 1000,
       "reward": 1
     },
     {
       "type": "changed:distance_crouched",
-      "centimeters": 50,
-      "reward": 1
-    },
-    {
-      "type": "changed:on_jump",
+      "centimeters": 500,
       "reward": 1
     }
   ]
