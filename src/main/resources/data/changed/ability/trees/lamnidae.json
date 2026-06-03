@@ -3,5 +3,19 @@
     "#changed:lamnid"
   ],
   "titleId": "changed.ability_tree.lamnidae",
-  "flavorId": "changed.ability_tree.lamnidae.flavor"
+  "flavorId": "changed.ability_tree.lamnidae.flavor",
+  "pointEvents": [
+    {
+      "type": "changed:distance_swam",
+      "centimeters": 1000,
+      "reward": 1
+    },
+    {
+      "type": "changed:time_in_fluid",
+      "fluid": "minecraft:water",
+      "submerged": true,
+      "ticks": 200,
+      "reward": 1
+    }
+  ]
 }

@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.client.gui;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
@@ -21,10 +23,14 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.event.ContainerScreenEvent;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
@@ -33,27 +39,97 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> {
+    protected static void drawLine(BufferBuilder bufferBuilder, Matrix4f matrix4f, float x0, float x1, float y0, float y1, float width, float red, float green, float blue, float alpha) {
+        float dx = x0 - x1;
+        float dy = y0 - y1;
+
+        if (Mth.abs(dx) < Mth.EPSILON && Mth.abs(dy) < Mth.EPSILON)
+            return;
+
+        float mag = (float)Mth.length(dx, dy);
+        float dxOffset = dx / mag * (width * 0.5f);
+        float dyOffset = dy / mag * (width * 0.5f);
+
+        bufferBuilder.vertex(matrix4f, x0 + dyOffset, y0 - dxOffset, (float)0).color(red, green, blue, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, x1 + dyOffset, y1 - dxOffset, (float)0).color(red, green, blue, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, x1 - dyOffset, y1 + dxOffset, (float)0).color(red, green, blue, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, x0 - dyOffset, y0 + dxOffset, (float)0).color(red, green, blue, alpha).endVertex();
+    }
+
     public static class TreeButton extends AbstractButton {
+        public static final ResourceLocation WIDGETS = Changed.modResource("textures/gui/node_frames.png");
+
         protected final TransfurVariant<?> variant;
+        protected final AbilityTreeInstance.AccountedTree accountedTree;
         protected final AbilityTree tree;
         protected final Cacheable<List<Component>> tooltip;
         protected final @Nullable TreeButton parent;
 
         public final int initX, initY;
 
+        public NodeRenderState renderState = NodeRenderState.DISTANT;
+
+        public enum BackgroundState {
+            DARKENED,
+            REGULAR,
+            HIGHLIGHTED
+        }
+
+        public enum NodeRenderState {
+            /// Distant node (parent node is not connected to an unlocked node). Darkened, icon and details hidden.
+            DISTANT(BackgroundState.DARKENED, true, true, ChatFormatting.RED),
+            /// Pre-requisites locked (parent node and conditions). Darkened, icon and details visible.
+            PRE_REQ_LOCKED(BackgroundState.DARKENED, false, false, ChatFormatting.RED),
+            /// Pre-requisites met, but cannot afford. Regular color, icon and details visible: cost tinted red
+            PRE_REQ_MET(BackgroundState.REGULAR, false, false, ChatFormatting.RED),
+            /// Pre-requisites met and can afford. Regular color, icon and details visible
+            CAN_ACQUIRE(BackgroundState.REGULAR, false, false, ChatFormatting.GREEN),
+            /// Node unlocked. Highlighted color, icon and details visible
+            UNLOCKED(BackgroundState.HIGHLIGHTED, false, false, ChatFormatting.GRAY);
+
+            public final BackgroundState backgroundState;
+            public final boolean hideIcon;
+            public final boolean hideTooltipDetails;
+            public final ChatFormatting costFormatting;
+
+            NodeRenderState(BackgroundState backgroundState, boolean hideIcon, boolean hideTooltipDetails, ChatFormatting costFormatting) {
+                this.backgroundState = backgroundState;
+                this.hideIcon = hideIcon;
+                this.hideTooltipDetails = hideTooltipDetails;
+                this.costFormatting = costFormatting;
+            }
+        }
+
         public TreeButton(TransfurVariant<?> variant,
-                          AbilityTree tree,
+                          AbilityTreeInstance.AccountedTree accountedTree,
                           int x, int y, int width, int height, Component message,
                           @Nullable TreeButton parent) {
             super(x, y, width, height, message);
             this.variant = variant;
-            this.tree = tree;
+            this.accountedTree = accountedTree;
+            this.tree = accountedTree.getTree();
             this.parent = parent;
 
             this.initX = x;
             this.initY = y;
 
             this.tooltip = Cacheable.of(this::createTooltip);
+        }
+
+        public final void checkRenderState() {
+            var prev = renderState;
+            renderState = determineRenderState();
+            if (prev != renderState) {
+                this.tooltip.clear();
+            }
+        }
+
+        protected NodeRenderState determineRenderState() {
+            return NodeRenderState.UNLOCKED;
+        }
+
+        protected boolean isUnlocked() {
+            return true;
         }
 
         public List<Component> createTooltip() {
@@ -73,49 +149,58 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
         }
 
-        @Override
-        protected void renderWidget(GuiGraphics graphics, int mx, int my, float partialTicks) {
-            Minecraft minecraft = Minecraft.getInstance();
-            super.renderWidget(graphics, mx, my, partialTicks);
-
-            // TODO Make background, and tint to variant color
-            // TODO Either make icons, or have tree specify item
-            /* TODO Special render conditions for:
-            - Distant node (parent node is not connected to an unlocked node)
-                - Darkened, icon and details hidden
-            - Pre-requisites locked (parent node and conditions)
-                - Darkened, icon and details visible
-            - Pre-requisites met, but cannot afford
-                - Regular color, icon and details visible: cost tinted red
-            - Pre-requisites met and can afford
-                - Regular color, icon and details visible
-            - Node unlocked
-                - Highlighted color, icon and details visible
-            */
-
-            // Dev idea: animate node elements moving around in place slightly for biological "cell"
+        protected int getFrameY() {
+            return 0;
         }
 
-        public void renderGraphLine(GuiGraphics graphics, float partialTicks) {
+        protected int getFrameX() {
+            if (accountedTree.hasAllNodes(variant))
+                return 24;
+            return 0;
+        }
+
+        @Override
+        protected void renderWidget(GuiGraphics graphics, int mx, int my, float partialTicks) {
+            this.active = this.renderState == NodeRenderState.CAN_ACQUIRE;
+
+            graphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
+            RenderSystem.enableBlend();
+            RenderSystem.enableDepthTest();
+            graphics.blit(WIDGETS, this.getX(), this.getY(), this.getFrameX(), this.getFrameY(), this.getWidth(), this.getHeight(), 96, 96);
+            if (this.isHovered)
+                graphics.blit(WIDGETS, this.getX(), this.getY(), 72, this.getFrameY(), this.getWidth(), this.getHeight(), 96, 96);
+            graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        }
+
+        public void renderGraphLine(GuiGraphics graphics, BufferBuilder bufferBuilder, float partialTicks) {
             // TODO render line to parent
             if (parent == null)
                 return;
-            /*Matrix4f matrix4f = graphics.pose().last().pose();
+            Matrix4f matrix4f = graphics.pose().last().pose();
 
             float alpha = 1.0f;
-            float red = 0.25f;
-            float green = 0.25f;
-            float blue = 0.25f;
-            VertexConsumer vertexconsumer = graphics.bufferSource().getBuffer(RenderType.gui());
-            vertexconsumer.vertex(matrix4f, (float)this.getX(), (float)this.getY(), (float)0).color(red, green, blue, alpha).endVertex();
-            vertexconsumer.vertex(matrix4f, (float)parent.getX(), (float)parent.getY(), (float)0).color(red, green, blue, alpha).endVertex();
-            vertexconsumer.vertex(matrix4f, (float)parent.getX() + 1, (float)parent.getY() + 1, (float)0).color(red, green, blue, alpha).endVertex();
-            vertexconsumer.vertex(matrix4f, (float)this.getX() + 1, (float)this.getY() + 1, (float)0).color(red, green, blue, alpha).endVertex();*/
+            float red = 0.4f;
+            float green = 0.4f;
+            float blue = 0.4f;
+
+            int centerXthis = this.getX() + (this.getWidth() / 2);
+            int centerYthis = this.getY() + (this.getHeight() / 2);
+            int centerXparent = parent.getX() + (parent.getWidth() / 2);
+            int centerYparent = parent.getY() + (parent.getHeight() / 2);
+
+            drawLine(bufferBuilder, matrix4f, centerXthis, centerXparent, centerYthis, centerYparent, 1.25f, red, green, blue, alpha);
         }
     }
 
     public static class NodeButton extends TreeButton {
-        protected final AbilityTreeInstance.AccountedTree accountedTree;
+        public static final ResourceLocation DISTANT_NODE_ICON = Changed.modResource("textures/gui/nodes/distant.png");
+        protected static final Component DISTANT_NODE_TEXT = Component.literal("\"")
+                .append(Component.translatable("text.changed.ability_tree.distant_node"))
+                .append(Component.literal("\""))
+                .withStyle(Style.EMPTY
+                        .withColor(ChatFormatting.GRAY)
+                        .withItalic(true));
+
         private final AbilityNode node;
         private final ResourceLocation nodeName;
 
@@ -124,19 +209,37 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                           AbilityNode node,
                           int x, int y, int width, int height, Component message,
                           @Nullable TreeButton parent) {
-            super(variant, accountedTree.getTree(), x, y, width, height, message, parent);
-            this.accountedTree = accountedTree;
+            super(variant, accountedTree, x, y, width, height, message, parent);
             this.node = node;
             this.nodeName = node.getNodeLocation();
         }
 
         @Override
+        protected NodeRenderState determineRenderState() {
+            if (isUnlocked())
+                return NodeRenderState.UNLOCKED;
+            if (parent != null && !parent.isUnlocked())
+                return NodeRenderState.DISTANT;
+            if (!accountedTree.hasPrerequisites(variant, nodeName))
+                return NodeRenderState.PRE_REQ_LOCKED;
+            if (!accountedTree.canAfford(variant, nodeName))
+                return NodeRenderState.PRE_REQ_MET;
+            return NodeRenderState.CAN_ACQUIRE;
+        }
+
+        @Override
         public List<Component> createTooltip() {
             var tooltipBuilder = ImmutableList.<Component>builder();
-            tooltipBuilder.add(node.getTitle());
-            tooltipBuilder.add(Component.literal("Generated Cost").withStyle(ChatFormatting.GRAY));
-            tooltipBuilder.add(Component.literal("Generated Description").withStyle(ChatFormatting.BLUE));
-            node.getFlavorText().ifPresent(tooltipBuilder::add);
+
+            if (renderState.hideTooltipDetails) {
+                tooltipBuilder.add(DISTANT_NODE_TEXT);
+            } else {
+                tooltipBuilder.add(node.getTitle().withStyle(node.displayInfo.frameType().titleColor));
+                tooltipBuilder.add(accountedTree.getEffectivePriceText(variant, nodeName).withStyle(renderState.costFormatting));
+                node.buildDescription(tooltipBuilder::add);
+                node.getFlavorText().ifPresent(tooltipBuilder::add);
+            }
+
             return tooltipBuilder.build();
         }
 
@@ -148,7 +251,8 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             return true;
         }
 
-        protected boolean isOwned() {
+        @Override
+        protected boolean isUnlocked() {
             return accountedTree.getNodeState(variant, node).map(AbilityTreeInstance.NodeState::unlocked).orElse(false);
         }
 
@@ -161,6 +265,36 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                         Optional.empty()));
             }
         }
+
+        @Override
+        protected int getFrameY() {
+            return node.displayInfo.frameType().yPos;
+        }
+
+        @Override
+        protected int getFrameX() {
+            return switch (this.renderState.backgroundState) {
+                case HIGHLIGHTED -> 24;
+                case DARKENED -> 48;
+                default -> 0;
+            };
+        }
+
+        @Override
+        protected void renderWidget(GuiGraphics graphics, int mx, int my, float partialTicks) {
+            super.renderWidget(graphics, mx, my, partialTicks);
+
+            if (this.renderState.hideIcon) {
+                graphics.blit(DISTANT_NODE_ICON, this.getX() + 4, this.getY() + 4, 0, 0, 16, 16, 16, 16);
+                return;
+            }
+
+            node.displayInfo.icon().ifLeft(iconLocation -> {
+                graphics.blit(iconLocation, this.getX() + 4, this.getY() + 4, 0, 0, 16, 16, 16, 16);
+            }).ifRight(itemStack -> {
+                graphics.renderFakeItem(itemStack, this.getX() + 4, this.getY() + 4);
+            });
+        }
     }
 
     private interface GraphLayoutComputer {
@@ -168,24 +302,42 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
     }
 
     private interface GraphLayerRenderer {
-        void drawLayerLines(GuiGraphics graphics, int centerX, int centerY, int layerCount);
+        void drawLayerLines(GuiGraphics graphics, BufferBuilder bufferBuilder, int centerX, int centerY, int layerCount);
     }
+
+    private static final double RADIAL_LAYOUT_GAP = 48d;
 
     public enum GraphLayout implements GraphLayerRenderer {
         RADIAL((layerIndex, nodesInSection, nodeIndex, treesInLayer, treeIndex) -> { // Compute X
             double treeSection = ((treeIndex - 0.5) / (double)treesInLayer) * Math.PI * 2d;
 
             double radians = ((double)(nodeIndex + 1) / (double)(nodesInSection + 1)) * Math.PI * 2d / (double)treesInLayer;
-            return (int)((layerIndex + 1) * 32d * Math.sin(radians + treeSection));
+            return (int)((layerIndex + 1) * RADIAL_LAYOUT_GAP * Math.sin(radians + treeSection));
         }, (layerIndex, nodesInSection, nodeIndex, treesInLayer, treeIndex) -> { // Compute Y
             double treeSection = ((treeIndex - 0.5) / (double)treesInLayer) * Math.PI * 2d;
 
             double radians = ((double)(nodeIndex + 1) / (double)(nodesInSection + 1)) * Math.PI * 2d / (double)treesInLayer;
-            return (int)((layerIndex + 1) * 32d * -Math.cos(radians + treeSection));
-        }, (graphics, centerX, centerY, layerCount) -> {
-            // TODO divide each layer ring into 32 segments, line raster
-            for (int i = 0; i < layerCount; ++i) {
+            return (int)((layerIndex + 1) * RADIAL_LAYOUT_GAP * -Math.cos(radians + treeSection));
+        }, (graphics, bufferBuilder, centerX, centerY, layerCount) -> {
+            Matrix4f matrix4f = graphics.pose().last().pose();
 
+            float alpha = 1.0f;
+            float red = 0.2f;
+            float green = 0.2f;
+            float blue = 0.2f;
+
+            for (int layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
+                for (int seg = 0; seg < 32; ++seg) {
+                    double r0 = (seg / 32d * Math.PI * 2d);
+                    double r1 = ((seg + 1) / 32d * Math.PI * 2d);
+
+                    float x0 = (float)Math.sin(r0) * ((layerIndex + 1) * (float)RADIAL_LAYOUT_GAP) + centerX;
+                    float y0 = (float)Math.cos(r0) * ((layerIndex + 1) * (float)RADIAL_LAYOUT_GAP) + centerY;
+                    float x1 = (float)Math.sin(r1) * ((layerIndex + 1) * (float)RADIAL_LAYOUT_GAP) + centerX;
+                    float y1 = (float)Math.cos(r1) * ((layerIndex + 1) * (float)RADIAL_LAYOUT_GAP) + centerY;
+
+                    drawLine(bufferBuilder, matrix4f, x0, x1, y0, y1, 0.75f, red, green, blue, alpha);
+                }
             }
         }),
         LATERAL((layerIndex, nodesInSection, nodeIndex, treesInLayer, treeIndex) -> { // Compute X
@@ -195,7 +347,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             double nodePlacement = (((double)nodeIndex / (double)nodesInSection / (double)treesInLayer) * 64d) - 32;
 
             return (int)(treeSection + nodePlacement);
-        }, (graphics, centerX, centerY, layerCount) -> {
+        }, (graphics, bufferBuilder, centerX, centerY, layerCount) -> {
 
         });
 
@@ -217,14 +369,15 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             return nodeYComputer.apply(layerIndex, nodesInLayer, nodeIndex, treesInGraph, treeIndex);
         }
 
-        public void drawLayerLines(GuiGraphics graphics, int centerX, int centerY, int layerCount) {
-            graphLayerRenderer.drawLayerLines(graphics, centerX, centerY, layerCount);
+        public void drawLayerLines(GuiGraphics graphics, BufferBuilder bufferBuilder, int centerX, int centerY, int layerCount) {
+            graphLayerRenderer.drawLayerLines(graphics, bufferBuilder, centerX, centerY, layerCount);
         }
     }
 
     private Map<Either<AbilityTree, AbilityNode>, TreeButton> buildNodeGraph(TransfurVariant<?> variant, GraphLayout layout,
                                                                              @Nullable AtomicInteger layerCountOut) {
         List<AbilityTree> orderedTrees = new ArrayList<>();
+        Map<AbilityTree, AbilityTreeInstance.AccountedTree> treeToAccountedTree = new HashMap<>();
         List<Pair<AbilityTreeInstance.AccountedTree, AbilityNode>> graphRoots = new ArrayList<>();
         List<Multimap<AbilityNode, Pair<AbilityTreeInstance.AccountedTree, AbilityNode>>> graph = new ArrayList<>();
         AtomicReference<AbilityTreeInstance.AccountedTree> currentTree = new AtomicReference<>(null);
@@ -242,6 +395,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
         var accountedTrees = menu.abilityTree.getTrees(variant);
         accountedTrees.forEach(accountedTree -> {
+            treeToAccountedTree.put(accountedTree.getTree(), accountedTree);
             orderedTrees.add(accountedTree.getTree());
             currentTree.set(accountedTree);
             accountedTree.getTree().visitNodes(graphBuilder);
@@ -275,10 +429,11 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
         for (int treeIndex = 0; treeIndex < orderedTrees.size(); ++treeIndex) {
             var tree = orderedTrees.get(treeIndex);
+            var accountedTree = treeToAccountedTree.get(tree);
 
             nodeButtons.put(Either.left(tree),
                     new TreeButton(variant,
-                            tree,
+                            accountedTree,
                             layout.getNodeX(0, 1, 0, orderedTrees.size(), treeIndex),
                             layout.getNodeY(0, 1, 0, orderedTrees.size(), treeIndex),
                             24,
@@ -345,6 +500,8 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         this.nodeGraph = buildNodeGraph(menu.variant.getParent(), graphLayout, layerCount);
         this.nodeGraph.values().forEach(this::addRenderableWidget);
         this.layerCount = layerCount.getAcquire();
+        this.imageWidth = this.width;
+        this.imageHeight = this.height;
     }
 
     @Override
@@ -355,6 +512,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         this.nodeGraph.values().forEach(button -> {
             button.setX((int)(button.initX + centerX + panX - (button.getWidth() / 2)));
             button.setY((int)(button.initY + centerY + panY - (button.getHeight() / 2)));
+            button.checkRenderState();
         });
 
         Changed.postModEvent(new ContainerScreenEvent.Render.Background(this, graphics, mouseX, mouseY));
@@ -378,12 +536,18 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
-        graphLayout.drawLayerLines(graphics,
-                (int)(centerX + panX),
-                (int)(centerY + panY),
-                layerCount);
+        RenderSystem.setShaderTexture(0, 0);
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-        nodeGraph.values().forEach(button -> button.renderGraphLine(graphics, partialTicks));
+        graphLayout.drawLayerLines(graphics, bufferbuilder,
+                (int)(centerX + panX),
+                (int)(centerY + panY), layerCount);
+
+        nodeGraph.values().forEach(button -> button.renderGraphLine(graphics, bufferbuilder, partialTicks));
+
+        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 
     @Override

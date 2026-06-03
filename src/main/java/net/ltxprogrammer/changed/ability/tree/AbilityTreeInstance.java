@@ -2,14 +2,19 @@ package net.ltxprogrammer.changed.ability.tree;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.ability.tree.events.AbstractPointEvent;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -42,7 +47,6 @@ public class AbilityTreeInstance {
     public static class AccountedTree {
         private final AbilityTree tree;
         private final List<AccountedPurchase> purchasedNodes = new ArrayList<>();
-
         private final Map<TransfurVariant<?>, Integer> pointStores = new HashMap<>();
 
         public AccountedTree(AbilityTree tree) {
@@ -58,6 +62,10 @@ public class AbilityTreeInstance {
         public boolean canAfford(TransfurVariant<?> variant, ResourceLocation nodeName) {
             int price = this.getEffectivePrice(variant, nodeName);
             return price <= pointStores.getOrDefault(variant, 0);
+        }
+
+        public MutableComponent getEffectivePriceText(TransfurVariant<?> variant, ResourceLocation nodeName) {
+            return Component.translatable("text.changed.ability_tree.price", this.getEffectivePrice(variant, nodeName));
         }
 
         public boolean makePurchase(TransfurVariant<?> variant, ResourceLocation nodeName, int price) {
@@ -155,6 +163,10 @@ public class AbilityTreeInstance {
                     .map(namedNode -> this.computeNodeState(forVariant, namedNode));
         }
 
+        public boolean hasAllNodes(TransfurVariant<?> variant) {
+            return getNodeStates(variant).allMatch(NodeState::unlocked);
+        }
+
         public int getEffectivePrice(TransfurVariant<?> forVariant, AbilityNode node) {
             if (!tree.hasNode(node))
                 throw new IllegalArgumentException("Node does not exist in tree: " + node.getNodeLocation());
@@ -208,6 +220,22 @@ public class AbilityTreeInstance {
                         nodeEffect.gatherActiveEffects(entity, sink);
                     });
                 }
+            });
+        }
+
+        public <T> void offerPointEvent(TransfurVariantInstance<?> variantInstance, Codec<? extends AbstractPointEvent<T>> pointEventType, T criteria) {
+            if (variantInstance.getHost().level().isClientSide())
+                return;
+
+            int points = tree.sumPointsForEvent(pointEventType, criteria);
+            if (points == 0)
+                return;
+
+            pointStores.compute(variantInstance.getParent(), ($_, prevPoints) -> {
+                if (prevPoints == null)
+                    return points;
+                else
+                    return prevPoints + points;
             });
         }
 
@@ -312,8 +340,37 @@ public class AbilityTreeInstance {
         });
     }
 
+    public <T> void offerPointEventToTrees(TransfurVariantInstance<?> variantInstance, Codec<? extends AbstractPointEvent<T>> pointEventType, T criteria) {
+        if (variantInstance == null)
+            return;
+
+        trees.forEach(tree -> {
+            if (tree.appliesTo(variantInstance.getParent()))
+                tree.offerPointEvent(variantInstance, pointEventType, criteria);
+        });
+    }
+
     public static AbilityTreeInstance getForPlayer(Player player) {
         return ((PlayerDataExtension)player).getAbilityTree();
+    }
+
+    public static <T> void offerPointEvent(IAbstractChangedEntity entity, Codec<? extends AbstractPointEvent<T>> pointEventType, T criteria) {
+        if (entity.getEntity() instanceof Player player) {
+            var tree = getForPlayer(player);
+            tree.offerPointEventToTrees(entity.getTransfurVariantInstance(), pointEventType, criteria);
+        }
+    }
+
+    public static <T> void offerPointEvent(Player player, Codec<? extends AbstractPointEvent<T>> pointEventType, T criteria) {
+        var tree = getForPlayer(player);
+        ProcessTransfur.ifPlayerTransfurred(player, variantInstance -> {
+            tree.offerPointEventToTrees(variantInstance, pointEventType, criteria);
+        });
+    }
+
+    public static <T> void offerPointEvent(TransfurVariantInstance<?> variantInstance, Codec<? extends AbstractPointEvent<T>> pointEventType, T criteria) {
+        var tree = getForPlayer(variantInstance.getHost());
+        tree.offerPointEventToTrees(variantInstance, pointEventType, criteria);
     }
 
     public CompoundTag save() {
@@ -325,7 +382,27 @@ public class AbilityTreeInstance {
         return tag;
     }
 
-    public void read(Level level, CompoundTag tag) {
+    public CompoundTag saveActive(TransfurVariant<?> variant) {
+        CompoundTag tag = new CompoundTag();
+        trees.forEach(accountedTree -> {
+            if (accountedTree.appliesTo(variant))
+                tag.put(accountedTree.getTree().getTreeLocation().toString(),
+                        accountedTree.save());
+        });
+        return tag;
+    }
+
+    public CompoundTag saveTree(AbilityTree tree) {
+        CompoundTag tag = new CompoundTag();
+        trees.forEach(accountedTree -> {
+            if (accountedTree.getTree() == tree)
+                tag.put(accountedTree.getTree().getTreeLocation().toString(),
+                        accountedTree.save());
+        });
+        return tag;
+    }
+
+    public void read(Level level, CompoundTag tag, boolean incomplete) {
         var treeDefinitions = level.isClientSide ? AbilityTrees.INSTANCE.getRemoteTrees() : AbilityTrees.INSTANCE.getTrees();
 
         Set<AccountedTree> newAccountedTrees = new HashSet<>();
@@ -334,17 +411,21 @@ public class AbilityTreeInstance {
             var newTree = treeDefinitions.stream().filter(tree -> tree.getTreeLocation().equals(treeLocation)).findFirst();
             if (newTree.isEmpty())
                 return;
-            var newAccountedTree = new AccountedTree(
+            var existingAccountedTree = trees.stream().filter(tree -> tree.tree == newTree.get()).findAny();
+
+            var newAccountedTree = existingAccountedTree.orElseGet(() -> new AccountedTree(
                     newTree.get(),
                     List.of(),
                     Map.of()
-            );
+            ));
+
             newAccountedTree.read(tag.getCompound(key));
             newAccountedTree.refundInvalidNodes();
             newAccountedTrees.add(newAccountedTree);
         });
 
-        trees.clear();
+        if (!incomplete)
+            trees.clear();
         trees.addAll(newAccountedTrees);
     }
 }

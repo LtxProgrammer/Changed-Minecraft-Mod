@@ -6,9 +6,13 @@
   "flavorId": "changed.ability_tree.latex.flavor",
   "pointEvents": [
     {
-      "type": "changed:event",
-      "event": "changed:on_transfur_other",
-      "reward": 10
+      "type": "changed:on_transfur_other",
+      "reward": 2
+    },
+    {
+      "type": "changed:time_as_variant",
+      "ticks": 1200,
+      "reward": 1
     }
   ]
 }

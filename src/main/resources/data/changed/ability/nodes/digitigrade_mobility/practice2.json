@@ -2,6 +2,7 @@
   "parent": "changed:digitigrade_mobility/practice1",
   "titleId": "changed.ability_tree.practice2",
   "flavorId": "changed.ability_tree.movement.digitigrade.practice2",
+  "display": { "icon": { "item": "minecraft:iron_leggings" } },
   "price": 1,
   "groupDiscount": -1,
 

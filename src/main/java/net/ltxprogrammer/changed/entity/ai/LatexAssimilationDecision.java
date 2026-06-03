@@ -3,9 +3,12 @@ package net.ltxprogrammer.changed.entity.ai;
 import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
+import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
+import net.ltxprogrammer.changed.ability.tree.events.OnTransfurOther;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedAbilityPointEvents;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -115,6 +118,7 @@ public record LatexAssimilationDecision<T extends ChangedEntity>(DecisionStrengt
                 transfurProgress,
                 () -> {
                     var newEntity = transfurVariant.replaceEntity(target, transfurSource);
+                    AbilityTreeInstance.offerPointEvent(transfurSource, ChangedAbilityPointEvents.ON_TRANSFUR_OTHER.get(), new OnTransfurOther.Criteria(target));
                     ProcessTransfur.onAssimilateEntity(transfurSource);
                     ChangedSounds.broadcastSound(newEntity.getEntity(), transfurVariant.sound, 1.0f, 1.0f);
                     postTransfurListener.accept(newEntity);
@@ -134,6 +138,7 @@ public record LatexAssimilationDecision<T extends ChangedEntity>(DecisionStrengt
                     }
 
                     transfurSource.replaceVariant(transfurVariant);
+                    AbilityTreeInstance.offerPointEvent(transfurSource, ChangedAbilityPointEvents.ON_TRANSFUR_OTHER.get(), new OnTransfurOther.Criteria(target));
                     ProcessTransfur.onAbsorbEntity(transfurSource);
                     ChangedSounds.broadcastSound(transfurSource.getEntity(), transfurVariant.sound, 1.0f, 1.0f);
                     postTransfurListener.accept(transfurSource);
@@ -154,6 +159,7 @@ public record LatexAssimilationDecision<T extends ChangedEntity>(DecisionStrengt
                         transfurSource.getEntity().discard();
                     }
 
+                    AbilityTreeInstance.offerPointEvent(newEntity, ChangedAbilityPointEvents.ON_TRANSFUR_OTHER.get(), new OnTransfurOther.Criteria(target));
                     ProcessTransfur.onAbsorbEntity(newEntity);
                     ChangedSounds.broadcastSound(newEntity.getEntity(), transfurVariant.sound, 1.0f, 1.0f);
                     postTransfurListener.accept(newEntity);

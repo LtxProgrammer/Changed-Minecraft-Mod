@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
+import net.ltxprogrammer.changed.ability.tree.events.AbstractPointEvent;
 import net.ltxprogrammer.changed.ability.tree.requirements.AbstractRequirement;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
 import net.ltxprogrammer.changed.computers.application.ApplicationType;
@@ -210,6 +211,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
     public static final RegistryHolder<Codec<? extends NodeEffect>> ABILITY_NODE_EFFECTS = new RegistryHolder<>(registryKey("ability/node_effects"));
     public static final RegistryHolder<Codec<? extends AbstractCondition>> ABILITY_EFFECT_CONDITIONS = new RegistryHolder<>(registryKey("ability/effect_conditions"));
     public static final RegistryHolder<Codec<? extends AbstractRequirement>> PURCHASE_REQUIREMENTS = new RegistryHolder<>(registryKey("ability/purchase_requirements"));
+    public static final RegistryHolder<Codec<? extends AbstractPointEvent<?>>> POINT_EVENTS = new RegistryHolder<>(registryKey("ability/point_events"));
     public static final RegistryHolder<TransfurVariantFeature> TRANSFUR_VARIANT_FEATURES = new RegistryHolder<>(registryKey("ability/variant_features"));
 
     public static final RegistryHolder<ApplicationType<?>> APPLICATION_TYPES = new RegistryHolder<>(registryKey("computer/application_type"));
@@ -284,6 +286,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
         createRegistry(event, ABILITY_NODE_EFFECTS.key);
         createRegistry(event, ABILITY_EFFECT_CONDITIONS.key);
         createRegistry(event, PURCHASE_REQUIREMENTS.key);
+        createRegistry(event, POINT_EVENTS.key);
         createRegistry(event, TRANSFUR_VARIANT_FEATURES.key);
         createRegistry(event, APPLICATION_TYPES.key, RegistryBuilder::hasTags, null);
     }

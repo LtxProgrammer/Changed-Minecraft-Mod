@@ -8,6 +8,10 @@ import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 import net.ltxprogrammer.changed.util.Cacheable;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -76,5 +80,27 @@ public class IntrinsicEnchantmentNodeEffect extends NodeEffect {
     @Override
     protected NodeEffect createClientNodeEffect() {
         return new IntrinsicEnchantmentNodeEffect(TrueCondition.INSTANCE, this.enchantment, this.method, this.level);
+    }
+
+    protected Component getFullEnchantmentName() {
+        MutableComponent mutablecomponent = Component.translatable(enchantment.getDescriptionId());
+
+        if (level != 1 || enchantment.getMaxLevel() != 1) {
+            mutablecomponent.append(CommonComponents.SPACE).append(Component.translatable("enchantment.level." + level));
+        }
+
+        return mutablecomponent;
+    }
+
+    @Override
+    public void buildDescription(Consumer<Component> componentConsumer, boolean negate) {
+        super.buildDescription(componentConsumer, negate);
+
+        if (!negate)
+            componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.intrinsic_enchantment.plus",
+                    getFullEnchantmentName()).withStyle(enchantment.isCurse() ? ChatFormatting.RED : ChatFormatting.BLUE));
+        else
+            componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.intrinsic_enchantment.take",
+                    getFullEnchantmentName()).withStyle(enchantment.isCurse() ? ChatFormatting.BLUE : ChatFormatting.RED));
     }
 }

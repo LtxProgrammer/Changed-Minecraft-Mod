@@ -175,7 +175,7 @@ public class AbilityTrees extends SimplePreparableReloadListener<Pair<Map<Resour
         return new SyncPacket(
                 this.nodes,
                 this.trees,
-                new AbilityTreeSyncInstancePacket(AbilityTreeInstance.getForPlayer(receiver))
+                AbilityTreeSyncInstancePacket.ofAllTrees(AbilityTreeInstance.getForPlayer(receiver))
         );
     }
 }

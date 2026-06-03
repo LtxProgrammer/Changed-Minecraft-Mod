@@ -2,6 +2,10 @@
   "parent": "changed:latex/hardened_skin3",
   "titleId": "changed.ability_tree.latex.like_a_tank",
   "flavorId": "changed.ability_tree.latex.like_a_tank.flavor",
+  "display": {
+    "icon": { "item": "minecraft:netherite_chestplate", "nbt": { "Enchantments": [{ "id": "minecraft:unbreaking", "lvl": 1 }] } },
+    "frame": "ultimate"
+  },
   "price": 4,
 
   "acquiredEffects": [

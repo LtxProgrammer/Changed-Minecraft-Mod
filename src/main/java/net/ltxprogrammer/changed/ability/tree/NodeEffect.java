@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.util.Cacheable;
+import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -36,5 +37,9 @@ public abstract class NodeEffect {
      */
     public final Optional<NodeEffect> getClientNodeEffect() {
         return cachedClientNodeEffect.getOptional();
+    }
+
+    public void buildDescription(Consumer<Component> componentConsumer, boolean negate) {
+
     }
 }

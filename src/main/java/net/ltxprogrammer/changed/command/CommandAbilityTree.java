@@ -6,8 +6,10 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.tree.AbilityTree;
+import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.network.packet.AbilityTreeSyncInstancePacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -21,6 +23,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.NetworkDirection;
 
 @Mod.EventBusSubscriber
 public class CommandAbilityTree {
@@ -81,9 +84,13 @@ public class CommandAbilityTree {
 
         int granted = tree.get().makePurchase(variant.getParent(), nodeId, 0) ? 1 : 0;
 
-        if (granted > 0)
+        if (granted > 0) {
+            player.connection.send(
+                    Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofActiveTrees(abilityTree, variant.getParent()), NetworkDirection.PLAY_TO_CLIENT)
+            );
             source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.grant",
                     node.getTitle(), player.getScoreboardName()), false);
+        }
 
         return granted;
     }
@@ -103,8 +110,12 @@ public class CommandAbilityTree {
             return tree.get().makePurchase(variant.getParent(), nodeId, 0) ? 1 : 0;
         }).reduce(Integer::sum).orElse(0);
 
-        if (granted > 0)
+        if (granted > 0) {
+            player.connection.send(
+                    Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofActiveTrees(abilityTree, variant.getParent()), NetworkDirection.PLAY_TO_CLIENT)
+            );
             source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.grant.many", granted, player.getScoreboardName()), false);
+        }
         return granted;
     }
 
@@ -120,8 +131,12 @@ public class CommandAbilityTree {
 
         int refunded = tree.get().refundNodePurchases(nodeId);
 
-        if (refunded > 0)
+        if (refunded > 0) {
+            player.connection.send(
+                    Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofAllTrees(abilityTree), NetworkDirection.PLAY_TO_CLIENT)
+            );
             source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.refund.many", refunded, player.getScoreboardName()), false);
+        }
 
         return refunded;
     }
@@ -137,8 +152,12 @@ public class CommandAbilityTree {
             return tree.get().refundNodePurchases(nodeId);
         }).reduce(Integer::sum).orElse(0);
 
-        if (refunded > 0)
+        if (refunded > 0) {
+            player.connection.send(
+                    Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofAllTrees(abilityTree), NetworkDirection.PLAY_TO_CLIENT)
+            );
             source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.refund.many", refunded, player.getScoreboardName()), false);
+        }
         return refunded;
     }
 }

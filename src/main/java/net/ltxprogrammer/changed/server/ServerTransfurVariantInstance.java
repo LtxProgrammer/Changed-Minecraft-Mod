@@ -1,8 +1,13 @@
 package net.ltxprogrammer.changed.server;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
+import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
+import net.ltxprogrammer.changed.ability.tree.events.StatCriteria;
+import net.ltxprogrammer.changed.ability.tree.events.TimeBreathingFluid;
+import net.ltxprogrammer.changed.ability.tree.events.TimeInFluid;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -10,6 +15,9 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.packet.SyncActiveNodeEffectsPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -24,7 +32,10 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.living.LivingBreatheEvent;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -33,9 +44,121 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
 
     protected final List<NodeEffect> lastSentNodeEffects = new ArrayList<>();
 
+    protected static class FluidSubmersionVariables {
+        final FluidType fluidType;
+        int ticksTouching;
+        int ticksSubmerged;
+        int ticksBreathing;
+
+        public FluidSubmersionVariables(FluidType fluidType) {
+            this.fluidType = fluidType;
+            this.ticksTouching = 0;
+            this.ticksSubmerged = 0;
+            this.ticksBreathing = 0;
+        }
+
+        public FluidSubmersionVariables resetTouching() {
+            this.ticksTouching = 0;
+            this.ticksSubmerged = 0;
+            return this;
+        }
+
+        public void tickTouching(ServerTransfurVariantInstance<?> variantInstance, boolean submerged) {
+            AbilityTreeInstance.offerPointEvent(variantInstance, ChangedAbilityPointEvents.TIME_IN_FLUID.get(),
+                    new TimeInFluid.Criteria(this.ticksTouching, 1, fluidType, false));
+            this.ticksTouching++;
+
+            if (submerged) {
+                AbilityTreeInstance.offerPointEvent(variantInstance, ChangedAbilityPointEvents.TIME_IN_FLUID.get(),
+                        new TimeInFluid.Criteria(this.ticksSubmerged, 1, fluidType, true));
+                this.ticksSubmerged++;
+            }
+            else
+                this.ticksSubmerged = 0;
+        }
+
+        public FluidSubmersionVariables resetBreathing() {
+            this.ticksBreathing = 0;
+            return this;
+        }
+
+        public void tickBreathing(ServerTransfurVariantInstance<?> variantInstance) {
+            AbilityTreeInstance.offerPointEvent(variantInstance, ChangedAbilityPointEvents.TIME_BREATHING_FLUID.get(),
+                    new TimeBreathingFluid.Criteria(this.ticksBreathing, 1, fluidType));
+            this.ticksBreathing++;
+
+            if (fluidType == ForgeMod.WATER_TYPE.get()) {
+                ChangedCriteriaTriggers.AQUATIC_BREATHE.trigger(variantInstance.host, this.ticksBreathing);
+            }
+        }
+
+        public @Nullable CompoundTag save() {
+            if (this.ticksTouching == 0 && this.ticksSubmerged == 0 && this.ticksBreathing == 0)
+                return null;
+
+            var tag = new CompoundTag();
+            if (this.ticksTouching != 0)
+                tag.putInt("touching", this.ticksTouching);
+            if (this.ticksSubmerged != 0)
+                tag.putInt("submerged", this.ticksSubmerged);
+            if (this.ticksBreathing != 0)
+                tag.putInt("breathing", this.ticksBreathing);
+            return tag;
+        }
+
+        public void load(CompoundTag tag) {
+            if (tag.contains("touching"))
+                this.ticksTouching = tag.getInt("touching");
+            if (tag.contains("submerged"))
+                this.ticksSubmerged = tag.getInt("submerged");
+            if (tag.contains("breathing"))
+                this.ticksBreathing = tag.getInt("breathing");
+        }
+    }
+
+    protected final Map<FluidType, FluidSubmersionVariables> ticksInFluids = new Object2ObjectArrayMap<>();
+
     public ServerTransfurVariantInstance(TransfurVariant<T> parent, ServerPlayer host) {
         super(parent, host);
         this.host = host;
+    }
+
+    @Override
+    public CompoundTag saveForStorage() {
+        var tag = super.saveForStorage();
+
+        {
+            var fluidTicksTag = new CompoundTag();
+            ticksInFluids.forEach((fluidType, vars) -> {
+                var varTag = vars.save();
+                if (varTag == null)
+                    return;
+
+                fluidTicksTag.put(ForgeRegistries.FLUID_TYPES.get().getKey(fluidType).toString(), varTag);
+            });
+            tag.put("fluidTicks", fluidTicksTag);
+        }
+
+        return tag;
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+
+        this.ticksInFluids.clear();
+        if (tag.contains("fluidTicks")) {
+            var fluidTicksTag = tag.getCompound("fluidTicks");
+            fluidTicksTag.getAllKeys().forEach(keyStr -> {
+                var fluidKey = ResourceLocation.parse(keyStr);
+                if (!ForgeRegistries.FLUID_TYPES.get().containsKey(fluidKey))
+                    return;
+
+                var fluidType = ForgeRegistries.FLUID_TYPES.get().getValue(fluidKey);
+                this.ticksInFluids.computeIfAbsent(fluidType, FluidSubmersionVariables::new)
+                        .load(fluidTicksTag.getCompound(keyStr));
+            });
+        }
     }
 
     @Override
@@ -93,9 +216,17 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
     protected void tickBreathing(LivingBreatheEvent event) {
         super.tickBreathing(event);
 
-        if (host.isAlive() && breatheMode.canBreatheWater() && shouldApplyAbilities() && host.isEyeInFluidType(ForgeMod.WATER_TYPE.get())) {
-            ChangedCriteriaTriggers.AQUATIC_BREATHE.trigger(host, this.ticksBreathingUnderwater);
-        }
+        FluidType submergedFluid = host.getEyeInFluidType();
+        ForgeRegistries.FLUID_TYPES.get().getValues().forEach(fluidType -> {
+            boolean submerged = submergedFluid == fluidType;
+            boolean breathing = submerged && event.canRefillAir();
+
+            if (!breathing) {
+                this.ticksInFluids.computeIfPresent(fluidType, (type, pair) -> pair.resetBreathing());
+            } else {
+                this.ticksInFluids.computeIfAbsent(fluidType, FluidSubmersionVariables::new).tickBreathing(this);
+            }
+        });
     }
 
     public final Map<Attribute, UUID> attributesByUUID = new HashMap<>();
@@ -167,6 +298,15 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
     }
 
     @Override
+    public void tickAge() {
+        int pre = ageAsVariant;
+        super.tickAge();
+        int delta = ageAsVariant - pre;
+
+        AbilityTreeInstance.offerPointEvent(this, ChangedAbilityPointEvents.TIME_AS_VARIANT.get(), new StatCriteria(pre, delta));
+    }
+
+    @Override
     public void tick() {
         this.tickAbilityTree();
 
@@ -176,6 +316,20 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
             host.removeEffect(ChangedEffects.HYPERCOAGULATION.get());
 
         this.tickScare();
+
+        if (shouldApplyAbilities()) {
+            FluidType submergedFluid = host.getEyeInFluidType();
+            ForgeRegistries.FLUID_TYPES.get().getValues().forEach(fluidType -> {
+                boolean submerged = submergedFluid == fluidType;
+                boolean touching = submerged || host.isInFluidType(fluidType);
+
+                if (!submerged && !touching) {
+                    this.ticksInFluids.computeIfPresent(fluidType, (type, pair) -> pair.resetTouching());
+                } else {
+                    this.ticksInFluids.computeIfAbsent(fluidType, FluidSubmersionVariables::new).tickTouching(this, submerged);
+                }
+            });
+        }
     }
 
     public void tickScare() {

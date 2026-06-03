@@ -1,14 +1,27 @@
 package net.ltxprogrammer.changed.ability.tree.effects;
 
+import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectUtil;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class MobEffectNodeEffect extends NodeEffect {
@@ -43,5 +56,35 @@ public class MobEffectNodeEffect extends NodeEffect {
     @Override
     public Codec<? extends NodeEffect> getCodec() {
         return CODEC;
+    }
+
+    @Override
+    public void buildDescription(Consumer<Component> componentConsumer, boolean negate) {
+        super.buildDescription(componentConsumer, negate);
+
+        MutableComponent mutablecomponent = Component.translatable(mobEffect.getDescriptionId());
+        MobEffect mobeffect = mobEffect.getEffect();
+
+        if (mobEffect.getAmplifier() > 0) {
+            mutablecomponent = Component.translatable("potion.withAmplifier", mutablecomponent, Component.translatable("potion.potency." + mobEffect.getAmplifier()));
+        }
+
+        if (!mobEffect.endsWithin(20)) {
+            mutablecomponent = Component.translatable("potion.withDuration", mutablecomponent, MobEffectUtil.formatDuration(mobEffect, 1.0f));
+        }
+
+        MobEffectCategory mobEffectCategory = mobeffect.getCategory();
+        if (negate) {
+            mobEffectCategory = switch (mobEffectCategory) {
+                case HARMFUL -> MobEffectCategory.BENEFICIAL;
+                case BENEFICIAL -> MobEffectCategory.HARMFUL;
+                default -> mobEffectCategory;
+            };
+        }
+
+        if (!negate)
+            componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.mob_effect.plus", mutablecomponent).withStyle(mobEffectCategory.getTooltipFormatting()));
+        else
+            componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.mob_effect.take", mutablecomponent).withStyle(mobEffectCategory.getTooltipFormatting()));
     }
 }

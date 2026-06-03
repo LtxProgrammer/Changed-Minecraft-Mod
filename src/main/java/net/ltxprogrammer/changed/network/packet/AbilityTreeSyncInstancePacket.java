@@ -1,36 +1,48 @@
 package net.ltxprogrammer.changed.network.packet;
 
+import net.ltxprogrammer.changed.ability.tree.AbilityTree;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
-import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
-import net.ltxprogrammer.changed.data.AccessorySlots;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.util.UniversalDist;
-import net.ltxprogrammer.changed.world.inventory.AccessoryAccessMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class AbilityTreeSyncInstancePacket implements ChangedPacket {
     private final CompoundTag treeInfo;
+    private final boolean incomplete;
 
-    public AbilityTreeSyncInstancePacket(AbilityTreeInstance treeInstance) {
-        this.treeInfo = treeInstance.save();
+    protected AbilityTreeSyncInstancePacket(CompoundTag tag, boolean incomplete) {
+        this.treeInfo = tag;
+        this.incomplete = incomplete;
+    }
+
+    public static AbilityTreeSyncInstancePacket ofAllTrees(AbilityTreeInstance treeInstance) {
+        return new AbilityTreeSyncInstancePacket(treeInstance.save(), false);
+    }
+
+    public static AbilityTreeSyncInstancePacket ofActiveTrees(AbilityTreeInstance treeInstance, TransfurVariant<?> variant) {
+        return new AbilityTreeSyncInstancePacket(treeInstance.saveActive(variant), true);
+    }
+
+    public static AbilityTreeSyncInstancePacket ofTree(AbilityTreeInstance treeInstance, AbilityTree tree) {
+        return new AbilityTreeSyncInstancePacket(treeInstance.saveTree(tree), true);
     }
 
     public AbilityTreeSyncInstancePacket(FriendlyByteBuf buffer) {
         this.treeInfo = buffer.readAnySizeNbt();
+        this.incomplete = buffer.readBoolean();
     }
 
     @Override
     public void write(FriendlyByteBuf buffer) {
         buffer.writeNbt(treeInfo);
+        buffer.writeBoolean(incomplete);
     }
 
     @Override
@@ -39,7 +51,7 @@ public class AbilityTreeSyncInstancePacket implements ChangedPacket {
             context.setPacketHandled(true);
             return levelFuture.thenAccept(level -> {
                 AbilityTreeInstance.getForPlayer(UniversalDist.getLocalPlayer())
-                        .read(level, treeInfo);
+                        .read(level, treeInfo, incomplete);
             });
         }
 

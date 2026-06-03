@@ -8,6 +8,10 @@ import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantFeature;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -45,5 +49,23 @@ public class EnableFeatureNodeEffect extends NodeEffect {
     @Override
     protected NodeEffect createClientNodeEffect() {
         return new EnableFeatureNodeEffect(TrueCondition.INSTANCE, this.feature, this.factor);
+    }
+
+    @Override
+    public void buildDescription(Consumer<Component> componentConsumer, boolean negate) {
+        super.buildDescription(componentConsumer, negate);
+
+        double d0 = this.factor;
+        if (negate)
+            d0 = -d0;
+
+        double d1 = d0;
+
+        if (d0 > 0.0D) {
+            componentConsumer.accept(Component.translatable("attribute.modifier.plus.0", ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), feature.getDisplayName()).withStyle(ChatFormatting.BLUE));
+        } else if (d0 < 0.0D) {
+            d1 *= -1.0D;
+            componentConsumer.accept(Component.translatable("attribute.modifier.take.0", ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), feature.getDisplayName()).withStyle(ChatFormatting.RED));
+        }
     }
 }

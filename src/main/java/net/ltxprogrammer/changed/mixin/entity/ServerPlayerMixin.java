@@ -5,6 +5,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
+import net.ltxprogrammer.changed.ability.tree.events.NullCriteria;
+import net.ltxprogrammer.changed.ability.tree.events.StatCriteria;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -22,6 +25,9 @@ import net.minecraft.nbt.IntTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.ServerStatsCounter;
+import net.minecraft.stats.Stat;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,6 +37,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.PacketDistributor;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -43,6 +50,8 @@ import java.util.UUID;
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player implements PlayerDataExtension {
     @Shadow private int spawnInvulnerableTime;
+
+    @Shadow @Final private ServerStatsCounter stats;
 
     public ServerPlayerMixin(Level p_36114_, BlockPos p_36115_, float p_36116_, GameProfile p_36117_) {
         super(p_36114_, p_36115_, p_36116_, p_36117_);
@@ -65,7 +74,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.transfurContext, oldVariant.transfurProgression);
                 if (newVariant == null)
                     return;
-                newVariant.load(oldVariant.save());
+                newVariant.load(oldVariant.saveForStorage());
                 newVariant.handleRespawn();
             });
         }
@@ -179,7 +188,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
         tag.putFloat("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this));
         ProcessTransfur.ifPlayerTransfurred(this, variant -> {
             TagUtil.putResourceLocation(tag, "TransfurVariant", variant.getFormId());
-            tag.put("TransfurVariantData", variant.save());
+            tag.put("TransfurVariantData", variant.saveForStorage());
 
             var entity = variant.getChangedEntity();
 
@@ -240,5 +249,23 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
         var playerMover = getPlayerMover();
         if (playerMover != null && playerMover.shouldRemoveMover(this, InputWrapper.from(this), LogicalSide.SERVER))
             setPlayerMover(null);
+    }
+
+    @WrapMethod(method = "awardStat")
+    public void changed$andAwardPointEvents(Stat<?> stat, int value, Operation<Void> original) {
+        if (stat == Stats.CUSTOM.get(Stats.WALK_ONE_CM)) {
+            AbilityTreeInstance.offerPointEvent(this, ChangedAbilityPointEvents.DISTANCE_WALKED.get(), new StatCriteria(stats.getValue(stat), value));
+        } else if (stat == Stats.CUSTOM.get(Stats.SPRINT_ONE_CM)) {
+            AbilityTreeInstance.offerPointEvent(this, ChangedAbilityPointEvents.DISTANCE_SPRINTED.get(), new StatCriteria(stats.getValue(stat), value));
+        } else if (stat == Stats.CUSTOM.get(Stats.CROUCH_ONE_CM)) {
+            AbilityTreeInstance.offerPointEvent(this, ChangedAbilityPointEvents.DISTANCE_CROUCHED.get(), new StatCriteria(stats.getValue(stat), value));
+        } else if (stat == Stats.CUSTOM.get(Stats.SWIM_ONE_CM)) {
+            AbilityTreeInstance.offerPointEvent(this, ChangedAbilityPointEvents.DISTANCE_SWAM.get(), new StatCriteria(stats.getValue(stat), value));
+        } else if (stat == Stats.CUSTOM.get(Stats.JUMP)) {
+            if (value >= 1)
+                AbilityTreeInstance.offerPointEvent(this, ChangedAbilityPointEvents.ON_JUMP.get(), NullCriteria.INSTANCE);
+        }
+
+        original.call(stat, value);
     }
 }
