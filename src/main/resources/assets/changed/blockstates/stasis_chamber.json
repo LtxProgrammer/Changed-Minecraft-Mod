@@ -63,14 +63,8 @@
     "facing=south,open=true,active=false,section=middle_top_left": { "model": "changed:block/stasis_chamber/open_inactive/mtl", "y": 180 },
     "facing=west,open=true,active=false,section=middle_top_left": { "model": "changed:block/stasis_chamber/open_inactive/mtl", "y": 270 },
     
-    "facing=north,open=false,active=false,section=middle_top_middle": { "model": "changed:block/stasis_chamber/closed_inactive/mtm" },
-    "facing=east,open=false,active=false,section=middle_top_middle": { "model": "changed:block/stasis_chamber/closed_inactive/mtm", "y": 90 },
-    "facing=south,open=false,active=false,section=middle_top_middle": { "model": "changed:block/stasis_chamber/closed_inactive/mtm", "y": 180 },
-    "facing=west,open=false,active=false,section=middle_top_middle": { "model": "changed:block/stasis_chamber/closed_inactive/mtm", "y": 270 },
-    "facing=north,open=true,active=false,section=middle_top_middle": { "model": "changed:block/stasis_chamber/open_inactive/mtm" },
-    "facing=east,open=true,active=false,section=middle_top_middle": { "model": "changed:block/stasis_chamber/open_inactive/mtm", "y": 90 },
-    "facing=south,open=true,active=false,section=middle_top_middle": { "model": "changed:block/stasis_chamber/open_inactive/mtm", "y": 180 },
-    "facing=west,open=true,active=false,section=middle_top_middle": { "model": "changed:block/stasis_chamber/open_inactive/mtm", "y": 270 },
+    "open=false,active=false,section=middle_top_middle": { "model": "changed:block/stasis_chamber/closed_inactive/mtm" },
+    "open=true,active=false,section=middle_top_middle": { "model": "changed:block/stasis_chamber/open_inactive/mtm" },
     
     "facing=north,open=false,active=false,section=middle_top_right": { "model": "changed:block/stasis_chamber/closed_inactive/mtr" },
     "facing=east,open=false,active=false,section=middle_top_right": { "model": "changed:block/stasis_chamber/closed_inactive/mtr", "y": 90 },
@@ -306,14 +300,8 @@
     "facing=south,open=true,active=true,section=middle_top_left": { "model": "changed:block/stasis_chamber/open_active/mtl", "y": 180 },
     "facing=west,open=true,active=true,section=middle_top_left": { "model": "changed:block/stasis_chamber/open_active/mtl", "y": 270 },
 
-    "facing=north,open=false,active=true,section=middle_top_middle": { "model": "changed:block/stasis_chamber/closed_active/mtm" },
-    "facing=east,open=false,active=true,section=middle_top_middle": { "model": "changed:block/stasis_chamber/closed_active/mtm", "y": 90 },
-    "facing=south,open=false,active=true,section=middle_top_middle": { "model": "changed:block/stasis_chamber/closed_active/mtm", "y": 180 },
-    "facing=west,open=false,active=true,section=middle_top_middle": { "model": "changed:block/stasis_chamber/closed_active/mtm", "y": 270 },
-    "facing=north,open=true,active=true,section=middle_top_middle": { "model": "changed:block/stasis_chamber/open_active/mtm" },
-    "facing=east,open=true,active=true,section=middle_top_middle": { "model": "changed:block/stasis_chamber/open_active/mtm", "y": 90 },
-    "facing=south,open=true,active=true,section=middle_top_middle": { "model": "changed:block/stasis_chamber/open_active/mtm", "y": 180 },
-    "facing=west,open=true,active=true,section=middle_top_middle": { "model": "changed:block/stasis_chamber/open_active/mtm", "y": 270 },
+    "open=false,active=true,section=middle_top_middle": { "model": "changed:block/stasis_chamber/closed_active/mtm" },
+    "open=true,active=true,section=middle_top_middle": { "model": "changed:block/stasis_chamber/open_active/mtm" },
 
     "facing=north,open=false,active=true,section=middle_top_right": { "model": "changed:block/stasis_chamber/closed_active/mtr" },
     "facing=east,open=false,active=true,section=middle_top_right": { "model": "changed:block/stasis_chamber/closed_active/mtr", "y": 90 },
