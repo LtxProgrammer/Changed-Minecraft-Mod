@@ -146,6 +146,18 @@ public abstract class FormRenderHandler {
             ModelPart handPart = entModel.getArm(arm);
             /*entModel.setupAnim(changedEntity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
             modelInterface.setupHand(changedEntity);*/
+
+            float deltaArmLength = controller.armLength - 12.0f;
+            if (deltaArmLength != 0.0f)
+                armPose = PartPose.offsetAndRotation(
+                        armPose.x,
+                        armPose.y - deltaArmLength,
+                        armPose.z,
+                        armPose.xRot,
+                        armPose.yRot,
+                        armPose.zRot
+                );
+
             handPart.loadPose(armPose);
 
             ResourceLocation texture = entRenderer.getTextureLocation(changedEntity);
