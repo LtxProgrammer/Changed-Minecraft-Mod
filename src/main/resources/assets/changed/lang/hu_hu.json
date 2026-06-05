@@ -1027,6 +1027,12 @@
   "changed.ability_tree.movement.swim_faster": "Gyorsabb úszás",
   "changed.ability_tree.movement.jump_higher": "Magasabb ugrás",
 
+  "changed.ability_tree.lamnidae.call_to_arms": "Összetoborzás",
+  "changed.ability_tree.lamnidae.follow_my_lead": "Kövess engem",
+  "changed.ability_tree.lamnidae.summon_sharks1": "Cápaidézés I",
+  "changed.ability_tree.lamnidae.summon_sharks2": "Cápaidézés II",
+  "changed.ability_tree.lamnidae.summon_sharks3": "Cápaidézés III",
+
   "changed.ability_tree.latex.absorption": "Elnyelés",
   "changed.ability_tree.latex.aftertaste1": "Utóíz I",
   "changed.ability_tree.latex.aftertaste2": "Utóíz II",
