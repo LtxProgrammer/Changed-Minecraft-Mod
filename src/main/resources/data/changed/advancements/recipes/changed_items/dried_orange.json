@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:dried_orange_furnace",
+      "changed:dried_orange_smoker",
+      "changed:dried_orange_campfire"
+    ]
+  },
+  "criteria": {
+    "has_orange": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:orange"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_orange"
+    ]
+  ]
+}

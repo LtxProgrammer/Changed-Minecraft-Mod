@@ -88,6 +88,7 @@ public class ChangedItems {
             return InteractionResult.PASS;
         }
     });
+    public static final RegistryObject<Item> DRIED_ORANGE = register("dried_orange", () -> new Item(new Item.Properties().food(ChangedFoods.DRIED_ORANGE)));
     public static final RegistryObject<Syringe> SYRINGE = register("syringe", () -> new Syringe(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<BloodSyringe> BLOOD_SYRINGE = register("blood_syringe", () -> new BloodSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<TransfurCrystalItem> BEIFENG_CRYSTAL_FRAGMENT = register("beifeng_crystal_fragment",
@@ -113,6 +114,7 @@ public class ChangedItems {
     public static final RegistryObject<FilledMug> MUG_WITH_WHITE_LATEX = register("mug_with_white_latex", () -> new LatexFilledMug(ChangedLatexTypes.WHITE_LATEX, new Item.Properties().stacksTo(16)));
     public static final RegistryObject<TransfurCrystalItem> WOLF_CRYSTAL_FRAGMENT = register("wolf_crystal_fragment",
             () -> new TransfurCrystalItem(ChangedTransfurVariants.CRYSTAL_WOLF));
+    public static final RegistryObject<Item> PHAGE_CRYSTAL = register("phage_crystal", () -> new Item(new Item.Properties()));
     public static final RegistryObject<TransfurCrystalItem> DARK_DRAGON_CRYSTAL_FRAGMENT = register("dark_dragon_crystal_fragment",
             () -> new TransfurCrystalItem(ChangedTransfurVariants.DARK_DRAGON));
     public static final RegistryObject<AbstractLatexItem> WHITE_LATEX_GOO = register("white_latex_goo", () -> new AbstractLatexItem(ChangedBlocks.WHITE_LATEX_WALL_SPLOTCH.get(), ChangedLatexTypes.WHITE_LATEX));

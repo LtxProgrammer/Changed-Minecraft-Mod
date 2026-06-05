@@ -4,4 +4,5 @@ import net.minecraft.world.food.FoodProperties;
 
 public class ChangedFoods {
     public static final FoodProperties ORANGE = (new FoodProperties.Builder()).nutrition(2).saturationMod(0.7F).build();
+    public static final FoodProperties DRIED_ORANGE = (new FoodProperties.Builder()).nutrition(1).saturationMod(0.3F).build();
 }
