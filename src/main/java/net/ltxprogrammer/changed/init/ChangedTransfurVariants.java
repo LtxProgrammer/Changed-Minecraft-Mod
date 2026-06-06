@@ -190,7 +190,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<WhiteWolfMale>> WHITE_WOLF_MALE = register("form_white_wolf/male",
             TransfurVariant.Builder.of(ChangedEntities.WHITE_WOLF_MALE).scares(AbstractSkeleton.class).sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
     public static final RegistryObject<TransfurVariant<PureWhiteLatexCerberus>> PURE_WHITE_LATEX_CERBERUS = register("form_pure_white_latex_cerberus",
-            TransfurVariant.Builder.of(ChangedEntities.PURE_WHITE_LATEX_CERBERUS).scares(AbstractSkeleton.class).visionType(VisionType.REDUCED));
+            TransfurVariant.Builder.of(ChangedEntities.PURE_WHITE_LATEX_CERBERUS).extraHands().scares(AbstractSkeleton.class).visionType(VisionType.REDUCED));
     public static final RegistryObject<TransfurVariant<PureWhiteLatexWolf>> PURE_WHITE_LATEX_WOLF = register("form_pure_white_latex_wolf",
             TransfurVariant.Builder.of(ChangedEntities.PURE_WHITE_LATEX_WOLF).scares(AbstractSkeleton.class).visionType(VisionType.REDUCED));
     public static final RegistryObject<TransfurVariant<PureWhiteLatexWolfPup>> PURE_WHITE_LATEX_WOLF_PUP = register("form_pure_white_latex_wolf_pup",
