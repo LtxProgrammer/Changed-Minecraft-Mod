@@ -832,6 +832,11 @@
 "block.changed.wall_white_green_tiled": "Белая сцяна з зялёнай пліткай",
 "block.changed.wall_white_slab": "Белая сценная пліта",
 "block.changed.wall_white_stairs": "Белыя сценныя прыступкі",
+"block.changed.dark_latex_fluid": "Цёмная латексная вадкасць",
+"block.changed.skunk_gas": "Скунсавы газ",
+"block.changed.tiger_gas": "Тыгравы газ",
+"block.changed.white_latex_fluid": "Белая латексная вадкасць",
+"block.changed.wolf_gas": "Воўчы газ",
 
 "fluid.changed.skunk_gas": "Газ трансфуру «Скунс»",
 "fluid.changed.tiger_gas": "Газ трансфуру «Тыгр»",
@@ -859,6 +864,7 @@
 "entity.changed.pooltoy_wolf": "Ваўк-пултой",
 "entity.changed.pure_white_latex_wolf_pup": "Шчанюк чыста-белага латэкснага ваўка",
 "entity.changed.custom_latex": "Карыстальніцкі латэкс",
+"entity.changed.pure_white_latex_cerberus": "Цэрбэр са светлага латэкса",
 "item.changed.dark_latex_double_yufeng_spawn_egg": "Яйка спаўну цёмнага двухгаловага латэкснага Юфэна",
 "item.changed.dog_collar": "Сабачы ашыйнік",
 "item.changed.exoskeleton": "Экзаскелет",
@@ -880,6 +886,7 @@
 "item.changed.pooltoy_wolf_spawn_egg": "Яйка спаўну ваўка-пултоя",
 "item.changed.pure_white_latex_wolf_pup_spawn_egg": "Яйка спаўну шчанюка чыста-белага латэкснага ваўка",
 "item.changed.custom_latex_spawn_egg": "Яйка спаўну карыстальніцкага латэксу",
+"item.changed.pure_white_latex_cerberus_spawn_egg": "Яйка спаўну цэрбера са светлага латэкса",
 
 "changed.instruction.clothing_state": "Націсні %s, калі надзета, каб змяніць стан",
 
