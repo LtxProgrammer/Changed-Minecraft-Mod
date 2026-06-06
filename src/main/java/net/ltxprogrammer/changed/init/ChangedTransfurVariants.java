@@ -109,7 +109,7 @@ public class ChangedTransfurVariants {
             TransfurVariant.Builder.of(ChangedEntities.LATEX_MING_CAT).scares(Creeper.class).nightVision().addAbility(ChangedAbilities.TOGGLE_NIGHT_VISION));
     public static final RegistryObject<TransfurVariant<LatexMoth>> LATEX_MOTH = register("form_latex_moth",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_MOTH).extraJumps(6));
-    public static final RegistryObject<TransfurVariant<LatexMutantBloodcellWolf>> LATEX_MUTANT_BLODDCELL_WOLF = register("form_latex_mutant_bloodcell_wolf",
+    public static final RegistryObject<TransfurVariant<LatexMutantBloodcellWolf>> LATEX_MUTANT_BLOODCELL_WOLF = register("form_latex_mutant_bloodcell_wolf",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_MUTANT_BLOODCELL_WOLF).scares(AbstractSkeleton.class).visionType(VisionType.REDUCED).absorbing());
     public static final RegistryObject<TransfurVariant<LatexOrca>> LATEX_ORCA = register("form_latex_orca",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_ORCA).gills());
@@ -244,10 +244,10 @@ public class ChangedTransfurVariants {
         }
     }
 
-    static {
-        ProcessTransfur.registerMobAssimilation(EntityType.BEE, EntityAssimilationBehavior.latexAssimilation(1.4, true,
+    public static void addChangedMobAssimilations(ProcessTransfur.GatherMobAssimilationsEvent event) {
+        event.register(EntityType.BEE, EntityAssimilationBehavior.latexAssimilation(1.4, true,
                 TransfurDecider.simpleMobDecider(LATEX_BEE, 3.0f)));
-        ProcessTransfur.registerMobAssimilation(EntityType.RABBIT, EntityAssimilationBehavior.latexAssimilation(2.0, true,
+        event.register(EntityType.RABBIT, EntityAssimilationBehavior.latexAssimilation(2.0, true,
                 TransfurDecider.simpleMobDecider(Gendered.LATEX_RABBITS, 3.0f)));
     }
 }
