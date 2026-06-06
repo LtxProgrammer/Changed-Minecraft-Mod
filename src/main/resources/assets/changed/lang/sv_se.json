@@ -341,7 +341,7 @@
   "container.changed.cardboard_container": "Kartongbehållare",
   "container.changed.cardboard_box_small": "Litet kartong låda",
 
-
+  "text.changed.compact_disc.title": "\"%s\"",
   "text.changed.game_saved": "Spelet har sparats.",
   "text.changed.game_saved_fail": "Kan inte spara spelet.",
   "text.changed.game_keypad_incorrect": "Felaktig passkod.",
@@ -721,6 +721,31 @@
   "item.changed.white_wolf_male_spawn_egg": "Skapelseägg för manlig vit varg",
   "item.changed.custom_latex_spawn_egg": "Skapelseägg för anpassad latex",
 
+  "painting.changed.a_lazy_fox_on_the_paper.title": "A Lazy Fox on the Paper",
+  "painting.changed.a_lazy_fox_on_the_paper.author": "Puro",
+  "painting.changed.creation_of_lin.title": "Creation of Lin",
+  "painting.changed.creation_of_lin.author": "KoBOLTA",
+  "painting.changed.dark_latex_mask.title": "Self Sketch",
+  "painting.changed.dark_latex_mask.author": "Puro",
+  "painting.changed.dr_k.title": "Dr. K",
+  "painting.changed.dr_k.author": "fofnar",
+  "painting.changed.earth_and_moon.title": "Earth and Moon",
+  "painting.changed.earth_and_moon.author": "Puro",
+  "painting.changed.kade_tail.title": "Kade Tail",
+  "painting.changed.kade_tail.author": "Puro",
+  "painting.changed.puro_doodle.title": "Puro Doodle",
+  "painting.changed.puro_doodle.author": "Puro",
+  "painting.changed.puro_place.title": "Puro in Place",
+  "painting.changed.puro_place.author": "r/changedfurry",
+  "painting.changed.puro_point.title": "Puro Pointing",
+  "painting.changed.puro_point.author": "Puro",
+  "painting.changed.puro_portrait.title": "Puro's Self Portrait",
+  "painting.changed.puro_portrait.author": "Puro",
+  "painting.changed.sharks_gaze.title": "Shark's Gaze",
+  "painting.changed.sharks_gaze.author": "Twix5803",
+  "painting.changed.thunder_science_building.title": "Thunder Science Building",
+  "painting.changed.thunder_science_building.author": "Puro",
+
   "changed.patreon.level0": "Discord Medlem",
   "changed.patreon.level1": "Nivå 1",
   "changed.patreon.level2": "Nivå 2",
@@ -862,7 +887,7 @@
   "changed.stasis.modify": "Modifieringar",
   "changed.stasis.modify.tooltip": "Visa: Förinställd eller pålagd ändringar på enheten",
 
-
+  "changed.stasis.command._active": "> %s",
   "changed.stasis.command.open": "Öppna dörr",
   "changed.stasis.command.close": "Stäng dörr",
   "changed.stasis.command.capture_entity": "Fånga enhet",
@@ -914,7 +939,7 @@
 
   "changed.accessory.slot_disabled_by": "Slot inaktiverad av:",
 
-
+  "changed.exoskeleton.prompt": "[%s]> %s",
   "changed.exoskeleton.battery_low": "Batterinivå låg",
   "changed.exoskeleton.battery_critical": "Batterinivå kritisk",
 
