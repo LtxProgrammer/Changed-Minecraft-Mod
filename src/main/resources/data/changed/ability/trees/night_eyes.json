@@ -2,6 +2,6 @@
   "variants": [
     "#changed:night_eyes"
   ],
-  "titleId": "changed.ability_tree.night_eyes",
-  "flavorId": "changed.ability_tree.night_eyes.flavor"
+  "titleId": "",
+  "hidden": true
 }

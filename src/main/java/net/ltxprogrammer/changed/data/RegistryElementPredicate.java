@@ -144,7 +144,7 @@ public abstract class RegistryElementPredicate<T> implements Predicate<T> {
     }
 
     public static <T> RegistryElementPredicate<T> parseString(IForgeRegistry<T> registry, String string) {
-        if (string.isEmpty())
+        if (string.isEmpty() || string.equals("*"))
             return new AllSpec<>(registry);
         else if (string.startsWith("#"))
             return new TagSpec<>(registry, ResourceLocation.parse(string.substring(1)));
@@ -190,6 +190,8 @@ public abstract class RegistryElementPredicate<T> implements Predicate<T> {
 
     public static boolean isValidSyntax(String string) {
         if (string.isEmpty())
+            return true;
+        else if (string.equals("*"))
             return true;
         else if (string.startsWith("#"))
             return ResourceLocation.isValidResourceLocation(string.substring(1));
