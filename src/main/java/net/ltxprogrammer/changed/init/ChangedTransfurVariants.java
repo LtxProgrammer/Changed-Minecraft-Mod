@@ -1,6 +1,10 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.tree.PartialNode;
+import net.ltxprogrammer.changed.ability.tree.PartialNode.TreeReference;
+import net.ltxprogrammer.changed.datagen.ability.AbilityTreeDataProvider;
+import net.ltxprogrammer.changed.datagen.ability.AbilityTreeProvider;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.ai.EntityAssimilationBehavior;
 import net.ltxprogrammer.changed.entity.ai.TransfurDecider;
@@ -203,6 +207,14 @@ public class ChangedTransfurVariants {
 
     private static <T extends ChangedEntity> RegistryObject<TransfurVariant<T>> register(String name, TransfurVariant.Builder<T> builder) {
         return REGISTRY.register(name, builder::build);
+    }
+
+    private static <T extends ChangedEntity> RegistryObject<TransfurVariant<T>> registerWithAbilityTree(String name, TransfurVariant.Builder<T> builder, TreeReference... treeReference) {
+        RegistryObject<TransfurVariant<T>> register = REGISTRY.register(name, builder::build);
+        for (TreeReference reference : treeReference) {
+            AbilityTreeProvider.addEntry(reference, register);
+        }
+        return register;
     }
 
     public static class Gendered {

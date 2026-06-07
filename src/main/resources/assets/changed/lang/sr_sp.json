@@ -317,6 +317,11 @@
  "block.changed.red_pillow": "Црвени јастук",
  "block.changed.white_pillow": "Бели јастук",
  "block.changed.yellow_pillow": "Жути јастук",
+ "block.changed.dark_latex_fluid": "Тамна латекс течност",
+ "block.changed.skunk_gas": "Твор гас",
+ "block.changed.tiger_gas": "Тигар гас",
+ "block.changed.white_latex_fluid": "Бела латекс течност",
+ "block.changed.wolf_gas": "вучји гас",
 
  "fluid.changed.dark_latex": "Течни тамни латекс",
  "fluid.changed.white_latex": "Течни бели латекс",
@@ -402,6 +407,7 @@
  "entity.changed.phage_latex_wolf_female": "Латекс вукица-бактериофаг",
  "entity.changed.phage_latex_wolf_male": "Латекс вук-бактериофаг",
  "entity.changed.pure_white_latex_wolf": "Чисти латекс вук",
+ "entity.changed.pure_white_latex_cerberus": "Церберус направљен од лаког латекса",
 
  "item.changed.gas_wolf_spawn_egg": "Јаје призивања Гасни вук",
  "item.changed.dark_latex_wolf_female_spawn_egg": "Јаје призивања Вукица од тамног латекса",
@@ -472,6 +478,7 @@
  "item.changed.phage_latex_wolf_female_spawn_egg": "Јаје призивања Латекс вукица-бактериофаг",
  "item.changed.phage_latex_wolf_male_spawn_egg": "Јаје призивања Латекс вук-бактериофаг",
  "item.changed.pure_white_latex_wolf_spawn_egg": "Јаје призивања Чисти латекс вук",
+ "item.changed.pure_white_latex_cerberus_spawn_egg": "Јаје призивања Церберус направљен од лаког латекса",
 
  "changed.patreon.level0": "Члан Дисцорд сервера",
  "changed.patreon.level1": "I Левел",

@@ -1,81 +1,63 @@
 package net.ltxprogrammer.changed.datagen.ability;
 
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
-import net.ltxprogrammer.changed.ability.tree.AbilityTree;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.tree.PartialNode.TreeReference;
 import net.ltxprogrammer.changed.data.RegistryElementPredicate;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataProvider;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
-public abstract class AbilityTreeProvider implements DataProvider {
-    protected final PackOutput output;
-    protected final String modid;
-    private final Map<ResourceLocation, AbilityTreeBuilder> treeBuilders = new HashMap<>();
+public class AbilityTreeProvider extends AbilityTreeDataProvider {
 
-    public AbilityTreeProvider(PackOutput output, String modid) {
-        this.output = output;
-        this.modid = modid;
-    }
+    public static final Multimap<TreeReference, RegistryObject<TransfurVariant<?>>> treeForVariants = ArrayListMultimap.create();
 
-    protected abstract void addTrees();
+    public static final TreeReference LATEX = new TreeReference(Changed.modResource("latex"));
 
-    protected AbilityTreeBuilder addTree(ResourceLocation loc, List<RegistryElementPredicate<TransfurVariant<?>>> variants){
-        return treeBuilders.computeIfAbsent(loc, l -> new AbilityTreeBuilder(variants));
+    public AbilityTreeProvider(PackOutput output) {
+        super(output, Changed.MODID);
     }
 
     @Override
-    public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cache) {
-        addTrees();
-
-        List<CompletableFuture<?>> futures = new ArrayList<>();
-
-        Path outFolder = output.getOutputFolder(), path;
-        AbilityTree tree;
-        JsonElement json;
-        for (var entry : treeBuilders.entrySet()) {
-            ResourceLocation loc = entry.getKey();
-            tree = entry.getValue().build(loc);
-
-            path = outFolder.resolve("data/" + modid + "/ability/trees/" + loc.getPath() + ".json");
-
-            json = AbilityTree.CODEC.encodeStart(JsonOps.INSTANCE, tree)
-                    .result()
-                    .orElseThrow(() -> new IllegalStateException("Failed to encode AbilityTree: " + loc));
-
-            futures.add(DataProvider.saveStable(cache, json, path));
-        }
-
-        return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
+    protected void addTrees() {
+        addVariantsToCurrentTrees();
     }
 
-    @Override
-    public @NotNull String getName() {
-        return "Ability Tree Provider";
+    @SuppressWarnings("unchecked")
+    public static <T extends ChangedEntity> void addEntry(TreeReference reference, RegistryObject<TransfurVariant<T>> register) {
+        // O cast para (RegistryObject) remove a invariância estrita e permite converter para a assinatura com o wildcard <?>
+        AbilityTreeProvider.treeForVariants.put(reference, (RegistryObject<TransfurVariant<?>>) (RegistryObject) register);
     }
 
-    public static final class AbilityTreeBuilder {
-        private final List<RegistryElementPredicate<TransfurVariant<?>>> variants;
+    // Call this after all tree registrations or else it will fail.
+    private void addVariantsToCurrentTrees() {
+        var registry = ChangedRegistry.TRANSFUR_VARIANT.get();
+        for (TreeReference treeReference : treeForVariants.keySet()) {
+            ResourceLocation treeLoc = treeReference.treeName();
+            AbilityTreeBuilder builder = this.treeBuilders.get(treeLoc);
 
-        private AbilityTreeBuilder(List<RegistryElementPredicate<TransfurVariant<?>>> variants){
-            this.variants = variants;
-        }
+            if (builder != null) {
+                Collection<RegistryObject<TransfurVariant<?>>> registeredVariants = treeForVariants.get(treeReference);
 
-        private AbilityTree build(ResourceLocation loc) {
-            /*AbilityTree tree = new AbilityTree(variants);
-            tree.setTreeLocation(loc);
-            return tree;*/
-            return null; // TODO
+                List<RegistryElementPredicate<TransfurVariant<?>>> predicates = registeredVariants.stream()
+                        .map(variant -> RegistryElementPredicate.forID(registry, variant.getId()))
+                        .collect(Collectors.toList());
+
+                builder.withVariants(predicates);
+            } else {
+                Changed.LOGGER.warn("Attempted to inject variants into non-existent ability tree: {}", treeLoc);
+            }
         }
     }
 }
