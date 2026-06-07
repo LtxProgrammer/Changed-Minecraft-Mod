@@ -14,7 +14,6 @@ import java.util.concurrent.CompletableFuture;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class GatherData {
-
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();

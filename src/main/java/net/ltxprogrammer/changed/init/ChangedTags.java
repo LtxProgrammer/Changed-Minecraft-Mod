@@ -104,6 +104,29 @@ public class ChangedTags {
         public static final TagKey<TransfurVariant<?>> TEMPORARY_ONLY = create("temporary_only");
         public static final TagKey<TransfurVariant<?>> MASKED = create("masked");
 
+        public static final TagKey<TransfurVariant<?>> APIAN = create("apian");
+        public static final TagKey<TransfurVariant<?>> AQUATIC = create("aquatic");
+        public static final TagKey<TransfurVariant<?>> ARACHNID = create("arachnid");
+        public static final TagKey<TransfurVariant<?>> COLEOID = create("coleoid");
+        public static final TagKey<TransfurVariant<?>> DARK_LATEX = create("dark_latex");
+        public static final TagKey<TransfurVariant<?>> DARK_LATEX_PUP = create("dark_latex_pup");
+        public static final TagKey<TransfurVariant<?>> DIGITIGRADE = create("digitigrade");
+        public static final TagKey<TransfurVariant<?>> HYPNOTIC = create("hypnotic");
+        public static final TagKey<TransfurVariant<?>> LAMNID = create("lamnid");
+        public static final TagKey<TransfurVariant<?>> LATEX = create("latex");
+        public static final TagKey<TransfurVariant<?>> MALLEABLE = create("malleable");
+        public static final TagKey<TransfurVariant<?>> MER = create("mer");
+        public static final TagKey<TransfurVariant<?>> MULTI_ARMED = create("multi_armed");
+        public static final TagKey<TransfurVariant<?>> NAGA = create("naga");
+        public static final TagKey<TransfurVariant<?>> NIGHT_EYES = create("night_eyes");
+        public static final TagKey<TransfurVariant<?>> NONLATEX = create("nonlatex");
+        public static final TagKey<TransfurVariant<?>> PLANT_LIKE = create("plant_like");
+        public static final TagKey<TransfurVariant<?>> QUADRUPEDAL = create("quadrupedal");
+        public static final TagKey<TransfurVariant<?>> SIREN = create("siren");
+        public static final TagKey<TransfurVariant<?>> TAUR = create("taur");
+        public static final TagKey<TransfurVariant<?>> WINGED_ARM = create("winged_arm");
+        public static final TagKey<TransfurVariant<?>> WINGED_BACK = create("winged_back");
+
         private static TagKey<TransfurVariant<?>> create(String name) {
             return TagKey.create(ChangedRegistry.TRANSFUR_VARIANT.key, Changed.modResource(name));
         }

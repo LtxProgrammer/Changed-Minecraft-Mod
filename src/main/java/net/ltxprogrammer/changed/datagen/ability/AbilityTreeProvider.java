@@ -20,10 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AbilityTreeProvider extends AbilityTreeDataProvider {
-
     public static final Multimap<TreeReference, RegistryObject<TransfurVariant<?>>> treeForVariants = ArrayListMultimap.create();
-
-    public static final TreeReference LATEX = new TreeReference(Changed.modResource("latex"));
 
     public AbilityTreeProvider(PackOutput output) {
         super(output, Changed.MODID);
