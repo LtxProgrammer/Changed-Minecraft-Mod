@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.datagen.ability;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import net.ltxprogrammer.changed.ability.tree.AbilityTree;
+import net.ltxprogrammer.changed.ability.tree.events.AbstractPointEvent;
 import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.minecraft.data.CachedOutput;
@@ -18,12 +19,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class AbilityTreeProvider implements DataProvider {
+public abstract class AbilityTreeDataProvider implements DataProvider {
     protected final PackOutput output;
     protected final String modid;
     private final Map<ResourceLocation, AbilityTreeBuilder> treeBuilders = new HashMap<>();
 
-    public AbilityTreeProvider(PackOutput output, String modid) {
+    public AbilityTreeDataProvider(PackOutput output, String modid) {
         this.output = output;
         this.modid = modid;
     }
@@ -66,16 +67,42 @@ public abstract class AbilityTreeProvider implements DataProvider {
 
     public static final class AbilityTreeBuilder {
         private final List<RegistryElementPredicate<TransfurVariant<?>>> variants;
+        private final List<AbstractPointEvent<?>> pointEvents = new ArrayList<>();
+        private String titleId = "";
+        private String flavorId = "";
 
         private AbilityTreeBuilder(List<RegistryElementPredicate<TransfurVariant<?>>> variants){
             this.variants = variants;
         }
 
-        private AbilityTree build(ResourceLocation loc) {
-            /*AbilityTree tree = new AbilityTree(variants);
+        public AbilityTreeBuilder pointEvent(AbstractPointEvent<?> event) {
+            this.pointEvents.add(event);
+            return this;
+        }
+
+        public AbilityTreeBuilder pointEvents(List<AbstractPointEvent<?>> events) {
+            this.pointEvents.addAll(events);
+            return this;
+        }
+
+        public AbilityTreeBuilder title(String titleId) {
+            this.titleId = titleId;
+            return this;
+        }
+
+        public AbilityTreeBuilder flavor(String flavorId) {
+            this.flavorId = flavorId;
+            return this;
+        }
+
+        public AbilityTree build(ResourceLocation loc) {
+            if (this.titleId.isEmpty()) {
+                // Fallback automático ou padrão para facilitar a criação de chaves de tradução
+                this.titleId = "ability.tree." + loc.getNamespace() + "." + loc.getPath();
+            }
+            AbilityTree tree = new AbilityTree(variants, pointEvents, titleId, flavorId);
             tree.setTreeLocation(loc);
-            return tree;*/
-            return null; // TODO
+            return tree;
         }
     }
 }
