@@ -78,7 +78,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
     @Inject(method = "getWaterVision", at = @At("RETURN"), cancellable = true)
     private void getWaterVision(CallbackInfoReturnable<Float> callback) {
         ProcessTransfur.ifPlayerTransfurred(this, variant -> {
-            if (!variant.getParent().getBreatheMode().canBreatheWater())
+            if (!variant.getBreatheMode().canBreatheWater())
                 return;
             if (!this.isEyeInFluidType(ForgeMod.WATER_TYPE.get()))
                 return;

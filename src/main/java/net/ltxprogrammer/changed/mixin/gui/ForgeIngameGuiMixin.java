@@ -29,7 +29,7 @@ public abstract class ForgeIngameGuiMixin extends Gui {
             return;
         }
 
-        if (variant.breatheMode.canBreatheWater() && variant.getHost().getAirSupply() >= variant.getHost().getMaxAirSupply())
+        if (variant.getBreatheMode().canBreatheWater() && variant.getHost().getAirSupply() >= variant.getHost().getMaxAirSupply())
             return;
 
         original.call(width, height, guiGraphics);

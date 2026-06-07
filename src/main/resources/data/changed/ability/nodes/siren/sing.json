@@ -1,0 +1,13 @@
+{
+  "parent": { "tree": "changed:siren" },
+  "titleId": "changed.ability_tree.siren.sing",
+  "flavorId": "changed.ability_tree.siren.sing.flavor",
+  "price": 0,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:siren_sing"
+    }
+  ]
+}

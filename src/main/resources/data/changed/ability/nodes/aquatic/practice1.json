@@ -10,6 +10,10 @@
       "type": "changed:attribute_modifier",
       "attribute": "forge:swim_speed",
       "factor": -0.1
+    },
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:breathe/accept_water"
     }
   ],
   "acquiredEffects": [
@@ -18,6 +22,10 @@
       "attribute": "changed:air_capacity",
       "method": "add",
       "factor": 15
+    },
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:breathe/accept_water"
     }
   ]
 }

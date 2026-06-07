@@ -1,0 +1,13 @@
+{
+  "parent": { "tree": "changed:night_eyes" },
+  "titleId": "changed.ability_tree.night_eyes.night_vision",
+  "flavorId": "changed.ability_tree.night_eyes.night_vision.flavor",
+  "price": 0,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:toggle_night_vision"
+    }
+  ]
+}

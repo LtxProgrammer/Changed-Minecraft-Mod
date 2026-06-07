@@ -1,0 +1,13 @@
+{
+  "parent": { "tree": "changed:taur_mobility" },
+  "titleId": "changed.ability_tree.taur_mobility.extra_inventory",
+  "flavorId": "changed.ability_tree.taur_mobility.extra_inventory.flavor",
+  "price": 0,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:access_chest"
+    }
+  ]
+}

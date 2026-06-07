@@ -9,7 +9,7 @@
   "acquiredEffects": [
     {
       "type": "changed:enable_feature",
-      "feature": "changed:transfur/absorption"
+      "feature": "changed:grab/absorption"
     },
     {
       "type": "changed:unlock_active_ability",

@@ -11,6 +11,10 @@ public class TransfurVariantFeature {
         this.combinator = combinator;
     }
 
+    public static TransfurVariantFeature binary() {
+        return new TransfurVariantFeature(Combinator.MAX);
+    }
+
     public static TransfurVariantFeature maxPresent() {
         return new TransfurVariantFeature(Combinator.MAX);
     }

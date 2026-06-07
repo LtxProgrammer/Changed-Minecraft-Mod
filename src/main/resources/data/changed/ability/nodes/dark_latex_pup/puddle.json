@@ -1,0 +1,13 @@
+{
+  "parent": { "tree": "changed:dark_latex_pup" },
+  "titleId": "changed.ability_tree.dark_latex_pup.puddle",
+  "flavorId": "changed.ability_tree.dark_latex_pup.puddle.flavor",
+  "price": 0,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:puddle"
+    }
+  ]
+}

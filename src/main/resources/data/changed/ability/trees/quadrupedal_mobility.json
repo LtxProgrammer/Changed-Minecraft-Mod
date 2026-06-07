@@ -2,6 +2,6 @@
   "variants": [
     "#changed:quadrupedal"
   ],
-  "titleId": "changed.ability_tree.digitigrade_mobility",
-  "flavorId": "changed.ability_tree.digitigrade_mobility.flavor"
+  "titleId": "changed.ability_tree.quadrupedal_mobility",
+  "flavorId": "changed.ability_tree.quadrupedal_mobility.flavor"
 }

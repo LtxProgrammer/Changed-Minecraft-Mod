@@ -20,6 +20,7 @@ public abstract class AbstractAbilityInstance {
     public final AbstractAbility<?> ability;
     public final IAbstractChangedEntity entity;
     private final AbstractAbility.Controller controller;
+    private int amplifier = 0;
 
     public AbstractAbilityInstance(AbstractAbility<?> ability, IAbstractChangedEntity entity) {
         this.ability = ability;
@@ -61,6 +62,18 @@ public abstract class AbstractAbilityInstance {
         }
     }
 
+    public final int getAmplifier() {
+        return amplifier;
+    }
+
+    public final void setAmplifier(int amplifier) {
+        if (amplifier == this.amplifier)
+            return;
+        int last = this.amplifier;
+        this.amplifier = amplifier;
+        this.onChangeAmplifier(last, amplifier);
+    }
+
     public final AbstractAbility<?> getAbility() {
         return ability;
     }
@@ -75,8 +88,13 @@ public abstract class AbstractAbilityInstance {
     // Called every variant tick, regardless
     public void tickIdle() {}
 
-    // Called when the player loses the variant (death or untransfur)
+    // Called when the player gains the ability (ability node unlocked). Not called when instantiated only to call onRemove
+    public void onAdd() {}
+
+    // Called when the player loses the ability (death, untransfur, ability node refunded)
     public void onRemove() {}
+
+    public void onChangeAmplifier(int previous, int current) {}
 
     // Called when the player selects the ability
     public void onSelected() {}
@@ -87,11 +105,15 @@ public abstract class AbstractAbilityInstance {
         var controllerTag = new CompoundTag();
         controller.saveData(controllerTag);
         tag.put("Controller", controllerTag);
+        tag.putInt("Amplifier", amplifier);
     }
+
     public void readData(CompoundTag tag) {
         ability.readData(tag, this.entity);
         if (tag.contains("Controller"))
             controller.readData(tag.getCompound("Controller"));
+        if (tag.contains("Amplifier"))
+            this.setAmplifier(tag.getInt("Amplifier"));
     }
 
     public void acceptPayload(CompoundTag tag) {}

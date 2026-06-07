@@ -65,7 +65,7 @@ public class TransfurPredicate {
             return form.getLatexType() == type;
         if (form.getParent().canGlide && flying)
             return true;
-        if (form.getParent().getBreatheMode().canBreatheWater() && swimming)
+        if (form.getBreatheMode().canBreatheWater() && swimming)
             return true;
         if (form.getEntityShape().isLegless() && legless)
             return true;
