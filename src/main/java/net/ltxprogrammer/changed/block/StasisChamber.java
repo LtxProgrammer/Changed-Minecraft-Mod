@@ -88,7 +88,7 @@ public class StasisChamber extends HorizontalDirectionalBlock implements Partial
     private final RegistryObject<SoundEvent> open, close;
 
     protected static int getLightLevel(BlockState state) {
-        return (state.getValue(ACTIVE) && state.getValue(SECTION) == ThreeXThreeSection.MIDDLE_TOP_MIDDLE) ? 15 : 0;
+        return (state.getValue(ACTIVE) && state.getValue(SECTION).yAxis == ThreeXThreeSection.YAxis.TOP) ? 15 : 0;
     }
 
     public StasisChamber(RegistryObject<SoundEvent> open, RegistryObject<SoundEvent> close) {

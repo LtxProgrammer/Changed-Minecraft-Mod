@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ChangedPackets;
 import net.ltxprogrammer.changed.network.packet.ChangedPacket;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.world.ChangedDataFixer;
 import net.ltxprogrammer.changed.world.features.structures.FacilityPieces;
@@ -150,6 +151,7 @@ public class Changed {
             ComposterBlock.COMPOSTABLES.put(ChangedBlocks.ORANGE_TREE_SAPLING.get().asItem(), 0.3F);
             ComposterBlock.COMPOSTABLES.put(ChangedItems.ORANGE.get(), 0.65F);
         });
+        event.enqueueWork(ProcessTransfur::gatherMobAssimilations);
     }
 
     private void registerClientEventListeners(IEventBus eventBus) {

@@ -658,7 +658,7 @@ public abstract class SpreadingLatexType extends LatexType {
     public static class WhiteLatex extends SpreadingLatexType {
         private static final List<Supplier<? extends TransfurVariant<?>>> VARIANTS = Util.make(new ArrayList<>(), list -> {
             list.add(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF);
-            list.add(ChangedTransfurVariants.LATEX_MUTANT_BLODDCELL_WOLF);
+            list.add(ChangedTransfurVariants.LATEX_MUTANT_BLOODCELL_WOLF);
         });
 
         @Override

@@ -198,7 +198,9 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Pla
 
     public void translateToHand(T entity, HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);
-        poseStack.translate(0.0, (getAnimator(entity).armLength - 12.0f) / 20.0, 0.0);
+        double deltaArmLength = getAnimator(entity).armLength - 12.0f;
+        if (deltaArmLength != 0.0)
+            poseStack.translate(0.0, deltaArmLength / 16.0, 0.0);
     }
 
     @Deprecated

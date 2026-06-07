@@ -341,7 +341,7 @@
   "container.changed.cardboard_container": "Pappbeholder",
   "container.changed.cardboard_box_small": "Liten pappeske",
 
-
+  "text.changed.compact_disc.title": "\"%s\"",
   "text.changed.game_saved": "Spill er ikke lagret.",
   "text.changed.game_saved_fail": "Kan ikke lagre spill.",
   "text.changed.game_keypad_incorrect": "Feil passkode.",
@@ -385,6 +385,7 @@
   "block.changed.dark_latex_block": "Mørk lateksblokk",
   "block.changed.dark_latex_bubble": "Mørk lateksboble",
   "block.changed.dark_latex_crystal_large": "Stor mørk latekskrystall",
+  "block.changed.dark_latex_fluid": "Mørk latexvæske",
   "block.changed.dark_latex_puddle": "Mørk lateksdam",
   "block.changed.dark_dragon_crystal": "Mørk dragekrystall",
   "block.changed.dark_latex_ice": "Mørk lateks is",
@@ -437,10 +438,12 @@
   "block.changed.roomba_charger": "Feiende robotlader",
   "block.changed.shipping_container_blue": "Blå fraktbeholder",
   "block.changed.shipping_container_orange": "Oransje fraktbeholder",
+  "block.changed.skunk_gas": "Stinkdyr forvandpelsgass",
   "block.changed.skunk_gas_canister": "Stinkdyr forvandpelsgassbeholder",
   "block.changed.speaker": "Høyttaler",
   "block.changed.stasis_chamber": "Stasekammer",
   "block.changed.tape_recorder": "Båndopptaker",
+  "block.changed.tiger_gas": "Tiger forvandpelsgass",
   "block.changed.tiger_gas_canister": "Tiger forvandpelsgassbeholder",
   "block.changed.tiles_blue": "Blå fliser",
   "block.changed.tiles_blue_small": "Liten blå fliser",
@@ -500,9 +503,11 @@
   "block.changed.wall_white_stairs": "Trapp av hvit vegg",
   "block.changed.white_lab_table": "Hvit laboratoriebord",
   "block.changed.white_latex_block": "Hvit lateksblokk",
+  "block.changed.white_latex_fluid": "Hvit latexvæske",
   "block.changed.white_latex_pillar": "Hvit latekssøyle",
   "block.changed.white_latex_puddle_female": "Kvinnelig hvit lateks ulvdam",
   "block.changed.white_latex_puddle_male": "Mannlig hvit lateks ulvdam",
+  "block.changed.wolf_gas": "Ulv forvandpelsgass",
   "block.changed.wolf_gas_canister": "Ulv forvandpelsgassbeholder",
 
   "block.changed.black_pillow": "Svart pute",
@@ -721,6 +726,31 @@
   "item.changed.white_wolf_male_spawn_egg": "Fremkallingsegg for mannlig hvit ulv",
   "item.changed.custom_latex_spawn_egg": "Fremkallingsegg for egendefinert lateks",
 
+  "painting.changed.a_lazy_fox_on_the_paper.title": "A Lazy Fox on the Paper",
+  "painting.changed.a_lazy_fox_on_the_paper.author": "Puro",
+  "painting.changed.creation_of_lin.title": "Creation of Lin",
+  "painting.changed.creation_of_lin.author": "KoBOLTA",
+  "painting.changed.dark_latex_mask.title": "Self Sketch",
+  "painting.changed.dark_latex_mask.author": "Puro",
+  "painting.changed.dr_k.title": "Dr. K",
+  "painting.changed.dr_k.author": "fofnar",
+  "painting.changed.earth_and_moon.title": "Earth and Moon",
+  "painting.changed.earth_and_moon.author": "Puro",
+  "painting.changed.kade_tail.title": "Kade Tail",
+  "painting.changed.kade_tail.author": "Puro",
+  "painting.changed.puro_doodle.title": "Puro Doodle",
+  "painting.changed.puro_doodle.author": "Puro",
+  "painting.changed.puro_place.title": "Puro in Place",
+  "painting.changed.puro_place.author": "r/changedfurry",
+  "painting.changed.puro_point.title": "Puro Pointing",
+  "painting.changed.puro_point.author": "Puro",
+  "painting.changed.puro_portrait.title": "Puro's Self Portrait",
+  "painting.changed.puro_portrait.author": "Puro",
+  "painting.changed.sharks_gaze.title": "Shark's Gaze",
+  "painting.changed.sharks_gaze.author": "Twix5803",
+  "painting.changed.thunder_science_building.title": "Thunder Science Building",
+  "painting.changed.thunder_science_building.author": "Puro",
+
   "changed.patreon.level0": "Discord Medlem",
   "changed.patreon.level1": "Nivå 1",
   "changed.patreon.level2": "Nivå 2",
@@ -862,7 +892,7 @@
   "changed.stasis.modify": "Modifikasjoner",
   "changed.stasis.modify.tooltip": "Vis: Forhåndsinnstilte eller anvendte endringer på enheten",
 
-
+  "changed.stasis.command._active": "> %s",
   "changed.stasis.command.open": "Åpne dør",
   "changed.stasis.command.close": "Lukk dør",
   "changed.stasis.command.capture_entity": "Fange enhet",
@@ -914,7 +944,7 @@
 
   "changed.accessory.slot_disabled_by": "Slot deaktivert av:",
 
-
+  "changed.exoskeleton.prompt": "[%s]> %s",
   "changed.exoskeleton.battery_low": "Batterinivå lavt",
   "changed.exoskeleton.battery_critical": "Batterinivå kritisk",
 

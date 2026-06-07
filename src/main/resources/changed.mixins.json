@@ -94,6 +94,7 @@
     "render.HumanoidMobRendererMixin",
     "render.HumanoidModelMixin",
     "render.ItemBlockRenderTypesMixin",
+    "render.ItemInHandLayerMixin",
     "render.ItemInHandRendererMixin",
     "render.LevelRendererMixin",
     "render.LivingEntityRendererMixin",

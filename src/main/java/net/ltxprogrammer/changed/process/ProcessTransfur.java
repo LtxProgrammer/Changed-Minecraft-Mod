@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.process;
 
 import com.mojang.logging.LogUtils;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
@@ -39,10 +40,12 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.IModBusEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -60,14 +63,87 @@ import java.util.function.Supplier;
 public class ProcessTransfur {
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final Map<ResourceLocation, EntityAssimilationBehavior<?>> ASSIMILATED_MOB_TRANSFUR_LOGIC = new HashMap<>();
+    private static final Map<ResourceLocation, EntityAssimilationBehavior<?>> ASSIMILATED_MOB_TRANSFUR_LOGIC = new Object2ObjectArrayMap<>();
+    private static final Map<ResourceLocation, EntityAssimilationBehavior<?>> OLD_ASSIMILATION_MAP = new Object2ObjectArrayMap<>();
 
-    public static <T extends LivingEntity> void registerMobAssimilation(EntityType<T> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
-        ASSIMILATED_MOB_TRANSFUR_LOGIC.put(ForgeRegistries.ENTITY_TYPES.getKey(entityType), entityAssimilationBehavior);
+    public static class GatherMobAssimilationsEvent extends Event implements IModBusEvent {
+        private final Map<ResourceLocation, EntityAssimilationBehavior<?>> backingMap;
+
+        public enum OverrideBehavior {
+            FORCE_VALUE,
+            IGNORE
+        }
+
+        public GatherMobAssimilationsEvent(Map<ResourceLocation, EntityAssimilationBehavior<?>> backingMap) {
+            this.backingMap = backingMap;
+        }
+
+        @Nullable
+        @SuppressWarnings("unchecked")
+        protected <T extends LivingEntity> EntityAssimilationBehavior<T> getBehavior(ResourceLocation key) {
+            if (!backingMap.containsKey(key))
+                return null;
+            return (EntityAssimilationBehavior<T>) backingMap.get(key);
+        }
+
+        @Nullable
+        public <T extends LivingEntity> EntityAssimilationBehavior<T> getBehavior(EntityType<T> entityType) {
+            return getBehavior(ForgeRegistries.ENTITY_TYPES.getKey(entityType));
+        }
+
+        @Nullable
+        public <T extends LivingEntity> EntityAssimilationBehavior<T> getBehavior(RegistryObject<EntityType<T>> entityType) {
+            return getBehavior(entityType.getId());
+        }
+
+        protected <T extends LivingEntity> void register(ResourceLocation key, EntityAssimilationBehavior<T> entityAssimilationBehavior, OverrideBehavior behavior) {
+            var existing = getBehavior(key);
+            if (existing != null && behavior == OverrideBehavior.IGNORE)
+                return;
+            if (existing == null || behavior == OverrideBehavior.FORCE_VALUE) {
+                this.backingMap.put(key, entityAssimilationBehavior);
+            }
+        }
+
+        public <T extends LivingEntity> void register(EntityType<T> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
+            register(ForgeRegistries.ENTITY_TYPES.getKey(entityType), entityAssimilationBehavior, OverrideBehavior.FORCE_VALUE);
+        }
+
+        public <T extends LivingEntity> void register(RegistryObject<EntityType<T>> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
+            register(entityType.getId(), entityAssimilationBehavior, OverrideBehavior.FORCE_VALUE);
+        }
+
+        public <T extends LivingEntity> void register(EntityType<T> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior, OverrideBehavior behavior) {
+            register(ForgeRegistries.ENTITY_TYPES.getKey(entityType), entityAssimilationBehavior, behavior);
+        }
+
+        public <T extends LivingEntity> void register(RegistryObject<EntityType<T>> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior, OverrideBehavior behavior) {
+            register(entityType.getId(), entityAssimilationBehavior, behavior);
+        }
+
+        @Override
+        public boolean isCancelable() {
+            return false;
+        }
     }
 
+    @ApiStatus.Internal
+    public static void gatherMobAssimilations() {
+        ASSIMILATED_MOB_TRANSFUR_LOGIC.clear();
+        final var gatherEvent = new GatherMobAssimilationsEvent(ASSIMILATED_MOB_TRANSFUR_LOGIC);
+        ChangedTransfurVariants.addChangedMobAssimilations(gatherEvent);
+        ASSIMILATED_MOB_TRANSFUR_LOGIC.putAll(OLD_ASSIMILATION_MAP);
+        Changed.postModLoadingEvent(gatherEvent);
+    }
+
+    @Deprecated(forRemoval = true)
+    public static <T extends LivingEntity> void registerMobAssimilation(EntityType<T> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
+        OLD_ASSIMILATION_MAP.put(ForgeRegistries.ENTITY_TYPES.getKey(entityType), entityAssimilationBehavior);
+    }
+
+    @Deprecated(forRemoval = true)
     public static <T extends LivingEntity> void registerMobAssimilation(RegistryObject<EntityType<T>> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
-        ASSIMILATED_MOB_TRANSFUR_LOGIC.put(entityType.getId(), entityAssimilationBehavior);
+        OLD_ASSIMILATION_MAP.put(entityType.getId(), entityAssimilationBehavior);
     }
 
     public static <T extends LivingEntity> EntityAssimilationBehavior<T> getDefaultEntityAssimilationBehavior(T entity) {

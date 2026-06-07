@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.client;
 
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.LatexTypeOld;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
@@ -144,7 +143,7 @@ public class RecipeCategories {
         event.addDarkLatex(ChangedTransfurVariants.DARK_DRAGON);
 
         event.addWhiteLatex(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF);
-        event.addWhiteLatex(ChangedTransfurVariants.LATEX_MUTANT_BLODDCELL_WOLF);
+        event.addWhiteLatex(ChangedTransfurVariants.LATEX_MUTANT_BLOODCELL_WOLF);
         event.addWhiteLatex(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF_PUP);
 
         event.addAquatic(ChangedTransfurVariants.LATEX_ORCA);
