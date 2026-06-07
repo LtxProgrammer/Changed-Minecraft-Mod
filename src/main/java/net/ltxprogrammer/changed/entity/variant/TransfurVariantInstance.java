@@ -92,7 +92,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public boolean willSurviveTransfur = true;
     protected boolean isTemporaryFromSuit = false;
 
-    protected final Map<TransfurVariantFeature, Double> variantFeatures = new HashMap<>();
+    protected final Map<VariantFeature, Double> variantFeatures = new HashMap<>();
     protected final List<NodeEffect> activeNodeEffects = new ArrayList<>();
 
     public <E extends NodeEffect> void visitActiveNodeEffects(Codec<E> codec, Consumer<E> visitor) {
@@ -102,24 +102,32 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         });
     }
 
-    public double getFeatureLevel(TransfurVariantFeature feature) {
+    public double getFeatureLevel(VariantFeature feature) {
         return variantFeatures.computeIfAbsent(feature, key -> {
             AtomicDouble level = new AtomicDouble(0.0);
 
             visitActiveNodeEffects(ChangedAbilityTreeCodecs.ENABLE_FEATURE_EFFECT.get(), featureNode -> {
                 if (featureNode.feature != key)
                     return;
-
-                level.updateAndGet(current -> {
-                    return Math.max(featureNode.factor, current);
-                });
+                switch (key.combinator) {
+                    case MAX ->
+                            level.updateAndGet(current -> Math.max(featureNode.factor, current));
+                    case SUM ->
+                            level.updateAndGet(current -> featureNode.factor + current);
+                    case BINARY ->
+                            level.updateAndGet(current -> {
+                                if (current >= 1.0d || featureNode.factor >= 1.0d)
+                                    return 1.0d;
+                                return 0.0d;
+                            });
+                }
             });
 
             return level.get();
         });
     }
 
-    public boolean hasFeature(TransfurVariantFeature feature) {
+    public boolean hasFeature(VariantFeature feature) {
         return getFeatureLevel(feature) > 0.0;
     }
 
@@ -133,8 +141,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         if (breatheMode == TransfurVariant.BreatheMode.NOT_REQUIRED)
             return TransfurVariant.BreatheMode.NOT_REQUIRED;
 
-        boolean breatheAir = !hasFeature(ChangedTransfurVariantFeatures.BREATHE_DENY_AIR.get());
-        boolean breatheWater = hasFeature(ChangedTransfurVariantFeatures.BREATHE_ACCEPT_WATER.get());
+        boolean breatheAir = !hasFeature(ChangedVariantFeatures.BREATHE_DENY_AIR.get());
+        boolean breatheWater = hasFeature(ChangedVariantFeatures.BREATHE_ACCEPT_WATER.get());
 
         if (breatheAir && breatheWater)
             return TransfurVariant.BreatheMode.ANY;
@@ -841,7 +849,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             return;
 
         boolean oxygenSymbiosis = false;
-        if (hasFeature(ChangedTransfurVariantFeatures.OXYGEN_SYMBIOSIS.get())) {
+        if (hasFeature(ChangedVariantFeatures.OXYGEN_SYMBIOSIS.get())) {
             var grab = getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
             if (grab != null && grab.grabbedEntity != null && grab.suited) {
                 oxygenSymbiosis = !grab.grabbedEntity.canDrownInFluidType(ForgeMod.EMPTY_TYPE.get());
@@ -855,6 +863,9 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             if (getBreatheMode().canBreatheWater()) {
                 event.setCanBreathe(true);
                 event.setCanRefillAir(true);
+
+                double intakeRate = getFeatureLevel(ChangedVariantFeatures.BREATHE_ACCEPT_WATER.get());
+                event.setRefillAirAmount(event.getRefillAirAmount());
             }
         } else {
             if (!getBreatheMode().canBreatheAir()) {
