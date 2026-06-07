@@ -216,6 +216,7 @@ public class ChangedTabs {
                         output.accept(ChangedItems.MUG_WITH_DARK_LATEX.get());
                         output.accept(ChangedItems.MUG_WITH_WHITE_LATEX.get());
                         output.accept(ChangedItems.ORANGE.get());
+                        output.accept(ChangedItems.DRIED_ORANGE.get());
                         output.accept(ChangedItems.SYRINGE.get());
                         output.accept(ChangedItems.BLOOD_SYRINGE.get());
                         output.accept(ChangedItems.DARK_LATEX_GOO.get());
@@ -226,6 +227,7 @@ public class ChangedTabs {
                         output.accept(ChangedItems.BEIFENG_CRYSTAL_FRAGMENT.get());
                         output.accept(ChangedItems.WOLF_CRYSTAL_FRAGMENT.get());
                         output.accept(ChangedItems.DARK_DRAGON_CRYSTAL_FRAGMENT.get());
+                        output.accept(ChangedItems.PHAGE_CRYSTAL.get());
                         output.accept(ChangedItems.LATEX_INKBALL.get());
                         output.accept(ChangedItems.ROOMBA.get());
                         output.accept(ChangedItems.EXOSKELETON.get());
