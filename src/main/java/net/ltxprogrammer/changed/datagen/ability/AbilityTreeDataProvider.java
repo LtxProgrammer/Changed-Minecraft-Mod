@@ -31,7 +31,7 @@ public abstract class AbilityTreeDataProvider implements DataProvider {
 
     protected abstract void addTrees();
 
-    protected AbilityTreeBuilder addTree(ResourceLocation loc, List<RegistryElementPredicate<TransfurVariant<?>>> variants){
+    protected AbilityTreeBuilder addTree(ResourceLocation loc, List<RegistryElementPredicate<TransfurVariant<?>>> variants) {
         return treeBuilders.computeIfAbsent(loc, l -> new AbilityTreeBuilder(variants));
     }
 
@@ -70,8 +70,9 @@ public abstract class AbilityTreeDataProvider implements DataProvider {
         private final List<AbstractPointEvent<?>> pointEvents = new ArrayList<>();
         private String titleId = "";
         private String flavorId = "";
+        private boolean hidden = false;
 
-        private AbilityTreeBuilder(List<RegistryElementPredicate<TransfurVariant<?>>> variants){
+        private AbilityTreeBuilder(List<RegistryElementPredicate<TransfurVariant<?>>> variants) {
             this.variants = variants;
         }
 
@@ -95,12 +96,17 @@ public abstract class AbilityTreeDataProvider implements DataProvider {
             return this;
         }
 
+        public AbilityTreeBuilder hidden(boolean hidden) {
+            this.hidden = hidden;
+            return this;
+        }
+
         public AbilityTree build(ResourceLocation loc) {
             if (this.titleId.isEmpty()) {
                 // Fallback automático ou padrão para facilitar a criação de chaves de tradução
                 this.titleId = "ability.tree." + loc.getNamespace() + "." + loc.getPath();
             }
-            AbilityTree tree = new AbilityTree(variants, pointEvents, titleId, flavorId);
+            AbilityTree tree = new AbilityTree(variants, pointEvents, titleId, flavorId, hidden);
             tree.setTreeLocation(loc);
             return tree;
         }
