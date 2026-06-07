@@ -6,15 +6,13 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
 import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariantFeature;
+import net.ltxprogrammer.changed.entity.variant.VariantFeature;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public class EnableFeatureNodeEffect extends NodeEffect {
@@ -25,10 +23,10 @@ public class EnableFeatureNodeEffect extends NodeEffect {
     ).apply(builder, EnableFeatureNodeEffect::new));
 
     public final AbstractCondition condition;
-    public final TransfurVariantFeature feature;
+    public final VariantFeature feature;
     public final double factor;
 
-    public EnableFeatureNodeEffect(AbstractCondition condition, TransfurVariantFeature feature, double factor) {
+    public EnableFeatureNodeEffect(AbstractCondition condition, VariantFeature feature, double factor) {
         this.condition = condition;
         this.feature = feature;
         this.factor = factor;

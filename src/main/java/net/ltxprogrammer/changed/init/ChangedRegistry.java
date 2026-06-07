@@ -17,7 +17,7 @@ import net.ltxprogrammer.changed.entity.decoration.WallSignVariant;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.animation.AnimationEvent;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariantFeature;
+import net.ltxprogrammer.changed.entity.variant.VariantFeature;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.ltxprogrammer.changed.world.features.structures.facility.FacilityPieceEvent;
 import net.ltxprogrammer.changed.world.features.structures.facility.types.PieceType;
@@ -212,7 +212,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
     public static final RegistryHolder<Codec<? extends AbstractCondition>> ABILITY_EFFECT_CONDITIONS = new RegistryHolder<>(registryKey("ability/effect_conditions"));
     public static final RegistryHolder<Codec<? extends AbstractRequirement>> PURCHASE_REQUIREMENTS = new RegistryHolder<>(registryKey("ability/purchase_requirements"));
     public static final RegistryHolder<Codec<? extends AbstractPointEvent<?>>> POINT_EVENTS = new RegistryHolder<>(registryKey("ability/point_events"));
-    public static final RegistryHolder<TransfurVariantFeature> TRANSFUR_VARIANT_FEATURES = new RegistryHolder<>(registryKey("ability/variant_features"));
+    public static final RegistryHolder<VariantFeature> TRANSFUR_VARIANT_FEATURES = new RegistryHolder<>(registryKey("ability/variant_features"));
 
     public static final RegistryHolder<ApplicationType<?>> APPLICATION_TYPES = new RegistryHolder<>(registryKey("computer/application_type"));
 

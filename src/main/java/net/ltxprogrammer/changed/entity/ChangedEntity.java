@@ -846,9 +846,9 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         this.depthCompressionO = this.depthCompression;
         this.depthCompression = 0f;
         ProcessTransfur.ifPlayerTransfurred(underlyingPlayer, variantInstance -> {
-            if (variantInstance.hasFeature(ChangedTransfurVariantFeatures.DEPTH_COMPRESSION.get())) {
+            if (variantInstance.hasFeature(ChangedVariantFeatures.DEPTH_COMPRESSION.get())) {
                 double depth = Math.max(LevelUtil.getDepthFromSurfaceOfWater(level, position(), 144) - 8, 0);
-                this.depthCompression = (float) (depth * 0.25 * 0.02);
+                this.depthCompression = (float) (depth * 0.25 * 0.02 * variantInstance.getFeatureLevel(ChangedVariantFeatures.DEPTH_COMPRESSION.get()));
             }
         });
 

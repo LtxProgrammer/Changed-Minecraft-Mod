@@ -10,13 +10,11 @@ import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ChangedPackets;
-import net.ltxprogrammer.changed.network.packet.ChangedPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.world.ChangedDataFixer;
 import net.ltxprogrammer.changed.world.features.structures.FacilityPieces;
 import net.ltxprogrammer.changed.world.features.structures.facility.FacilityZoneEntities;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,22 +26,17 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.IEventBusInvokeDispatcher;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoader;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.IModBusEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 @Mod(Changed.MODID)
 public class Changed {
@@ -126,7 +119,7 @@ public class Changed {
         ChangedAbilityTreeCodecs.NODE_EFFECT_REGISTRY.register(modEventBus);
         ChangedAbilityTreeCodecs.EFFECT_CONDITION_REGISTRY.register(modEventBus);
         ChangedAbilityPointEvents.REGISTRY.register(modEventBus);
-        ChangedTransfurVariantFeatures.REGISTRY.register(modEventBus);
+        ChangedVariantFeatures.REGISTRY.register(modEventBus);
         ChangedApplications.REGISTRY.register(modEventBus);
 
         // Our DFU references the above registries, so they need to be initialized before the DFU is created
