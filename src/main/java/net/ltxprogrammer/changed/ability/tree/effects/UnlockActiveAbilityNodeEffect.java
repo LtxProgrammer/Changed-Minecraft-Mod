@@ -12,30 +12,32 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
 public class UnlockActiveAbilityNodeEffect extends NodeEffect {
-    public final AbstractCondition condition;
     public final AbstractAbility<?> ability;
     public final int amplifier;
 
     public static final Codec<UnlockActiveAbilityNodeEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            AbstractCondition.CONDITION_CODEC.fieldOf("condition").orElse(TrueCondition.INSTANCE).forGetter(effect -> effect.condition),
             ChangedRegistry.ABILITY.get().getCodec().fieldOf("ability").forGetter(effect -> effect.ability),
             Codec.INT.fieldOf("amplifier").orElse(0).forGetter(effect -> effect.amplifier)
     ).apply(instance, UnlockActiveAbilityNodeEffect::new));
 
-    public UnlockActiveAbilityNodeEffect(AbstractCondition condition, AbstractAbility<?> ability, int amplifier) {
-        this.condition = condition;
+    public UnlockActiveAbilityNodeEffect(AbstractAbility<?> ability, int amplifier) {
         this.ability = ability;
         this.amplifier = amplifier;
     }
 
     @Override
+    protected @Nullable NodeEffect createClientNodeEffect() {
+        return this;
+    }
+
+    @Override
     public void gatherActiveEffects(IAbstractChangedEntity entity, Consumer<NodeEffect> sink) {
-        if (condition.test(entity))
-            sink.accept(this);
+        sink.accept(this);
     }
 
     @Override

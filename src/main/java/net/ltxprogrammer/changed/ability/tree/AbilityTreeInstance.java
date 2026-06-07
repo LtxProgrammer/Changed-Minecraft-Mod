@@ -139,7 +139,7 @@ public class AbilityTreeInstance {
         }
 
         private NodeState computeNodeState(TransfurVariant<?> forVariant, Pair<ResourceLocation, AbilityNode> namedNode) {
-            boolean unlocked = getPurchasesFor(namedNode.getFirst()).anyMatch(purchase -> {
+            boolean unlocked = namedNode.getSecond().price <= 0 || getPurchasesFor(namedNode.getFirst()).anyMatch(purchase -> {
                 if (purchase.variant == forVariant)
                     return true; // This variant paid for the node
                 if (namedNode.getSecond().price + namedNode.getSecond().groupDiscount <= 0)

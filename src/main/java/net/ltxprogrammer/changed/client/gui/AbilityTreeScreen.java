@@ -415,6 +415,9 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
         var accountedTrees = menu.abilityTree.getTrees(variant);
         accountedTrees.forEach(accountedTree -> {
+            if (accountedTree.getTree().isHidden())
+                return;
+
             treeToAccountedTree.put(accountedTree.getTree(), accountedTree);
             orderedTrees.add(accountedTree.getTree());
             currentTree.set(accountedTree);

@@ -544,6 +544,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
     public static AttributeSupplier.Builder createLatexAttributes() {
         return Monster.createMonsterAttributes().add(ChangedAttributes.TRANSFUR_DAMAGE.get(), 3.0D)
+                .add(ChangedAttributes.GRAB_HOLD_STRENGTH.get(), 1.0D)
+                .add(ChangedAttributes.SUIT_HOLD_STRENGTH.get(), 1.0D)
                 .add(ChangedAttributes.SPRINT_SPEED.get(), 1.0D)
                 .add(ChangedAttributes.SNEAK_SPEED.get(), 1.0D)
                 .add(ChangedAttributes.AIR_CAPACITY.get(), 15.0)
@@ -844,9 +846,9 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         this.depthCompressionO = this.depthCompression;
         this.depthCompression = 0f;
         ProcessTransfur.ifPlayerTransfurred(underlyingPlayer, variantInstance -> {
-            if (variantInstance.hasFeature(ChangedTransfurVariantFeatures.DEPTH_COMPRESSION.get())) {
+            if (variantInstance.hasFeature(ChangedVariantFeatures.DEPTH_COMPRESSION.get())) {
                 double depth = Math.max(LevelUtil.getDepthFromSurfaceOfWater(level, position(), 144) - 8, 0);
-                this.depthCompression = (float) (depth * 0.25 * 0.02);
+                this.depthCompression = (float) (depth * 0.25 * 0.02 * variantInstance.getFeatureLevel(ChangedVariantFeatures.DEPTH_COMPRESSION.get()));
             }
         });
 

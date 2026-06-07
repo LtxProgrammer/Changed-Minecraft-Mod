@@ -1,0 +1,8 @@
+{
+  "parent": "changed:apidae/wing_practice1",
+  "titleId": "changed.ability_tree.apidae.wing_practice2",
+  "flavorId": "changed.ability_tree.apidae.wing_practice2.flavor",
+  "price": 1,
+
+  "comment": "Bonus jumps +1"
+}

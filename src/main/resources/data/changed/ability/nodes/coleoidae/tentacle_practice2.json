@@ -1,0 +1,19 @@
+{
+  "parent": "changed:coleoidae/tentacle_practice1",
+  "titleId": "changed.ability_tree.coleoidae.tentacle_practice2",
+  "flavorId": "changed.ability_tree.coleoidae.tentacle_practice2.flavor",
+  "price": 2,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "ability": "changed:switch_hands/bonus_hands",
+      "factor": 2
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "forge:swim_speed",
+      "factor": 0.05
+    }
+  ]
+}

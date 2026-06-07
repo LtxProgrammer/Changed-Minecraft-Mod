@@ -6,20 +6,28 @@ import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nullable;
 
-public class TransfurVariantFeature {
-    public TransfurVariantFeature(Combinator combinator) {
+public class VariantFeature {
+    public VariantFeature(Combinator combinator) {
         this.combinator = combinator;
     }
 
-    public static TransfurVariantFeature maxPresent() {
-        return new TransfurVariantFeature(Combinator.MAX);
+    /// Feature should either be on or off
+    public static VariantFeature binary() {
+        return new VariantFeature(Combinator.BINARY);
     }
 
-    public static TransfurVariantFeature sumPresent() {
-        return new TransfurVariantFeature(Combinator.SUM);
+    /// Feature should take the maximum value present in the trees
+    public static VariantFeature maxPresent() {
+        return new VariantFeature(Combinator.MAX);
+    }
+
+    /// Feature should take the sum of the values present in the trees
+    public static VariantFeature sumPresent() {
+        return new VariantFeature(Combinator.SUM);
     }
 
     public enum Combinator {
+        BINARY,
         MAX,
         SUM
     }

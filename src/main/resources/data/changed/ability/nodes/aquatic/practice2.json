@@ -18,6 +18,11 @@
       "attribute": "changed:air_capacity",
       "method": "add",
       "factor": 10
+    },
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:breathe/accept_water",
+      "factor": 1.5
     }
   ]
 }

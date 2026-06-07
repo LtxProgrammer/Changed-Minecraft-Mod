@@ -1,0 +1,26 @@
+{
+  "parent": "changed:multi_arm/dexterity2",
+  "titleId": "changed.ability_tree.multi_arm.dexterity3",
+  "flavorId": "changed.ability_tree.multi_arm.dexterity3.flavor",
+  "price": 1,
+
+  "missingEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "forge:swim_speed",
+      "factor": -0.05
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "changed:mining_speed",
+      "factor": -0.05
+    }
+  ],
+  "acquiredEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "changed:grab_hold_strength",
+      "factor": 0.1
+    }
+  ]
+}

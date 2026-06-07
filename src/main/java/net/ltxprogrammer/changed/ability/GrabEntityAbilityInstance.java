@@ -18,6 +18,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
@@ -326,6 +327,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         ticksGrabbed++;
 
         float entityGrabStrengthDecay = this.suited ? GRAB_STRENGTH_DECAY_SUITED : GRAB_STRENGTH_DECAY;
+        AttributeInstance durationMultiplier = this.entity.getEntity().getAttribute(this.suited ? ChangedAttributes.SUIT_HOLD_STRENGTH.get() : ChangedAttributes.GRAB_HOLD_STRENGTH.get());
 
         if (grabbedEntity != null) {
             AttributeInstance grabbedEntityAttribute = grabbedEntity.getAttribute(ChangedAttributes.GRAB_STRUGGLE_STRENGTH.get());
@@ -338,6 +340,14 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                     entityGrabStrengthDecay = ((float) grabbedEntityAttribute.getValue()) * (this.suited ? 0.1f : 1);
                 }
             }
+        }
+
+        if (durationMultiplier != null) {
+            float value = (float) durationMultiplier.getValue();
+            if (value <= 0.0f)
+                entityGrabStrengthDecay = this.grabStrength * 5.0f; // Guarantee immediate break
+            else
+                entityGrabStrengthDecay /= value;
         }
 
         if (!(this.grabbedEntity instanceof Player player)) {

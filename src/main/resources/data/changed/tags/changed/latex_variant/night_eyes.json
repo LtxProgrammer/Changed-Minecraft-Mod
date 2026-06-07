@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "changed:form_gas_tiger",
+    "changed:form_latex_alien",
+    "changed:form_latex_hypno_cat",
+    "changed:form_latex_medusa_cat",
+    "changed:form_latex_ming_cat",
+    "changed:form_latex_siamese_cat",
+    "changed:form_latex_stiger",
+    "changed:form_latex_watermelon_cat",
+    "changed:form_latex_white_tiger",
+    "changed:form_latex_snow_leopard/female",
+    "changed:form_latex_snow_leopard/male"
+  ]
+}

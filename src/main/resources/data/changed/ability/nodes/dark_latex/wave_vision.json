@@ -1,0 +1,13 @@
+{
+  "parent": { "tree": "changed:dark_latex" },
+  "titleId": "changed.ability_tree.dark_latex.wave_vision",
+  "flavorId": "changed.ability_tree.dark_latex.wave_vision.flavor",
+  "price": 0,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:toggle_wave_vision"
+    }
+  ]
+}

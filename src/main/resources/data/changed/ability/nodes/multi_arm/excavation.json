@@ -1,0 +1,14 @@
+{
+  "parent": "changed:multi_arm/dexterity3",
+  "titleId": "changed.ability_tree.multi_arm.excavation",
+  "flavorId": "changed.ability_tree.multi_arm.excavation.flavor",
+  "price": 1,
+
+  "comment": "Allows the player to dig in a 1x2 tunnel if one of their main-side hands has the correct tool",
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "attribute": "changed:excavation"
+    }
+  ]
+}

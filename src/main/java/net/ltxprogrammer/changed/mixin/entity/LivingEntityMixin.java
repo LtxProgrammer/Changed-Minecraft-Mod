@@ -166,7 +166,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 if (WhiteLatexTransportInterface.isEntityInWhiteLatex(player))
                     callback.setReturnValue(true);
             }
-            if (variant.breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER) && isEyeInFluidType(ForgeMod.WATER_TYPE.get()))
+            if (variant.getBreatheMode().canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER) && isEyeInFluidType(ForgeMod.WATER_TYPE.get()))
                 callback.setReturnValue(true);
         });
     }
@@ -184,7 +184,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 if (WhiteLatexTransportInterface.isEntityInWhiteLatex(player))
                     callback.setReturnValue(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false));
             }
-            if (variant.breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER) && isEyeInFluidType(ForgeMod.WATER_TYPE.get()))
+            if (variant.getBreatheMode().canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER) && isEyeInFluidType(ForgeMod.WATER_TYPE.get()))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.CONDUIT_POWER, 300, 1, false, false));
         });
     }

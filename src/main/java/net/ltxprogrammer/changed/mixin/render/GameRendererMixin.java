@@ -64,7 +64,7 @@ public abstract class GameRendererMixin {
                 callback.setReturnValue(1.0f);
             }
 
-            if (variant.getParent().getBreatheMode().canBreatheWater() && livingEntity.isEyeInFluidType(ForgeMod.WATER_TYPE.get())) {
+            if (variant.getBreatheMode().canBreatheWater() && livingEntity.isEyeInFluidType(ForgeMod.WATER_TYPE.get())) {
                 callback.setReturnValue(0.85f);
             }
         });

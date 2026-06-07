@@ -1,0 +1,13 @@
+{
+  "parent": { "tree": "changed:malleable" },
+  "titleId": "changed.ability_tree.malleable.switch_gender",
+  "flavorId": "changed.ability_tree.malleable.switch_gender.flavor",
+  "price": 0,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:switch_gender"
+    }
+  ]
+}
