@@ -1,7 +1,7 @@
 {
   "parent": { "tree": "changed:chlorophyll" },
-  "titleId": "changed.ability_tree.plant_like.camouflage1",
-  "flavorId": "changed.ability_tree.plant_like.camouflage1.flavor",
+  "titleId": "changed.ability_tree.chlorophyll.camouflage1",
+  "flavorId": "changed.ability_tree.chlorophyll.camouflage1.flavor",
   "price": 1,
   "groupDiscount": -1,
 

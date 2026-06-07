@@ -1,0 +1,23 @@
+{
+  "parent": "changed:nonlatex/overdrive_health",
+  "titleId": "changed.ability_tree.nonlatex.regeneration",
+  "flavorId": "changed.ability_tree.nonlatex.regeneration.flavor",
+  "price": 20,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:mob_effect",
+      "mobEffect": {
+        "effect": "minecraft:regeneration",
+        "duration": 50,
+        "hideParticles": true,
+        "visible": false,
+        "showIcon": false
+      },
+      "condition": {
+        "type": "changed:nth_tick",
+        "tickRate": 200
+      }
+    }
+  ]
+}

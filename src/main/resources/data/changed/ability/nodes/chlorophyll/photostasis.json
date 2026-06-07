@@ -1,7 +1,7 @@
 {
-  "parent": "changed:plant_like/photosynthesis2",
-  "titleId": "changed.ability_tree.plant_like.photostasis",
-  "flavorId": "changed.ability_tree.plant_like.photostasis.flavor",
+  "parent": "changed:chlorophyll/photosynthesis2",
+  "titleId": "changed.ability_tree.chlorophyll.photostasis",
+  "flavorId": "changed.ability_tree.chlorophyll.photostasis.flavor",
   "price": 1,
   "groupDiscount": -1,
 

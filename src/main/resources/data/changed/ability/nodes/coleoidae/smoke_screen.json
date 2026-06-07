@@ -1,0 +1,15 @@
+{
+  "parent": "changed:coleoidae/ink_sac3",
+  "titleId": "changed.ability_tree.coleoidae.smoke_screen",
+  "flavorId": "changed.ability_tree.coleoidae.smoke_screen.flavor",
+  "price": 1,
+
+  "comment": "Creates a medium area around the player that obscures vision",
+  "comment2": "The inked area will do TF damage, and apply the blindness debuff",
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:ink_smoke_screen"
+    }
+  ]
+}

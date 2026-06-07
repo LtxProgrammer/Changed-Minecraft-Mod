@@ -54,6 +54,10 @@
   "attribute.name.changed.transfur_tolerance.desc": "How well you can resist being transfurred.",
   "attribute.name.changed.grab_struggle_strength": "Grab Struggle Strength",
   "attribute.name.changed.grab_struggle_strength.desc": "How quick you can break free from a grab.",
+  "attribute.name.changed.grab_hold_strength": "Grab Hold Strength",
+  "attribute.name.changed.grab_hold_strength.desc": "How strong your grab is.",
+  "attribute.name.changed.suit_hold_strength": "Suit Hold Strength",
+  "attribute.name.changed.suit_hold_strength.desc": "How strong your grab is while suited.",
   "attribute.name.changed.sprint_speed": "Sprint Speed",
   "attribute.name.changed.sprint_speed.desc": "Multiplies your speed while sprinting (Only applies while transfurred).",
   "attribute.name.changed.sneak_speed": "Sneak Speed",
@@ -961,6 +965,9 @@
   "changed.ability_tree.latex": "Latex Mastery",
   "changed.ability_tree.latex.flavor": "The goo that flows beneath your skin had replaced your flesh and blood. You feel weak, yet your body drips with unrecognized potential.",
 
+  "changed.ability_tree.nonlatex": "Biological Mastery",
+  "changed.ability_tree.nonlatex.flavor": "You feel... different. You barely recognize yourself as you look down at your hands, but your heart beats stronger than ever.",
+
   "changed.ability_tree.digitigrade_mobility": "Digitigrade Mobility",
   "changed.ability_tree.digitigrade_mobility.flavor": "You find your legs to be more animalistic than you remember.",
   "changed.ability_tree.quadrupedal_mobility": "Quadrupedal Mobility",
@@ -1012,6 +1019,14 @@
   "changed.ability_tree.practice9": "Practice IX",
   "changed.ability_tree.practice10": "Practice X",
 
+  "changed.ability_tree.apidae.honey_making": "Honey Making",
+  "changed.ability_tree.apidae.honeycomb_making1": "Honeycomb Making I",
+  "changed.ability_tree.apidae.honeycomb_making2": "Honeycomb Making II",
+  "changed.ability_tree.apidae.honeycomb_making3": "Honeycomb Making III",
+  "changed.ability_tree.apidae.wing_practice1": "Wing Practice I",
+  "changed.ability_tree.apidae.wing_practice2": "Wing Practice II",
+  "changed.ability_tree.apidae.wing_practice3": "Wing Practice III",
+
   "changed.ability_tree.aquatic.aqua_affinity": "Aqua Affinity",
   "changed.ability_tree.aquatic.depth_compression": "Depth Compression",
   "changed.ability_tree.aquatic.oxygen_symbiosis": "Oxygen Symbiosis",
@@ -1023,9 +1038,29 @@
   "changed.ability_tree.arachnidae.spinneret_practice2": "Spinneret Practice II",
   "changed.ability_tree.arachnidae.spinneret_practice3": "Spinneret Practice III",
 
+  "changed.ability_tree.chlorophyll.photosynthesis1": "Photosynthesis I",
+  "changed.ability_tree.chlorophyll.photosynthesis2": "Photosynthesis II",
+  "changed.ability_tree.chlorophyll.photostasis": "Photostasis",
+  "changed.ability_tree.chlorophyll.camouflage1": "Camouflage I",
+  "changed.ability_tree.chlorophyll.camouflage2": "Camouflage II",
+
+  "changed.ability_tree.coleoidae.ink_sac1": "Ink Sac I",
+  "changed.ability_tree.coleoidae.ink_sac2": "Ink Sac II",
+  "changed.ability_tree.coleoidae.ink_sac3": "Ink Sac III",
+  "changed.ability_tree.coleoidae.smoke_screen": "Smoke Screen",
+  "changed.ability_tree.coleoidae.tentacle_practice1": "Tentacle Practice I",
+  "changed.ability_tree.coleoidae.tentacle_practice2": "Tentacle Practice II",
+
   "changed.ability_tree.movement.run_faster": "Run Faster",
   "changed.ability_tree.movement.swim_faster": "Swim Faster",
   "changed.ability_tree.movement.jump_higher": "Jump Higher",
+
+  "changed.ability_tree.hypnosis.allure1": "Allure I",
+  "changed.ability_tree.hypnosis.allure2": "Allure II",
+  "changed.ability_tree.hypnosis.hypnosis": "Hypnosis",
+  "changed.ability_tree.hypnosis.potency1": "Potency I",
+  "changed.ability_tree.hypnosis.potency2": "Potency II",
+  "changed.ability_tree.hypnosis.remote_control": "Remote Control",
 
   "changed.ability_tree.lamnidae.call_to_arms": "Call to Arms",
   "changed.ability_tree.lamnidae.follow_my_lead": "Follow My Lead",
@@ -1046,11 +1081,21 @@
   "changed.ability_tree.latex.stability1": "Stability I",
   "changed.ability_tree.latex.stability2": "Stability II",
 
-  "changed.ability_tree.plant_like.photosynthesis1": "Photosynthesis I",
-  "changed.ability_tree.plant_like.photosynthesis2": "Photosynthesis II",
-  "changed.ability_tree.plant_like.photostasis": "Photostasis",
-  "changed.ability_tree.plant_like.camouflage1": "Camouflage I",
-  "changed.ability_tree.plant_like.camouflage2": "Camouflage II",
+  "changed.ability_tree.multi_arm.autotool": "Autotool",
+  "changed.ability_tree.multi_arm.dexterity1": "Dexterity I",
+  "changed.ability_tree.multi_arm.dexterity2": "Dexterity II",
+  "changed.ability_tree.multi_arm.dexterity3": "Dexterity III",
+  "changed.ability_tree.multi_arm.excavation": "Excavation",
+  "changed.ability_tree.multi_arm.mantle": "Mantle",
+
+  "changed.ability_tree.nonlatex.charisma": "Charisma",
+  "changed.ability_tree.nonlatex.healthy1": "Healthy I",
+  "changed.ability_tree.nonlatex.healthy2": "Healthy II",
+  "changed.ability_tree.nonlatex.healthy3": "Healthy III",
+  "changed.ability_tree.nonlatex.overdrive_attack": "Overdrive: Strength",
+  "changed.ability_tree.nonlatex.overdrive_health": "Overdrive: Health",
+  "changed.ability_tree.nonlatex.overdrive_movement": "Overdrive: Speed",
+  "changed.ability_tree.nonlatex.regeneration": "Regeneration",
 
   "application.changed.file_explorer": "File Explorer",
   "application.changed.door_controller": "Door Controller"

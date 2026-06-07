@@ -1,0 +1,14 @@
+{
+  "parent": { "tree": "changed:coleoidae" },
+  "titleId": "changed.ability_tree.coleoidae.ink_sac1",
+  "flavorId": "changed.ability_tree.coleoidae.ink_sac1.flavor",
+  "price": 1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:create_inkball",
+      "amplifier": 1
+    }
+  ]
+}

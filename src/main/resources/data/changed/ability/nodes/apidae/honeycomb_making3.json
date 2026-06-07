@@ -1,0 +1,14 @@
+{
+  "parent": "changed:apidae/honeycomb_making2",
+  "titleId": "changed.ability_tree.apidae.honeycomb_making3",
+  "flavorId": "changed.ability_tree.apidae.honeycomb_making3.flavor",
+  "price": 1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:create_honeycomb",
+      "amplifier": 3
+    }
+  ]
+}

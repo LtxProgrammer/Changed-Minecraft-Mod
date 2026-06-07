@@ -1,0 +1,15 @@
+{
+  "parent": "changed:nonlatex/healthy3",
+  "titleId": "changed.ability_tree.nonlatex.overdrive_health",
+  "flavorId": "changed.ability_tree.nonlatex.overdrive_health.flavor",
+  "price": 20,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "method": "add",
+      "factor": 2.0
+    }
+  ]
+}

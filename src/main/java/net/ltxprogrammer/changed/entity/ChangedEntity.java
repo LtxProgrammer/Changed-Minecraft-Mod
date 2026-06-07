@@ -544,6 +544,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
     public static AttributeSupplier.Builder createLatexAttributes() {
         return Monster.createMonsterAttributes().add(ChangedAttributes.TRANSFUR_DAMAGE.get(), 3.0D)
+                .add(ChangedAttributes.GRAB_HOLD_STRENGTH.get(), 1.0D)
+                .add(ChangedAttributes.SUIT_HOLD_STRENGTH.get(), 1.0D)
                 .add(ChangedAttributes.SPRINT_SPEED.get(), 1.0D)
                 .add(ChangedAttributes.SNEAK_SPEED.get(), 1.0D)
                 .add(ChangedAttributes.AIR_CAPACITY.get(), 15.0)

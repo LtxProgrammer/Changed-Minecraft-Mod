@@ -1,0 +1,14 @@
+{
+  "parent": "changed:nonlatex/healthy3",
+  "titleId": "changed.ability_tree.nonlatex.overdrive_attack",
+  "flavorId": "changed.ability_tree.nonlatex.overdrive_attack.flavor",
+  "price": 20,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.movement_speed",
+      "factor": 0.02
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "parent": "changed:multi_arm/dexterity3",
+  "titleId": "changed.ability_tree.multi_arm.autotool",
+  "flavorId": "changed.ability_tree.multi_arm.autotool.flavor",
+  "price": 1,
+
+  "comment": "Automatically pick the correct tool present in one of the player's hands",
+  "comment2": "When mining, find the first pickaxe",
+  "comment3": "When digging, find the first shovel, etc.",
+  "comment4": "Render idea: First person main hand shifts over and the tool to be chosen raises up, and animates the action",
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "attribute": "changed:autotool"
+    }
+  ]
+}

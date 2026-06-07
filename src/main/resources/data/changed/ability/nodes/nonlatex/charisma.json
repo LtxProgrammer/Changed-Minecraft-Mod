@@ -1,0 +1,13 @@
+{
+  "parent": "changed:nonlatex/healthy1",
+  "titleId": "changed.ability_tree.nonlatex.charisma",
+  "flavorId": "changed.ability_tree.nonlatex.charisma.flavor",
+  "price": 10,
+
+  "missingEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:scare_villagers"
+    }
+  ]
+}

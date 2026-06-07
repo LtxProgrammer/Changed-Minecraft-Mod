@@ -1,0 +1,8 @@
+{
+  "parent": "changed:hypnosis/hypnosis",
+  "titleId": "changed.ability_tree.hypnosis.allure1",
+  "flavorId": "changed.ability_tree.hypnosis.allure1.flavor",
+  "price": 1,
+
+  "comment": "Hypnosis is harder to break"
+}

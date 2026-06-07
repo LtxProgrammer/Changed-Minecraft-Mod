@@ -1,0 +1,13 @@
+{
+  "parent": { "tree": "changed:hypnosis" },
+  "titleId": "changed.ability_tree.hypnosis.hypnosis",
+  "flavorId": "changed.ability_tree.hypnosis.hypnosis.flavor",
+  "price": 0,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:hypnosis"
+    }
+  ]
+}

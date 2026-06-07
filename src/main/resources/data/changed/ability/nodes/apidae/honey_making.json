@@ -1,0 +1,14 @@
+{
+  "parent": "changed:apidae/honeycomb_making2",
+  "titleId": "changed.ability_tree.apidae.honey_making",
+  "flavorId": "changed.ability_tree.apidae.honey_making.flavor",
+  "price": 1,
+
+  "comment": "When surrounded by 3 flowers, fill empty bottle with honey",
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:create_honey"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "parent": { "tree": "changed:chlorophyll" },
-  "titleId": "changed.ability_tree.plant_like.photosynthesis1",
-  "flavorId": "changed.ability_tree.plant_like.photosynthesis1.flavor",
+  "titleId": "changed.ability_tree.chlorophyll.photosynthesis1",
+  "flavorId": "changed.ability_tree.chlorophyll.photosynthesis1.flavor",
   "price": 1,
   "groupDiscount": -1,
 

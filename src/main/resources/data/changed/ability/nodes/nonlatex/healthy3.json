@@ -1,0 +1,25 @@
+{
+  "parent": "changed:nonlatex/healthy2",
+  "titleId": "changed.ability_tree.nonlatex.healthy3",
+  "flavorId": "changed.ability_tree.nonlatex.healthy3.flavor",
+  "price": 10,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "forge:swim_speed",
+      "factor": 0.02
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.max_health",
+      "method": "add",
+      "factor": 1.0
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "changed:mining_speed",
+      "factor": 0.02
+    }
+  ]
+}

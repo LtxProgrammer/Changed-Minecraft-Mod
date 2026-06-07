@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "changed:form_gas_skunk",
+    "changed:form_gas_tiger",
+    "changed:form_gas_wolf/female",
+    "changed:form_gas_wolf/male",
+    "changed:form_gas_wolf_pup",
+    "changed:form_pooltoy_wolf",
+    "changed:form_beifeng",
+    "changed:form_dark_dragon",
+    "changed:form_crystal_wolf",
+    "changed:form_crystal_wolf_horned",
+    "changed:form_green_lizard",
+    "changed:form_sniper_dog",
+    "changed:form_white_wolf/female",
+    "changed:form_white_wolf/male"
+  ]
+}
