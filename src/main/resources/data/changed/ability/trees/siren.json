@@ -2,6 +2,6 @@
   "variants": [
     "#changed:siren"
   ],
-  "titleId": "changed.ability_tree.siren",
-  "flavorId": "changed.ability_tree.siren.flavor"
+  "titleId": "",
+  "hidden": true
 }

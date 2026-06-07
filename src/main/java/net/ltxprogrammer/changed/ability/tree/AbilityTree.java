@@ -29,7 +29,8 @@ public class AbilityTree {
                     .forGetter(tree -> List.copyOf(tree.variants)),
             Codec.list(POINT_EVENT_CODEC).fieldOf("pointEvents").orElse(List.of()).forGetter(node -> List.copyOf(node.pointEvents)),
             Codec.STRING.fieldOf("titleId").forGetter(tree -> tree.titleId),
-            Codec.STRING.fieldOf("flavorId").orElse("").forGetter(tree -> tree.flavorId)
+            Codec.STRING.fieldOf("flavorId").orElse("").forGetter(tree -> tree.flavorId),
+            Codec.BOOL.fieldOf("hidden").orElse(false).forGetter(tree -> tree.hidden)
     ).apply(builder, AbilityTree::new));
 
     public static final ResourceLocation ROOT_NAME = Changed.modResource("root");
@@ -38,17 +39,19 @@ public class AbilityTree {
     private final Set<AbstractPointEvent<?>> pointEvents;
     private final String titleId;
     private final String flavorId;
+    private final boolean hidden;
 
     private ResourceLocation treeLocation;
     private Set<TreeView> treeRoots;
     private Map<ResourceLocation, AbilityNode> treeNodes;
     private boolean isRemote = false;
 
-    public AbilityTree(List<RegistryElementPredicate<TransfurVariant<?>>> variants, List<AbstractPointEvent<?>> pointEvents, String titleId, String flavorId) {
+    public AbilityTree(List<RegistryElementPredicate<TransfurVariant<?>>> variants, List<AbstractPointEvent<?>> pointEvents, String titleId, String flavorId, boolean hidden) {
         this.variants = Set.copyOf(variants);
         this.pointEvents = Set.copyOf(pointEvents);
         this.titleId = titleId;
         this.flavorId = flavorId;
+        this.hidden = hidden;
     }
 
     public <T> int sumPointsForEvent(Codec<? extends AbstractPointEvent<T>> pointEventType, T criteria) {
@@ -128,6 +131,10 @@ public class AbilityTree {
                 .withStyle(Style.EMPTY
                         .withColor(ChatFormatting.GRAY)
                         .withItalic(true)));
+    }
+
+    public boolean isHidden() {
+        return hidden;
     }
 
     public static abstract class NodeEffectInstance {

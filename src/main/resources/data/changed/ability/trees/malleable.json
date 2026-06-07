@@ -2,6 +2,6 @@
   "variants": [
     "#changed:malleable"
   ],
-  "titleId": "changed.ability_tree.malleable",
-  "flavorId": "changed.ability_tree.malleable.flavor"
+  "titleId": "",
+  "hidden": true
 }
