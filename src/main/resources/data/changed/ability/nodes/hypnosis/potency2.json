@@ -4,5 +4,12 @@
   "flavorId": "changed.ability_tree.hypnosis.potency2.flavor",
   "price": 2,
 
-  "comment": "Hypnotized entity gets Slowness IV, Mining Fatigue III, Weakness I"
+  "comment": "Hypnotized entity gets Slowness IV, Mining Fatigue III, Weakness I",
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:hypnosis/potency",
+      "factor": 2.0
+    }
+  ]
 }

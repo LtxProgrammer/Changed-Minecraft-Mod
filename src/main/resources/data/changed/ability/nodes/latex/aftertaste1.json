@@ -7,5 +7,11 @@
   "groupDiscount": -1,
 
   "comment": "This node grants regen I for 10 seconds after replication, or regen II after absorption.",
-  "acquiredEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:transfur/aftertaste",
+      "factor": 1.0
+    }
+  ]
 }

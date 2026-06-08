@@ -6,21 +6,19 @@ import net.ltxprogrammer.changed.network.packet.AbilityPayloadPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.function.Supplier;
 
 public abstract class AbstractAbilityInstance {
     public final AbstractAbility<?> ability;
     public final IAbstractChangedEntity entity;
     private final AbstractAbility.Controller controller;
-    private int amplifier = 0;
+    private int level = 0;
 
     public AbstractAbilityInstance(AbstractAbility<?> ability, IAbstractChangedEntity entity) {
         this.ability = ability;
@@ -62,16 +60,16 @@ public abstract class AbstractAbilityInstance {
         }
     }
 
-    public final int getAmplifier() {
-        return amplifier;
+    public final int getLevel() {
+        return level;
     }
 
-    public final void setAmplifier(int amplifier) {
-        if (amplifier == this.amplifier)
+    public final void setLevel(int nextLevel) {
+        if (nextLevel == this.level)
             return;
-        int last = this.amplifier;
-        this.amplifier = amplifier;
-        this.onChangeAmplifier(last, amplifier);
+        int last = this.level;
+        this.level = nextLevel;
+        this.onChangeLevel(last, nextLevel);
     }
 
     public final AbstractAbility<?> getAbility() {
@@ -94,7 +92,7 @@ public abstract class AbstractAbilityInstance {
     // Called when the player loses the ability (death, untransfur, ability node refunded)
     public void onRemove() {}
 
-    public void onChangeAmplifier(int previous, int current) {}
+    public void onChangeLevel(int previous, int current) {}
 
     // Called when the player selects the ability
     public void onSelected() {}
@@ -105,7 +103,7 @@ public abstract class AbstractAbilityInstance {
         var controllerTag = new CompoundTag();
         controller.saveData(controllerTag);
         tag.put("Controller", controllerTag);
-        tag.putInt("Amplifier", amplifier);
+        tag.putInt("Amplifier", level);
     }
 
     public void readData(CompoundTag tag) {
@@ -113,7 +111,7 @@ public abstract class AbstractAbilityInstance {
         if (tag.contains("Controller"))
             controller.readData(tag.getCompound("Controller"));
         if (tag.contains("Amplifier"))
-            this.setAmplifier(tag.getInt("Amplifier"));
+            this.setLevel(tag.getInt("Amplifier"));
     }
 
     public void acceptPayload(CompoundTag tag) {}

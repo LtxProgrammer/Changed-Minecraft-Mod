@@ -278,6 +278,13 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         releaseEntity(false);
     }
 
+    protected boolean canSuit() {
+        var variant = this.entity.getTransfurVariantInstance();
+        if (variant == null)
+            return true;
+        return variant.hasFeature(ChangedVariantFeatures.ABSORPTION.get());
+    }
+
     void handleInstructions(Level level) {
         if (!level.isClientSide) return;
 
@@ -285,7 +292,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             this.entity.displayClientMessage(Component.translatable("ability.changed.grab_entity.how_to_release", KeyReference.ABILITY.getName(level)), true);
         else if (instructionTicks == 120)
             this.entity.displayClientMessage(Component.translatable("ability.changed.grab_entity.how_to_transfur", KeyReference.ATTACK.getName(level)), true);
-        else if (instructionTicks == 60)
+        else if (instructionTicks == 60 && this.canSuit())
             this.entity.displayClientMessage(Component.translatable("ability.changed.grab_entity.how_to_suit", KeyReference.USE.getName(level)), true);
         if (instructionTicks > 0)
             instructionTicks--;
@@ -474,6 +481,13 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 mob.setTarget(null);
             }
 
+            if (this.suited && !this.canSuit()) {
+                this.grabEntity(this.grabbedEntity);
+                if (this.entity.getLevel().isClientSide)
+                    Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), this.grabbedEntity));
+                this.suitTransition = 0.0f;
+            }
+
             Level level = entity.getLevel();
 
             handleInstructions(level);
@@ -520,7 +534,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
             if (!entity.getLevel().isClientSide) {
                 var assimilationDecision = this.makeAssimilationDecision();
-                if (assimilationDecision != null && attackDown && useDown && suited) {
+                if (assimilationDecision != null && attackDown && useDown && suited && this.canSuit()) {
                     if (ProcessTransfur.progressTransfur(this.grabbedEntity, assimilationDecision.withTransfurProgress(assimilationDecision.transfurProgress() * 1.5f)))
                         this.releaseEntity(false);
                 }
@@ -531,14 +545,14 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 }
             }
 
-            else if (useDown) {
+            else if (useDown && this.canSuit()) {
                 this.suitTransition += 0.075f;
             }
 
             if (this.suitTransition > 0.0f && !suited) {
                 this.suitTransition = Math.max(0.0f, this.suitTransition - 0.025f);
 
-                if (this.suitTransition > SUIT_TRANSITION_MAX) { // 3 seconds
+                if (this.suitTransition > SUIT_TRANSITION_MAX && this.canSuit()) { // 3 seconds
                     this.suited = true;
                     this.suitTransition = SUIT_TRANSITION_MAX;
 

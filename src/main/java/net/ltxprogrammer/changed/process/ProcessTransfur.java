@@ -226,11 +226,30 @@ public class ProcessTransfur {
         if (Changed.postModEvent(new TransfurEvents.AbsorbedEntityEvent(source)))
             return;
 
-        source.getEntity().heal(14.0f); // Heal 7 hearts
-        if (source.getEntity() instanceof Player player) {
-            player.getFoodData().eat(Foods.COOKED_BEEF.getNutrition(), Foods.COOKED_BEEF.getSaturationModifier()); // Equivalent to eating one Cooked beef
+        var variant = source.getTransfurVariantInstance();
+        if (variant == null) {
+            source.getEntity().heal(14.0f); // Heal 7 hearts
+            if (source.getEntity() instanceof Player player) {
+                player.getFoodData().eat(Foods.COOKED_BEEF.getNutrition(), Foods.COOKED_BEEF.getSaturationModifier()); // Equivalent to eating one Cooked beef
+            }
+            source.getEntity().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 30 * 20, 0)); // 30s Strength I
+            return;
+        } else {
+            source.getEntity().heal(4.0f); // Heal 2 hearts
+            if (source.getEntity() instanceof Player player) {
+                player.getFoodData().eat(Foods.COOKIE.getNutrition(), Foods.COOKIE.getSaturationModifier()); // Equivalent to eating one Cookie
+            }
         }
-        source.getEntity().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 30 * 20, 0)); // 30s Strength I
+
+        int aftertasteLevel = (int) variant.getFeatureLevel(ChangedVariantFeatures.AFTERTASTE.get());
+        if (aftertasteLevel >= 1) {
+            source.getEntity().addEffect(new MobEffectInstance(MobEffects.REGENERATION, 10 * 20, 1)); // 10s Regen II
+        } if (aftertasteLevel >= 2) {
+            source.getEntity().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 10 * 20, 0)); // 10s Strength I
+        } if (aftertasteLevel >= 3) {
+            source.getEntity().addEffect(new MobEffectInstance(MobEffects.HEAL, 20, 0)); // 1s Instant Health I
+            source.getEntity().addEffect(new MobEffectInstance(MobEffects.SATURATION, 20, 2)); // 1s Saturation III
+        }
 
         // TODO: maybe make transfurring a necessity for latexes? A boost to their traits that decays over time since transfurring others.
     }
@@ -243,6 +262,19 @@ public class ProcessTransfur {
         source.getEntity().heal(4.0f); // Heal 2 hearts
         if (source.getEntity() instanceof Player player) {
             player.getFoodData().eat(Foods.COOKIE.getNutrition(), Foods.COOKIE.getSaturationModifier()); // Equivalent to eating one Cookie
+        }
+
+        var variant = source.getTransfurVariantInstance();
+        if (variant == null)
+            return;
+
+        int aftertasteLevel = (int) variant.getFeatureLevel(ChangedVariantFeatures.AFTERTASTE.get());
+        if (aftertasteLevel >= 1) {
+            source.getEntity().addEffect(new MobEffectInstance(MobEffects.REGENERATION, 10 * 20, 0)); // 10s Regen I
+        } if (aftertasteLevel >= 2) {
+            source.getEntity().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 3 * 20, 0)); // 3s Strength I
+        } if (aftertasteLevel >= 3) {
+            source.getEntity().addEffect(new MobEffectInstance(MobEffects.SATURATION, 20, 0)); // 1s Saturation I
         }
     }
 

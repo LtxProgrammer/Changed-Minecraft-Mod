@@ -7,5 +7,10 @@
 
   "comment": "This node will allow the player to safe transfur a suited player, should they consent.",
   "comment2": "Successfully safe transfurring another player will leave both players in a temporary weakened state.",
-  "acquiredEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:grab/friendly_transfur"
+    }
+  ]
 }

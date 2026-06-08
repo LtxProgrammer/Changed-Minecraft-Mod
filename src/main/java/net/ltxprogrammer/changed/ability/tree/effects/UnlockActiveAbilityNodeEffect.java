@@ -5,12 +5,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
-import net.ltxprogrammer.changed.ability.tree.condition.AbstractCondition;
-import net.ltxprogrammer.changed.ability.tree.condition.TrueCondition;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,16 +15,16 @@ import java.util.function.Consumer;
 
 public class UnlockActiveAbilityNodeEffect extends NodeEffect {
     public final AbstractAbility<?> ability;
-    public final int amplifier;
+    public final int level;
 
     public static final Codec<UnlockActiveAbilityNodeEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ChangedRegistry.ABILITY.get().getCodec().fieldOf("ability").forGetter(effect -> effect.ability),
-            Codec.INT.fieldOf("amplifier").orElse(0).forGetter(effect -> effect.amplifier)
+            Codec.INT.fieldOf("level").orElse(0).forGetter(effect -> effect.level)
     ).apply(instance, UnlockActiveAbilityNodeEffect::new));
 
-    public UnlockActiveAbilityNodeEffect(AbstractAbility<?> ability, int amplifier) {
+    public UnlockActiveAbilityNodeEffect(AbstractAbility<?> ability, int level) {
         this.ability = ability;
-        this.amplifier = amplifier;
+        this.level = level;
     }
 
     @Override
@@ -49,7 +46,7 @@ public class UnlockActiveAbilityNodeEffect extends NodeEffect {
     public void buildDescription(Consumer<Component> componentConsumer, boolean negate) {
         super.buildDescription(componentConsumer, negate);
 
-        double d0 = this.amplifier;
+        double d0 = this.level;
         if (negate)
             d0 = -d0;
 

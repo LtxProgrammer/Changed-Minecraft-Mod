@@ -38,6 +38,10 @@
   "ability.changed.toggle_night_vision.desc": "Your eyes are attuned to sparse lighting conditions.",
   "ability.changed.toggle_wave_vision": "Toggle Wave Vision",
   "ability.changed.toggle_wave_vision.desc": "Change your perception of the world. Crystalline and familiar materials resonate from your waves.",
+  "ability.changed.underwater_dash": "Underwater Dash",
+  "ability.changed.underwater_dash.alt": "Dive",
+  "ability.changed.underwater_dash.desc": "Dash forward at high speed. Breech the surface to gain a large speed boost on re-entry.",
+  "ability.changed.underwater_dash.desc_alt": "Prepare for a dive into water and gain a large speed boost on entry.",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.desc": "Hold onto an entity to either transfur them or to protect them.",
@@ -1027,8 +1031,10 @@
   "changed.ability_tree.apidae.wing_practice2": "Wing Practice II",
   "changed.ability_tree.apidae.wing_practice3": "Wing Practice III",
 
+  "changed.ability_tree.aquatic.air_adaption": "Air Adaption",
   "changed.ability_tree.aquatic.aqua_affinity": "Aqua Affinity",
   "changed.ability_tree.aquatic.depth_compression": "Depth Compression",
+  "changed.ability_tree.aquatic.no_sinking": "Fluid Stability",
   "changed.ability_tree.aquatic.oxygen_symbiosis": "Oxygen Symbiosis",
   "changed.ability_tree.aquatic.underwater_dash": "Underwater Dash",
 

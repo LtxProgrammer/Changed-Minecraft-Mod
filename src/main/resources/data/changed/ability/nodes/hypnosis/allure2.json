@@ -4,5 +4,12 @@
   "flavorId": "changed.ability_tree.hypnosis.allure2.flavor",
   "price": 1,
 
-  "comment": "Hypnosis is even harder to break"
+  "comment": "Hypnosis is even harder to break",
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:hypnosis/allure",
+      "factor": 2.0
+    }
+  ]
 }

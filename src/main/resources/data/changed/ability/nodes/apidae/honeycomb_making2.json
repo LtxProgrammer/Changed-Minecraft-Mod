@@ -8,7 +8,7 @@
     {
       "type": "changed:unlock_active_ability",
       "ability": "changed:create_honeycomb",
-      "amplifier": 2
+      "level": 2
     }
   ]
 }

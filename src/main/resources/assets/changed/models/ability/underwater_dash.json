@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:abilities/dash",
+    "layer1": "changed:abilities/dive"
+  }
+}

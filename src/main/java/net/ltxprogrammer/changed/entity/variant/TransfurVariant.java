@@ -47,7 +47,13 @@ public class TransfurVariant<T extends ChangedEntity> {
     }
 
     public static boolean shouldScareVillager(ChangedEntity entity, AbstractVillager villager) {
-        return entity.getType().is(ChangedTags.EntityTypes.LATEX);
+        if (entity.getType().is(ChangedTags.EntityTypes.LATEX))
+            return true;
+        var variant = ProcessTransfur.getPlayerTransfurVariant(entity.getUnderlyingPlayer());
+        if (variant == null)
+            return false;
+
+        return variant.hasFeature(ChangedVariantFeatures.SCARE_VILLAGERS.get());
     }
 
     public ResourceLocation getFormId() {
@@ -337,16 +343,6 @@ public class TransfurVariant<T extends ChangedEntity> {
 
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
-
-            var event = new UniversalAbilitiesEvent(this.abilities);
-            event.addAbility(event.isOfTag(ChangedTags.EntityTypes.LATEX)
-                    .and(event.isNotOfTag(ChangedTags.EntityTypes.PARTIAL_LATEX)), ChangedAbilities.SWITCH_TRANSFUR_MODE);
-            event.addAbility(event.isOfTag(ChangedTags.EntityTypes.LATEX)
-                    .and(event.isNotOfTag(ChangedTags.EntityTypes.ARMLESS))
-                    .and(event.isNotOfTag(ChangedTags.EntityTypes.PARTIAL_LATEX)), ChangedAbilities.GRAB_ENTITY_ABILITY);
-
-            Changed.postModLoadingEvent(event);
-
             this.scares(AbstractVillager.class, TransfurVariant::shouldScareVillager);
         }
 

@@ -865,7 +865,10 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                 event.setCanRefillAir(true);
 
                 double intakeRate = getFeatureLevel(ChangedVariantFeatures.BREATHE_ACCEPT_WATER.get());
-                event.setRefillAirAmount(event.getRefillAirAmount());
+                if (intakeRate <= 0.0)
+                    event.setRefillAirAmount(event.getRefillAirAmount());
+                else
+                    event.setRefillAirAmount((int)(event.getRefillAirAmount() * intakeRate));
             }
         } else {
             if (!getBreatheMode().canBreatheAir()) {
@@ -880,9 +883,9 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         visitActiveNodeEffects(ChangedAbilityTreeCodecs.UNLOCK_ACTIVE_ABILITY_EFFECT.get(), activeAbilityNode -> {
             abilitiesToAdd.compute(activeAbilityNode.ability, (ability, amplifier) -> {
                 if (amplifier == null)
-                    return activeAbilityNode.amplifier;
+                    return activeAbilityNode.level;
                 else
-                    return Math.max(amplifier, activeAbilityNode.amplifier);
+                    return Math.max(amplifier, activeAbilityNode.level);
             });
         });
 
@@ -897,7 +900,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
         abilitiesToAdd.forEach((ability, amplifier) -> {
             if (abilityInstances.containsKey(ability)) {
-                abilityInstances.get(ability).setAmplifier(amplifier);
+                abilityInstances.get(ability).setLevel(amplifier);
             } else {
                 var abilityInstance = ability.makeInstance(IAbstractChangedEntity.forPlayerWithVariant(host, this));
                 abilityInstances.put(ability, abilityInstance);
@@ -998,8 +1001,10 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             host.setPose(Pose.SWIMMING);
 
         // Sink in water
-        if (host.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) > 1.0) {
+        if (hasFeature(ChangedVariantFeatures.PREVENT_SINKING.get())) {
             host.setNoGravity(host.isEyeInFluidType(ForgeMod.WATER_TYPE.get()));
+        } else {
+            host.setNoGravity(false);
         }
 
         // Effects

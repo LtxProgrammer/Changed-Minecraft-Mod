@@ -30,6 +30,7 @@ public class ChangedAbilities {
     public static RegistryObject<GrabEntityAbility> GRAB_ENTITY_ABILITY = REGISTRY.register("grab_entity", GrabEntityAbility::new);
     public static RegistryObject<ToggleNightVisionAbility> TOGGLE_NIGHT_VISION = REGISTRY.register("toggle_night_vision", ToggleNightVisionAbility::new);
     public static RegistryObject<ToggleWaveVisionAbility> TOGGLE_WAVE_VISION = REGISTRY.register("toggle_wave_vision", ToggleWaveVisionAbility::new);
+    public static RegistryObject<UnderwaterDashAbility> UNDERWATER_DASH = REGISTRY.register("underwater_dash", UnderwaterDashAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

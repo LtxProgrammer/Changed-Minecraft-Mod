@@ -2,10 +2,19 @@
   "parent": "changed:latex/aftertaste2",
   "titleId": "changed.ability_tree.latex.aftertaste3",
   "flavorId": "changed.ability_tree.latex.aftertaste3.flavor",
-  "display": { "icon": { "item": "minecraft:enchanted_golden_apple" } },
+  "display": {
+    "icon": { "item": "minecraft:enchanted_golden_apple" },
+    "frame": "strong"
+  },
   "price": 1,
   "groupDiscount": -1,
 
   "comment": "This node grants Instant Health I & Saturation III for 1 second after absorption, or Saturation I seconds after replication.",
-  "acquiredEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:transfur/aftertaste",
+      "factor": 3.0
+    }
+  ]
 }

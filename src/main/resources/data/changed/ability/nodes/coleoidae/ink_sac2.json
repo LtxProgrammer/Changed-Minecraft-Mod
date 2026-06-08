@@ -8,7 +8,7 @@
     {
       "type": "changed:unlock_active_ability",
       "ability": "changed:create_inkball",
-      "amplifier": 2
+      "level": 2
     }
   ]
 }

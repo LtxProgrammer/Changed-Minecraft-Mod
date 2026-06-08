@@ -1,0 +1,14 @@
+{
+  "parent": "changed:aquatic/practice1",
+  "titleId": "changed.ability_tree.aquatic.no_sinking",
+  "flavorId": "changed.ability_tree.aquatic.no_sinking.flavor",
+  "price": 1,
+  "groupDiscount": -1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:aquatic/prevent_sinking"
+    }
+  ]
+}
