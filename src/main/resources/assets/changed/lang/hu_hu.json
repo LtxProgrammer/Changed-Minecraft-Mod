@@ -38,6 +38,10 @@
   "ability.changed.toggle_night_vision.desc": "Szemei a gyér fényviszonyokhoz igazodik.",
   "ability.changed.toggle_wave_vision": "Hullámlátás kapcsolása",
   "ability.changed.toggle_wave_vision.desc": "Változtassa meg a világról alkotott képét. A kristályos és ismerős anyagok rezonálnak a hullámaiból.",
+  "ability.changed.underwater_dash": "Vízalatti iramodás",
+  "ability.changed.underwater_dash.alt": "Merülés",
+  "ability.changed.underwater_dash.desc": "Nagy sebességgel iramodjon előre. Törd át a felszínt, hogy nagy sebességnövekedést érj el a visszatéréskor.",
+  "ability.changed.underwater_dash.desc_alt": "Készülj fel a vízbe merülésre, és szerezzen jelentős sebességnövekedést a belépéskor.",
 
   "ability.changed.grab_entity": "Entitás megragadása",
   "ability.changed.grab_entity.desc": "Ragaszkodjon egy entitásba, hogy transzfurálja vagy megvédje.",
@@ -54,6 +58,10 @@
   "attribute.name.changed.transfur_tolerance.desc": "Milyen jól tudsz ellenállni a transzfurálásnak.",
   "attribute.name.changed.grab_struggle_strength": "Megragadás elleni küzdelem ereje",
   "attribute.name.changed.grab_struggle_strength.desc": "Milyen gyorsan tudsz kiszabadulni a megragadástól.",
+  "attribute.name.changed.grab_hold_strength": "Megragadás ereje",
+  "attribute.name.changed.grab_hold_strength.desc": "Milyen erős a megragadásod.",
+  "attribute.name.changed.suit_hold_strength": "Beburkolás tartási ereje",
+  "attribute.name.changed.suit_hold_strength.desc": "Milyen erős a megragadásod beburkolás alatt.",
   "attribute.name.changed.sprint_speed": "Futás sebessége",
   "attribute.name.changed.sprint_speed.desc": "Megsokszorozza a sebességedet futás közben (Csak transzfurált állapotban érvényes).",
   "attribute.name.changed.sneak_speed": "Lopakodás sebessége",
@@ -961,6 +969,9 @@
   "changed.ability_tree.latex": "Latex elsajátítása",
   "changed.ability_tree.latex.flavor": "A bőröd alatt folyó ragacs felváltotta a húsodat és a véredet. Gyengének érzed magad, mégis testedből felismeretlen lehetőségek csöpögnek.",
 
+  "changed.ability_tree.nonlatex": "Biológiai elsajátítás",
+  "changed.ability_tree.nonlatex.flavor": "Másnak érzed magad... Alig ismersz magadra, miközben lenézel a kezeidre, de a szíved hevesebben ver, mint valaha.",
+
   "changed.ability_tree.digitigrade_mobility": "Ujjonjáró mobilitás",
   "changed.ability_tree.digitigrade_mobility.flavor": "Állatiasabbnak találod a lábaidat, mint amire emlékeztél.",
   "changed.ability_tree.quadrupedal_mobility": "Négylábú mobilitás",
@@ -1011,9 +1022,19 @@
   "changed.ability_tree.practice8": "Gyakorlat VIII",
   "changed.ability_tree.practice9": "Gyakorlat IX",
   "changed.ability_tree.practice10": "Gyakorlat X",
+  
+  "changed.ability_tree.apidae.honey_making": "Mézkészítés",
+  "changed.ability_tree.apidae.honeycomb_making1": "Méhsejtkészítés I",
+  "changed.ability_tree.apidae.honeycomb_making2": "Méhsejtkészítés II",
+  "changed.ability_tree.apidae.honeycomb_making3": "Méhsejtkészítés III",
+  "changed.ability_tree.apidae.wing_practice1": "Szárnygyakorlat I",
+  "changed.ability_tree.apidae.wing_practice2": "Szárnygyakorlat II",
+  "changed.ability_tree.apidae.wing_practice3": "Szárnygyakorlat III",
 
+  "changed.ability_tree.aquatic.air_adaption": "Levegőadaptáció",
   "changed.ability_tree.aquatic.aqua_affinity": "Vízaffinitás",
   "changed.ability_tree.aquatic.depth_compression": "Mélységi tömörítés",
+  "changed.ability_tree.aquatic.no_sinking": "Folyadékstabilitás",
   "changed.ability_tree.aquatic.oxygen_symbiosis": "Oxigén szimbiózis",
   "changed.ability_tree.aquatic.underwater_dash": "Víz alatti iramodás",
 
@@ -1023,9 +1044,29 @@
   "changed.ability_tree.arachnidae.spinneret_practice2": "Szövőgyakorlat II",
   "changed.ability_tree.arachnidae.spinneret_practice3": "Szövőgyakorlat III",
 
+  "changed.ability_tree.plant_like.photosynthesis1": "Fotoszintézis I",
+  "changed.ability_tree.plant_like.photosynthesis2": "Fotoszintézis II",
+  "changed.ability_tree.plant_like.photostasis": "Fotosztázis",
+  "changed.ability_tree.plant_like.camouflage1": "Álcázás I",
+  "changed.ability_tree.plant_like.camouflage2": "Álcázás II",
+
+  "changed.ability_tree.coleoidae.ink_sac1": "Tintazsák I",
+  "changed.ability_tree.coleoidae.ink_sac2": "Tintazsák II",
+  "changed.ability_tree.coleoidae.ink_sac3": "Tintazsák III",
+  "changed.ability_tree.coleoidae.smoke_screen": "Füstfüggöny",
+  "changed.ability_tree.coleoidae.tentacle_practice1": "Csápgyakorlat I",
+  "changed.ability_tree.coleoidae.tentacle_practice2": "Csápgyakorlat II",
+
   "changed.ability_tree.movement.run_faster": "Gyorsabb futás",
   "changed.ability_tree.movement.swim_faster": "Gyorsabb úszás",
   "changed.ability_tree.movement.jump_higher": "Magasabb ugrás",
+
+  "changed.ability_tree.hypnosis.allure1": "Vonzerő I",
+  "changed.ability_tree.hypnosis.allure2": "Vonzerő II",
+  "changed.ability_tree.hypnosis.hypnosis": "Hipnózis",
+  "changed.ability_tree.hypnosis.potency1": "Hatásosság I",
+  "changed.ability_tree.hypnosis.potency2": "Hatásosság II",
+  "changed.ability_tree.hypnosis.remote_control": "Távirányítás",
 
   "changed.ability_tree.lamnidae.call_to_arms": "Összetoborzás",
   "changed.ability_tree.lamnidae.follow_my_lead": "Kövess engem",
@@ -1046,11 +1087,21 @@
   "changed.ability_tree.latex.stability1": "Stabilitás I",
   "changed.ability_tree.latex.stability2": "Stabilitás II",
 
-  "changed.ability_tree.plant_like.photosynthesis1": "Fotoszintézis I",
-  "changed.ability_tree.plant_like.photosynthesis2": "Fotoszintézis II",
-  "changed.ability_tree.plant_like.photostasis": "Fotosztázis",
-  "changed.ability_tree.plant_like.camouflage1": "Álcázás I",
-  "changed.ability_tree.plant_like.camouflage2": "Álcázás II",
+  "changed.ability_tree.multi_arm.autotool": "Automatikus eszközhasználat",
+  "changed.ability_tree.multi_arm.dexterity1": "Ügyesség I",
+  "changed.ability_tree.multi_arm.dexterity2": "Ügyesség II",
+  "changed.ability_tree.multi_arm.dexterity3": "Ügyesség III",
+  "changed.ability_tree.multi_arm.excavation": "Ásatás",
+  "changed.ability_tree.multi_arm.mantle": "Felmászás",
+
+  "changed.ability_tree.nonlatex.charisma": "Karizma",
+  "changed.ability_tree.nonlatex.healthy1": "Egészséges I",
+  "changed.ability_tree.nonlatex.healthy2": "Egészséges II",
+  "changed.ability_tree.nonlatex.healthy3": "Egészséges III",
+  "changed.ability_tree.nonlatex.overdrive_attack": "Agyonhajszolás: Erő",
+  "changed.ability_tree.nonlatex.overdrive_health": "Agyonhajszolás: Életerő",
+  "changed.ability_tree.nonlatex.overdrive_movement": "Agyonhajszolás: Sebesség",
+  "changed.ability_tree.nonlatex.regeneration": "Regeneráció",
   
   "application.changed.file_explorer": "Fájlkezelő",
   "application.changed.door_controller": "Ajtóvezérlő"
