@@ -100,7 +100,7 @@ public class VariantAbilityActivate implements ChangedPacket {
                     if (!keyDown && ability == null) {
                         if (!sender.isUsingItem())
                             sender.openMenu(new SimpleMenuProvider((id, inventory, givenPlayer) ->
-                                    new AbilityRadialMenu(id, inventory, null), AbilityRadialMenu.CONTAINER_TITLE));
+                                    new AbilityRadialMenu(id, inventory), AbilityRadialMenu.CONTAINER_TITLE));
                     }
                     else if (variant.abilityKey.getFlipCount() < 6) { // Prevent DoS by limiting flip count / tick
                         variant.abilityKey.queueKeyState(keyDown);

@@ -23,7 +23,7 @@ public abstract class OxygenSystemMixin {
         return original.call(EntityUtil.maybeGetOverlaying(entity), applyChunkO2);
     }
 
-    @WrapOperation(method = "canBreatheWithoutSuit", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fluids/FluidType;isAir()Z", remap = true))
+    @WrapOperation(method = "canBreatheWithoutSuit", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fluids/FluidType;isAir()Z"))
     private static boolean changed$isGasAir(FluidType instance, Operation<Boolean> original,
                                             @Local(argsOnly = true) LivingEntity entity) {
         return TransfurGas.validEntityInGas(entity).map(gas -> false).orElse(original.call(instance));

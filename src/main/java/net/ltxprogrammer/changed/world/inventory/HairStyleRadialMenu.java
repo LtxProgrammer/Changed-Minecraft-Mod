@@ -23,32 +23,20 @@ import java.util.Map;
 public class HairStyleRadialMenu extends AbstractContainerMenu {
     public static final Component CONTAINER_TITLE = Component.translatable("container.changed.radial_hairstyle");
 
-    public final Container container;
-    public final ContainerData data;
     public final Level world;
     public final Player player;
     public final TransfurVariantInstance<?> variant;
     public int x, y, z;
 
-    private final Map<Integer, Slot> customSlots = new HashMap<>();
-
     public HairStyleRadialMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, new SimpleContainer(1), new SimpleContainerData(1));
+        this(id, inv);
     }
 
-    public HairStyleRadialMenu(int id, Inventory inv, Container p_38971_, ContainerData p_38972_) {
+    public HairStyleRadialMenu(int id, Inventory inv) {
         super(ChangedMenus.HAIRSTYLE_RADIAL.get(), id);
-        this.container = p_38971_;
-        this.data = p_38972_;
         this.world = inv.player.level();
         this.player = inv.player;
         this.variant = ProcessTransfur.getPlayerTransfurVariant(player);
-        this.customSlots.put(0, this.addSlot(new Slot(p_38971_, 0, 9999, 9999) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return false;
-            }
-        }));
     }
 
     @Override

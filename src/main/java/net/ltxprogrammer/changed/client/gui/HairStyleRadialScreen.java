@@ -33,8 +33,6 @@ public class HairStyleRadialScreen extends VariantRadialScreen<HairStyleRadialMe
 
     public HairStyleRadialScreen(HairStyleRadialMenu menu, Inventory inventory, Component text) {
         super(menu, inventory, text, menu.variant);
-        this.imageWidth = 0;
-        this.imageHeight = 0;
         this.menu = menu;
         this.variant = menu.variant;
         this.styles = variant.getChangedEntity().getValidHairStyles();
