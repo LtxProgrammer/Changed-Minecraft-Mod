@@ -33,6 +33,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -68,6 +69,11 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
         super(p_19870_, p_19871_);
         this.inventory = null;
         this.grabEntityAbilityInstance = null;
+    }
+
+    @Override
+    protected @Nullable Goal makeHurtByTargetGoal() {
+        return new HurtByTargetGoal(this, AbstractDarkLatexEntity.class).setAlertOthers();
     }
 
     public GrabEntityAbilityInstance createGrabAbility() {

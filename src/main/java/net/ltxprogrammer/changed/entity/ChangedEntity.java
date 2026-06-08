@@ -642,31 +642,58 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
             return true;
     }
 
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
+    @Nullable
+    protected Goal makeMeleeTransfurGoal() {
+        return new MeleeAttackGoal(this, 0.4, false);
+    }
 
-        final ChangedEntity self = this;
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.4, false));
-        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.3, 120, false));
-        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f) {
+    @Nullable
+    protected Goal makeWanderGoal() {
+        return new RandomStrollGoal(this, 0.3, 120, false);
+    }
+
+    @Nullable
+    protected Goal makeLeapAtTargetGoal() {
+        return new LeapAtTargetGoal(this, 0.4f) {
             public boolean canUse() {
-                if (self.getTarget() != null && self.getTarget().position().y() > self.position().y)
+                if (ChangedEntity.this.getTarget() != null && ChangedEntity.this.getTarget().position().y() > ChangedEntity.this.position().y)
                     return super.canUse();
                 else
                     return false;
             }
-        });
+        };
+    }
+
+    @Nullable
+    protected Goal makeHurtByTargetGoal() {
+        return new HurtByTargetGoal(this);
+    }
+
+    @Nullable
+    protected Goal makeFloatGoal() {
+        return new FloatGoal(this);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+
+        var meleeGoal = this.makeMeleeTransfurGoal();
+        if (meleeGoal != null)
+            this.goalSelector.addGoal(1, meleeGoal);
+        var wanderGoal = this.makeWanderGoal();
+        if (wanderGoal != null)
+            this.goalSelector.addGoal(2, wanderGoal);
+        var leapGoal = this.makeLeapAtTargetGoal();
+        if (leapGoal != null)
+            this.goalSelector.addGoal(3, leapGoal);
         if (!this.getType().is(ChangedTags.EntityTypes.ARMLESS) && GoalUtils.hasGroundPathNavigation(this))
             this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(4, new UseAbilityGoal(Cacheable.of(() -> abilities), this));
 
-        if (this instanceof WhiteLatexEntity)
-            this.targetSelector.addGoal(1, new HurtByTargetGoal(this, WhiteLatexEntity.class).setAlertOthers());
-        else if (this instanceof AbstractDarkLatexEntity)
-            this.targetSelector.addGoal(1, new HurtByTargetGoal(this, AbstractDarkLatexEntity.class).setAlertOthers());
-        else
-            this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        var hurtByTargetGoal = this.makeHurtByTargetGoal();
+        if (hurtByTargetGoal != null)
+            this.targetSelector.addGoal(1, hurtByTargetGoal);
 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ChangedEntity.class, true, this::targetSelectorTest));
         if (this.getType().is(ChangedTags.EntityTypes.LATEX)) {
@@ -677,8 +704,9 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, ChangedEntity.class, 7.0F, 0.2F));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Villager.class, 7.0F, 0.2F));
-        if (!(this instanceof AquaticEntity))
-            this.goalSelector.addGoal(5, new FloatGoal(this));
+        var floatGoal = this.makeFloatGoal();
+        if (floatGoal != null)
+            this.goalSelector.addGoal(5, floatGoal);
         if (this instanceof PowderSnowWalkable)
             this.goalSelector.addGoal(5, new ChangedClimbOnTopOfPowderSnowGoal(this, this.level()));
     }
