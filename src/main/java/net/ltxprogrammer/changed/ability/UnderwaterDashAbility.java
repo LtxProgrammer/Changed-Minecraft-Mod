@@ -14,13 +14,6 @@ public class UnderwaterDashAbility extends AbstractAbility<UnderwaterDashAbility
     }
 
     @Override
-    public void startUsing(IAbstractChangedEntity entity) {
-        super.startUsing(entity);
-
-        entity.getEntity().addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 5 * 20, 0));
-    }
-
-    @Override
     public UseType getUseType(IAbstractChangedEntity entity) {
         return entity.getEntity().isEyeInFluidType(ForgeMod.WATER_TYPE.get()) ? UseType.CHARGE_TIME : UseType.INSTANT;
     }

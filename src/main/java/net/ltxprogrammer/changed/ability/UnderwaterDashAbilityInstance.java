@@ -1,8 +1,12 @@
 package net.ltxprogrammer.changed.ability;
 
+import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 
@@ -40,6 +44,7 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
             this.boostTicks = 15;
             this.boostAngle = entity.getEntity().getLookAngle();
             this.breached = false;
+            this.playBoostSound();
         } else { // Start breach, dive
             this.boostTicks = 0;
             this.breached = true;
@@ -52,6 +57,60 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
     @Override
     public void tick() {
 
+    }
+
+    protected void playBoostSound() {
+        entity.getEntity().playSound(ChangedSounds.UNDERWATER_BOOST.get(), 1.0f, 1.0f);
+    }
+
+    protected void spawnBoostParticles(float scale) {
+        if (!entity.getLevel().isClientSide())
+            return;
+
+        int maxCount = (int)(4 * scale);
+        if (maxCount <= 0)
+            return;
+
+        var random = entity.getEntity().getRandom();
+        int particleCount = random.nextInt(0, maxCount);
+        var self = entity.getEntity();
+        for (int i = 0; i < particleCount; ++i) {
+            entity.getLevel().addParticle(
+                    ParticleTypes.BUBBLE,
+                    self.position().x + random.nextFloat() - 0.5f,
+                    self.position().y + random.nextFloat() - 0.5f,
+                    self.position().z + random.nextFloat() - 0.5f,
+                    self.getDeltaMovement().x * 0.5,
+                    self.getDeltaMovement().y * 0.5,
+                    self.getDeltaMovement().z * 0.5
+            );
+        }
+    }
+
+    protected void spawnBreachParticles() {
+        if (!entity.getLevel().isClientSide())
+            return;
+
+        var self = this.entity.getEntity();
+        var level = this.entity.getLevel();
+        var random = self.getRandom();
+        Vec3 vec3 = self.getDeltaMovement();
+
+        float f2 = (float)Mth.floor(self.getY());
+
+        for(int i = 0; (float)i < 1.0F + self.getBbWidth() * 20.0F; ++i) {
+            double d0 = (random.nextDouble() * 2.0D - 1.0D) * (double)self.getBbWidth();
+            double d1 = (random.nextDouble() * 2.0D - 1.0D) * (double)self.getBbWidth();
+            level.addParticle(ParticleTypes.BUBBLE, self.getX() + d0, (double)(f2 + 1.0F), self.getZ() + d1, vec3.x, vec3.y - random.nextDouble() * (double)0.2F, vec3.z);
+        }
+
+        for(int j = 0; (float)j < 1.0F + self.getBbWidth() * 20.0F; ++j) {
+            double d2 = (random.nextDouble() * 2.0D - 1.0D) * (double)self.getBbWidth();
+            double d3 = (random.nextDouble() * 2.0D - 1.0D) * (double)self.getBbWidth();
+            level.addParticle(ParticleTypes.SPLASH, self.getX() + d2, (double)(f2 + 1.0F), self.getZ() + d3, vec3.x, vec3.y, vec3.z);
+        }
+
+        self.gameEvent(GameEvent.SPLASH);
     }
 
     @Override
@@ -79,6 +138,9 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
             if (this.breached) {
                 this.boostTicks = 0;
                 self.setDeltaMovement(this.boostAngle.multiply(baselineSpeed * 1.5, baselineSpeed * 1.5, baselineSpeed * 1.5));
+                this.spawnBreachParticles();
+            } else {
+                this.spawnBoostParticles(1.0f);
             }
         }
 
@@ -91,18 +153,24 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
             double dy = self.position().y - self.yo;
             double dz = self.position().z - self.zo;
             this.velocityOnReentry = Math.sqrt(dx * dx + dy * dy + dz * dz);
-            if (!this.breached) {
-                this.reentryTicks = 20;
-                this.boostAngle = self.getDeltaMovement().normalize();
-            }
-
             if (self.onGround() || self.onClimbable()) {
                 this.breached = false;
                 this.reentryTicks = 0;
             }
+
+            if (!this.breached) {
+                this.reentryTicks = 20;
+                this.boostAngle = self.getDeltaMovement().normalize();
+                this.playBoostSound();
+            }
         }
 
         else if (this.reentryTicks > 0) {
+            if (!self.isEyeInFluidType(ForgeMod.WATER_TYPE.get())) {
+                this.reentryTicks = 0;
+                return;
+            }
+
             self.setPose(Pose.SWIMMING);
             self.setSprinting(true);
             this.reentryTicks--;
@@ -116,6 +184,7 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
                     Mth.lerp(0.25, boostAngle.z, fullControlAngle.z)
             );
             self.move(MoverType.SELF, this.boostAngle.multiply(speed, speed, speed));
+            this.spawnBoostParticles((float)decay);
         }
     }
 

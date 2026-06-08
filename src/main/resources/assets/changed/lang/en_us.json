@@ -124,6 +124,8 @@
   "subtitles.changed.entity.latex.ungrab_entity": "Entity released from grab",
   "subtitles.changed.entity.latex.unsuit_entity": "Entity released from suit",
 
+  "subtitles.changed.ability.underwater_dash.boost": "Entity dashes underwater",
+
   "subtitles.changed.item.bra.break": "Bra tears",
   "subtitles.changed.item.bra.equip": "Bra rustles",
   "subtitles.changed.item.coat.break": "Coat tears",

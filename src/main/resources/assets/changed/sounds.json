@@ -336,6 +336,14 @@
     ]
   },
 
+  "ability.underwater_dash.boost": {
+    "category": "entity",
+    "subtitle": "subtitles.changed.ability.underwater_dash.boost",
+    "sounds": [
+      "minecraft:block/bubble_column/whirlpool_inside"
+    ]
+  },
+
   "item.bra.break": {
     "category": "player",
     "subtitle": "subtitles.changed.item.bra.break",
