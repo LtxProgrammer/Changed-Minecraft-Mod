@@ -1,5 +1,5 @@
 {
-  "parent": "changed:back_wing/wing_flap",
+  "parent": "changed:back_wing/wing_flap2",
   "titleId": "changed.ability_tree.back_wing.strong_wings",
   "flavorId": "changed.ability_tree.back_wing.strong_wings.flavor",
   "price": 1,
@@ -8,7 +8,7 @@
   "acquiredEffects": [
     {
       "type": "changed:enable_feature",
-      "feature": "changed:flight/wing_push_strength",
+      "feature": "changed:gale_force_winds/bonus_push_strength",
       "factor": 1.0
     },
     {

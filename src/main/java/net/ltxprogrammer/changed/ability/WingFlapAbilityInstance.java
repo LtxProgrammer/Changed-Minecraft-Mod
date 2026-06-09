@@ -5,8 +5,11 @@ import net.ltxprogrammer.changed.ability.tree.events.NullCriteria;
 import net.ltxprogrammer.changed.init.ChangedAbilityPointEvents;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedVariantFeatures;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 
 public class WingFlapAbilityInstance extends AbstractAbilityInstance {
     private int charges = 0;
@@ -71,15 +74,60 @@ public class WingFlapAbilityInstance extends AbstractAbilityInstance {
     }
 
     protected int getMaxCharges() {
-        return 1;
+        var variant = entity.getTransfurVariantInstance();
+        if (variant == null)
+            return 1;
+        return 1 + (int)variant.getFeatureLevel(ChangedVariantFeatures.WING_FLAP_BONUS_CHARGES.get());
+    }
+
+    public int getChargesRemaining() {
+        return charges;
+    }
+
+    public boolean consumeCharge() {
+        if (charges > 0) {
+            charges--;
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     public void tickIdle() {
         var self = entity.getEntity();
+        var variant = entity.getTransfurVariantInstance();
 
         if (self.onGround() || self.onClimbable())
             charges = this.getMaxCharges();
+
+        if (variant != null && self.getDeltaMovement().y < -1.3d && variant.hasFeature(ChangedVariantFeatures.AUTONOMOUS_LANDING.get())) {
+            var collisionContext = CollisionContext.of(self);
+            var checkBounding = self.getBoundingBox().move(0.0, -2.0, 0.0);
+            boolean nearGround = BlockPos.betweenClosedStream(checkBounding).anyMatch(blockPos -> {
+                BlockState state = self.level().getBlockState(blockPos);
+                return !state.getCollisionShape(self.level(), blockPos, collisionContext).isEmpty();
+            });
+
+            if (nearGround && (variant.getFlightStamina() > 4.0d || consumeCharge())) {
+                variant.chargeFlightStamina(4.0d);
+                getController().applyCoolDown();
+
+                var deltaMovement = self.getDeltaMovement();
+                double dy = deltaMovement.y;
+
+                dy = Math.min(
+                        dy + 1.8d,
+                        Math.max(dy, 0.5d)
+                );
+
+                self.setDeltaMovement(new Vec3(deltaMovement.x, dy, deltaMovement.z));
+                AbilityTreeInstance.offerPointEvent(entity, ChangedAbilityPointEvents.ON_WING_FLAP.get(), NullCriteria.INSTANCE);
+                self.fallDistance *= 0.1f;
+
+                this.playWingFlapSound(true);
+            }
+        }
     }
 
     @Override

@@ -12,11 +12,14 @@ public class WingFlapAbility extends AbstractAbility<WingFlapAbilityInstance> {
     }
 
     @Override
-    public UseType getUseType(IAbstractChangedEntity entity) {
-        return UseType.INSTANT;
+    public int getCoolDown(IAbstractChangedEntity entity) {
+        return switch (this.getAbilityLevel(entity)) {
+            case 0 -> 40;
+            default -> 20;
+        };
     }
 
-    private static final Collection<Component> DESCRIPTION = Collections.singleton(Component.translatable("ability.changed.wing_flap.desc"));
+    public static final Collection<Component> DESCRIPTION = Collections.singleton(Component.translatable("ability.changed.wing_flap.desc"));
 
     @Override
     public Collection<Component> getAbilityDescription(IAbstractChangedEntity entity) {

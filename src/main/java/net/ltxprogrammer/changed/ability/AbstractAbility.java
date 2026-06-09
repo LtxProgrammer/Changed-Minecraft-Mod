@@ -185,6 +185,21 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             }
         }, (keyState, controller) -> keyState ? 1.0F : 0.0F),
         /**
+         * Indicates the ability activates when the key is released only after fully charging
+         */
+        CHARGE_RELEASE_MINIMUM((keyState, oldState, uniqueTick, controller) -> {
+            if (keyState && !controller.chargeAbility(uniqueTick))
+                controller.tickCharge();
+
+            if (!keyState && oldState && controller.chargePercent() >= 1.0f) {
+                controller.applyCoolDown();
+                controller.activateAbility();
+                controller.deactivateAbility();
+            }
+            if (!keyState)
+                controller.resetCharge();
+        }, (keyState, controller) -> Math.min(controller.chargePercent(), 1.0f)),
+        /**
          * Indicates the ability activates upon keypress, and continues to fire per tick while key is down
          */
         HOLD((keyState, oldState, uniqueTick, controller) -> {
@@ -225,6 +240,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
 
     public AbstractAbility(BiFunction<AbstractAbility<Instance>, IAbstractChangedEntity, Instance> ctor) {
         this.ctor = ctor;
+    }
+
+    protected final int getAbilityLevel(IAbstractChangedEntity entity) {
+        return entity.getAbilityInstanceSafe(this).map(AbstractAbilityInstance::getLevel).orElse(0);
     }
 
     public Instance makeInstance(IAbstractChangedEntity entity) {

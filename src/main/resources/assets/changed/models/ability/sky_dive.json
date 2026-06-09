@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:abilities/dive",
+    "layer1": "changed:abilities/wing_flap"
+  }
+}

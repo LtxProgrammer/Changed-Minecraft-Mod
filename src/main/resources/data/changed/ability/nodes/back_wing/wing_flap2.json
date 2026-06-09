@@ -1,0 +1,23 @@
+{
+  "parent": "changed:back_wing/wing_flap1",
+  "titleId": "changed.ability_tree.back_wing.wing_flap2",
+  "flavorId": "changed.ability_tree.back_wing.wing_flap2.flavor",
+  "display": {
+    "icon": "changed:textures/gui/nodes/wing_flap.png",
+    "frame": "strong"
+  },
+  "price": 1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:wing_flap",
+      "level": 1
+    },
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:wing_flap/bonus_charges",
+      "factor": 2.0
+    }
+  ]
+}
