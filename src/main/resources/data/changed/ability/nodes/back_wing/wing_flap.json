@@ -1,0 +1,19 @@
+{
+  "parent": { "tree": "changed:back_wing" },
+  "titleId": "changed.ability_tree.back_wing.wing_flap",
+  "flavorId": "changed.ability_tree.back_wing.wing_flap.flavor",
+  "display": { "icon": "changed:textures/gui/nodes/wing_flap.png"},
+  "price": 0,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:wing_flap"
+    },
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:wing_flap/bonus_horizontal_speed",
+      "factor": 0.1
+    }
+  ]
+}

@@ -80,6 +80,7 @@ public class ChangedSounds {
     public static final RegistryObject<SoundEvent> LATEX_UNSUIT_ENTITY = register("entity.latex.unsuit_entity");
 
     public static final RegistryObject<SoundEvent> UNDERWATER_BOOST = register("ability.underwater_dash.boost");
+    public static final RegistryObject<SoundEvent> WING_FLAP = register("ability.wing_flap");
 
     public static final RegistryObject<SoundEvent> BRA_BREAK = register("item.bra.break");
     public static final RegistryObject<SoundEvent> BRA_EQUIP = register("item.bra.equip");

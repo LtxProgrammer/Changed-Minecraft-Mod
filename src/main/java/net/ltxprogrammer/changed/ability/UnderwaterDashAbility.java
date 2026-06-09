@@ -1,8 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraftforge.common.ForgeMod;
 
 import java.util.Collection;

@@ -343,6 +343,18 @@
       "minecraft:block/bubble_column/whirlpool_inside"
     ]
   },
+  "ability.wing_flap": {
+    "category": "entity",
+    "subtitle": "subtitles.changed.ability.wing_flap",
+    "sounds": [
+      "minecraft:mob/enderdragon/wings1",
+      "minecraft:mob/enderdragon/wings2",
+      "minecraft:mob/enderdragon/wings3",
+      "minecraft:mob/enderdragon/wings4",
+      "minecraft:mob/enderdragon/wings5",
+      "minecraft:mob/enderdragon/wings6"
+    ]
+  },
 
   "item.bra.break": {
     "category": "player",

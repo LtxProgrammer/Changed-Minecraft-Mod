@@ -64,6 +64,11 @@ public class ChangedAttributes {
      */
     public static final RegistryObject<Attribute> MINING_SPEED = REGISTRY.register("mining_speed",
             () -> new RangedAttribute("attribute.name.changed.mining_speed", 1.0D, 0.0D, 256.0D).setSyncable(true));
+    /**
+     * Multiplies the entity's jump height. ONLY APPLIES WITH A TRANSFUR VARIANT.
+     */
+    public static final RegistryObject<Attribute> MAX_FLIGHT_STAMINA = REGISTRY.register("max_flight_stamina",
+            () -> new RangedAttribute("attribute.name.changed.max_flight_stamina", 0.0D, 0.0D, 2048.0D).setSyncable(true));
 
     public static void modifyEntityAttributes(EntityAttributeModificationEvent event) {
         event.getTypes().forEach(entityType -> {
@@ -82,5 +87,6 @@ public class ChangedAttributes {
         event.add(EntityType.PLAYER, ChangedAttributes.JUMP_STRENGTH.get(), 1.0D);
         event.add(EntityType.PLAYER, ChangedAttributes.FALL_RESISTANCE.get(), 1.0D);
         event.add(EntityType.PLAYER, ChangedAttributes.MINING_SPEED.get(), 1.0D);
+        event.add(EntityType.PLAYER, ChangedAttributes.MAX_FLIGHT_STAMINA.get(), 1.0D);
     }
 }

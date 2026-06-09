@@ -42,6 +42,8 @@
   "ability.changed.underwater_dash.alt": "Dive",
   "ability.changed.underwater_dash.desc": "Dash forward at high speed. Breech the surface to gain a large speed boost on re-entry.",
   "ability.changed.underwater_dash.desc_alt": "Prepare for a dive into water and gain a large speed boost on entry.",
+  "ability.changed.wing_flap": "Wing Flap",
+  "ability.changed.wing_flap.desc": "Flap your wings to give you a boost.",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.desc": "Hold onto an entity to either transfur them or to protect them.",
@@ -74,6 +76,8 @@
   "attribute.name.changed.fall_resistance.desc": "Decreases fall damage.",
   "attribute.name.changed.mining_speed": "Mining Speed",
   "attribute.name.changed.mining_speed.desc": "Multiplies mining speed.",
+  "attribute.name.changed.max_flight_stamina": "Max Flight Stamina",
+  "attribute.name.changed.max_flight_stamina.desc": "How long you can remain air-born using your own wings.",
 
   "subtitles.changed.block.cardboard_box.close": "Cardboard box closes",
   "subtitles.changed.block.cardboard_box.open": "Cardboard box opens",
@@ -125,6 +129,7 @@
   "subtitles.changed.entity.latex.unsuit_entity": "Entity released from suit",
 
   "subtitles.changed.ability.underwater_dash.boost": "Entity dashes underwater",
+  "subtitles.changed.ability.wing_flap": "Wings flap",
 
   "subtitles.changed.item.bra.break": "Bra tears",
   "subtitles.changed.item.bra.equip": "Bra rustles",
@@ -1045,6 +1050,15 @@
   "changed.ability_tree.arachnidae.spinneret_practice1": "Spinneret Practice I",
   "changed.ability_tree.arachnidae.spinneret_practice2": "Spinneret Practice II",
   "changed.ability_tree.arachnidae.spinneret_practice3": "Spinneret Practice III",
+
+  "changed.ability_tree.back_wing.autonomous_landing": "Autonomous Landing",
+  "changed.ability_tree.back_wing.creative_flight": "Flight",
+  "changed.ability_tree.back_wing.flight_stamina1": "Flight Stamina I",
+  "changed.ability_tree.back_wing.flight_stamina2": "Flight Stamina II",
+  "changed.ability_tree.back_wing.gale_force_wind": "Gale Force Wind",
+  "changed.ability_tree.back_wing.sky_dive1": "Sky Dive I",
+  "changed.ability_tree.back_wing.sky_dive2": "Sky Dive II",
+  "changed.ability_tree.back_wing.wing_flap": "Wing Flap",
 
   "changed.ability_tree.chlorophyll.photosynthesis1": "Photosynthesis I",
   "changed.ability_tree.chlorophyll.photosynthesis2": "Photosynthesis II",

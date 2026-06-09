@@ -18,6 +18,8 @@ public class ChangedAbilities {
             () -> new SimpleCreateItemAbility(() -> new ItemStack(ChangedItems.LATEX_INKBALL.get()), 5.0f, 6.0f));
     public static RegistryObject<SimpleCreateItemAbility> CREATE_HONEYCOMB = REGISTRY.register("create_honeycomb",
             () -> new SimpleCreateItemAbility(() -> new ItemStack(Items.HONEYCOMB), 5.0f, 6.0f));
+    public static RegistryObject<SimpleCreateItemAbility> CREATE_HONEY = REGISTRY.register("create_honey",
+            () -> new SimpleCreateItemAbility(() -> new ItemStack(Items.HONEYCOMB), 5.0f, 6.0f));
     public static RegistryObject<SwitchHandsAbility> SWITCH_HANDS = REGISTRY.register("switch_hands", SwitchHandsAbility::new);
     public static RegistryObject<AccessChestAbility> ACCESS_CHEST = REGISTRY.register("access_chest", AccessChestAbility::new);
     public static RegistryObject<SwitchGenderAbility> SWITCH_GENDER = REGISTRY.register("switch_gender", SwitchGenderAbility::new);
@@ -31,6 +33,7 @@ public class ChangedAbilities {
     public static RegistryObject<ToggleNightVisionAbility> TOGGLE_NIGHT_VISION = REGISTRY.register("toggle_night_vision", ToggleNightVisionAbility::new);
     public static RegistryObject<ToggleWaveVisionAbility> TOGGLE_WAVE_VISION = REGISTRY.register("toggle_wave_vision", ToggleWaveVisionAbility::new);
     public static RegistryObject<UnderwaterDashAbility> UNDERWATER_DASH = REGISTRY.register("underwater_dash", UnderwaterDashAbility::new);
+    public static RegistryObject<WingFlapAbility> WING_FLAP = REGISTRY.register("wing_flap", WingFlapAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

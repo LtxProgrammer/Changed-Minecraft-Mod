@@ -1,0 +1,20 @@
+{
+  "parent": "changed:back_wing/wing_flap",
+  "titleId": "changed.ability_tree.back_wing.strong_wings",
+  "flavorId": "changed.ability_tree.back_wing.strong_wings.flavor",
+  "price": 1,
+
+  "comment": "Wing Flap and Gale Force Wind push harder",
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:flight/wing_push_strength",
+      "factor": 1.0
+    },
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:wing_flap/bonus_horizontal_speed",
+      "factor": 0.25
+    }
+  ]
+}

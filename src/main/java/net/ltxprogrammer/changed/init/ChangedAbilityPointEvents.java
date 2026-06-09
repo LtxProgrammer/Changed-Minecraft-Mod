@@ -18,4 +18,5 @@ public class ChangedAbilityPointEvents {
     public static final RegistryObject<Codec<TimeAsVariant>> TIME_AS_VARIANT = REGISTRY.register("time_as_variant", () -> TimeAsVariant.CODEC);
     public static final RegistryObject<Codec<TimeInFluid>> TIME_IN_FLUID = REGISTRY.register("time_in_fluid", () -> TimeInFluid.CODEC);
     public static final RegistryObject<Codec<TimeBreathingFluid>> TIME_BREATHING_FLUID = REGISTRY.register("time_breathing_fluid", () -> TimeBreathingFluid.CODEC);
+    public static final RegistryObject<Codec<OnWingFlap>> ON_WING_FLAP = REGISTRY.register("on_wing_flap", () -> OnWingFlap.CODEC);
 }

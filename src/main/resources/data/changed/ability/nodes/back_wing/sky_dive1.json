@@ -1,0 +1,18 @@
+{
+  "parent": "changed:back_wing/creative_flight",
+  "titleId": "changed.ability_tree.back_wing.sky_dive1",
+  "flavorId": "changed.ability_tree.back_wing.sky_dive1.flavor",
+  "price": 1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:sky_dive"
+    },
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:flight/stamina_efficiency/glide",
+      "factor": 0.3
+    }
+  ]
+}

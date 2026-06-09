@@ -60,7 +60,8 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
     }
 
     protected void playBoostSound() {
-        entity.getEntity().playSound(ChangedSounds.UNDERWATER_BOOST.get(), 1.0f, 1.0f);
+        var random = entity.getEntity().getRandom();
+        entity.getEntity().playSound(ChangedSounds.UNDERWATER_BOOST.get(), 1.0f, 1.0F + (random.nextFloat() - random.nextFloat()) * 0.4F);
     }
 
     protected void spawnBoostParticles(float scale) {

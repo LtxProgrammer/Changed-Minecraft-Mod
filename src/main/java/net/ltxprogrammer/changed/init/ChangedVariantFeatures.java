@@ -31,4 +31,12 @@ public class ChangedVariantFeatures {
     public static final RegistryObject<VariantFeature> HYPNOSIS_ALLURE = REGISTRY.register("hypnosis/allure", VariantFeature::maxPresent);
     public static final RegistryObject<VariantFeature> HYPNOSIS_POTENCY = REGISTRY.register("hypnosis/potency", VariantFeature::maxPresent);
     public static final RegistryObject<VariantFeature> HYPNOSIS_CONTROL = REGISTRY.register("hypnosis/control", VariantFeature::binary);
+
+    public static final RegistryObject<VariantFeature> FLIGHT = REGISTRY.register("flight", VariantFeature::binary);
+    public static final RegistryObject<VariantFeature> FLIGHT_STAMINA = REGISTRY.register("flight/stamina", VariantFeature::sumPresent);
+    public static final RegistryObject<VariantFeature> AUTONOMOUS_LANDING = REGISTRY.register("flight/autonomous_landing", VariantFeature::maxPresent);
+    public static final RegistryObject<VariantFeature> WING_PUSH_STRENGTH = REGISTRY.register("flight/wing_push_strength", VariantFeature::maxPresent);
+    public static final RegistryObject<VariantFeature> FLIGHT_STAMINA_EFFICIENCY = REGISTRY.register("flight/stamina_efficiency/flight", VariantFeature::maxPresent);
+    public static final RegistryObject<VariantFeature> GLIDE_STAMINA_EFFICIENCY = REGISTRY.register("flight/stamina_efficiency/glide", VariantFeature::maxPresent);
+    public static final RegistryObject<VariantFeature> WING_FLAP_BONUS_HORIZONTAL = REGISTRY.register("wing_flap/bonus_horizontal_speed", VariantFeature::sumPresent);
 }
