@@ -42,6 +42,8 @@
   "ability.changed.underwater_dash.alt": "Merülés",
   "ability.changed.underwater_dash.desc": "Nagy sebességgel iramodjon előre. Törd át a felszínt, hogy nagy sebességnövekedést érj el a visszatéréskor.",
   "ability.changed.underwater_dash.desc_alt": "Készülj fel a vízbe merülésre, és szerezzen jelentős sebességnövekedést a belépéskor.",
+  "ability.changed.wing_flap": "Szárnycsapkodás",
+  "ability.changed.wing_flap.desc": "Csapkodj a szárnyaiddal, hogy lendületet adj magadnak.",
 
   "ability.changed.grab_entity": "Entitás megragadása",
   "ability.changed.grab_entity.desc": "Ragaszkodjon egy entitásba, hogy transzfurálja vagy megvédje.",
@@ -74,6 +76,8 @@
   "attribute.name.changed.fall_resistance.desc": "Csökkenti az esésisebzést.",
   "attribute.name.changed.mining_speed": "Bányászati ​​sebesség",
   "attribute.name.changed.mining_speed.desc": "Megsokszorozza a bányászati ​​sebességet.",
+  "attribute.name.changed.max_flight_stamina": "Maximális repülési állóképesség",
+  "attribute.name.changed.max_flight_stamina.desc": "Mennyi ideig tudsz a levegőben maradni a saját szárnyaiddal.",
 
   "subtitles.changed.block.cardboard_box.close": "Kartondoboz zárul",
   "subtitles.changed.block.cardboard_box.open": "Kartondoboz nyílik",
@@ -123,6 +127,9 @@
   "subtitles.changed.entity.latex.suit_entity": "Entitás beburkolva",
   "subtitles.changed.entity.latex.ungrab_entity": "Entitás elengedve megragadástól",
   "subtitles.changed.entity.latex.unsuit_entity": "Entitás elengedve beburkolástól",
+
+  "subtitles.changed.ability.underwater_dash.boost": "Entitás víz alatt iramodik",
+  "subtitles.changed.ability.wing_flap": "Szárnyak csapkodása",
 
   "subtitles.changed.item.bra.break": "Melltartó szakad",
   "subtitles.changed.item.bra.equip": "Melltartó susog",
@@ -1043,6 +1050,15 @@
   "changed.ability_tree.arachnidae.spinneret_practice1": "Szövőgyakorlat I",
   "changed.ability_tree.arachnidae.spinneret_practice2": "Szövőgyakorlat II",
   "changed.ability_tree.arachnidae.spinneret_practice3": "Szövőgyakorlat III",
+
+  "changed.ability_tree.back_wing.autonomous_landing": "Autonóm leszállás",
+  "changed.ability_tree.back_wing.creative_flight": "Repülés",
+  "changed.ability_tree.back_wing.flight_stamina1": "Repülési állóképesség I",
+  "changed.ability_tree.back_wing.flight_stamina2": "Repülési állóképesség II",
+  "changed.ability_tree.back_wing.gale_force_wind": "Orkán erejű szél",
+  "changed.ability_tree.back_wing.sky_dive1": "Szabadesés I",
+  "changed.ability_tree.back_wing.sky_dive2": "Szabadesés II",
+  "changed.ability_tree.back_wing.wing_flap": "Szárnycsapkodás",
 
   "changed.ability_tree.plant_like.photosynthesis1": "Fotoszintézis I",
   "changed.ability_tree.plant_like.photosynthesis2": "Fotoszintézis II",
