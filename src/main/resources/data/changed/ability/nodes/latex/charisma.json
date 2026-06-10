@@ -1,0 +1,13 @@
+{
+  "parent": "changed:latex/like_a_tank",
+  "titleId": "changed.ability_tree.latex.charisma",
+  "flavorId": "changed.ability_tree.latex.charisma.flavor",
+  "price": 100,
+
+  "missingEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:scare_villagers"
+    }
+  ]
+}

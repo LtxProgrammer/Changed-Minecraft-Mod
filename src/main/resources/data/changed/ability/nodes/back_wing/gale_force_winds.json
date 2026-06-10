@@ -1,0 +1,13 @@
+{
+  "parent": "changed:back_wing/wing_flap2",
+  "titleId": "changed.ability_tree.back_wing.gale_force_winds",
+  "flavorId": "changed.ability_tree.back_wing.gale_force_winds.flavor",
+  "price": 1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:gale_force_winds"
+    }
+  ]
+}

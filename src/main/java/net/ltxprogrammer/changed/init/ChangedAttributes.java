@@ -87,6 +87,6 @@ public class ChangedAttributes {
         event.add(EntityType.PLAYER, ChangedAttributes.JUMP_STRENGTH.get(), 1.0D);
         event.add(EntityType.PLAYER, ChangedAttributes.FALL_RESISTANCE.get(), 1.0D);
         event.add(EntityType.PLAYER, ChangedAttributes.MINING_SPEED.get(), 1.0D);
-        event.add(EntityType.PLAYER, ChangedAttributes.MAX_FLIGHT_STAMINA.get(), 1.0D);
+        event.add(EntityType.PLAYER, ChangedAttributes.MAX_FLIGHT_STAMINA.get(), 0.0D);
     }
 }

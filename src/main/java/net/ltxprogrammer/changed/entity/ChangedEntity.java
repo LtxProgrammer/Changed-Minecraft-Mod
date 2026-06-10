@@ -14,14 +14,12 @@ import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.VariantFeature;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.Cacheable;
-import net.ltxprogrammer.changed.util.Color3;
-import net.ltxprogrammer.changed.util.LevelUtil;
-import net.ltxprogrammer.changed.util.UniversalDist;
+import net.ltxprogrammer.changed.util.*;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -820,6 +818,27 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         return new Vec3((double)(f3), 0.0, (double)(f2));
     }
 
+    /// Allows NPC entities to specify the level of a VariantFeature. This function does not get called for Transfurred players
+    protected double getNPCFeatureLevel(VariantFeature feature) {
+        boolean isLatex = this.getType().is(ChangedTags.EntityTypes.LATEX);
+        if (isLatex && ChangedVariantFeatures.SCARE_VILLAGERS.get() == feature)
+            return 1.0d;
+        if (isLatex && ChangedVariantFeatures.ABSORPTION.get() == feature)
+            return 1.0d;
+        return 0.0d;
+    }
+
+    public final double getFeatureLevel(VariantFeature feature) {
+        var variant = ProcessTransfur.getPlayerTransfurVariant(underlyingPlayer);
+        if (variant != null)
+            return variant.getFeatureLevel(feature);
+        return getNPCFeatureLevel(feature);
+    }
+
+    public final boolean hasFeature(VariantFeature feature) {
+        return getFeatureLevel(feature) > 0.0d;
+    }
+
     /**
      * Executed by both entity and tf'd player
      * @param level
@@ -845,12 +864,10 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
         this.depthCompressionO = this.depthCompression;
         this.depthCompression = 0f;
-        ProcessTransfur.ifPlayerTransfurred(underlyingPlayer, variantInstance -> {
-            if (variantInstance.hasFeature(ChangedVariantFeatures.DEPTH_COMPRESSION.get())) {
-                double depth = Math.max(LevelUtil.getDepthFromSurfaceOfWater(level, position(), 144) - 8, 0);
-                this.depthCompression = (float) (depth * 0.25 * 0.02 * variantInstance.getFeatureLevel(ChangedVariantFeatures.DEPTH_COMPRESSION.get()));
-            }
-        });
+        if (hasFeature(ChangedVariantFeatures.DEPTH_COMPRESSION.get())) {
+            double depth = Math.max(LevelUtil.getDepthFromSurfaceOfWater(level, position(), 144) - 8, 0);
+            this.depthCompression = (float) (depth * 0.25 * 0.02 * getFeatureLevel(ChangedVariantFeatures.DEPTH_COMPRESSION.get()));
+        }
 
         if (this.depthCompression != this.depthCompressionO) {
             refreshDimensions();

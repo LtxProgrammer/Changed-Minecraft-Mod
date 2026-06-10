@@ -124,15 +124,15 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         return Optional.of(accessorySlots);
     }
 
-    @Inject(method = "updateFallFlying", at = @At("HEAD"), cancellable = true)
-    private void updateFallFlying(CallbackInfo callback) {
-        if (this.level().isClientSide) return;
-        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
-            if (variant.canElytraGlide()) {
-                this.setSharedFlag(7, player.isFallFlying() && !player.onGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION));
-                callback.cancel();
-            }
-        });
+    @WrapOperation(method = "updateFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setSharedFlag(IZ)V"))
+    private void updateFallFlying(LivingEntity instance, int flagIndex, boolean fallFlying, Operation<Void> original) {
+        var variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(this));
+        if (variant == null) {
+            original.call(instance, flagIndex, fallFlying);
+            return;
+        }
+
+        original.call(instance, flagIndex, fallFlying || (isFallFlying() && variant.tickGliding()));
     }
 
     @Inject(method = "onClimbable", at = @At("HEAD"), cancellable = true)
@@ -378,6 +378,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Shadow public abstract AttributeMap getAttributes();
 
     @Shadow protected boolean jumping;
+
+    @Shadow public abstract boolean isFallFlying();
 
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;

@@ -7,7 +7,7 @@
   "acquiredEffects": [
     {
       "type": "changed:enable_feature",
-      "feature": "changed:flight/creative_flight"
+      "feature": "changed:flight"
     },
     {
       "type": "changed:attribute_modifier",

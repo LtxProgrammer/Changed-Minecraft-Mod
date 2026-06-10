@@ -28,6 +28,7 @@ import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.ltxprogrammer.changed.world.enchantments.FormFittingEnchantment;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -79,8 +80,10 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public UseItemMode itemUseMode;
     public int ageAsVariant = 0;
     protected int jumpCharges = 0;
+    protected double flightStamina = 0.0d;
     private boolean dead;
     public int ticksFlying;
+    protected int ticksRechargingFlightStamina;
     protected int ticksSinceLastAbilityActivity = 0;
     private int ticksInWaveVision = 0;
 
@@ -174,6 +177,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         CompoundTag tag = new CompoundTag();
         tag.putInt("ageAsVariant", ageAsVariant);
         tag.putInt("jumpCharges", jumpCharges);
+        if (flightStamina > 0.0d)
+            tag.putDouble("flightStamina", flightStamina);
         tag.putBoolean("dead", dead);
         tag.putInt("ticksFlying", ticksFlying);
 
@@ -206,6 +211,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public void load(CompoundTag tag) {
         ageAsVariant = tag.getInt("ageAsVariant");
         jumpCharges = tag.getInt("jumpCharges");
+        flightStamina = tag.getDouble("flightStamina");
         dead = tag.getBoolean("dead");
         ticksFlying = tag.getInt("ticksFlying");
 
@@ -793,15 +799,53 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             return false;
         if (host.getVehicle() != null)
             return false;
+        if (getFlightStamina() <= 0.0d)
+            return false;
         return true;
     }
 
+    public double getFlightStamina() {
+        return hasFeature(ChangedVariantFeatures.FLIGHT_UNLIMITED_STAMINA.get()) ? 9999.0d : flightStamina;
+    }
+
+    public void chargeFlightStamina(double cost) {
+        if (hasFeature(ChangedVariantFeatures.FLIGHT_UNLIMITED_STAMINA.get())) {
+            // Charge hunger
+            flightStamina = getFlightStamina();
+        } else {
+            flightStamina = Math.max(
+                    getFlightStamina() - cost,
+                    0.0d
+            );
+            ticksRechargingFlightStamina = 0;
+        }
+    }
+
     public boolean canElytraGlide() {
-        return this.parent.canGlide;
+        return hasFeature(ChangedVariantFeatures.FLIGHT_PASSIVE_GLIDE.get());
     }
 
     public boolean canCreativeFly() {
-        return this.parent.canGlide;
+        return hasFeature(ChangedVariantFeatures.FLIGHT.get());
+    }
+
+    /// Called when fall flying and not using elytra-like item
+    public boolean tickGliding() {
+        if (shouldApplyAbilities()) {
+            if (!host.isCreative() && !host.isSpectator()) {
+                double staminaEfficiency = getFeatureLevel(ChangedVariantFeatures.GLIDE_STAMINA_EFFICIENCY.get());
+                if (staminaEfficiency < 1.0d) {
+                    chargeFlightStamina((1.0d - staminaEfficiency) * 0.05);
+                    host.displayClientMessage(Component.literal("Flight Stamina: " + flightStamina), true);
+                }
+
+                return getFlightStamina() > 0.0d;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     protected void tickFlying() {
@@ -819,10 +863,15 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                 }
 
                 if (host.getAbilities().flying) {
+                    double staminaEfficiency = getFeatureLevel(ChangedVariantFeatures.FLIGHT_STAMINA_EFFICIENCY.get());
+                    if (staminaEfficiency < 1.0d) {
+                        chargeFlightStamina((1.0d - staminaEfficiency) * 0.05);
+                        host.displayClientMessage(Component.literal("Flight Stamina: " + flightStamina), true);
+                    }
+
                     float horizontalPenalty = host.isSprinting() ? 0.825f : 0.8f;
                     float verticalPenalty = host.getDeltaMovement().y > 0.0 ? 0.45f : 0.8f;
                     host.setDeltaMovement(host.getDeltaMovement().multiply(horizontalPenalty, verticalPenalty, horizontalPenalty)); // Speed penalty
-                    host.causeFoodExhaustion(host.isSprinting() ? 0.05F : 0.025F); // Food penalty
                 }
             }
 
@@ -832,6 +881,20 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                 ticksFlying = 0;
         } else
             ticksFlying = 0;
+
+        double maxFlightStamina = host.getAttributeValue(ChangedAttributes.MAX_FLIGHT_STAMINA.get());
+        if ((host.onGround() || host.onClimbable()) && ticksRechargingFlightStamina <= 0 && getFlightStamina() < maxFlightStamina) {
+            ticksRechargingFlightStamina = 1; // Start recharging flight stamina
+        }
+
+        if (getFlightStamina() >= maxFlightStamina) {
+            flightStamina = maxFlightStamina;
+            ticksRechargingFlightStamina = 0;
+        } else if (ticksRechargingFlightStamina > 0) {
+            ticksRechargingFlightStamina++;
+            flightStamina = Math.min(flightStamina + 0.02 * ticksRechargingFlightStamina, maxFlightStamina);
+            host.displayClientMessage(Component.literal("Flight Stamina: " + flightStamina), true);
+        }
     }
 
     @SubscribeEvent

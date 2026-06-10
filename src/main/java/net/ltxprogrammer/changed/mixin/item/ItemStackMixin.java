@@ -1,11 +1,9 @@
 package net.ltxprogrammer.changed.mixin.item;
 
-import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,21 +23,5 @@ public abstract class ItemStackMixin implements IForgeItemStack {
         return ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             return variant.canWear(player, self, armorType) && canEquipToSlot;
         }, () -> canEquipToSlot);
-    }
-
-    @Override
-    public boolean canElytraFly(LivingEntity entity) {
-        ItemStack self = (ItemStack)(IForgeItemStack)this;
-        boolean variantCanFly = ProcessTransfur.getPlayerTransfurVariantSafe(EntityUtil.playerOrNull(entity))
-                .map(TransfurVariantInstance::canElytraGlide).orElse(false);
-        return variantCanFly || this.getItem().canElytraFly(self, entity);
-    }
-
-    @Override
-    public boolean elytraFlightTick(LivingEntity entity, int flightTicks) {
-        ItemStack self = (ItemStack)(IForgeItemStack)this;
-        boolean variantCanFly = ProcessTransfur.getPlayerTransfurVariantSafe(EntityUtil.playerOrNull(entity))
-                .map(TransfurVariantInstance::canElytraGlide).orElse(false);
-        return variantCanFly || this.getItem().elytraFlightTick(self, entity, flightTicks);
     }
 }
