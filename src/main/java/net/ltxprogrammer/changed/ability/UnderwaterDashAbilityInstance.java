@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.ability;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -26,7 +25,7 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
         boolean inWater = entity.getEntity().isEyeInFluidType(ForgeMod.WATER_TYPE.get());
         if (inWater && entity.getEntity().hasPose(Pose.SWIMMING) && entity.getEntity().isSprinting())
             return true;
-        if (!inWater && !entity.getEntity().onGround() && !entity.getEntity().onClimbable())
+        if (ability.getAbilityLevel(entity) > 0 && !inWater && !entity.getEntity().onGround() && !entity.getEntity().onClimbable())
             return true;
         return false;
     }
@@ -118,6 +117,7 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
     public void tickIdle() {
         var self = entity.getEntity();
         var swimSpeed = self.getAttribute(ForgeMod.SWIM_SPEED.get());
+        int level = ability.getAbilityLevel(entity);
 
         double baselineSpeed = self.getSpeed() * (swimSpeed != null ? swimSpeed.getValue() : 1.0) * 4.0;
 
@@ -146,6 +146,12 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
         }
 
         else if (this.breached) {
+            if (level <= 0) {
+                this.breached = false;
+                this.reentryTicks = 0;
+                return;
+            }
+
             self.setPose(Pose.SWIMMING);
             self.setSprinting(true);
 
@@ -167,7 +173,7 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
         }
 
         else if (this.reentryTicks > 0) {
-            if (!self.isEyeInFluidType(ForgeMod.WATER_TYPE.get())) {
+            if (level <= 0 || !self.isEyeInFluidType(ForgeMod.WATER_TYPE.get())) {
                 this.reentryTicks = 0;
                 return;
             }

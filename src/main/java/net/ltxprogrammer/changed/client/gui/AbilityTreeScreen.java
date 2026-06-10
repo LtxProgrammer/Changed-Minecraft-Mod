@@ -252,7 +252,8 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                 tooltipBuilder.add(node.getTitle().withStyle(node.displayInfo.frameType().titleColor));
                 tooltipBuilder.add(accountedTree.getEffectivePriceText(variant, nodeName).withStyle(renderState.costFormatting));
                 node.buildDescription(tooltipBuilder::add);
-                node.getFlavorText().ifPresent(tooltipBuilder::add);
+                if (renderState == NodeRenderState.UNLOCKED)
+                    node.getFlavorText().ifPresent(tooltipBuilder::add);
             }
 
             return tooltipBuilder.build();
