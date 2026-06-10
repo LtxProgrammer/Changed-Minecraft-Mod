@@ -321,6 +321,8 @@
   "death.attack.changed:heart_attack.player": "%1$s had a heart attack whilst fighting %2$s",
   "death.attack.changed:grab_escape": "%1$s couldn't hold on to %2$s",
   "death.attack.changed:grab_escape.item": "%1$s couldn't hold on to %2$s",
+  "death.attack.changed:gale_wind_burst": "%s was blown away",
+  "death.attack.changed:gale_wind_burst.player": "%1$s was blown away by %2$s",
 
   "command.changed.success.transfurred.one": "Transfurred %s into %s",
   "command.changed.success.transfurred.many": "Transfurred %s player(s) into %s",
@@ -1102,6 +1104,7 @@
   "changed.ability_tree.latex.aftertaste1": "Aftertaste I",
   "changed.ability_tree.latex.aftertaste2": "Aftertaste II",
   "changed.ability_tree.latex.aftertaste3": "Aftertaste III",
+  "changed.ability_tree.latex.charisma": "Charisma",
   "changed.ability_tree.latex.friendly_transfur": "Friendly Transfur",
   "changed.ability_tree.latex.grab": "Grab",
   "changed.ability_tree.latex.hardened_skin1": "Hardened Skin I",

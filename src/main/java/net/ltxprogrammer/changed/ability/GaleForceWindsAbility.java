@@ -2,15 +2,9 @@ package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.events.NullCriteria;
-import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.projectile.WindGust;
 import net.ltxprogrammer.changed.init.*;
-import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Collection;
@@ -57,10 +51,7 @@ public class GaleForceWindsAbility extends SimpleAbility {
         super.startUsing(entity);
 
         var self = entity.getEntity();
-        int level = this.getAbilityLevel(entity);
-        var variant = entity.getTransfurVariantInstance();
 
-        double pushSpeed = 1.0d;
         double pushBackSpeed = self.onGround() || self.onClimbable() ? 0.0d : -0.5d;
 
         Vec3 lookAngle = self.getLookAngle();
@@ -68,6 +59,8 @@ public class GaleForceWindsAbility extends SimpleAbility {
         if (!self.level().isClientSide) {
             WindGust nParticle = new WindGust(ChangedEntities.WIND_GUST.get(), self.level());
 
+            nParticle.setOwner(self);
+            nParticle.setStrength((int) entity.getFeatureLevel(ChangedVariantFeatures.WINDS_PUSH_STRENGTH.get()));
             nParticle.setPos(self.getEyePosition()
                     .add(lookAngle.multiply(0.75, 0.75, 0.75))
                     .add(0, -0.5, 0)

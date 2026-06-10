@@ -88,14 +88,9 @@ public class SkyDiveAbility extends SimpleAbility {
 
         double boostSpeed;
         if (self.isFallFlying()) {
-            if (variant == null) {
-                this.playWingFlapSound(entity, true);
-                boostSpeed = 0.175d * 1.35d;
-            } else {
-                var horiz = variant.getFeatureLevel(ChangedVariantFeatures.WING_FLAP_BONUS_HORIZONTAL.get());
-                this.playWingFlapSound(entity, horiz >= 0.35d);
-                boostSpeed = 0.175d * (1.0 + horiz);
-            }
+            var horiz = entity.getFeatureLevel(ChangedVariantFeatures.WING_FLAP_BONUS_HORIZONTAL.get());
+            this.playWingFlapSound(entity, horiz >= 0.35d);
+            boostSpeed = 0.175d * (1.0 + horiz);
         } else {
             this.playWingFlapSound(entity, level > 0);
             boostSpeed = 0.2d * (level + 1);

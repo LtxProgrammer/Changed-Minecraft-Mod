@@ -279,10 +279,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     protected boolean canSuit() {
-        var variant = this.entity.getTransfurVariantInstance();
-        if (variant == null)
-            return true;
-        return variant.hasFeature(ChangedVariantFeatures.ABSORPTION.get());
+        return entity.hasFeature(ChangedVariantFeatures.ABSORPTION.get());
     }
 
     void handleInstructions(Level level) {

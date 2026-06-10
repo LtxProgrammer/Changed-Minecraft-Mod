@@ -1,6 +1,12 @@
 package net.ltxprogrammer.changed.entity.projectile;
 
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedDamageSources;
+import net.ltxprogrammer.changed.util.Color3;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,6 +16,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.NotNull;
 
 public class WindGust extends ThrowableProjectile {
+    private static final EntityDataAccessor<Integer> STRENGTH = SynchedEntityData.defineId(WindGust.class, EntityDataSerializers.INT);
     public static final int DISSIPATE_TIME = 15;
 
     public WindGust(EntityType<? extends WindGust> type, Level level) {
@@ -26,7 +33,11 @@ public class WindGust extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
+        this.entityData.define(STRENGTH, Color3.WHITE.toInt());
+    }
 
+    public int getStrength() {
+        return this.getEntityData().get(STRENGTH);
     }
 
     @Override
@@ -47,8 +58,30 @@ public class WindGust extends ThrowableProjectile {
 
         if (result.getEntity() instanceof LivingEntity livingEntity && livingEntity.isPushable()) {
             var pushAngle = this.getDeltaMovement().normalize();
-            this.setDeltaMovement(this.getDeltaMovement().multiply(0.5d, 0.8d, 0.8d));
-            livingEntity.knockback(0.8d, -pushAngle.x, -pushAngle.z);
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0.8d, 0.8d, 0.8d));
+
+            int strength = this.getStrength();
+            if (strength >= 0) {
+                livingEntity.knockback(0.8d, -pushAngle.x, -pushAngle.z);
+            } if (strength >= 1) {
+                livingEntity.knockback(0.4d, -pushAngle.x, -pushAngle.z);
+
+                Entity owner = this.getOwner();
+                DamageSource damagesource;
+                if (owner == null) {
+                    damagesource = ChangedDamageSources.GALE_WIND_BURST.source(level().registryAccess(), this);
+                } else {
+                    damagesource = ChangedDamageSources.GALE_WIND_BURST.source(level().registryAccess(), owner);
+                    if (owner instanceof LivingEntity livingOwner) {
+                        livingOwner.setLastHurtMob(livingEntity);
+                    }
+                }
+                livingEntity.hurt(damagesource, 3.0f);
+            }
         }
+    }
+
+    public void setStrength(int level) {
+        this.entityData.set(STRENGTH, level);
     }
 }

@@ -48,11 +48,10 @@ public class WingFlapAbilityInstance extends AbstractAbilityInstance {
     @Override
     public void startUsing() {
         var self = entity.getEntity();
-        var instance = entity.getTransfurVariantInstance();
         var deltaMovement = self.getDeltaMovement();
         double dy = deltaMovement.y;
         var lookAngle = self.getLookAngle().multiply(2.0d, 1.0d, 2.0d).normalize();
-        double horizontalBoost = instance == null ? 0.35d : instance.getFeatureLevel(ChangedVariantFeatures.WING_FLAP_BONUS_HORIZONTAL.get());
+        double horizontalBoost = entity.getFeatureLevel(ChangedVariantFeatures.WING_FLAP_BONUS_HORIZONTAL.get());
 
         dy = Math.min(
                 dy + 1.2d,
@@ -74,10 +73,7 @@ public class WingFlapAbilityInstance extends AbstractAbilityInstance {
     }
 
     protected int getMaxCharges() {
-        var variant = entity.getTransfurVariantInstance();
-        if (variant == null)
-            return 1;
-        return 1 + (int)variant.getFeatureLevel(ChangedVariantFeatures.WING_FLAP_BONUS_CHARGES.get());
+        return 1 + (int)entity.getFeatureLevel(ChangedVariantFeatures.WING_FLAP_BONUS_CHARGES.get());
     }
 
     public int getChargesRemaining() {
@@ -101,7 +97,7 @@ public class WingFlapAbilityInstance extends AbstractAbilityInstance {
         if (self.onGround() || self.onClimbable())
             charges = this.getMaxCharges();
 
-        if (variant != null && self.getDeltaMovement().y < -1.3d && variant.hasFeature(ChangedVariantFeatures.AUTONOMOUS_LANDING.get())) {
+        if (variant != null && self.getDeltaMovement().y < -1.3d && entity.hasFeature(ChangedVariantFeatures.AUTONOMOUS_LANDING.get())) {
             var collisionContext = CollisionContext.of(self);
             var checkBounding = self.getBoundingBox().move(0.0, -2.0, 0.0);
             boolean nearGround = BlockPos.betweenClosedStream(checkBounding).anyMatch(blockPos -> {
