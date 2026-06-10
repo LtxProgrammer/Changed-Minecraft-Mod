@@ -1050,6 +1050,8 @@
   "changed.ability_tree.aquatic.aqua_affinity.flavor": "你习惯了在水下活动，甚至在水中挖掘也不再困难了。",
   "changed.ability_tree.aquatic.depth_compression": "深海压缩",
   "changed.ability_tree.aquatic.depth_compression.flavor": "随着下潜深度增加，你的胶液身躯会被逐渐压缩，使你更难被命中。",
+  "changed.ability_tree.aquatic.dive": "跳水",
+  "changed.ability_tree.aquatic.dive.flavor": "(DO NOT TRANSLATE) [Desc: The player can dive into water while mid air, or re-enter from a dash that breached the surface, and get a large speed boost based on their velocity on reentry]",
   "changed.ability_tree.aquatic.no_sinking": "抗沉性",
   "changed.ability_tree.aquatic.no_sinking.flavor": "你已经掌握了如何保持浮潜平衡，再也不需要踏水来维持深度了！",
   "changed.ability_tree.aquatic.oxygen_symbiosis": "氧气共生",
