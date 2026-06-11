@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.VariantFeature;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.core.BlockPos;
@@ -50,6 +51,11 @@ public interface IAbstractChangedEntity {
     @NotNull CompoundTag getPersistentData();
     @Nullable List<HairStyle> getValidHairStyles();
     @NotNull HairStyle getHairStyle();
+
+    double getFeatureLevel(VariantFeature feature);
+    default boolean hasFeature(VariantFeature feature) {
+        return getFeatureLevel(feature) > 0.0;
+    }
 
     void replaceVariant(TransfurVariant<?> otherVariant);
 
@@ -211,6 +217,11 @@ public interface IAbstractChangedEntity {
             @Override
             public @NotNull HairStyle getHairStyle() {
                 return latex.get().getHairStyle();
+            }
+
+            @Override
+            public double getFeatureLevel(VariantFeature feature) {
+                return instance.get().getFeatureLevel(feature);
             }
 
             @Override
@@ -402,6 +413,11 @@ public interface IAbstractChangedEntity {
             @Override
             public @NotNull HairStyle getHairStyle() {
                 return cached.get().getHairStyle();
+            }
+
+            @Override
+            public double getFeatureLevel(VariantFeature feature) {
+                return cached.get().getFeatureLevel(feature);
             }
 
             @Override

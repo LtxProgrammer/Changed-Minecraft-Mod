@@ -1,0 +1,13 @@
+{
+  "parent": "changed:back_wing/flight_stamina3",
+  "titleId": "changed.ability_tree.back_wing.unlimited_stamina",
+  "flavorId": "changed.ability_tree.back_wing.unlimited_stamina.flavor",
+  "price": 1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:flight/unlimited_stamina"
+    }
+  ]
+}

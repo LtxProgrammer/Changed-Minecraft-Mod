@@ -51,4 +51,9 @@ public class VariantFeature {
     public Component getDisplayName() {
         return Component.translatable(this.getDescriptionId());
     }
+
+    @Override
+    public String toString() {
+        return ChangedRegistry.TRANSFUR_VARIANT_FEATURES.getKey(this).toString();
+    }
 }

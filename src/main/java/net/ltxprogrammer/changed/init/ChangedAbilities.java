@@ -34,6 +34,8 @@ public class ChangedAbilities {
     public static RegistryObject<ToggleWaveVisionAbility> TOGGLE_WAVE_VISION = REGISTRY.register("toggle_wave_vision", ToggleWaveVisionAbility::new);
     public static RegistryObject<UnderwaterDashAbility> UNDERWATER_DASH = REGISTRY.register("underwater_dash", UnderwaterDashAbility::new);
     public static RegistryObject<WingFlapAbility> WING_FLAP = REGISTRY.register("wing_flap", WingFlapAbility::new);
+    public static RegistryObject<SkyDiveAbility> SKY_DIVE = REGISTRY.register("sky_dive", SkyDiveAbility::new);
+    public static RegistryObject<GaleForceWindsAbility> GALE_FORCE_WINDS = REGISTRY.register("gale_force_winds", GaleForceWindsAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

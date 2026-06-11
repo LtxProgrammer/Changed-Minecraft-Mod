@@ -241,7 +241,7 @@ public class ProcessTransfur {
             }
         }
 
-        int aftertasteLevel = (int) variant.getFeatureLevel(ChangedVariantFeatures.AFTERTASTE.get());
+        int aftertasteLevel = (int) source.getFeatureLevel(ChangedVariantFeatures.AFTERTASTE.get());
         if (aftertasteLevel >= 1) {
             source.getEntity().addEffect(new MobEffectInstance(MobEffects.REGENERATION, 10 * 20, 1)); // 10s Regen II
         } if (aftertasteLevel >= 2) {
@@ -268,7 +268,7 @@ public class ProcessTransfur {
         if (variant == null)
             return;
 
-        int aftertasteLevel = (int) variant.getFeatureLevel(ChangedVariantFeatures.AFTERTASTE.get());
+        int aftertasteLevel = (int) source.getFeatureLevel(ChangedVariantFeatures.AFTERTASTE.get());
         if (aftertasteLevel >= 1) {
             source.getEntity().addEffect(new MobEffectInstance(MobEffects.REGENERATION, 10 * 20, 0)); // 10s Regen I
         } if (aftertasteLevel >= 2) {

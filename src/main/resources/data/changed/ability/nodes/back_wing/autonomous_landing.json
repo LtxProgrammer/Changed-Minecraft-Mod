@@ -4,11 +4,10 @@
   "flavorId": "changed.ability_tree.back_wing.autonomous_landing.flavor",
   "price": 1,
 
-  "comment": "When about to hit the ground at high speeds, consume 2s stamina or wing flap ability charge to significantly slow down vertically",
   "acquiredEffects": [
     {
       "type": "changed:enable_feature",
-      "feature": "changed:flight/autonomous_landing"
+      "feature": "changed:wing_flap/autonomous_landing"
     }
   ]
 }

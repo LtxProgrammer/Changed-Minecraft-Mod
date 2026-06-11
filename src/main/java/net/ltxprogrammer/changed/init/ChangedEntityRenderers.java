@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.client.RegisterComplexRenderersEvent;
 import net.ltxprogrammer.changed.client.renderer.*;
 import net.ltxprogrammer.changed.client.renderer.particle.GasParticleRenderer;
+import net.ltxprogrammer.changed.client.renderer.particle.WindGustRenderer;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.ComplexRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -172,6 +173,7 @@ public class ChangedEntityRenderers {
 
         event.registerEntityRenderer(ChangedEntities.LATEX_INKBALL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ChangedEntities.GAS_PARTICLE.get(), GasParticleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.WIND_GUST.get(), WindGustRenderer::new);
         event.registerEntityRenderer(ChangedEntities.WALL_SIGN.get(), WallSignRenderer::new);
         event.registerEntityRenderer(ChangedEntities.EMITTED_LASER.get(), EmittedLaserRenderer::new);
 

@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.entity.beast.boss.BehemothHead;
 import net.ltxprogrammer.changed.entity.decoration.*;
 import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.projectile.LatexInkball;
+import net.ltxprogrammer.changed.entity.projectile.WindGust;
 import net.ltxprogrammer.changed.entity.robot.Exoskeleton;
 import net.ltxprogrammer.changed.entity.robot.Roomba;
 import net.ltxprogrammer.changed.util.Color3;
@@ -398,6 +399,8 @@ public class ChangedEntities {
             () -> EntityType.Builder.<LatexInkball>of(LatexInkball::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("latex_inkball"));
     public static final RegistryObject<EntityType<GasParticle>> GAS_PARTICLE = REGISTRY.register("gas_particle",
             () -> EntityType.Builder.of(GasParticle::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(4).updateInterval(10).build("gas_particle"));
+    public static final RegistryObject<EntityType<WindGust>> WIND_GUST = REGISTRY.register("wind_gust",
+            () -> EntityType.Builder.of(WindGust::new, MobCategory.MISC).sized(2.5F, 1.25F).clientTrackingRange(4).updateInterval(10).build("wind_gust"));
     public static final RegistryObject<EntityType<WallSign>> WALL_SIGN = REGISTRY.register("wall_sign",
             () -> EntityType.Builder.of(WallSign::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(Integer.MAX_VALUE).build("wall_sign"));
     public static final RegistryObject<EntityType<EmittedLaser>> EMITTED_LASER = REGISTRY.register("emitted_laser",

@@ -47,13 +47,7 @@ public class TransfurVariant<T extends ChangedEntity> {
     }
 
     public static boolean shouldScareVillager(ChangedEntity entity, AbstractVillager villager) {
-        if (entity.getType().is(ChangedTags.EntityTypes.LATEX))
-            return true;
-        var variant = ProcessTransfur.getPlayerTransfurVariant(entity.getUnderlyingPlayer());
-        if (variant == null)
-            return false;
-
-        return variant.hasFeature(ChangedVariantFeatures.SCARE_VILLAGERS.get());
+        return entity.hasFeature(ChangedVariantFeatures.SCARE_VILLAGERS.get());
     }
 
     public ResourceLocation getFormId() {

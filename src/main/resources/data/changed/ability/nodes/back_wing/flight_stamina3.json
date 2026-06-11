@@ -1,0 +1,15 @@
+{
+  "parent": "changed:back_wing/flight_stamina2",
+  "titleId": "changed.ability_tree.back_wing.flight_stamina3",
+  "flavorId": "changed.ability_tree.back_wing.flight_stamina3.flavor",
+  "price": 1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "changed:max_flight_stamina",
+      "method": "add",
+      "factor": 24.0
+    }
+  ]
+}

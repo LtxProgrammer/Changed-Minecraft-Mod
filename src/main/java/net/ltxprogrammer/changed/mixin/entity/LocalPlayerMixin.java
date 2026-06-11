@@ -24,8 +24,9 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.stats.StatsCounter;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -120,6 +121,15 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
         }, () -> {
             original.call(instance, movingSlowly, crouchSpeed);
         });
+    }
+
+    @WrapOperation(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;canElytraFly(Lnet/minecraft/world/entity/LivingEntity;)Z", remap = false))
+    public boolean changed$orCanVariantStartGliding(ItemStack instance, LivingEntity livingEntity, Operation<Boolean> original) {
+        var variant = getTransfurVariant();
+        if (variant == null)
+            return original.call(instance, livingEntity);
+
+        return variant.canElytraGlide() || original.call(instance, livingEntity);
     }
 
     @WrapMethod(method = "canStartSprinting")

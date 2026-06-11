@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class AbilityNode extends PartialNode {
@@ -24,11 +25,11 @@ public class AbilityNode extends PartialNode {
             Codec.STRING.fieldOf("titleId").forGetter(node -> node.titleId),
             Codec.STRING.fieldOf("requirementsId").orElse("").forGetter(node -> node.requirementsId),
             Codec.STRING.fieldOf("descriptionId").orElse("").forGetter(node -> node.descriptionId),
-            Codec.STRING.fieldOf("flavorId").forGetter(node -> node.flavorId),
+            Codec.STRING.fieldOf("flavorId").orElse("").forGetter(node -> node.flavorId),
             Codec.INT.fieldOf("price").forGetter(node -> node.price),
             Codec.INT.fieldOf("groupDiscount").orElse(0).forGetter(node -> node.groupDiscount),
-            Codec.list(NodeEffect.EFFECT_CODEC).fieldOf("acquiredEffects").orElse(List.of()).forGetter(node -> node.acquiredEffects),
-            Codec.list(NodeEffect.EFFECT_CODEC).fieldOf("missingEffects").orElse(List.of()).forGetter(node -> node.missingEffects)
+            Codec.list(NodeEffect.EFFECT_CODEC).optionalFieldOf("acquiredEffects").xmap(opt -> opt.orElseGet(List::of), Optional::of).forGetter(node -> node.acquiredEffects),
+            Codec.list(NodeEffect.EFFECT_CODEC).optionalFieldOf("missingEffects").xmap(opt -> opt.orElseGet(List::of), Optional::of).forGetter(node -> node.missingEffects)
     ).apply(builder, AbilityNode::new));
 
     public final List<ResourceLocation> occludes;
