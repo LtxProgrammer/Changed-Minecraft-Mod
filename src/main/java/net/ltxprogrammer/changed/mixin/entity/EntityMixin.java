@@ -6,7 +6,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.block.StasisChamber;
-import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.entity.latex.SpreadingLatexType;
@@ -14,7 +13,6 @@ import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
-import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.world.LatexCoverGetter;
@@ -22,14 +20,11 @@ import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -41,7 +36,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityAccess;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
@@ -55,6 +49,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 
@@ -166,6 +161,22 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     @Shadow public abstract Vec3 getEyePosition();
 
     @Shadow protected BlockPos portalEntrancePos;
+
+    @Shadow public abstract Vec3 getLookAngle();
+
+    @Shadow public abstract void setXRot(float p_146927_);
+
+    @Shadow public abstract void setYRot(float p_146923_);
+
+    @Shadow public float xRotO;
+
+    @Shadow public float yRotO;
+
+    @Shadow public abstract float getYRot();
+
+    @Shadow public abstract float getXRot();
+
+    @Shadow @Nullable public Entity vehicle;
 
     @Inject(method = "isInvisible", at = @At("RETURN"), cancellable = true)
     public void hideSeatedEntity(CallbackInfoReturnable<Boolean> cir) {
@@ -318,5 +329,62 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         if (variant == null)
             return original.call();
         return Math.round(20f * (float) variant.getHost().getAttributes().getValue(ChangedAttributes.AIR_CAPACITY.get()));
+    }
+
+    @WrapMethod(method = "turn")
+    public void changed$handleWallTurn(double dx, double dy, Operation<Void> original) {
+        if (!((Entity)(Object)this instanceof LivingEntity livingEntity)) {
+            original.call(dx, dy);
+            return;
+        }
+
+        var wallClimb = AbstractAbility.getAbilityInstance(livingEntity, ChangedAbilities.WALL_CLIMB.get());
+        if (wallClimb == null || !wallClimb.isActive() || (dx == 0.0d && dy == 0.0d)) {
+            original.call(dx, dy);
+            return;
+        }
+
+        Vec3 currentViewAngle = getLookAngle();
+        var computedLookAngle = wallClimb.turnOnWall(currentViewAngle, dx * 0.15F, dy * 0.15F);
+        double d0 = computedLookAngle.x;
+        double d1 = computedLookAngle.y;
+        double d2 = computedLookAngle.z;
+        double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+        float computedXRot = Mth.wrapDegrees((float)(-(Mth.atan2(d1, d3) * (double)(180F / (float)Math.PI))));
+        float computedYRot = Mth.wrapDegrees((float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F);
+
+        while (computedYRot - this.yRotO > 180.0f)
+            computedYRot -= 360.0f;
+        while (computedYRot - this.yRotO < -180.0f)
+            computedYRot += 360.0f;
+
+        while (computedXRot - this.xRotO > 180.0f)
+            computedXRot -= 360.0f;
+        while (computedXRot - this.xRotO < -180.0f)
+            computedXRot += 360.0f;
+
+        this.xRotO += this.getXRot() - computedXRot;
+        this.yRotO += this.getXRot() - computedXRot;
+
+        this.setXRot(computedXRot);
+        this.setYRot(computedYRot);
+
+        if (this.vehicle != null) {
+            this.vehicle.onPassengerTurned((Entity)(Object)this);
+        }
+    }
+
+    @WrapOperation(method = "moveRelative", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getInputVector(Lnet/minecraft/world/phys/Vec3;FF)Lnet/minecraft/world/phys/Vec3;"))
+    public Vec3 changed$handleWallWalk(Vec3 inputAngle, float speed, float yRot, Operation<Vec3> original) {
+        if (!((Entity)(Object)this instanceof LivingEntity livingEntity)) {
+            return original.call(inputAngle, speed, yRot);
+        }
+
+        var wallClimb = AbstractAbility.getAbilityInstance(livingEntity, ChangedAbilities.WALL_CLIMB.get());
+        if (wallClimb == null || !wallClimb.isActive()) {
+            return original.call(inputAngle, speed, yRot);
+        }
+
+        return wallClimb.walkOnWall(inputAngle, speed);
     }
 }

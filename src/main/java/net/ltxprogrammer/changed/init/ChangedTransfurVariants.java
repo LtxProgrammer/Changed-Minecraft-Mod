@@ -148,7 +148,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexSquirrel>> LATEX_SQUIRREL = register("form_latex_squirrel",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_SQUIRREL));
     public static final RegistryObject<TransfurVariant<LatexStiger>> LATEX_STIGER = register("form_latex_stiger",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_STIGER).canClimb());
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_STIGER));
     public static final RegistryObject<TransfurVariant<LatexTigerShark>> LATEX_TIGER_SHARK = register("form_latex_tiger_shark",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_TIGER_SHARK));
     public static final RegistryObject<TransfurVariant<LatexTrafficConeDragon>> LATEX_TRAFFIC_CONE_DRAGON = register("form_latex_traffic_cone_dragon",

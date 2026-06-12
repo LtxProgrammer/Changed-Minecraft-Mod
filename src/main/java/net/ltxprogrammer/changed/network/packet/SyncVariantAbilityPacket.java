@@ -64,7 +64,7 @@ public class SyncVariantAbilityPacket implements ChangedPacket {
         else {
             ServerPlayer sender = context.getSender();
             ProcessTransfur.ifPlayerTransfurred(sender, variant -> {
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(this.ability, data, sender.getId()));
+                Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(context::getSender), new SyncVariantAbilityPacket(this.ability, data, sender.getId()));
                 if (variant.abilityInstances.containsKey(ability))
                     variant.abilityInstances.get(ability).readData(data);
             });

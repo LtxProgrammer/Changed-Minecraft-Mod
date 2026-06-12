@@ -36,6 +36,7 @@ public class ChangedAbilities {
     public static RegistryObject<WingFlapAbility> WING_FLAP = REGISTRY.register("wing_flap", WingFlapAbility::new);
     public static RegistryObject<SkyDiveAbility> SKY_DIVE = REGISTRY.register("sky_dive", SkyDiveAbility::new);
     public static RegistryObject<GaleForceWindsAbility> GALE_FORCE_WINDS = REGISTRY.register("gale_force_winds", GaleForceWindsAbility::new);
+    public static RegistryObject<WallClimbAbility> WALL_CLIMB = REGISTRY.register("wall_climb", WallClimbAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

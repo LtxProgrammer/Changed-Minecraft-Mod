@@ -187,6 +187,23 @@ public class CameraUtil {
         }
     }
 
+    public static void decomposeZXY(Matrix3fc rotationMatrix, TriConsumer<Float, Float, Float> componentConsumer) {
+        // matrix decomposition from https://www.geometrictools.com/Documentation/EulerAngles.pdf
+        // JOML matrices are column-major, so switch row-major terms from example
+        if (rotationMatrix.m12() < 1.0f && rotationMatrix.m12() > -1.0f) {
+            float x = (float) Math.asin(rotationMatrix.m12());
+            float z = (float) Math.atan2(-rotationMatrix.m10(), rotationMatrix.m11());
+            float y = (float) Math.atan2(-rotationMatrix.m02(), rotationMatrix.m22());
+            componentConsumer.accept(x, y, z);
+        } else {
+            int sign = Mth.sign(rotationMatrix.m12());
+            float x = sign * -Mth.HALF_PI;
+            float z = sign * (float) Math.atan2(-rotationMatrix.m20(), rotationMatrix.m00());
+            float y = 0f;
+            componentConsumer.accept(x, y, z);
+        }
+    }
+
     public static void decomposeZYX(Matrix3fc rotationMatrix, ModelPart part) {
         decomposeZYX(rotationMatrix, (xRot, yRot, zRot) -> {
             part.xRot = xRot;
