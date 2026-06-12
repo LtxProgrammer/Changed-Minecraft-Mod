@@ -13,6 +13,7 @@ import java.util.Queue;
 public class BasicNIC implements LogicalNetworkInterface {
     private final NetworkInterface.Address physicalAddress;
     public int logicalAddress;
+    public int ticksSpentConnecting = 0;
     public @Nullable NetworkInterface.Address remoteConnectedPhysicalAddress;
     public Queue<Pair<Integer, Packet>> unprocessedPackets;
 
@@ -30,6 +31,7 @@ public class BasicNIC implements LogicalNetworkInterface {
         if (dataFrame instanceof NetworkDiscoveryFrame networkDiscoveryFrame && networkDiscoveryFrame.isReply()) {
             if (!networkDiscoveryFrame.commitConnection()) {
                 this.remoteConnectedPhysicalAddress = physicalSource;
+                ticksSpentConnecting = 0;
                 NetworkInterface.sendFrameToAddress(level, physicalSource, this.physicalAddress, NetworkDiscoveryFrame.CONNECT);
             }
         }
@@ -60,6 +62,10 @@ public class BasicNIC implements LogicalNetworkInterface {
         if (remoteConnectedPhysicalAddress != null && NetworkInterface.findAtAddress(level, remoteConnectedPhysicalAddress) == null)
             remoteConnectedPhysicalAddress = null;
         if (remoteConnectedPhysicalAddress != null)
+            return;
+
+        ticksSpentConnecting++;
+        if (ticksSpentConnecting % 64 != pos.hashCode() % 64)
             return;
 
         NetworkInterface.findNearbyAddresses(level, pos, 16).forEach(address -> {
