@@ -103,6 +103,7 @@
     "render.PartDefinitionMixin",
     "render.PlayerRendererMixin",
     "render.PoseStackMixin",
+    "render.PostPassMixin",
     "render.RenderLayerMixin",
     "render.RenderSystemMixin",
     "render.RenderTypeMixin",

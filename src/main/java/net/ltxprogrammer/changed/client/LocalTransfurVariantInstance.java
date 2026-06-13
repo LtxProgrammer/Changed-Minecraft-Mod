@@ -1,10 +1,13 @@
 package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
+import net.ltxprogrammer.changed.ability.tree.effects.PostChainNodeEffect;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedAbilityTreeCodecs;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -16,10 +19,22 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 @OnlyIn(Dist.CLIENT)
 public class LocalTransfurVariantInstance<T extends ChangedEntity> extends ClientTransfurVariantInstance<T> {
     private final LocalPlayer host;
+    private float postChainStrength = 0.0f;
+    private float postChainStrengthO = 0.0f;
+    private PostChainNodeEffect lastUsedPostChainNode = null;
+
+    public PostChainNodeEffect getLastUsedPostChainNode() {
+        return lastUsedPostChainNode;
+    }
+
+    public float getPostChainStrength(float partialTick) {
+        return Mth.lerp(partialTick, postChainStrengthO, postChainStrength);
+    }
 
     public LocalTransfurVariantInstance(TransfurVariant<T> parent, LocalPlayer host) {
         super(parent, host);
@@ -58,6 +73,34 @@ public class LocalTransfurVariantInstance<T extends ChangedEntity> extends Clien
         }
     }
 
+    public void updatePostChain() {
+        postChainStrengthO = postChainStrength;
+
+        AtomicReference<PostChainNodeEffect> highestNode = new AtomicReference<>(null);
+        visitActiveNodeEffects(ChangedAbilityTreeCodecs.POST_CHAIN_NODE_EFFECT.get(), shaderNode -> {
+            var prev = highestNode.get();
+            if (prev == null || prev.priority < shaderNode.priority) {
+                highestNode.set(shaderNode);
+            }
+        });
+
+        var shaderNode = highestNode.getAcquire();
+        if (shaderNode != null) {
+            postChainStrength = Mth.lerp(0.05f, postChainStrength, shaderNode.strength);
+            if (lastUsedPostChainNode == null || !lastUsedPostChainNode.postChain.equals(shaderNode.postChain)) {
+                lastUsedPostChainNode = shaderNode;
+                Minecraft.getInstance().gameRenderer.checkEntityPostEffect(this.host);
+            }
+        } else {
+            postChainStrength = Mth.lerp(0.05f, postChainStrength, 0.0f);
+            if (postChainStrength < 0.001f) {
+                postChainStrength = 0.0f;
+                lastUsedPostChainNode = null;
+                Minecraft.getInstance().gameRenderer.checkEntityPostEffect(this.host);
+            }
+        }
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -71,6 +114,7 @@ public class LocalTransfurVariantInstance<T extends ChangedEntity> extends Clien
             return;
 
         this.handleSprintModifier(movementSpeed);
+        this.updatePostChain();
     }
 
     @Override

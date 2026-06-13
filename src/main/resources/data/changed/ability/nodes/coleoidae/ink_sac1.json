@@ -7,8 +7,7 @@
   "acquiredEffects": [
     {
       "type": "changed:unlock_active_ability",
-      "ability": "changed:create_inkball",
-      "level": 1
+      "ability": "changed:create_inkball"
     }
   ]
 }

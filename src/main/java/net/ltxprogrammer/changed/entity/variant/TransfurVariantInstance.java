@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.entity.variant;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -96,13 +98,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     protected boolean isTemporaryFromSuit = false;
 
     protected final Map<VariantFeature, Double> variantFeatures = new HashMap<>();
-    protected final List<NodeEffect> activeNodeEffects = new ArrayList<>();
+    protected final Multimap<Codec<? extends NodeEffect>, NodeEffect> activeNodeEffects = HashMultimap.create();
 
+    @SuppressWarnings("unchecked")
     public <E extends NodeEffect> void visitActiveNodeEffects(Codec<E> codec, Consumer<E> visitor) {
-        activeNodeEffects.forEach(nodeEffect -> {
-            if (nodeEffect.getCodec() == codec)
-                visitor.accept((E)nodeEffect);
-        });
+        activeNodeEffects.get(codec).forEach(nodeEffect -> visitor.accept((E)nodeEffect));
     }
 
     public double getFeatureLevel(VariantFeature feature) {
@@ -137,7 +137,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public void setNodeEffects(List<NodeEffect> nodeEffects) {
         this.variantFeatures.clear();
         this.activeNodeEffects.clear();
-        this.activeNodeEffects.addAll(nodeEffects);
+        nodeEffects.forEach(nodeEffect -> this.activeNodeEffects.put(nodeEffect.getCodec(), nodeEffect));
     }
 
     public TransfurVariant.BreatheMode getBreatheMode() {

@@ -5,5 +5,16 @@
   "price": 1,
   "groupDiscount": -1,
 
-  "acquiredEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:create_cobweb",
+      "level": 1
+    },
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:create_string",
+      "level": 1
+    }
+  ]
 }

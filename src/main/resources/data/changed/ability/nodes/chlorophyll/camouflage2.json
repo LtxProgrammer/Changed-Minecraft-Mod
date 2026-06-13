@@ -10,7 +10,7 @@
     {
       "type": "changed:unlock_active_ability",
       "ability": "changed:camouflage",
-      "level": 2
+      "level": 1
     }
   ]
 }
