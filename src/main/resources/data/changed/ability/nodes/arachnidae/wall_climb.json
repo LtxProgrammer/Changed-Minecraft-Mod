@@ -1,0 +1,14 @@
+{
+  "parent": { "tree": "changed:arachnidae" },
+  "titleId": "changed.ability_tree.arachnidae.wall_climb",
+  "flavorId": "changed.ability_tree.arachnidae.wall_climb.flavor",
+  "price": 0,
+  "groupDiscount": 0,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:wall_climb"
+    }
+  ]
+}

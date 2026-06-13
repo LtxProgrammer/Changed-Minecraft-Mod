@@ -48,6 +48,8 @@
   "ability.changed.sky_dive.desc": "Dive into a glide while flying with a starting boost.",
   "ability.changed.gale_force_winds": "Gale Force Winds",
   "ability.changed.gale_force_winds.desc": "Flap your wings to send out a strong gust of wind.",
+  "ability.changed.wall_climb": "Wall Climb",
+  "ability.changed.wall_climb.desc": "Start crawling on nearby surfaces.",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.desc": "Hold onto an entity to either transfur them or to protect them.",
@@ -1073,6 +1075,7 @@
   "changed.ability_tree.arachnidae.spinneret_practice1": "Spinneret Practice I",
   "changed.ability_tree.arachnidae.spinneret_practice2": "Spinneret Practice II",
   "changed.ability_tree.arachnidae.spinneret_practice3": "Spinneret Practice III",
+  "changed.ability_tree.arachnidae.wall_climb": "Wall Climb",
 
   "changed.ability_tree.back_wing.autonomous_landing": "Autonomous Landing",
   "changed.ability_tree.back_wing.autonomous_landing.flavor": "Landing softly has become like second nature to you.",
