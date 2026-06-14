@@ -3,8 +3,10 @@
   "titleId": "changed.ability_tree.latex.hardened_skin1",
   "flavorId": "changed.ability_tree.latex.hardened_skin1.flavor",
   "display": { "icon": { "item": "minecraft:iron_chestplate" } },
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "missingEffects": [
     {

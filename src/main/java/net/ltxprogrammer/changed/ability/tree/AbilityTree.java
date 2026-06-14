@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 
@@ -28,8 +29,10 @@ public class AbilityTree {
             Codec.list(RegistryElementPredicate.codec(ChangedRegistry.TRANSFUR_VARIANT.get())).fieldOf("variants")
                     .forGetter(tree -> List.copyOf(tree.variants)),
             Codec.list(POINT_EVENT_CODEC).fieldOf("pointEvents").orElse(List.of()).forGetter(node -> List.copyOf(node.pointEvents)),
+            Codec.INT.fieldOf("pointsPerLevel").orElse(10).forGetter(tree -> tree.pointsPerLevel),
             Codec.STRING.fieldOf("titleId").forGetter(tree -> tree.titleId),
             Codec.STRING.fieldOf("flavorId").orElse("").forGetter(tree -> tree.flavorId),
+            Codec.STRING.fieldOf("flavorCompletedId").orElse("").forGetter(tree -> tree.flavorCompletedId),
             Codec.BOOL.fieldOf("hidden").orElse(false).forGetter(tree -> tree.hidden)
     ).apply(builder, AbilityTree::new));
 
@@ -37,8 +40,10 @@ public class AbilityTree {
 
     private final Set<RegistryElementPredicate<TransfurVariant<?>>> variants;
     private final Set<AbstractPointEvent<?>> pointEvents;
+    private final int pointsPerLevel;
     private final String titleId;
     private final String flavorId;
+    private final String flavorCompletedId;
     private final boolean hidden;
 
     private ResourceLocation treeLocation;
@@ -46,11 +51,16 @@ public class AbilityTree {
     private Map<ResourceLocation, AbilityNode> treeNodes;
     private boolean isRemote = false;
 
-    public AbilityTree(List<RegistryElementPredicate<TransfurVariant<?>>> variants, List<AbstractPointEvent<?>> pointEvents, String titleId, String flavorId, boolean hidden) {
+    public AbilityTree(List<RegistryElementPredicate<TransfurVariant<?>>> variants, List<AbstractPointEvent<?>> pointEvents, int pointsPerLevel,
+                       String titleId, String flavorId, String flavorCompletedId, boolean hidden) {
+        if (pointsPerLevel < 1)
+            throw new IllegalArgumentException("pointsPerLevel cannot be below 1");
         this.variants = Set.copyOf(variants);
         this.pointEvents = Set.copyOf(pointEvents);
+        this.pointsPerLevel = pointsPerLevel;
         this.titleId = titleId;
         this.flavorId = flavorId;
+        this.flavorCompletedId = flavorCompletedId;
         this.hidden = hidden;
     }
 
@@ -116,21 +126,36 @@ public class AbilityTree {
         return treeNodes.entrySet().stream().map(entry -> Pair.of(entry.getKey(), entry.getValue()));
     }
 
-    public Component getTitle() {
+    public int getPointsPerLevel() {
+        return pointsPerLevel;
+    }
+
+    public MutableComponent getTitle() {
         return Component.translatable(titleId)
                 .withStyle(Style.EMPTY.withColor(ChatFormatting.WHITE));
+    }
+
+    protected Component makeFlavorComponent(String langEntry) {
+        return Component.literal("\"")
+                .append(Component.translatable(langEntry))
+                .append(Component.literal("\""))
+                .withStyle(Style.EMPTY
+                        .withColor(ChatFormatting.GRAY)
+                        .withItalic(true));
     }
 
     public Optional<Component> getFlavorText() {
         if (flavorId.isEmpty())
             return Optional.empty();
 
-        return Optional.of(Component.literal("\"")
-                .append(Component.translatable(flavorId))
-                .append(Component.literal("\""))
-                .withStyle(Style.EMPTY
-                        .withColor(ChatFormatting.GRAY)
-                        .withItalic(true)));
+        return Optional.of(makeFlavorComponent(flavorId));
+    }
+
+    public Optional<Component> getFlavorCompletedText() {
+        if (flavorCompletedId.isEmpty())
+            return getFlavorText();
+
+        return Optional.of(makeFlavorComponent(flavorCompletedId));
     }
 
     public boolean isHidden() {

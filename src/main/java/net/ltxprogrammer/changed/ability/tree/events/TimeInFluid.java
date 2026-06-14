@@ -12,7 +12,7 @@ public class TimeInFluid extends AbstractPointEvent<TimeInFluid.Criteria> {
     public static final Codec<TimeInFluid> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.fieldOf("reward").forGetter(event -> event.reward),
             Codec.INT.fieldOf("ticks").forGetter(event -> event.divisor),
-            RegistryElementPredicate.codec(ForgeRegistries.FLUID_TYPES.get()).fieldOf("fluid")
+            RegistryElementPredicate.codecElementOrTag(ForgeRegistries.FLUID_TYPES.get()).fieldOf("fluid")
                     .orElse(RegistryElementPredicate.forID(ForgeRegistries.FLUID_TYPES.get(), ForgeMod.WATER_TYPE.getId())).forGetter(event -> event.fluidTypePredicate),
             Codec.BOOL.fieldOf("submerged").forGetter(event -> event.submerged)
     ).apply(instance, TimeInFluid::new));

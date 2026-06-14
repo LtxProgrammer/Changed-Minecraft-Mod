@@ -4,6 +4,7 @@
   ],
   "titleId": "changed.ability_tree.lamnidae",
   "flavorId": "changed.ability_tree.lamnidae.flavor",
+  "flavorCompletedId": "changed.ability_tree.lamnidae.mastered",
   "pointEvents": [
     {
       "type": "changed:distance_swam",

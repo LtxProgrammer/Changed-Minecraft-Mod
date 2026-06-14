@@ -2,8 +2,10 @@
   "parent": "changed:latex/absorption",
   "titleId": "changed.ability_tree.latex.friendly_transfur",
   "flavorId": "changed.ability_tree.latex.friendly_transfur.flavor",
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "comment": "This node will allow the player to safe transfur a suited player, should they consent.",
   "comment2": "Successfully safe transfurring another player will leave both players in a temporary weakened state.",

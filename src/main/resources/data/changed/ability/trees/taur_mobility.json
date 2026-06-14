@@ -3,5 +3,6 @@
     "#changed:taur"
   ],
   "titleId": "changed.ability_tree.taur_mobility",
-  "flavorId": "changed.ability_tree.taur_mobility.flavor"
+  "flavorId": "changed.ability_tree.taur_mobility.flavor",
+  "flavorCompletedId": "changed.ability_tree.taur_mobility.mastered"
 }

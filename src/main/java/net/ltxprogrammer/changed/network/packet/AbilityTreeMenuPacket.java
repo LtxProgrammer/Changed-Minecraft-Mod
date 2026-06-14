@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
+import net.ltxprogrammer.changed.ability.tree.NodePrice;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.inventory.AbilityTreeMenu;
@@ -92,11 +93,11 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
                         return levelFuture.thenAccept(level -> {
                             if (!tree.get().hasPrerequisites(variant, nodeName.get()))
                                 return;
-                            if (!tree.get().canAfford(variant, nodeName.get()))
+                            if (!tree.get().canAfford(sender, variant, nodeName.get()))
                                 return;
 
-                            int price = tree.get().getEffectivePrice(variant, nodeName.get());
-                            if (tree.get().makePurchase(variant, nodeName.get(), price)) {
+                            NodePrice price = tree.get().getEffectivePrice(variant, nodeName.get());
+                            if (tree.get().makePurchase(sender, variant, nodeName.get(), price.levels(), price.experience(), price.takeItems(sender.getInventory()))) {
                                 sender.connection.send(
                                         Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofTree(AbilityTreeInstance.getForPlayer(sender), tree.get().getTree()), NetworkDirection.PLAY_TO_CLIENT)
                                 );

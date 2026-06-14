@@ -4,6 +4,7 @@
   ],
   "titleId": "changed.ability_tree.digitigrade_mobility",
   "flavorId": "changed.ability_tree.digitigrade_mobility.flavor",
+  "flavorCompletedId": "changed.ability_tree.digitigrade_mobility.mastered",
   "pointEvents": [
     {
       "type": "changed:distance_walked",

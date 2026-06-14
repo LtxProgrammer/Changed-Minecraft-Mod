@@ -2,8 +2,10 @@
   "parent": "changed:chlorophyll/photosynthesis2",
   "titleId": "changed.ability_tree.chlorophyll.photostasis",
   "flavorId": "changed.ability_tree.chlorophyll.photostasis.flavor",
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "missingEffects": [
     {

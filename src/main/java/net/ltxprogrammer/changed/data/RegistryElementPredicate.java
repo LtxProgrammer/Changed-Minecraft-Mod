@@ -154,6 +154,13 @@ public abstract class RegistryElementPredicate<T> implements Predicate<T> {
             return new FullNameSpec<>(registry, ResourceLocation.parse(string));
     }
 
+    public static <T> RegistryElementPredicate<T> parseStringElementOrTag(IForgeRegistry<T> registry, String string) {
+        if (string.startsWith("#"))
+            return new TagSpec<>(registry, ResourceLocation.parse(string.substring(1)));
+        else
+            return new FullNameSpec<>(registry, ResourceLocation.parse(string));
+    }
+
     public static <T> RegistryElementPredicate<T> forAll(IForgeRegistry<T> registry) {
         return new AllSpec<>(registry);
     }
@@ -211,6 +218,16 @@ public abstract class RegistryElementPredicate<T> implements Predicate<T> {
         return Codec.STRING.comapFlatMap(string -> {
             try {
                 return DataResult.success(parseString(registry, string));
+            } catch (Exception e) {
+                return DataResult.error(e::getMessage);
+            }
+        }, RegistryElementPredicate::toString);
+    }
+
+    public static <T> Codec<RegistryElementPredicate<T>> codecElementOrTag(IForgeRegistry<T> registry) {
+        return Codec.STRING.comapFlatMap(string -> {
+            try {
+                return DataResult.success(parseStringElementOrTag(registry, string));
             } catch (Exception e) {
                 return DataResult.error(e::getMessage);
             }

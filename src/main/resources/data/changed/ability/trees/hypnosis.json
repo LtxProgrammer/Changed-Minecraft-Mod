@@ -3,5 +3,6 @@
     "#changed:hypnotic"
   ],
   "titleId": "changed.ability_tree.hypnosis",
-  "flavorId": "changed.ability_tree.hypnosis.flavor"
+  "flavorId": "changed.ability_tree.hypnosis.flavor",
+  "flavorCompletedId": "changed.ability_tree.hypnosis.mastered"
 }

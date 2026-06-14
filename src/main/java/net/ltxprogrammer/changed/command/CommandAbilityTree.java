@@ -25,6 +25,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
 
+import java.util.List;
+
 @Mod.EventBusSubscriber
 public class CommandAbilityTree {
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_TREES = SuggestionProviders.register(Changed.modResource("trees"), (p_121667_, p_121668_) -> {
@@ -82,7 +84,7 @@ public class CommandAbilityTree {
         if (node == null)
             throw NOT_NODE.create();
 
-        int granted = tree.get().makePurchase(variant.getParent(), nodeId, 0) ? 1 : 0;
+        int granted = tree.get().makePurchase(player, variant.getParent(), nodeId, 0, 0, List.of()) ? 1 : 0;
 
         if (granted > 0) {
             player.connection.send(
@@ -107,7 +109,7 @@ public class CommandAbilityTree {
             throw NOT_TREE.create();
 
         int granted = tree.get().getTree().getTreeNodes().map(Pair::getFirst).map(nodeId -> {
-            return tree.get().makePurchase(variant.getParent(), nodeId, 0) ? 1 : 0;
+            return tree.get().makePurchase(player, variant.getParent(), nodeId, 0, 0, List.of()) ? 1 : 0;
         }).reduce(Integer::sum).orElse(0);
 
         if (granted > 0) {
@@ -129,7 +131,7 @@ public class CommandAbilityTree {
         if (!tree.get().getTree().hasNode(nodeId))
             throw NOT_NODE.create();
 
-        int refunded = tree.get().refundNodePurchases(nodeId);
+        int refunded = tree.get().refundNodePurchases(player, nodeId);
 
         if (refunded > 0) {
             player.connection.send(
@@ -149,7 +151,7 @@ public class CommandAbilityTree {
             throw NOT_TREE.create();
 
         int refunded = tree.get().getTree().getTreeNodes().map(Pair::getFirst).map(nodeId -> {
-            return tree.get().refundNodePurchases(nodeId);
+            return tree.get().refundNodePurchases(player, nodeId);
         }).reduce(Integer::sum).orElse(0);
 
         if (refunded > 0) {
