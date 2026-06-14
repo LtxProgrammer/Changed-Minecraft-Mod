@@ -5,8 +5,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.tree.*;
 import net.ltxprogrammer.changed.ability.tree.condition.*;
 import net.ltxprogrammer.changed.ability.tree.effects.*;
-import net.ltxprogrammer.changed.ability.tree.events.AbstractPointEvent;
-import net.ltxprogrammer.changed.ability.tree.events.OnTransfurOther;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -38,6 +36,10 @@ public class ChangedAbilityTreeCodecs {
      * Gives the player an enchantment that is intrinsic to themselves, such as Aqua Affinity
      */
     public static final RegistryObject<Codec<IntrinsicEnchantmentNodeEffect>> INTRINSIC_ENCHANTMENT_EFFECT = NODE_EFFECT_REGISTRY.register("intrinsic_enchantment", () -> IntrinsicEnchantmentNodeEffect.CODEC);
+    /**
+     * Gives the player an enchantment that is intrinsic to themselves, such as Aqua Affinity
+     */
+    public static final RegistryObject<Codec<PostChainNodeEffect>> POST_CHAIN_NODE_EFFECT = NODE_EFFECT_REGISTRY.register("post_chain", () -> PostChainNodeEffect.CODEC);
 
     public static final DeferredRegister<Codec<? extends AbstractCondition>> EFFECT_CONDITION_REGISTRY = ChangedRegistry.ABILITY_EFFECT_CONDITIONS.createDeferred(Changed.MODID);
 
