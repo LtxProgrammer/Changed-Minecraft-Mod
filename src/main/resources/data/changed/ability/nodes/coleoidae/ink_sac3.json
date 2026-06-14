@@ -2,13 +2,16 @@
   "parent": "changed:coleoidae/ink_sac2",
   "titleId": "changed.ability_tree.coleoidae.ink_sac3",
   "flavorId": "changed.ability_tree.coleoidae.ink_sac3.flavor",
-  "price": 1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "acquiredEffects": [
     {
       "type": "changed:unlock_active_ability",
       "ability": "changed:create_inkball",
-      "level": 3
+      "level": 2
     }
   ]
 }

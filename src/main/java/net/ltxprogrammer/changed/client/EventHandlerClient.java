@@ -142,6 +142,22 @@ public class EventHandlerClient {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
+    public void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
+        if (!(event.getCamera().getEntity() instanceof LivingEntity livingEntity))
+            return;
+        var ability = AbstractAbility.getAbilityInstance(livingEntity, ChangedAbilities.WALL_CLIMB.get());
+        if (ability == null || !ability.shouldAnimateCamera())
+            return;
+
+        float partialTick = (float) event.getPartialTick();
+
+        //event.setYaw(ability.getEffectiveYaw(partialTick));
+        //event.setPitch(ability.getEffectivePitch(partialTick));
+        event.setRoll(ability.getEffectiveRoll(partialTick));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
     public void onFogColors(ViewportEvent.ComputeFogColor event) {
         if (!(event.getCamera().getBlockAtCamera().getFluidState().getType() instanceof AbstractLatexFluid abstractLatexFluid)) return;
 

@@ -3,5 +3,6 @@
     "#changed:winged_arm"
   ],
   "titleId": "changed.ability_tree.arm_wing",
-  "flavorId": "changed.ability_tree.arm_wing.flavor"
+  "flavorId": "changed.ability_tree.arm_wing.flavor",
+  "flavorCompletedId": "changed.ability_tree.arm_wing.mastered"
 }

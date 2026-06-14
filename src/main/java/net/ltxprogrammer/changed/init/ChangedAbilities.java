@@ -14,12 +14,14 @@ public class ChangedAbilities {
     public static RegistryObject<SwitchTransfurModeAbility> SWITCH_TRANSFUR_MODE = REGISTRY.register("switch_transfur_mode", SwitchTransfurModeAbility::new);
     public static RegistryObject<SimpleCreateItemAbility> CREATE_COBWEB = REGISTRY.register("create_cobweb",
             () -> new SimpleCreateItemAbility(() -> new ItemStack(Items.COBWEB), 5.0f, 6.0f));
+    public static RegistryObject<SimpleCreateItemAbility> CREATE_STRING = REGISTRY.register("create_string",
+            () -> new SimpleCreateItemAbility(() -> new ItemStack(Items.STRING, 2), 5.0f, 6.0f));
     public static RegistryObject<SimpleCreateItemAbility> CREATE_INKBALL = REGISTRY.register("create_inkball",
             () -> new SimpleCreateItemAbility(() -> new ItemStack(ChangedItems.LATEX_INKBALL.get()), 5.0f, 6.0f));
     public static RegistryObject<SimpleCreateItemAbility> CREATE_HONEYCOMB = REGISTRY.register("create_honeycomb",
             () -> new SimpleCreateItemAbility(() -> new ItemStack(Items.HONEYCOMB), 5.0f, 6.0f));
     public static RegistryObject<SimpleCreateItemAbility> CREATE_HONEY = REGISTRY.register("create_honey",
-            () -> new SimpleCreateItemAbility(() -> new ItemStack(Items.HONEYCOMB), 5.0f, 6.0f));
+            () -> new SimpleCreateItemAbility(() -> new ItemStack(Items.HONEY_BOTTLE), 5.0f, 6.0f));
     public static RegistryObject<SwitchHandsAbility> SWITCH_HANDS = REGISTRY.register("switch_hands", SwitchHandsAbility::new);
     public static RegistryObject<AccessChestAbility> ACCESS_CHEST = REGISTRY.register("access_chest", AccessChestAbility::new);
     public static RegistryObject<SwitchGenderAbility> SWITCH_GENDER = REGISTRY.register("switch_gender", SwitchGenderAbility::new);
@@ -36,6 +38,7 @@ public class ChangedAbilities {
     public static RegistryObject<WingFlapAbility> WING_FLAP = REGISTRY.register("wing_flap", WingFlapAbility::new);
     public static RegistryObject<SkyDiveAbility> SKY_DIVE = REGISTRY.register("sky_dive", SkyDiveAbility::new);
     public static RegistryObject<GaleForceWindsAbility> GALE_FORCE_WINDS = REGISTRY.register("gale_force_winds", GaleForceWindsAbility::new);
+    public static RegistryObject<WallClimbAbility> WALL_CLIMB = REGISTRY.register("wall_climb", WallClimbAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

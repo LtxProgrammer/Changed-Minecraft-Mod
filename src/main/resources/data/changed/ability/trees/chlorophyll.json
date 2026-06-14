@@ -3,5 +3,6 @@
     "#changed:plant_like"
   ],
   "titleId": "changed.ability_tree.chlorophyll",
-  "flavorId": "changed.ability_tree.chlorophyll.flavor"
+  "flavorId": "changed.ability_tree.chlorophyll.flavor",
+  "flavorCompletedId": "changed.ability_tree.chlorophyll.mastered"
 }

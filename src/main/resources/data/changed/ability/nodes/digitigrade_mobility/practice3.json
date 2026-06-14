@@ -3,7 +3,9 @@
   "titleId": "changed.ability_tree.practice3",
   "flavorId": "changed.ability_tree.movement.digitigrade.practice3",
   "display": { "icon": { "item": "minecraft:diamond_leggings" } },
-  "price": 1,
+  "price": {
+    "levels": 1
+  },
 
   "missingEffects": [
     {

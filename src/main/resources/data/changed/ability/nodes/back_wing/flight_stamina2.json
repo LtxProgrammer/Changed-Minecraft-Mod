@@ -2,7 +2,10 @@
   "parent": "changed:back_wing/flight_stamina1",
   "titleId": "changed.ability_tree.back_wing.flight_stamina2",
   "flavorId": "changed.ability_tree.back_wing.flight_stamina2.flavor",
-  "price": 1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "acquiredEffects": [
     {

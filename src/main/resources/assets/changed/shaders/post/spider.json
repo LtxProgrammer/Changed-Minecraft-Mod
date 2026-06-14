@@ -1,0 +1,31 @@
+{
+  "targets": [
+    "temp",
+    "swap"
+  ],
+  "passes": [
+    {
+      "name": "changed:uv_distort",
+      "intarget": "minecraft:main",
+      "outtarget": "temp",
+      "auxtargets": [
+        {
+          "name": "DistortionSampler",
+          "id": "changed:distortion/spider_blur",
+          "width": 512,
+          "height": 512,
+          "bilinear": true
+        }
+      ],
+      "uniforms": [
+        { "name": "Strength", "values": [ 0.5 ] }
+      ]
+    },
+    {
+      "name": "blit",
+      "intarget": "temp",
+      "outtarget": "minecraft:main",
+      "uniforms": []
+    }
+  ]
+}

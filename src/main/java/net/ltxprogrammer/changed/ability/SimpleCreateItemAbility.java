@@ -1,5 +1,8 @@
 package net.ltxprogrammer.changed.ability;
 
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Supplier;
@@ -28,8 +31,15 @@ public class SimpleCreateItemAbility extends SimpleAbility {
         var item = itemSupplier.get();
         if (!entity.addItem(item))
             entity.drop(item, false, false);
-        if (!entity.isCreative())
+        if (!entity.isCreative()) {
             entity.causeFoodExhaustion(exhaustion);
+
+            switch (getAbilityLevel(entity)) {
+                case 0 -> entity.getEntity().addEffect(new MobEffectInstance(MobEffects.HUNGER, 60, 1));
+                case 1 -> entity.getEntity().addEffect(new MobEffectInstance(MobEffects.HUNGER, 60, 0));
+                default -> {}
+            }
+        }
     }
 
     @Override
@@ -39,7 +49,7 @@ public class SimpleCreateItemAbility extends SimpleAbility {
 
     @Override
     public int getChargeTime(IAbstractChangedEntity entity) {
-        return 20;
+        return 20 * (3 - Mth.clamp(getAbilityLevel(entity), 0, 2));
     }
 
     @Override

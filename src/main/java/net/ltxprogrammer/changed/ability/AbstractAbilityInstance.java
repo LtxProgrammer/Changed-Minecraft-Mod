@@ -60,7 +60,7 @@ public abstract class AbstractAbilityInstance {
         }
     }
 
-    public final int getLevel() {
+    public final int getAbilityLevel() {
         return level;
     }
 

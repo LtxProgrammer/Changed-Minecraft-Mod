@@ -6,12 +6,14 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.client.InvertedInput;
 import net.ltxprogrammer.changed.client.LocalPlayerAccessor;
 import net.ltxprogrammer.changed.client.NullInput;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -65,6 +67,8 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
     @Shadow private boolean flashOnSetHealth;
 
     @Shadow private boolean handsBusy;
+
+    @Shadow public abstract boolean isCrouching();
 
     @Override
     public void setHandsBusy(boolean busy) {
@@ -166,6 +170,11 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
         ProcessTransfur.ifPlayerTransfurred(this, variant -> {
             if (variant.getChangedEntity() != null)
                 callback.setReturnValue(variant.getChangedEntity().isMovingSlowly());
+        });
+
+        AbstractAbility.getAbilityInstanceSafe(this, ChangedAbilities.WALL_CLIMB.get()).ifPresent(wallClimb -> {
+            if (wallClimb.isActive())
+                callback.setReturnValue(this.isCrouching());
         });
     }
 

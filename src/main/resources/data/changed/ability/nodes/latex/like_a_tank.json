@@ -6,7 +6,16 @@
     "icon": { "item": "minecraft:netherite_chestplate", "nbt": { "Enchantments": [{ "id": "minecraft:unbreaking", "lvl": 1 }] } },
     "frame": "ultimate"
   },
-  "price": 4,
+  "price": {
+    "levels": 4,
+    "groupDiscountLevels": -2,
+    "items": [
+      {
+        "item": "minecraft:diamond_chestplate",
+        "groupDiscounted": true
+      }
+    ]
+  },
 
   "acquiredEffects": [
     {

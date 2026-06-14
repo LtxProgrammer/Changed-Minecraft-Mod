@@ -50,8 +50,9 @@ public class AbilityTreeSyncInstancePacket implements ChangedPacket {
         if (context.getDirection().getReceptionSide() == LogicalSide.CLIENT) {
             context.setPacketHandled(true);
             return levelFuture.thenAccept(level -> {
-                AbilityTreeInstance.getForPlayer(UniversalDist.getLocalPlayer())
-                        .read(level, treeInfo, incomplete);
+                var localPlayer = UniversalDist.getLocalPlayer();
+                AbilityTreeInstance.getForPlayer(localPlayer)
+                        .read(localPlayer, treeInfo, incomplete);
             });
         }
 

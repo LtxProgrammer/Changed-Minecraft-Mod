@@ -3,10 +3,11 @@
   "titleId": "changed.ability_tree.latex.aftertaste1",
   "flavorId": "changed.ability_tree.latex.aftertaste1.flavor",
   "display": { "icon": { "item": "minecraft:apple" } },
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
-  "comment": "This node grants regen I for 10 seconds after replication, or regen II after absorption.",
   "acquiredEffects": [
     {
       "type": "changed:enable_feature",

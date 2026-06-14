@@ -3,5 +3,6 @@
     "#changed:naga"
   ],
   "titleId": "changed.ability_tree.naga_mobility",
-  "flavorId": "changed.ability_tree.naga_mobility.flavor"
+  "flavorId": "changed.ability_tree.naga_mobility.flavor",
+  "flavorCompletedId": "changed.ability_tree.naga_mobility.mastered"
 }

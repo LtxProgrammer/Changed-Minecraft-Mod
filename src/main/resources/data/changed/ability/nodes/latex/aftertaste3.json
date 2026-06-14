@@ -6,10 +6,11 @@
     "icon": { "item": "minecraft:enchanted_golden_apple" },
     "frame": "strong"
   },
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
-  "comment": "This node grants Instant Health I & Saturation III for 1 second after absorption, or Saturation I seconds after replication.",
   "acquiredEffects": [
     {
       "type": "changed:enable_feature",

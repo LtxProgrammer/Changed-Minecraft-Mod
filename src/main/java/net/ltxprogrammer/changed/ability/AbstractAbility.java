@@ -243,7 +243,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     }
 
     protected final int getAbilityLevel(IAbstractChangedEntity entity) {
-        return entity.getAbilityInstanceSafe(this).map(AbstractAbilityInstance::getLevel).orElse(0);
+        return entity.getAbilityInstanceSafe(this).map(AbstractAbilityInstance::getAbilityLevel).orElse(0);
     }
 
     public Instance makeInstance(IAbstractChangedEntity entity) {

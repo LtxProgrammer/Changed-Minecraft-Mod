@@ -52,7 +52,7 @@ public class InFluidCondition extends AbstractCondition {
     public final Qualification qualification;
 
     public static final Codec<InFluidCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            RegistryElementPredicate.codec(ForgeRegistries.FLUID_TYPES.get()).fieldOf("fluid").forGetter(condition -> condition.fluid),
+            RegistryElementPredicate.codecElementOrTag(ForgeRegistries.FLUID_TYPES.get()).fieldOf("fluid").forGetter(condition -> condition.fluid),
             Qualification.CODEC.fieldOf("qualification").forGetter(condition -> condition.qualification)
     ).apply(instance, InFluidCondition::new));
 

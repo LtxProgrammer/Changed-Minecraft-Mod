@@ -2,8 +2,19 @@
   "parent": { "tree": "changed:arachnidae" },
   "titleId": "changed.ability_tree.arachnidae.spinneret_practice1",
   "flavorId": "changed.ability_tree.arachnidae.spinneret_practice1.flavor",
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
-  "acquiredEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:create_cobweb"
+    },
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:create_string"
+    }
+  ]
 }

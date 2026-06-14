@@ -3,5 +3,6 @@
     "#changed:multi_armed"
   ],
   "titleId": "changed.ability_tree.multi_arm",
-  "flavorId": "changed.ability_tree.multi_arm.flavor"
+  "flavorId": "changed.ability_tree.multi_arm.flavor",
+  "flavorCompletedId": "changed.ability_tree.multi_arm.mastered"
 }

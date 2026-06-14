@@ -2,8 +2,10 @@
   "parent": { "tree": "changed:aquatic" },
   "titleId": "changed.ability_tree.practice1",
   "flavorId": "changed.ability_tree.aquatic.practice1",
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "missingEffects": [
     {

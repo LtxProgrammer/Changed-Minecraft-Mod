@@ -3,5 +3,6 @@
     "#changed:apian"
   ],
   "titleId": "changed.ability_tree.apidae",
-  "flavorId": "changed.ability_tree.apidae.flavor"
+  "flavorId": "changed.ability_tree.apidae.flavor",
+  "flavorCompletedId": "changed.ability_tree.apidae.mastered"
 }

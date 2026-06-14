@@ -3,7 +3,10 @@
   "titleId": "changed.ability_tree.latex.grab",
   "flavorId": "changed.ability_tree.latex.grab.flavor",
   "display": { "icon": "changed:textures/gui/nodes/grab.png" },
-  "price": 1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "comment": "This node would grant the grab ability to the player, but not suiting",
   "acquiredEffects": [

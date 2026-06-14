@@ -233,10 +233,12 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
 
     protected void tickAbilityTree() {
         var abilityTree = ((PlayerDataExtension)host).getAbilityTree();
-        abilityTree.updateTrees();
+        abilityTree.updateTrees(host);
         variantFeatures.clear();
         activeNodeEffects.clear();
-        abilityTree.gatherNodeEffects(this, activeNodeEffects::add);
+        abilityTree.gatherNodeEffects(this, nodeEffect -> {
+            activeNodeEffects.put(nodeEffect.getCodec(), nodeEffect);
+        });
 
         {
             Map<Attribute, Double> attributeAdders = getBaseAttributeValues(this.getHost().getAttributes());
@@ -284,7 +286,7 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
             host.addEffect(new MobEffectInstance(mobEffectNode.mobEffect));
         });
 
-        List<NodeEffect> syncedEffects = activeNodeEffects.stream()
+        List<NodeEffect> syncedEffects = activeNodeEffects.values().stream()
                 .map(NodeEffect::getClientNodeEffect)
                 .filter(Optional::isPresent)
                 .map(Optional::get).toList();

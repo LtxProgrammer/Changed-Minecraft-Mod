@@ -25,7 +25,7 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
         boolean inWater = entity.getEntity().isEyeInFluidType(ForgeMod.WATER_TYPE.get());
         if (inWater && entity.getEntity().hasPose(Pose.SWIMMING) && entity.getEntity().isSprinting())
             return true;
-        if (ability.getAbilityLevel(entity) > 0 && !inWater && !entity.getEntity().onGround() && !entity.getEntity().onClimbable())
+        if (getAbilityLevel() > 0 && !inWater && !entity.getEntity().onGround() && !entity.getEntity().onClimbable())
             return true;
         return false;
     }
@@ -117,7 +117,7 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
     public void tickIdle() {
         var self = entity.getEntity();
         var swimSpeed = self.getAttribute(ForgeMod.SWIM_SPEED.get());
-        int level = ability.getAbilityLevel(entity);
+        int level = getAbilityLevel();
 
         double baselineSpeed = self.getSpeed() * (swimSpeed != null ? swimSpeed.getValue() : 1.0) * 4.0;
 

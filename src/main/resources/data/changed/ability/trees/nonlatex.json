@@ -4,6 +4,7 @@
   ],
   "titleId": "changed.ability_tree.nonlatex",
   "flavorId": "changed.ability_tree.nonlatex.flavor",
+  "flavorCompletedId": "changed.ability_tree.nonlatex.mastered",
   "pointEvents": [
     {
       "type": "changed:time_as_variant",
