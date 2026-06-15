@@ -1,7 +1,9 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.AttributePresets;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -21,6 +23,7 @@ public class PooltoyWolf extends AbstractPooltoy {
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(4.0);
+        attributes.getInstance(ChangedAttributes.MINING_SPEED.get()).setBaseValue(AttributePresets.MINING_FATIGUE_1);
     }
 
     @Override

@@ -78,7 +78,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public TransfurMode transfurMode;
     public TransfurVariant.BreatheMode breatheMode;
     public VisionType visionType;
-    public MiningStrength miningStrength;
     public UseItemMode itemUseMode;
     public int ageAsVariant = 0;
     protected int jumpCharges = 0;
@@ -299,7 +298,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         this.transfurMode = parent.transfurMode;
         this.breatheMode = parent.breatheMode;
         this.visionType = parent.visionType;
-        this.miningStrength = parent.miningStrength;
         this.itemUseMode = parent.itemUseMode;
     }
 

@@ -151,9 +151,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
             if (variant.visionType.test(effect))
                 callback.setReturnValue(true);
 
-            if (variant.miningStrength.test(effect))
-                callback.setReturnValue(true);
-
             if (effect.equals(MobEffects.NIGHT_VISION)) {
                 if (WhiteLatexTransportInterface.isEntityInWhiteLatex(player))
                     callback.setReturnValue(true);
@@ -167,9 +164,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     public void getEffect(MobEffect effect, CallbackInfoReturnable<MobEffectInstance> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
             if (variant.visionType.test(effect))
-                callback.setReturnValue(new MobEffectInstance(effect, 300, 1, false, false));
-
-            if (variant.miningStrength.test(effect))
                 callback.setReturnValue(new MobEffectInstance(effect, 300, 1, false, false));
 
             if (effect.equals(MobEffects.NIGHT_VISION)) {
