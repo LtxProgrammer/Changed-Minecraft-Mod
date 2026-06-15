@@ -369,7 +369,9 @@
   "container.changed.cardboard_box_small": "Kicsi kartondoboz",
 
   "text.changed.ability_tree.distant_node": "Úgy érzed, van még mit fejlesztened ezen a képességfán.",
-  "text.changed.ability_tree.price": "%s pont",
+  "text.changed.ability_tree.price.free": "Ingyenes",
+  "text.changed.ability_tree.price.levels": "%s szint",
+  "text.changed.ability_tree.price.xplevels": "%s tapasztalati szint",
   "text.changed.ability_tree.node.intrinsic_enchantment.plus": "+Belső varázslat: %s",
   "text.changed.ability_tree.node.intrinsic_enchantment.take": "-Belső varázslat: %s",
   "text.changed.ability_tree.node.mob_effect.plus": "+Hatás: %s",
@@ -983,49 +985,66 @@
 
   "changed.ability_tree.latex": "Latex elsajátítása",
   "changed.ability_tree.latex.flavor": "A húsodat és a véredet folyékony, viszkózus ragacs váltotta fel. Gyengének érzed magad, mégis testedből felismeretlen lehetőségek csöpögnek.",
+  "changed.ability_tree.latex.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered being latex]",
 
   "changed.ability_tree.nonlatex": "Biológiai elsajátítás",
   "changed.ability_tree.nonlatex.flavor": "Másnak érzed magad... Alig ismersz magadra, miközben lenézel a kezeidre, de a szíved hevesebben ver, mint valaha.",
+  "changed.ability_tree.nonlatex.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered being non-latex]",
 
   "changed.ability_tree.digitigrade_mobility": "Ujjonjáró mobilitás",
   "changed.ability_tree.digitigrade_mobility.flavor": "Állatiasabbnak találod a lábaidat, mint amire emlékeztél.",
+  "changed.ability_tree.digitigrade_mobility.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered using their animalistic legs]",
   "changed.ability_tree.quadrupedal_mobility": "Négylábú mobilitás",
   "changed.ability_tree.quadrupedal_mobility.flavor": "Úgy érzed, mintha folyamatosan görnyednél. Ami egykor a kezeid voltak, az most megakadályoz abban, hogy előreess.",
+  "changed.ability_tree.quadrupedal_mobility.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered the quadrupedal stance]",
   "changed.ability_tree.taur_mobility": "Taur mobilitás",
   "changed.ability_tree.taur_mobility.flavor": "Egyenesen állsz, mégis négykézlábra kerülsz. Botladozva próbálsz talpra állni.",
+  "changed.ability_tree.taur_mobility.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered the quadrupedal+upright stance]",
   "changed.ability_tree.naga_mobility": "Nága mobilitás",
   "changed.ability_tree.naga_mobility.flavor": "Mindkét lábad egy hosszú, kígyózó farokká olvadt össze. Biztosan nem fogsz tudni többé járni.",
+  "changed.ability_tree.naga_mobility.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered using their snake tail]",
   "changed.ability_tree.mer_mobility": "Sellő mobilitás",
   "changed.ability_tree.mer_mobility.flavor": "Mindkét lábad egy nagy uszonyokkal díszített farokká olvadt össze. Biztosan nem fogsz tudni többé járni.",
+  "changed.ability_tree.mer_mobility.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered using their mer tail]",
 
   "changed.ability_tree.arm_wing": "Szárnykarok elsajátítása",
   "changed.ability_tree.arm_wing.flavor": "Vastag háló képződött a karodtól a hátadig. Bizsergés fut a levegőben.",
+  "changed.ability_tree.arm_wing.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered flying]",
   "changed.ability_tree.back_wing": "Háton levő szárnyak elsajátítása",
   "changed.ability_tree.back_wing.flavor": "Nagy szárnyak díszítik most a hátadat. Jobban tolnak, mint a levegőt.",
+  "changed.ability_tree.back_wing.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered flying]",
 
   "changed.ability_tree.aquatic": "Vízi elsajátítás",
   "changed.ability_tree.aquatic.flavor": "Kopoltyúk képződtek az újonnan sima bőrödön. Megfulladsz a száraz levegőtől, miközben új élőhelyedet, a vizet kívánod.",
+  "changed.ability_tree.aquatic.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered swimming]",
 
   "changed.ability_tree.multi_arm": "Többkaros elsajátítás",
   "changed.ability_tree.multi_arm.flavor": "Több karod van, mint korábban. Olyan érzés, mintha csak útban lennének.",
+  "changed.ability_tree.multi_arm.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered all their arms]",
 
   "changed.ability_tree.hypnosis": "Hipnózis elsajátítása",
   "changed.ability_tree.hypnosis.flavor": "Hipnotikus tekinteted megkövesít minden lényt, aki a szemedbe kerül, transzba zárva, miközben behatolsz az elméjükbe.",
+  "changed.ability_tree.hypnosis.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered hypnosis]",
 
   "changed.ability_tree.chlorophyll": "Klorofilos elsajátítás",
   "changed.ability_tree.chlorophyll.flavor": "Zöld bőröd könnyen elnyeli a napfényt. Még soha nem volt ilyen kellemes.",
+  "changed.ability_tree.chlorophyll.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered soaking up the sun]",
 
   "changed.ability_tree.apidae": "Méhes elsajátítás",
   "changed.ability_tree.apidae.flavor": "Fekete és sárga; egy igazi keményen dolgozó munkás színei. Te teszed a magadét!",
+  "changed.ability_tree.apidae.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered beeing a bee]",
 
   "changed.ability_tree.arachnidae": "Pókos elsajátítás",
   "changed.ability_tree.arachnidae.flavor": "A barlangok és pókhálók olyanok számodra, mint az otthon. Válts otthonná bárhol a saját szövőmirigyeddel.",
+  "changed.ability_tree.arachnidae.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered being a spider]",
 
   "changed.ability_tree.lamnidae": "Cápás elsajátítás",
   "changed.ability_tree.lamnidae.flavor": "Az óceán a te birodalmad, a mélységek a tied, hogy urald!",
+  "changed.ability_tree.lamnidae.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered being a shark]",
 
   "changed.ability_tree.coleoidae": "Tintahalas elsajátítás",
   "changed.ability_tree.coleoidae.flavor": "Amikor az élet 10 végtagot ad, kihozod belőle a legtöbbet.",
+  "changed.ability_tree.coleoidae.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered being a squid]",
 
   "changed.ability_tree.practice1": "Gyakorlat I",
   "changed.ability_tree.practice2": "Gyakorlat II",
