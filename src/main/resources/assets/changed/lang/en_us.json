@@ -50,6 +50,8 @@
   "ability.changed.gale_force_winds.desc": "Flap your wings to send out a strong gust of wind.",
   "ability.changed.wall_climb": "Wall Climb",
   "ability.changed.wall_climb.desc": "Start crawling on nearby surfaces.",
+  "ability.changed.cobweb_rappel": "Cobweb Rappel",
+  "ability.changed.cobweb_rappel.desc": "Safely descend from a ceiling.",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.desc": "Hold onto an entity to either transfur them or to protect them.",
@@ -1090,7 +1092,8 @@
   "changed.ability_tree.arachnidae.adapted_vision": "Adapted Vision",
   "changed.ability_tree.arachnidae.adapted_vision.flavor": "You've adapted to having multiple eyes. You're seeing things more clearly.",
   "changed.ability_tree.arachnidae.climb_cobweb": "Climb Cobweb",
-  "changed.ability_tree.arachnidae.rappel": "Rappel",
+  "changed.ability_tree.arachnidae.climb_cobweb.flavor": "(DO NOT TRANSLATE) [Passive: the player can freely climb through cobweb like a ladder, straight through while in wall climb mode]",
+  "changed.ability_tree.arachnidae.rappel": "Cobweb Rappel",
   "changed.ability_tree.arachnidae.rappel.flavor": "Your silk allows you to safely descend from high places.",
   "changed.ability_tree.arachnidae.spinneret_practice1": "Spinneret Practice I",
   "changed.ability_tree.arachnidae.spinneret_practice1.flavor": "You're getting better at producing silk.",
