@@ -59,10 +59,10 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
 
     @Inject(method = "restoreFrom", at = @At("HEAD"))
     public void restoreFrom(ServerPlayer player, boolean restore, CallbackInfo callbackInfo) {
-        ServerPlayer self = (ServerPlayer)(Object)this;
-
-        if (player instanceof PlayerDataExtension ext)
+        if (player instanceof PlayerDataExtension ext) {
             setBasicPlayerInfo(ext.getBasicPlayerInfo());
+            getAbilityTree().restoreFrom(ext.getAbilityTree());
+        }
 
         if (player.level().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) {
             ProcessTransfur.ifPlayerTransfurred(player, oldVariant -> {
@@ -71,7 +71,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 if (!restore && oldVariant.getParent().is(ChangedTags.TransfurVariants.TEMPORARY_ONLY))
                     return; // Exception to keepForm gamerule
 
-                var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.transfurContext, oldVariant.transfurProgression);
+                var newVariant = ProcessTransfur.setPlayerTransfurVariant(this, oldVariant.getParent(), oldVariant.transfurContext, oldVariant.transfurProgression);
                 if (newVariant == null)
                     return;
                 newVariant.load(oldVariant.saveForStorage());
@@ -166,6 +166,9 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 ProcessTransfur.setPlayerTransfurProgress(this, floatTag.getAsFloat());
             }
         }
+        if (tag.contains("AccountedAbilityTrees")) {
+            getAbilityTree().read(this, tag.getCompound("AccountedAbilityTrees"), false);
+        }
 
         readTransfurVariant(tag);
 
@@ -186,6 +189,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
     protected void addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
         tag.putInt("PaleExposure", Pale.getPaleExposure(this));
         tag.putFloat("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this));
+        tag.put("AccountedAbilityTrees", getAbilityTree().save());
         ProcessTransfur.ifPlayerTransfurred(this, variant -> {
             TagUtil.putResourceLocation(tag, "TransfurVariant", variant.getFormId());
             tag.put("TransfurVariantData", variant.saveForStorage());

@@ -4,6 +4,7 @@
   ],
   "titleId": "changed.ability_tree.coleoidae",
   "flavorId": "changed.ability_tree.coleoidae.flavor",
+  "flavorCompletedId": "changed.ability_tree.coleoidae.mastered",
   "pointEvents": [
     {
       "type": "changed:distance_swam",

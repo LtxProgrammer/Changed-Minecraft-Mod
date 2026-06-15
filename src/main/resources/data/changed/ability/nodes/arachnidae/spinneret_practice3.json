@@ -2,8 +2,10 @@
   "parent": "changed:arachnidae/spinneret_practice2",
   "titleId": "changed.ability_tree.arachnidae.spinneret_practice3",
   "flavorId": "changed.ability_tree.arachnidae.spinneret_practice3.flavor",
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "acquiredEffects": [
     {

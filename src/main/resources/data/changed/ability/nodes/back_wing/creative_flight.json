@@ -2,7 +2,10 @@
   "parent": { "tree": "changed:back_wing" },
   "titleId": "changed.ability_tree.back_wing.creative_flight",
   "flavorId": "changed.ability_tree.back_wing.creative_flight.flavor",
-  "price": 1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "acquiredEffects": [
     {

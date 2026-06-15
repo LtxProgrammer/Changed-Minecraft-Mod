@@ -2,7 +2,10 @@
   "parent": { "tree": "changed:coleoidae" },
   "titleId": "changed.ability_tree.coleoidae.ink_sac1",
   "flavorId": "changed.ability_tree.coleoidae.ink_sac1.flavor",
-  "price": 1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "acquiredEffects": [
     {

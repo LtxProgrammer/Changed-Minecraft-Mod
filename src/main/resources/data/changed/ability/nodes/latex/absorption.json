@@ -3,9 +3,11 @@
   "titleId": "changed.ability_tree.latex.absorption",
   "flavorId": "changed.ability_tree.latex.absorption.flavor",
   "display": { "icon": "changed:textures/gui/nodes/absorption.png" },
-  "price": 1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
-  "comment": "This node would allow the player to switch their transfur mode to absorb the entity. It also allows the player to suit the grabbed entity.",
   "acquiredEffects": [
     {
       "type": "changed:enable_feature",

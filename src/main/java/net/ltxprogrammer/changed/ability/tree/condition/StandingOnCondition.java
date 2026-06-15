@@ -13,7 +13,7 @@ public class StandingOnCondition extends AbstractCondition {
     public final List<RegistryElementPredicate<Block>> blocks;
 
     public static final Codec<StandingOnCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.list(RegistryElementPredicate.codec(ForgeRegistries.BLOCKS)).fieldOf("blocks").forGetter(condition -> condition.blocks)
+            Codec.list(RegistryElementPredicate.codecElementOrTag(ForgeRegistries.BLOCKS)).fieldOf("blocks").forGetter(condition -> condition.blocks)
     ).apply(instance, StandingOnCondition::new));
 
     public StandingOnCondition(List<RegistryElementPredicate<Block>> blocks) {

@@ -533,7 +533,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                     Changed.PACKET_HANDLER.toVanillaPacket(AccessoryEntities.INSTANCE.syncPacket(serverPlayer), NetworkDirection.PLAY_TO_CLIENT)
             );
 
-            AbilityTreeInstance.getForPlayer(serverPlayer).updateTrees();
+            AbilityTreeInstance.getForPlayer(serverPlayer).updateTrees(serverPlayer);
             serverPlayer.connection.send(
                     Changed.PACKET_HANDLER.toVanillaPacket(AbilityTrees.INSTANCE.syncPacket(serverPlayer), NetworkDirection.PLAY_TO_CLIENT)
             );

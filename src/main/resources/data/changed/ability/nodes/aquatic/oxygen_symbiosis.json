@@ -3,8 +3,10 @@
   "titleId": "changed.ability_tree.aquatic.oxygen_symbiosis",
   "flavorId": "changed.ability_tree.aquatic.oxygen_symbiosis.flavor",
   "display": { "icon": "minecraft:textures/mob_effect/water_breathing.png", "iconWidth": 18, "iconHeight": 18 },
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "acquiredEffects": [
     {

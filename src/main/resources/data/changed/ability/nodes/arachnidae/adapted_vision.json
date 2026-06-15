@@ -2,8 +2,10 @@
   "parent": { "tree": "changed:arachnidae" },
   "titleId": "changed.ability_tree.arachnidae.adapted_vision",
   "flavorId": "changed.ability_tree.arachnidae.adapted_vision.flavor",
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "missingEffects": [
     {

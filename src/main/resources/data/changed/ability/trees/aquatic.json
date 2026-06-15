@@ -4,6 +4,7 @@
   ],
   "titleId": "changed.ability_tree.aquatic",
   "flavorId": "changed.ability_tree.aquatic.flavor",
+  "flavorCompletedId": "changed.ability_tree.aquatic.mastered",
   "pointEvents": [
     {
       "type": "changed:distance_swam",

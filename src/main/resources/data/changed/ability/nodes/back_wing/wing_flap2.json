@@ -6,7 +6,10 @@
     "icon": "changed:textures/gui/nodes/wing_flap.png",
     "frame": "strong"
   },
-  "price": 1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "acquiredEffects": [
     {

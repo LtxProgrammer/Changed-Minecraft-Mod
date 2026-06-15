@@ -369,7 +369,9 @@
   "container.changed.cardboard_box_small": "Small Cardboard Box",
 
   "text.changed.ability_tree.distant_node": "You sense room for improvement in your mastery over this skill tree.",
-  "text.changed.ability_tree.price": "%s point(s)",
+  "text.changed.ability_tree.price.free": "Free",
+  "text.changed.ability_tree.price.levels": "%s level(s)",
+  "text.changed.ability_tree.price.xplevels": "%s XP level(s)",
   "text.changed.ability_tree.node.intrinsic_enchantment.plus": "+Intrinsic Enchantment: %s",
   "text.changed.ability_tree.node.intrinsic_enchantment.take": "-Intrinsic Enchantment: %s",
   "text.changed.ability_tree.node.mob_effect.plus": "+Effect: %s",
@@ -983,49 +985,66 @@
 
   "changed.ability_tree.latex": "Latex Mastery",
   "changed.ability_tree.latex.flavor": "Your flesh and blood has been replaced with flowing, viscous goo. You feel weak, yet your body drips with unrecognized potential.",
+  "changed.ability_tree.latex.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered being latex]",
 
   "changed.ability_tree.nonlatex": "Biological Mastery",
   "changed.ability_tree.nonlatex.flavor": "You feel... different. You barely recognize yourself as you look down at your hands, but your heart beats stronger than ever.",
+  "changed.ability_tree.nonlatex.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered being non-latex]",
 
   "changed.ability_tree.digitigrade_mobility": "Digitigrade Mobility",
   "changed.ability_tree.digitigrade_mobility.flavor": "You find your legs to be more animalistic than you remember.",
+  "changed.ability_tree.digitigrade_mobility.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered using their animalistic legs]",
   "changed.ability_tree.quadrupedal_mobility": "Quadrupedal Mobility",
   "changed.ability_tree.quadrupedal_mobility.flavor": "You feel as if you are constantly bent over. What once were your hands now keep you from falling forward.",
+  "changed.ability_tree.quadrupedal_mobility.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered the quadrupedal stance]",
   "changed.ability_tree.taur_mobility": "Taur Mobility",
   "changed.ability_tree.taur_mobility.flavor": "You stand upright, yet you find yourself on all fours. You stumble as you try to find your footing.",
+  "changed.ability_tree.taur_mobility.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered the quadrupedal+upright stance]",
   "changed.ability_tree.naga_mobility": "Naga Mobility",
   "changed.ability_tree.naga_mobility.flavor": "Both of your legs have fused together into a long, slithering tail. You certainly won't be walking anymore.",
+  "changed.ability_tree.naga_mobility.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered using their snake tail]",
   "changed.ability_tree.mer_mobility": "Mer Mobility",
   "changed.ability_tree.mer_mobility.flavor": "Both of your legs have fused together into a tail adorned by large fins. You certainly won't be walking anymore.",
+  "changed.ability_tree.mer_mobility.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered using their mer tail]",
 
   "changed.ability_tree.arm_wing": "Arm Wing Mastery",
   "changed.ability_tree.arm_wing.flavor": "Thick webbing has formed along the side of your arms to your back. It tingles against the air.",
+  "changed.ability_tree.arm_wing.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered flying]",
   "changed.ability_tree.back_wing": "Back Wing Mastery",
   "changed.ability_tree.back_wing.flavor": "Large wings now adorn your back. They push you around more than they push air.",
+  "changed.ability_tree.back_wing.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered flying]",
 
   "changed.ability_tree.aquatic": "Aquatic Mastery",
   "changed.ability_tree.aquatic.flavor": "Gills have formed on your now sleek skin. You choke on the dry air as you desire your new habitat: water.",
+  "changed.ability_tree.aquatic.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered swimming]",
 
   "changed.ability_tree.multi_arm": "Multi arm Mastery",
   "changed.ability_tree.multi_arm.flavor": "You have more arms than before. They feel as if they just get in your way.",
+  "changed.ability_tree.multi_arm.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered all their arms]",
 
   "changed.ability_tree.hypnosis": "Hypnosis Mastery",
   "changed.ability_tree.hypnosis.flavor": "Your hypnotic gaze petrifies any being that meets your eyes, locked in a trance as you penetrate their mind.",
+  "changed.ability_tree.hypnosis.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered hypnosis]",
 
   "changed.ability_tree.chlorophyll": "Chlorophyll Mastery",
   "changed.ability_tree.chlorophyll.flavor": "Your green skin easily soaks up sunlight. It had never felt so nice before.",
+  "changed.ability_tree.chlorophyll.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered soaking up the sun]",
 
   "changed.ability_tree.apidae": "Bee Mastery",
   "changed.ability_tree.apidae.flavor": "Black and yellow; the colors of a true hard worker. You're doing your part!",
+  "changed.ability_tree.apidae.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered beeing a bee]",
 
   "changed.ability_tree.arachnidae": "Spider Mastery",
   "changed.ability_tree.arachnidae.flavor": "Caves and cobwebs feel like home to you. Make any place your home with that spinneret of yours.",
+  "changed.ability_tree.arachnidae.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered being a spider]",
 
   "changed.ability_tree.lamnidae": "Shark Mastery",
   "changed.ability_tree.lamnidae.flavor": "The ocean is your domain, the depths yours to dominate!",
+  "changed.ability_tree.lamnidae.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered being a shark]",
 
   "changed.ability_tree.coleoidae": "Squid Mastery",
   "changed.ability_tree.coleoidae.flavor": "When life gives you 10 limbs, you make the most of it.",
+  "changed.ability_tree.coleoidae.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered being a squid]",
 
   "changed.ability_tree.practice1": "Practice I",
   "changed.ability_tree.practice2": "Practice II",

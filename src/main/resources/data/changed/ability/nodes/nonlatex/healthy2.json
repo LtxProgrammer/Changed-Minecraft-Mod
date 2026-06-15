@@ -2,7 +2,10 @@
   "parent": "changed:nonlatex/healthy1",
   "titleId": "changed.ability_tree.nonlatex.healthy2",
   "flavorId": "changed.ability_tree.nonlatex.healthy2.flavor",
-  "price": 10,
+  "price": {
+    "levels": 10,
+    "groupDiscountLevels": -1
+  },
 
   "acquiredEffects": [
     {

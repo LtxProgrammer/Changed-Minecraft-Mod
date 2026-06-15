@@ -3,8 +3,10 @@
   "occludes": "changed:chlorophyll/camouflage1",
   "titleId": "changed.ability_tree.chlorophyll.camouflage2",
   "flavorId": "changed.ability_tree.chlorophyll.camouflage2.flavor",
-  "price": 1,
-  "groupDiscount": -1,
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
 
   "acquiredEffects": [
     {

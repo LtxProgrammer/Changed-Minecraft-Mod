@@ -6,7 +6,10 @@
     "icon": { "item": "minecraft:netherite_chestplate" },
     "frame": "strong"
   },
-  "price": 2,
+  "price": {
+    "levels": 2,
+    "groupDiscountLevels": -1
+  },
 
   "acquiredEffects": [
     {

@@ -26,8 +26,7 @@ public class AbilityNode extends PartialNode {
             Codec.STRING.fieldOf("requirementsId").orElse("").forGetter(node -> node.requirementsId),
             Codec.STRING.fieldOf("descriptionId").orElse("").forGetter(node -> node.descriptionId),
             Codec.STRING.fieldOf("flavorId").orElse("").forGetter(node -> node.flavorId),
-            Codec.INT.fieldOf("price").forGetter(node -> node.price),
-            Codec.INT.fieldOf("groupDiscount").orElse(0).forGetter(node -> node.groupDiscount),
+            NodePrice.CODEC.fieldOf("price").forGetter(node -> node.price),
             Codec.list(NodeEffect.EFFECT_CODEC).optionalFieldOf("acquiredEffects").xmap(opt -> opt.orElseGet(List::of), Optional::of).forGetter(node -> node.acquiredEffects),
             Codec.list(NodeEffect.EFFECT_CODEC).optionalFieldOf("missingEffects").xmap(opt -> opt.orElseGet(List::of), Optional::of).forGetter(node -> node.missingEffects)
     ).apply(builder, AbilityNode::new));
@@ -41,9 +40,8 @@ public class AbilityNode extends PartialNode {
 
     public AbilityNode(Either<ResourceLocation, TreeReference> parent, NodeDisplayInfo displayInfo, List<ResourceLocation> occludes,
                        String titleId, String requirementsId, String descriptionId, String flavorId,
-                       int price, int groupDiscount,
-                       List<NodeEffect> acquiredEffects, List<NodeEffect> missingEffects) {
-        super(parent, displayInfo, titleId, requirementsId, descriptionId, flavorId, price, groupDiscount);
+                       NodePrice price, List<NodeEffect> acquiredEffects, List<NodeEffect> missingEffects) {
+        super(parent, displayInfo, titleId, requirementsId, descriptionId, flavorId, price);
 
         this.occludes = occludes;
         this.acquiredEffects = acquiredEffects;

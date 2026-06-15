@@ -14,6 +14,7 @@ import net.ltxprogrammer.changed.ability.tree.AbilityNode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.network.packet.AbilityTreeMenuPacket;
 import net.ltxprogrammer.changed.util.Cacheable;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.inventory.AbilityTreeMenu;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -86,7 +87,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             /// Pre-requisites locked (parent node and conditions). Darkened, icon and details visible.
             PRE_REQ_LOCKED(BackgroundState.DARKENED, false, false, ChatFormatting.RED),
             /// Pre-requisites met, but cannot afford. Regular color, icon and details visible: cost tinted red
-            PRE_REQ_MET(BackgroundState.REGULAR, false, false, ChatFormatting.RED),
+            PRE_REQ_MET(BackgroundState.REGULAR, false, false, null),
             /// Pre-requisites met and can afford. Regular color, icon and details visible
             CAN_ACQUIRE(BackgroundState.REGULAR, false, false, ChatFormatting.GREEN),
             /// Node unlocked. Highlighted color, icon and details visible
@@ -95,9 +96,9 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             public final BackgroundState backgroundState;
             public final boolean hideIcon;
             public final boolean hideTooltipDetails;
-            public final ChatFormatting costFormatting;
+            public final @Nullable ChatFormatting costFormatting;
 
-            NodeRenderState(BackgroundState backgroundState, boolean hideIcon, boolean hideTooltipDetails, ChatFormatting costFormatting) {
+            NodeRenderState(BackgroundState backgroundState, boolean hideIcon, boolean hideTooltipDetails, @Nullable ChatFormatting costFormatting) {
                 this.backgroundState = backgroundState;
                 this.hideIcon = hideIcon;
                 this.hideTooltipDetails = hideTooltipDetails;
@@ -140,7 +141,9 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         }
 
         protected NodeRenderState determineRenderState() {
-            return NodeRenderState.UNLOCKED;
+            if (accountedTree.hasAllNodes(variant))
+                return NodeRenderState.UNLOCKED;
+            return NodeRenderState.PRE_REQ_MET;
         }
 
         protected boolean isUnlocked() {
@@ -149,8 +152,13 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
         public List<Component> createTooltip() {
             var tooltipBuilder = ImmutableList.<Component>builder();
-            tooltipBuilder.add(tree.getTitle());
-            tree.getFlavorText().ifPresent(tooltipBuilder::add);
+            if (this.renderState == NodeRenderState.UNLOCKED) {
+                tooltipBuilder.add(tree.getTitle().withStyle(ChatFormatting.LIGHT_PURPLE));
+                tree.getFlavorCompletedText().ifPresent(tooltipBuilder::add);
+            } else {
+                tooltipBuilder.add(tree.getTitle());
+                tree.getFlavorText().ifPresent(tooltipBuilder::add);
+            }
             return tooltipBuilder.build();
         }
 
@@ -169,9 +177,11 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         }
 
         protected int getFrameX() {
-            if (accountedTree.hasAllNodes(variant))
-                return 24;
-            return 0;
+            return switch (this.renderState.backgroundState) {
+                case HIGHLIGHTED -> 24;
+                case DARKENED -> 48;
+                default -> 0;
+            };
         }
 
         @Override
@@ -237,7 +247,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                 return NodeRenderState.DISTANT;
             if (!accountedTree.hasPrerequisites(variant, nodeName))
                 return NodeRenderState.PRE_REQ_LOCKED;
-            if (!accountedTree.canAfford(variant, nodeName))
+            if (!accountedTree.canAfford(UniversalDist.getLocalPlayer(), variant, nodeName))
                 return NodeRenderState.PRE_REQ_MET;
             return NodeRenderState.CAN_ACQUIRE;
         }
@@ -250,7 +260,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                 tooltipBuilder.add(DISTANT_NODE_TEXT);
             } else {
                 tooltipBuilder.add(node.getTitle().withStyle(node.displayInfo.frameType().titleColor));
-                tooltipBuilder.add(accountedTree.getEffectivePriceText(variant, nodeName).withStyle(renderState.costFormatting));
+                accountedTree.getEffectivePriceText(UniversalDist.getLocalPlayer(), variant, nodeName, tooltipBuilder::add, renderState.costFormatting);
                 node.buildDescription(tooltipBuilder::add);
                 if (renderState == NodeRenderState.UNLOCKED)
                     node.getFlavorText().ifPresent(tooltipBuilder::add);
@@ -262,7 +272,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         protected boolean canPurchase() {
             if (!accountedTree.hasPrerequisites(variant, nodeName))
                 return false;
-            if (!accountedTree.canAfford(variant, nodeName))
+            if (!accountedTree.canAfford(UniversalDist.getLocalPlayer(), variant, nodeName))
                 return false;
             return true;
         }
@@ -285,15 +295,6 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         @Override
         protected int getFrameY() {
             return node.displayInfo.frameType().yPos;
-        }
-
-        @Override
-        protected int getFrameX() {
-            return switch (this.renderState.backgroundState) {
-                case HIGHLIGHTED -> 24;
-                case DARKENED -> 48;
-                default -> 0;
-            };
         }
 
         @Override

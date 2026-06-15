@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class OnTransfurOther extends AbstractPointEvent<OnTransfurOther.Criteria> {
     public static final Codec<OnTransfurOther> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.fieldOf("reward").forGetter(event -> event.reward),
-            RegistryElementPredicate.codec(ForgeRegistries.ENTITY_TYPES).fieldOf("entity").orElse(RegistryElementPredicate.forAll(ForgeRegistries.ENTITY_TYPES)).forGetter(event -> event.typePredicate)
+            RegistryElementPredicate.codecElementOrTag(ForgeRegistries.ENTITY_TYPES).fieldOf("entity").orElse(RegistryElementPredicate.forAll(ForgeRegistries.ENTITY_TYPES)).forGetter(event -> event.typePredicate)
     ).apply(instance, OnTransfurOther::new));
 
     @Override

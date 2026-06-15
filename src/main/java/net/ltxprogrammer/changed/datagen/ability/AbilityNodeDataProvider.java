@@ -3,12 +3,17 @@ package net.ltxprogrammer.changed.datagen.ability;
 import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.ltxprogrammer.changed.ability.tree.*;
 import net.ltxprogrammer.changed.ability.tree.PartialNode.TreeReference;
+import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
@@ -67,15 +72,18 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
     public static final class AbilityNodeBuilder {
         private Either<ResourceLocation, TreeReference> parent;
         private NodeDisplayInfo displayInfo = NodeDisplayInfo.MISSING;
-        private final List<ResourceLocation> occludes = new ArrayList<>();
+        private final List<ResourceLocation> occludes = new ObjectArrayList<>();
         private String titleId = "";
         private String requirementsId = "";
         private String descriptionId = "";
         private String flavorId = "";
-        private int price = 0;
+        private int price;
         private int groupDiscount = 0;
-        private final List<NodeEffect> acquiredEffects = new ArrayList<>();
-        private final List<NodeEffect> missingEffects = new ArrayList<>();
+        private int experiencePrice = 0;
+        private int groupDiscountExperience = 0;
+        private final List<NodePrice.ItemEntry> itemPrices = new ObjectArrayList<>();
+        private final List<NodeEffect> acquiredEffects = new ObjectArrayList<>();
+        private final List<NodeEffect> missingEffects = new ObjectArrayList<>();
 
         private AbilityNodeBuilder() {}
 
@@ -129,6 +137,51 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
             return this;
         }
 
+        public AbilityNodeBuilder price(int price, int groupDiscount) {
+            return price(price).groupDiscount(groupDiscount);
+        }
+
+        public AbilityNodeBuilder experiencePrice(int levels) {
+            this.experiencePrice = levels;
+            return this;
+        }
+
+        public AbilityNodeBuilder experiencePriceDiscount(int levels) {
+            this.groupDiscountExperience = levels;
+            return this;
+        }
+
+        public AbilityNodeBuilder experiencePrice(int levels, int groupDiscount) {
+            return experiencePrice(levels).experiencePriceDiscount(groupDiscount);
+        }
+
+        public AbilityNodeBuilder addItemCost(RegistryElementPredicate<Item> item) {
+            return addItemCost(item, false);
+        }
+
+        public AbilityNodeBuilder addItemCost(RegistryElementPredicate<Item> item, boolean groupDiscounted) {
+            this.itemPrices.add(new NodePrice.ItemEntry(item, groupDiscounted));
+            return this;
+        }
+
+        public AbilityNodeBuilder addItemCost(ResourceLocation item) {
+            return addItemCost(item, false);
+        }
+
+        public AbilityNodeBuilder addItemCost(ResourceLocation item, boolean groupDiscounted) {
+            this.itemPrices.add(new NodePrice.ItemEntry(RegistryElementPredicate.forID(ForgeRegistries.ITEMS, item), groupDiscounted));
+            return this;
+        }
+
+        public AbilityNodeBuilder addItemCost(TagKey<Item> item) {
+            return addItemCost(item, false);
+        }
+
+        public AbilityNodeBuilder addItemCost(TagKey<Item> item, boolean groupDiscounted) {
+            this.itemPrices.add(new NodePrice.ItemEntry(RegistryElementPredicate.forTag(ForgeRegistries.ITEMS, item), groupDiscounted));
+            return this;
+        }
+
         public AbilityNodeBuilder acquiredEffect(NodeEffect effect) {
             this.acquiredEffects.add(effect);
             return this;
@@ -150,7 +203,7 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
             AbilityNode node = new AbilityNode(
                     parent, displayInfo, occludes,
                     titleId, requirementsId, descriptionId, flavorId,
-                    price, groupDiscount, acquiredEffects, missingEffects
+                    new NodePrice(price, groupDiscount, experiencePrice, groupDiscountExperience, itemPrices), acquiredEffects, missingEffects
             );
             node.setNodeLocation(loc);
             return node;
