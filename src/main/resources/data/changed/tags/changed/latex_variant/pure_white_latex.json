@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "changed:form_latex_mutant_bloodcell_wolf",
+    "changed:form_pure_white_latex_cerberus",
+    "changed:form_pure_white_latex_wolf",
+    "changed:form_pure_white_latex_wolf_pup"
+  ]
+}

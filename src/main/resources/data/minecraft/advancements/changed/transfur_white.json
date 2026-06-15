@@ -19,7 +19,9 @@
     "transfurred": {
       "trigger": "changed:transfur",
       "conditions": {
-        "type": "changed:white_latex"
+        "variants": [
+          "#changed:pure_white_latex"
+        ]
       }
     }
   },

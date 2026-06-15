@@ -135,7 +135,6 @@ public class TransfurVariant<T extends ChangedEntity> {
     // Variant properties
     public final Supplier<EntityType<T>> ctor;
     public final BreatheMode breatheMode;
-    public final boolean canGlide;
     public final int extraJumpCharges;
     public final VisionType visionType;
     public final MiningStrength miningStrength;
@@ -146,14 +145,13 @@ public class TransfurVariant<T extends ChangedEntity> {
     public final ResourceLocation sound;
 
     public TransfurVariant(Supplier<EntityType<T>> ctor,
-                           BreatheMode breatheMode, boolean canGlide, int extraJumpCharges,
+                           BreatheMode breatheMode, int extraJumpCharges,
                            VisionType visionType, MiningStrength miningStrength, UseItemMode itemUseMode, @Nullable BiPredicate<T, PathfinderMob> scares, TransfurMode transfurMode,
                            float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
         this.breatheMode = breatheMode;
         this.miningStrength = miningStrength;
         this.visionType = visionType;
-        this.canGlide = canGlide;
         this.extraJumpCharges = extraJumpCharges;
         this.itemUseMode = itemUseMode;
         this.scares = scares;
@@ -319,12 +317,10 @@ public class TransfurVariant<T extends ChangedEntity> {
     public static class Builder<T extends ChangedEntity> {
         final Supplier<EntityType<T>> entityType;
         BreatheMode breatheMode = BreatheMode.NORMAL;
-        boolean canGlide = false;
         int extraJumpCharges = 0;
         boolean reducedFall = false;
         VisionType visionType = VisionType.NORMAL;
         MiningStrength miningStrength = MiningStrength.NORMAL;
-        int legCount = 2;
         UseItemMode itemUseMode = UseItemMode.NORMAL;
         @Nullable BiPredicate<T, PathfinderMob> scares = null;
         TransfurMode transfurMode = TransfurMode.REPLICATION;
@@ -413,7 +409,7 @@ public class TransfurVariant<T extends ChangedEntity> {
 
         @Deprecated(forRemoval = true)
         public Builder<T> glide(boolean enable) {
-            this.canGlide = enable; return this;
+            return this;
         }
 
         public Builder<T> doubleJump() {
@@ -530,7 +526,7 @@ public class TransfurVariant<T extends ChangedEntity> {
         }
 
         public TransfurVariant<T> build() {
-            return new TransfurVariant<>(entityType, breatheMode, canGlide, extraJumpCharges,
+            return new TransfurVariant<>(entityType, breatheMode, extraJumpCharges,
                     visionType, miningStrength, itemUseMode, scares, transfurMode, cameraZOffset, sound);
         }
     }
