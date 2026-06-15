@@ -194,13 +194,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         this.paleExposure = paleExposure;
     }
 
-    @Inject(method = "makeStuckInBlock", at = @At("HEAD"), cancellable = true)
-    public void makeStuckInBlock(BlockState state, Vec3 v3, CallbackInfo ci) {
-        if (latexVariant != null)
-            if (latexVariant.getParent().canClimb && state.is(Blocks.COBWEB))
-                ci.cancel();
-    }
-
     @Unique
     private float foodEfficiency = 1.0f;
 

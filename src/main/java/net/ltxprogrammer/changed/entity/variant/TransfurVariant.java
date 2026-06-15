@@ -137,7 +137,6 @@ public class TransfurVariant<T extends ChangedEntity> {
     public final BreatheMode breatheMode;
     public final boolean canGlide;
     public final int extraJumpCharges;
-    public final boolean canClimb;
     public final VisionType visionType;
     public final MiningStrength miningStrength;
     public final UseItemMode itemUseMode;
@@ -147,7 +146,7 @@ public class TransfurVariant<T extends ChangedEntity> {
     public final ResourceLocation sound;
 
     public TransfurVariant(Supplier<EntityType<T>> ctor,
-                           BreatheMode breatheMode, boolean canGlide, int extraJumpCharges, boolean canClimb,
+                           BreatheMode breatheMode, boolean canGlide, int extraJumpCharges,
                            VisionType visionType, MiningStrength miningStrength, UseItemMode itemUseMode, @Nullable BiPredicate<T, PathfinderMob> scares, TransfurMode transfurMode,
                            float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
@@ -157,7 +156,6 @@ public class TransfurVariant<T extends ChangedEntity> {
         this.canGlide = canGlide;
         this.extraJumpCharges = extraJumpCharges;
         this.itemUseMode = itemUseMode;
-        this.canClimb = canClimb;
         this.scares = scares;
         this.transfurMode = transfurMode;
         this.cameraZOffset = cameraZOffset;
@@ -324,7 +322,6 @@ public class TransfurVariant<T extends ChangedEntity> {
         boolean canGlide = false;
         int extraJumpCharges = 0;
         boolean reducedFall = false;
-        boolean canClimb = false;
         VisionType visionType = VisionType.NORMAL;
         MiningStrength miningStrength = MiningStrength.NORMAL;
         int legCount = 2;
@@ -372,12 +369,14 @@ public class TransfurVariant<T extends ChangedEntity> {
             this.reducedFall = v; return this;
         }
 
+        @Deprecated(forRemoval = true)
         public Builder<T> canClimb() {
-            this.canClimb = true; return this;
+            return this;
         }
 
+        @Deprecated(forRemoval = true)
         public Builder<T> canClimb(boolean v) {
-            this.canClimb = v; return this;
+            return this;
         }
 
         public <E extends PathfinderMob> Builder<T> scares(Class<E> type) {
@@ -407,10 +406,12 @@ public class TransfurVariant<T extends ChangedEntity> {
             return this;
         }
 
+        @Deprecated(forRemoval = true)
         public Builder<T> glide() {
             return glide(true);
         }
 
+        @Deprecated(forRemoval = true)
         public Builder<T> glide(boolean enable) {
             this.canGlide = enable; return this;
         }
@@ -530,7 +531,7 @@ public class TransfurVariant<T extends ChangedEntity> {
 
         public TransfurVariant<T> build() {
             return new TransfurVariant<>(entityType, breatheMode, canGlide, extraJumpCharges,
-                    canClimb, visionType, miningStrength, itemUseMode, scares, transfurMode, cameraZOffset, sound);
+                    visionType, miningStrength, itemUseMode, scares, transfurMode, cameraZOffset, sound);
         }
     }
 

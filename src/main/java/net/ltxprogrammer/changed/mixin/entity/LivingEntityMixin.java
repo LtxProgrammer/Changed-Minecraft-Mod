@@ -135,14 +135,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         original.call(instance, flagIndex, fallFlying || (isFallFlying() && variant.tickGliding()));
     }
 
-    @Inject(method = "onClimbable", at = @At("HEAD"), cancellable = true)
-    public void onClimbable(CallbackInfoReturnable<Boolean> callback) {
-        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (variant) -> {
-            if (variant.getParent().canClimb && this.horizontalCollision)
-                callback.setReturnValue(true);
-        });
-    }
-
     @WrapMethod(method = "getJumpPower")
     public float getJumpPower(Operation<Float> original) {
         var attributes = this.getAttributes();
