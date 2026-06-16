@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -26,6 +27,7 @@ public class HeadlessKnight extends WhiteLatexKnight implements LatexTaur<Headle
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.15);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.9);
+        attributes.getInstance(ChangedAttributes.SCALE.get()).setBaseValue(1.05);
     }
 
     @Override

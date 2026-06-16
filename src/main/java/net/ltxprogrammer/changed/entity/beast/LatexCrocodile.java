@@ -22,6 +22,7 @@ public class LatexCrocodile extends ChangedEntity {
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.1);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(32);
         attributes.getInstance(ChangedAttributes.AIR_CAPACITY.get()).setBaseValue(60);
+        attributes.getInstance(ChangedAttributes.SCALE.get()).setBaseValue(1.025);
     }
 
     @Override

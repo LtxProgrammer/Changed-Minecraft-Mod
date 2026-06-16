@@ -86,6 +86,8 @@
   "attribute.name.changed.mining_speed.desc": "Multiplies mining speed.",
   "attribute.name.changed.max_flight_stamina": "Max Flight Stamina",
   "attribute.name.changed.max_flight_stamina.desc": "How long you can remain air-born using your own wings.",
+  "attribute.name.changed.scale": "Scale",
+  "attribute.name.changed.scale.desc": "Multiplies the entity's scale.",
 
   "subtitles.changed.block.cardboard_box.close": "Cardboard box closes",
   "subtitles.changed.block.cardboard_box.open": "Cardboard box opens",

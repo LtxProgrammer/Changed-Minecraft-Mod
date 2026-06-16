@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -20,6 +21,7 @@ public class BuffLatexSharkMale extends AbstractLatexShark implements GenderedEn
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.9);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.5);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28);
+        attributes.getInstance(ChangedAttributes.SCALE.get()).setBaseValue(1.025);
     }
 
     @Override
