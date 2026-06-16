@@ -2,107 +2,94 @@ package net.ltxprogrammer.changed.advancements.critereon;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.*;
-import net.ltxprogrammer.changed.entity.latex.LatexType;
+import com.mojang.serialization.DataResult;
+import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.StringRepresentable;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Set;
 
 public class TransfurPredicate {
     public static final TransfurPredicate ANY = new TransfurPredicate();
-    @Nullable
-    private final Set<TransfurVariant<?>> forms;
-    @Nullable
-    private final LatexType type;
-    private final boolean flying;
-    private final boolean swimming;
-    private final boolean legless;
+    public enum MatchMode implements StringRepresentable {
+        ALL_OF("all_of"),
+        ANY_OF("any_of"),
+        NONE_OF("none_of");
+
+        private final String serializedName;
+
+        MatchMode(String serializedName) {
+            this.serializedName = serializedName;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serializedName;
+        }
+
+        public static DataResult<MatchMode> fromSerial(String serializedName) {
+            return Arrays.stream(values()).filter(value -> value.serializedName.equals(serializedName))
+                    .findAny().map(DataResult::success).orElse(DataResult.error(
+                            () -> "Invalid match mode " + serializedName
+                    ));
+        }
+    }
+
+    private final MatchMode matchMode;
+    private final Set<RegistryElementPredicate<TransfurVariant<?>>> elementPredicates;
 
     public TransfurPredicate() {
-        this.forms = null;
-        this.type = null;
-        this.flying = false;
-        this.swimming = false;
-        this.legless = false;
+        this.matchMode = MatchMode.ALL_OF;
+        this.elementPredicates = Set.of();
     }
 
-    public TransfurPredicate(LatexType type) {
-        this.forms = null;
-        this.type = type;
-        this.flying = false;
-        this.swimming = false;
-        this.legless = false;
-    }
-
-    public TransfurPredicate(Set<TransfurVariant<?>> forms) {
-        this.forms = forms;
-        this.type = null;
-        this.flying = false;
-        this.swimming = false;
-        this.legless = false;
-    }
-
-    public TransfurPredicate(boolean flying, boolean swimming, boolean legless) {
-        this.forms = null;
-        this.type = null;
-        this.flying = flying;
-        this.swimming = swimming;
-        this.legless = legless;
+    public TransfurPredicate(MatchMode matchMode, Set<RegistryElementPredicate<TransfurVariant<?>>> elementPredicates) {
+        this.matchMode = matchMode;
+        this.elementPredicates = elementPredicates;
     }
 
     public boolean matches(TransfurVariantInstance<?> form) {
         if (this == ANY)
             return true;
-        if (forms != null)
-            for (TransfurVariant<?> setForm : forms)
-                if (setForm.getFormId() == form.getFormId())
-                    return true;
-        if (type != null)
-            return form.getLatexType() == type;
-        if (form.getParent().canGlide && flying)
-            return true;
-        if (form.getBreatheMode().canBreatheWater() && swimming)
-            return true;
-        if (form.getEntityShape().isLegless() && legless)
-            return true;
-        return false;
+        var variant = form.getParent();
+        return switch (matchMode) {
+            case ALL_OF -> elementPredicates.stream().allMatch(predicate -> predicate.test(variant));
+            case ANY_OF -> elementPredicates.stream().anyMatch(predicate -> predicate.test(variant));
+            case NONE_OF -> elementPredicates.stream().noneMatch(predicate -> predicate.test(variant));
+        };
     }
 
     public static TransfurPredicate fromJson(@Nullable JsonElement json) {
         if (json != null && !json.isJsonNull()) {
             JsonObject jsonObject = GsonHelper.convertToJsonObject(json, "form");
-            if (jsonObject.has("type")) {
-                final LatexType type = ChangedRegistry.LATEX_TYPE.getValue(ResourceLocation.parse(GsonHelper.getAsString(jsonObject, "type")));
-                return new TransfurPredicate(type);
-            }
-            if (jsonObject.has("forms")) {
-                JsonArray jsonArray = GsonHelper.getAsJsonArray(jsonObject, "forms");
-                if (jsonArray != null) {
-                    ImmutableSet.Builder<TransfurVariant<?>> builder = ImmutableSet.builder();
-                    for (var element : jsonArray) {
-                        ResourceLocation resourcelocation = ResourceLocation.parse(GsonHelper.convertToString(element, "form"));
-                        if (!ChangedRegistry.TRANSFUR_VARIANT.get().containsKey(resourcelocation))
-                            throw new JsonSyntaxException("Unknown form id '" + resourcelocation + "'");
-                        builder.add(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(resourcelocation));
-                    }
 
-                    Set<TransfurVariant<?>> set = builder.build();
-                    if (!set.isEmpty())
-                        return new TransfurPredicate(set);
-                }
+            MatchMode matchMode = MatchMode.ANY_OF;
+            ImmutableSet.Builder<RegistryElementPredicate<TransfurVariant<?>>> builder = ImmutableSet.builder();
+            if (jsonObject.has("variants")) {
+                JsonArray variants = jsonObject.getAsJsonArray("variants");
+                variants.forEach(element ->
+                        builder.add(RegistryElementPredicate.parseStringElementOrTag(ChangedRegistry.TRANSFUR_VARIANT.get(), element.getAsString()))
+                );
+            } else {
+                matchMode = MatchMode.ALL_OF; // Default eval to true if there are no variants
             }
-            boolean flying = false, swimming = false, legless = false;
-            if (jsonObject.has("flying"))
-                flying = GsonHelper.getAsBoolean(jsonObject, "flying");
-            if (jsonObject.has("swimming"))
-                swimming = GsonHelper.getAsBoolean(jsonObject, "swimming");
-            if (jsonObject.has("legless"))
-                legless = GsonHelper.getAsBoolean(jsonObject, "legless");
-            return (flying || swimming || legless) ? new TransfurPredicate(flying, swimming, legless) : ANY;
+
+            if (jsonObject.has("match")) {
+                matchMode = MatchMode.fromSerial(GsonHelper.getAsString(jsonObject, "match"))
+                        .getOrThrow(false, JsonSyntaxException::new);
+            }
+
+            var builtSet = builder.build();
+            if (matchMode != MatchMode.ALL_OF && builtSet.isEmpty())
+                throw new IllegalArgumentException(matchMode.getSerializedName() + " match mode cannot be used with an empty set of variants");
+            if (matchMode == MatchMode.ALL_OF && builtSet.isEmpty())
+                return ANY;
+            return new TransfurPredicate(matchMode, builtSet);
         } else {
             return ANY;
         }
@@ -113,23 +100,17 @@ public class TransfurPredicate {
             return JsonNull.INSTANCE;
         else {
             JsonObject jsonObject = new JsonObject();
-            if (this.forms != null) {
+            if (!this.elementPredicates.isEmpty()) {
                 JsonArray jsonArray = new JsonArray();
 
-                for (var form : this.forms) {
-                    jsonArray.add(form.getFormId().toString());
+                for (var predicate : this.elementPredicates) {
+                    jsonArray.add(predicate.toString());
                 }
 
-                jsonObject.add("forms", jsonArray);
+                jsonObject.add("variants", jsonArray);
             }
 
-            if (this.type != null) {
-                jsonObject.addProperty("type", this.type.toString());
-            }
-
-            jsonObject.addProperty("flying", this.flying);
-            jsonObject.addProperty("swimming", this.swimming);
-            jsonObject.addProperty("legless", this.legless);
+            jsonObject.addProperty("match", this.matchMode.getSerializedName());
             return jsonObject;
         }
     }

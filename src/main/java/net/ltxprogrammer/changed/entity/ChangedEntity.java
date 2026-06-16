@@ -548,7 +548,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
                 .add(ChangedAttributes.SNEAK_SPEED.get(), 1.0D)
                 .add(ChangedAttributes.AIR_CAPACITY.get(), 15.0)
                 .add(ChangedAttributes.JUMP_STRENGTH.get(), 1.0D)
-                .add(ChangedAttributes.FALL_RESISTANCE.get(), 1.0D);
+                .add(ChangedAttributes.FALL_RESISTANCE.get(), 1.0D)
+                .add(ChangedAttributes.MINING_SPEED.get(), 1.0D);
     }
 
     protected void setAttributes(AttributeMap attributes) {

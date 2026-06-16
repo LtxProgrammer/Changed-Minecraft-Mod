@@ -41,4 +41,6 @@ public class ChangedVariantFeatures {
     public static final RegistryObject<VariantFeature> AUTONOMOUS_LANDING = REGISTRY.register("wing_flap/autonomous_landing", VariantFeature::binary);
     public static final RegistryObject<VariantFeature> WING_FLAP_BONUS_CHARGES = REGISTRY.register("wing_flap/bonus_charges", VariantFeature::sumPresent);
     public static final RegistryObject<VariantFeature> WINDS_PUSH_STRENGTH = REGISTRY.register("gale_force_winds/bonus_push_strength", VariantFeature::sumPresent);
+
+    public static final RegistryObject<VariantFeature> CLIMB_COBWEB = REGISTRY.register("climb/cobweb", VariantFeature::binary);
 }

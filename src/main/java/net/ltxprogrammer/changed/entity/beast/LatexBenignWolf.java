@@ -26,6 +26,7 @@ public class LatexBenignWolf extends AbstractLatexWolf {
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.15);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.2);
         attributes.getInstance(ChangedAttributes.JUMP_STRENGTH.get()).setBaseValue(0.5);
+        attributes.getInstance(ChangedAttributes.MINING_SPEED.get()).setBaseValue(0.5);
     }
 
     @Override
@@ -40,12 +41,14 @@ public class LatexBenignWolf extends AbstractLatexWolf {
                 attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.075);
                 attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
                 attributes.getInstance(ChangedAttributes.JUMP_STRENGTH.get()).setBaseValue(1.0);
+                attributes.getInstance(ChangedAttributes.MINING_SPEED.get()).setBaseValue(1.0);
             }
 
             else {
                 attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.15);
                 attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.2);
                 attributes.getInstance(ChangedAttributes.JUMP_STRENGTH.get()).setBaseValue(0.5);
+                attributes.getInstance(ChangedAttributes.MINING_SPEED.get()).setBaseValue(0.5);
             }
 
             hasExoLast = hasExo;
@@ -54,7 +57,6 @@ public class LatexBenignWolf extends AbstractLatexWolf {
             if (instance != null) {
                 instance.visionType = hasExo ? VisionType.NORMAL : VisionType.BLIND;
                 instance.itemUseMode = hasExo ? UseItemMode.NORMAL : UseItemMode.NONE;
-                instance.miningStrength = hasExo ? MiningStrength.NORMAL : MiningStrength.WEAK;
 
                 instance.refreshAttributes();
             }

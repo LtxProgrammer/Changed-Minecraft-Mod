@@ -11,7 +11,6 @@ import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -237,6 +236,7 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.975);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(12.0);
         attributes.getInstance(ChangedAttributes.FALL_RESISTANCE.get()).setBaseValue(2.5);
+        attributes.getInstance(ChangedAttributes.MINING_SPEED.get()).setBaseValue(AttributePresets.MINING_FATIGUE_1);
     }
 
     @Override

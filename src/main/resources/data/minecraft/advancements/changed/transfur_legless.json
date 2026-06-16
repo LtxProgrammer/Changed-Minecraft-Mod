@@ -19,7 +19,10 @@
     "transfurred_legless": {
       "trigger": "changed:transfur",
       "conditions": {
-        "legless": true
+        "variants": [
+          "#changed:mer",
+          "#changed:naga"
+        ]
       }
     }
   },

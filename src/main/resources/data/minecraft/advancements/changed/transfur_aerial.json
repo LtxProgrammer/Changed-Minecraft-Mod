@@ -19,7 +19,10 @@
     "transfurred_aerial": {
       "trigger": "changed:transfur",
       "conditions": {
-        "flying": true
+        "variants": [
+          "#changed:winged_arm",
+          "#changed:winged_back"
+        ]
       }
     }
   },

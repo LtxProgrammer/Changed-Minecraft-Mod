@@ -37,9 +37,9 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<GasWolfMale>> GAS_WOLF_MALE = register("form_gas_wolf/male",
             TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF_MALE).scares(AbstractSkeleton.class).sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
     public static final RegistryObject<TransfurVariant<GasWolfPup>> GAS_WOLF_PUP = register("form_gas_wolf_pup",
-            TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF_PUP).scares(AbstractSkeleton.class).weakMining().holdItemsInMouth().sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
+            TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF_PUP).scares(AbstractSkeleton.class).holdItemsInMouth().sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
     public static final RegistryObject<TransfurVariant<PooltoyWolf>> POOLTOY_WOLF = register("form_pooltoy_wolf",
-            TransfurVariant.Builder.of(ChangedEntities.POOLTOY_WOLF).scares(AbstractSkeleton.class).breatheMode(TransfurVariant.BreatheMode.NOT_REQUIRED).weakMining().transfurMode(TransfurMode.NONE));
+            TransfurVariant.Builder.of(ChangedEntities.POOLTOY_WOLF).scares(AbstractSkeleton.class).breatheMode(TransfurVariant.BreatheMode.NOT_REQUIRED).transfurMode(TransfurMode.NONE));
     public static final RegistryObject<TransfurVariant<Beifeng>> BEIFENG = register("form_beifeng",
             TransfurVariant.Builder.of(ChangedEntities.BEIFENG).sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
     public static final RegistryObject<TransfurVariant<WhiteLatexWolfFemale>> WHITE_LATEX_WOLF_FEMALE = register("form_white_latex_wolf/female",
@@ -47,7 +47,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<WhiteLatexWolfMale>> WHITE_LATEX_WOLF_MALE = register("form_white_latex_wolf/male",
             TransfurVariant.Builder.of(ChangedEntities.WHITE_LATEX_WOLF_MALE).scares(AbstractSkeleton.class));
     public static final RegistryObject<TransfurVariant<DarkDragon>> DARK_DRAGON = register("form_dark_dragon",
-            TransfurVariant.Builder.of(ChangedEntities.DARK_DRAGON).glide().sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
+            TransfurVariant.Builder.of(ChangedEntities.DARK_DRAGON).sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
     public static final RegistryObject<TransfurVariant<DarkLatexWolfFemale>> DARK_LATEX_WOLF_FEMALE = register("form_dark_latex_wolf/female",
             TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_FEMALE).scares(AbstractSkeleton.class));
     public static final RegistryObject<TransfurVariant<DarkLatexWolfMale>> DARK_LATEX_WOLF_MALE = register("form_dark_latex_wolf/male",
@@ -57,21 +57,21 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<PhageLatexWolfMale>> PHAGE_LATEX_WOLF_MALE = register("form_phage_latex_wolf/male",
             TransfurVariant.Builder.of(ChangedEntities.PHAGE_LATEX_WOLF_MALE).scares(AbstractSkeleton.class));
     public static final RegistryObject<TransfurVariant<DarkLatexWolfPup>> DARK_LATEX_WOLF_PUP = register("form_dark_latex_wolf_pup",
-            TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_PUP).scares(AbstractSkeleton.class).weakMining().transfurMode(TransfurMode.NONE).holdItemsInMouth());
+            TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_PUP).scares(AbstractSkeleton.class).transfurMode(TransfurMode.NONE).holdItemsInMouth());
     public static final RegistryObject<TransfurVariant<DarkLatexWolfPartial>> DARK_LATEX_WOLF_PARTIAL = register("form_dark_latex_wolf_partial",
             TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_PARTIAL).scares(AbstractSkeleton.class).transfurMode(TransfurMode.NONE));
     public static final RegistryObject<TransfurVariant<DarkLatexYufeng>> DARK_LATEX_YUFENG = register("form_dark_latex_yufeng",
-            TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_YUFENG).glide());
+            TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_YUFENG));
     public static final RegistryObject<TransfurVariant<DarkLatexDoubleYufeng>> DARK_LATEX_DOUBLE_YUFENG = register("form_dark_latex_double_yufeng",
-            TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_DOUBLE_YUFENG).glide());
+            TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_DOUBLE_YUFENG));
     public static final RegistryObject<TransfurVariant<LatexAlien>> LATEX_ALIEN = register("form_latex_alien",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_ALIEN));
     public static final RegistryObject<TransfurVariant<LatexBee>> LATEX_BEE = register("form_latex_bee",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_BEE).extraJumps(4));
     public static final RegistryObject<TransfurVariant<LatexBenignOrca>> LATEX_BENIGN_ORCA = register("form_latex_benign_orca",
-            TransfurVariant.Builder.of(ChangedEntities.BENIGN_LATEX_ORCA).noVision().disableItems().weakMining());
+            TransfurVariant.Builder.of(ChangedEntities.BENIGN_LATEX_ORCA).noVision().disableItems());
     public static final RegistryObject<TransfurVariant<LatexBenignWolf>> LATEX_BENIGN_WOLF = register("form_latex_benign_wolf",
-            TransfurVariant.Builder.of(ChangedEntities.BENIGN_LATEX_WOLF).scares(AbstractSkeleton.class).noVision().disableItems().weakMining());
+            TransfurVariant.Builder.of(ChangedEntities.BENIGN_LATEX_WOLF).scares(AbstractSkeleton.class).noVision().disableItems());
     public static final RegistryObject<TransfurVariant<LatexBlueDragon>> LATEX_BLUE_DRAGON = register("form_latex_blue_dragon",
             TransfurVariant.Builder.of(ChangedEntities.BLUE_LATEX_DRAGON));
     public static final RegistryObject<TransfurVariant<LatexBlueWolf>> LATEX_BLUE_WOLF = register("form_latex_blue_wolf",
@@ -80,7 +80,7 @@ public class ChangedTransfurVariants {
             TransfurVariant.Builder.of(ChangedEntities.LATEX_CROCODILE));
     // TODO balance extra jumps and gliding (maybe only allow one or the other)
     public static final RegistryObject<TransfurVariant<LatexCrow>> LATEX_CROW = register("form_latex_crow",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_CROW).extraJumps(4).glide());
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_CROW).extraJumps(4));
     public static final RegistryObject<TransfurVariant<CrystalWolf>> CRYSTAL_WOLF = register("form_crystal_wolf",
             TransfurVariant.Builder.of(ChangedEntities.CRYSTAL_WOLF).scares(AbstractSkeleton.class).sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
     public static final RegistryObject<TransfurVariant<CrystalWolfHorned>> CRYSTAL_WOLF_HORNED = register("form_crystal_wolf_horned",
@@ -96,7 +96,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexFennecFox>> LATEX_FENNEC_FOX = register("form_latex_fennec_fox",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_FENNEC_FOX));
     public static final RegistryObject<TransfurVariant<LatexGoldenDragon>> LATEX_GOLDEN_DRAGON = register("form_latex_golden_dragon",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_GOLDEN_DRAGON).glide());
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_GOLDEN_DRAGON));
     public static final RegistryObject<TransfurVariant<LatexHypnoCat>> LATEX_HYPNO_CAT = register("form_latex_hypno_cat",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_HYPNO_CAT).scares(Creeper.class));
     public static final RegistryObject<TransfurVariant<LatexKeonWolf>> LATEX_KEON_WOLF = register("form_latex_keon_wolf",
@@ -124,7 +124,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexPinkWyvern>> LATEX_PINK_WYVERN = register("form_latex_pink_wyvern",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_PINK_WYVERN));
     public static final RegistryObject<TransfurVariant<LatexPinkYuinDragon>> LATEX_PINK_YUIN_DRAGON = register("form_latex_pink_yuin_dragon",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_PINK_YUIN_DRAGON).glide());
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_PINK_YUIN_DRAGON));
     public static final RegistryObject<TransfurVariant<LatexPurpleFox>> LATEX_PURPLE_FOX = register("form_latex_purple_fox",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_PURPLE_FOX));
     public static final RegistryObject<TransfurVariant<LatexRabbitFemale>> LATEX_RABBIT_FEMALE = register("form_latex_rabbit/female",
@@ -134,7 +134,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexRaccoon>> LATEX_RACCOON = register("form_latex_raccoon",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_RACCOON).visionType(VisionType.REDUCED));
     public static final RegistryObject<TransfurVariant<LatexRedDragon>> LATEX_RED_DRAGON = register("form_latex_red_dragon",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_RED_DRAGON).glide());
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_RED_DRAGON));
     public static final RegistryObject<TransfurVariant<LatexRedPanda>> LATEX_RED_PANDA = register("form_latex_red_panda",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_RED_PANDA));
     public static final RegistryObject<TransfurVariant<LatexShark>> LATEX_SHARK = register("form_latex_shark",
@@ -198,7 +198,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<PureWhiteLatexWolf>> PURE_WHITE_LATEX_WOLF = register("form_pure_white_latex_wolf",
             TransfurVariant.Builder.of(ChangedEntities.PURE_WHITE_LATEX_WOLF).scares(AbstractSkeleton.class).visionType(VisionType.REDUCED));
     public static final RegistryObject<TransfurVariant<PureWhiteLatexWolfPup>> PURE_WHITE_LATEX_WOLF_PUP = register("form_pure_white_latex_wolf_pup",
-            TransfurVariant.Builder.of(ChangedEntities.PURE_WHITE_LATEX_WOLF_PUP).scares(AbstractSkeleton.class).weakMining().holdItemsInMouth().visionType(VisionType.REDUCED));
+            TransfurVariant.Builder.of(ChangedEntities.PURE_WHITE_LATEX_WOLF_PUP).scares(AbstractSkeleton.class).holdItemsInMouth().visionType(VisionType.REDUCED));
 
     public static final RegistryObject<TransfurVariant<CustomLatexEntity>> CUSTOM_LATEX = register("form_custom_latex",
             TransfurVariant.Builder.of(ChangedEntities.CUSTOM_LATEX));

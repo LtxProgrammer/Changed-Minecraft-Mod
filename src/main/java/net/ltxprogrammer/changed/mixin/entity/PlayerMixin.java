@@ -15,6 +15,7 @@ import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -194,13 +195,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         this.paleExposure = paleExposure;
     }
 
-    @Inject(method = "makeStuckInBlock", at = @At("HEAD"), cancellable = true)
-    public void makeStuckInBlock(BlockState state, Vec3 v3, CallbackInfo ci) {
-        if (latexVariant != null)
-            if (latexVariant.getParent().canClimb && state.is(Blocks.COBWEB))
-                ci.cancel();
-    }
-
     @Unique
     private float foodEfficiency = 1.0f;
 
@@ -329,5 +323,10 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         if (this.getTransfurVariant() == null)
             return original.call(instance);
         return original.call(instance) && !this.getTransfurVariant().canCreativeFly();
+    }
+
+    @WrapMethod(method = "getDigSpeed", remap = false)
+    public float changed$multiplyMiningSpeedAttribute(BlockState blockState, BlockPos pos, Operation<Float> original) {
+        return original.call(blockState, pos) * (float) getAttributeValue(ChangedAttributes.MINING_SPEED.get());
     }
 }

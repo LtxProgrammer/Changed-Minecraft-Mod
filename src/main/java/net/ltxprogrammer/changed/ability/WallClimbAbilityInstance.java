@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
+import net.ltxprogrammer.changed.init.ChangedVariantFeatures;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.BlockCollisions;
 import net.minecraft.world.level.CollisionGetter;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -44,6 +46,7 @@ public class WallClimbAbilityInstance extends AbstractAbilityInstance {
 
     /// Vector that points away from the surface, treated as the new up direction +Y
     protected Vec3 surfaceNormal = UP;
+    protected Vec3 pushNormal = UP;
     protected Vec3 lastSurfaceNormal = UP;
     /// Vector that points along the surface, treated as the new right direction +X
     protected Vec3 planeRight = Vec3.ZERO;
@@ -53,6 +56,7 @@ public class WallClimbAbilityInstance extends AbstractAbilityInstance {
     protected final List<Vec3> pushPositions = new ReferenceArrayList<>();
 
     protected boolean isActive = false;
+    protected boolean freeTraversal = false;
 
     protected float effectiveRoll = 0.0f;
     protected float effectiveRollO = 0.0f;
@@ -147,15 +151,6 @@ public class WallClimbAbilityInstance extends AbstractAbilityInstance {
         };
     }
 
-    protected boolean isBlockPosAdjacentToBox(BlockPos position, BoundingBox box) {
-        if (box.isInside(position))
-            return false;
-
-        return true; /*BlockPos.betweenClosedStream(box).anyMatch(testPos -> {
-            return testPos.distManhattan(position) == 1;
-        });*/
-    }
-
     @Override
     public void tickIdle() {
         super.tickIdle();
@@ -229,6 +224,17 @@ public class WallClimbAbilityInstance extends AbstractAbilityInstance {
 
         this.pushPositions.clear();
 
+        this.freeTraversal = false;
+        this.lastSurfaceNormal = this.surfaceNormal;
+
+        if (entity.hasFeature(ChangedVariantFeatures.CLIMB_COBWEB.get())) {
+            boolean nearCobweb = level.getBlockStatesIfLoaded(entityBox.inflate(0.5)).anyMatch(blockState -> blockState.is(Blocks.COBWEB));
+            if (nearCobweb) { // Surface vectors will equal the player's up direction. Allows the player to freely climb through cobweb
+                this.surfaceNormal = lerpVector(0.3d, this.surfaceNormal, upAngle);
+                this.freeTraversal = true;
+            }
+        }
+
         // Find all collision shapes that are adjacent to the entity's bounding box
         for (var blockCollisionPair : getBlockCollisions(level, self, checkBox, entityBox)) {
             int distanceManhattan = blockCollisionPair.distanceManhattan;
@@ -269,10 +275,17 @@ public class WallClimbAbilityInstance extends AbstractAbilityInstance {
         if (normalSum == Vec3.ZERO)
             normalSum = normalBias;
 
-        this.lastSurfaceNormal = this.surfaceNormal;
-        if (normalSum == Vec3.ZERO) {
+        if (this.freeTraversal) {
+            if (positionSumCount > 0)
+                this.pushPositions.add(positionSum.scale(1.0d / positionSumCount));
+            if (normalSum == Vec3.ZERO)
+                pushNormal = lerpVector(0.3d, this.pushNormal, UP);
+            else
+                pushNormal = lerpVector(0.3d, this.pushNormal, normalSum);
+        } else if (normalSum == Vec3.ZERO) {
             // No surface normals present
             this.surfaceNormal = lerpVector(0.3d, this.surfaceNormal, UP);
+            this.pushNormal = this.surfaceNormal;
             this.pushPositions.clear();
             if (this.isActive) {
                 this.isActive = false;
@@ -283,6 +296,7 @@ public class WallClimbAbilityInstance extends AbstractAbilityInstance {
             }
         } else {
             this.surfaceNormal = lerpVector(0.3d, this.surfaceNormal, normalSum);
+            this.pushNormal = this.surfaceNormal;
             this.pushPositions.add(positionSum.scale(1.0d / positionSumCount));
         }
 
@@ -307,7 +321,11 @@ public class WallClimbAbilityInstance extends AbstractAbilityInstance {
 
             CameraUtil.decomposeZXY(rotationMatrix, (targetPitch, targetYaw, targetRoll) -> {
                 this.effectiveRoll = targetRoll * Mth.RAD_TO_DEG;
-                //this.effectiveRoll = Mth.lerp(0.3f, this.effectiveRoll, targetRoll * Mth.RAD_TO_DEG);
+
+                while (this.effectiveRoll - this.effectiveRollO > 180.0f)
+                    this.effectiveRoll -= 360.0f;
+                while (this.effectiveRoll - this.effectiveRollO < -180.0f)
+                    this.effectiveRoll += 360.0f;
             });
         }
     }
@@ -343,27 +361,29 @@ public class WallClimbAbilityInstance extends AbstractAbilityInstance {
         if (closestTooClosePoint.equals(closestTargetPosition)) {
             // Too close, push away on normal
             var scale = 1.0d - closestEntityPoint.distanceTo(closestTooClosePoint);
-            self.move(MoverType.SELF, this.surfaceNormal.scale(0.2d * scale));
+            self.move(MoverType.SELF, this.pushNormal.scale(0.2d * scale));
             // Slow movement that is parallel to normal
             self.setDeltaMovement(self.getDeltaMovement().multiply(
-                    1.0d - Math.abs(this.surfaceNormal.x * 0.91f),
-                    1.0d - Math.abs(this.surfaceNormal.y * 0.91f),
-                    1.0d - Math.abs(this.surfaceNormal.z * 0.91f)
+                    1.0d - Math.abs(this.pushNormal.x * 0.91f),
+                    1.0d - Math.abs(this.pushNormal.y * 0.91f),
+                    1.0d - Math.abs(this.pushNormal.z * 0.91f)
             ));
-        } else if (!closestPaddedPoint.equals(closestTargetPosition)) {
+        } else if (!closestPaddedPoint.equals(closestTargetPosition) && !this.freeTraversal) {
             // Too far, pull along on normal
             var scale = closestTargetPosition.distanceTo(closestPaddedPoint);
-            self.move(MoverType.SELF, this.surfaceNormal.scale(-0.4d * scale));
+            self.move(MoverType.SELF, this.pushNormal.scale(-0.4d * scale));
             // Slow movement that is parallel to normal
             self.setDeltaMovement(self.getDeltaMovement().multiply(
-                    1.0d - Math.abs(this.surfaceNormal.x * 0.91f),
-                    1.0d - Math.abs(this.surfaceNormal.y * 0.91f),
-                    1.0d - Math.abs(this.surfaceNormal.z * 0.91f)
+                    1.0d - Math.abs(this.pushNormal.x * 0.91f),
+                    1.0d - Math.abs(this.pushNormal.y * 0.91f),
+                    1.0d - Math.abs(this.pushNormal.z * 0.91f)
             ));
         }
     }
 
     protected void transitionVelocityAndView(Vec3 previousNormal, Vec3 currentNormal) {
+        if (freeTraversal)
+            return;
         if (previousNormal.equals(currentNormal))
             return;
         var cross = previousNormal.cross(currentNormal).normalize();
