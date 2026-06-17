@@ -2,6 +2,7 @@
   "parent": "changed:back_wing/creative_flight",
   "titleId": "changed.ability_tree.back_wing.flight_stamina1",
   "flavorId": "changed.ability_tree.back_wing.flight_stamina1.flavor",
+  "display": { "icon": { "item": "minecraft:phantom_membrane" } },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

@@ -2,6 +2,7 @@
   "parent": "changed:back_wing/flight_stamina2",
   "titleId": "changed.ability_tree.back_wing.flight_stamina3",
   "flavorId": "changed.ability_tree.back_wing.flight_stamina3.flavor",
+  "display": { "icon": { "item": "minecraft:phantom_membrane" }, "frame": "strong" },
   "price": 1,
 
   "acquiredEffects": [

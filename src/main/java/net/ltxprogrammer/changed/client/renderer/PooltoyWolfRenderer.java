@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.PooltoyWolfModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorPooltoyWolfModel;
 import net.ltxprogrammer.changed.entity.SpringType;
 import net.ltxprogrammer.changed.entity.beast.PooltoyWolf;
@@ -33,6 +32,6 @@ public class PooltoyWolfRenderer extends AdvancedHumanoidRenderer<PooltoyWolf, P
     protected void scale(PooltoyWolf entity, PoseStack pose, float deltaTime) {
         super.scale(entity, pose, deltaTime);
         float spring = entity.getSimulatedSpring(SpringType.MODERATE_STRONG, SpringType.Direction.VERTICAL, deltaTime) * -0.125f;
-        pose.scale(PooltoyWolf.SCALE - spring, PooltoyWolf.SCALE + spring, PooltoyWolf.SCALE - spring);
+        pose.scale(1.0f - spring, 1.0f + spring, 1.0f - spring);
     }
 }

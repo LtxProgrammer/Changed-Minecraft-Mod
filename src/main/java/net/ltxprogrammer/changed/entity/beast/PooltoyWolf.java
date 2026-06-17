@@ -24,6 +24,7 @@ public class PooltoyWolf extends AbstractPooltoy {
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(4.0);
         attributes.getInstance(ChangedAttributes.MINING_SPEED.get()).setBaseValue(AttributePresets.MINING_FATIGUE_1);
+        attributes.getInstance(ChangedAttributes.SCALE.get()).setBaseValue(SCALE);
     }
 
     @Override

@@ -8,5 +8,10 @@
   },
 
   "comment": "This ability would allow the player to place cobweb as they descend down cobweb.",
-  "acquiredEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:cobweb_rappel"
+    }
+  ]
 }

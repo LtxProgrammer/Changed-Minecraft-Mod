@@ -2,6 +2,7 @@
   "parent": "changed:arachnidae/spinneret_practice1",
   "titleId": "changed.ability_tree.arachnidae.climb_cobweb",
   "flavorId": "changed.ability_tree.arachnidae.climb_cobweb.flavor",
+  "display": { "icon": { "item": "minecraft:cobweb" } },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

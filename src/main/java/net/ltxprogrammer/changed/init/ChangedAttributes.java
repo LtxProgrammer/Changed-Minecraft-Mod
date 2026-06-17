@@ -69,6 +69,11 @@ public class ChangedAttributes {
      */
     public static final RegistryObject<Attribute> MAX_FLIGHT_STAMINA = REGISTRY.register("max_flight_stamina",
             () -> new RangedAttribute("attribute.name.changed.max_flight_stamina", 0.0D, 0.0D, 2048.0D).setSyncable(true));
+    /**
+     * Multiplies the entity's size in all axis. ONLY APPLIES WITH A TRANSFUR VARIANT.
+     */
+    public static final RegistryObject<Attribute> SCALE = REGISTRY.register("scale",
+            () -> new RangedAttribute("attribute.name.changed.scale", 1.0D, 0.0D, 32.0D).setSyncable(true));
 
     public static void modifyEntityAttributes(EntityAttributeModificationEvent event) {
         event.getTypes().forEach(entityType -> {
@@ -88,5 +93,6 @@ public class ChangedAttributes {
         event.add(EntityType.PLAYER, ChangedAttributes.FALL_RESISTANCE.get(), 1.0D);
         event.add(EntityType.PLAYER, ChangedAttributes.MINING_SPEED.get(), 1.0D);
         event.add(EntityType.PLAYER, ChangedAttributes.MAX_FLIGHT_STAMINA.get(), 0.0D);
+        event.add(EntityType.PLAYER, ChangedAttributes.SCALE.get(), 1.0D);
     }
 }

@@ -336,7 +336,7 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
             case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.3f);
             case DYING -> EntityDimensions.fixed(0.2f, 0.2f);
             default -> core;
-        }).scale(getBasicPlayerInfo().getSize(this) * this.getScale());
+        }).scale(this.getScale());
     }
 
     public int getRawFormFlags() {

@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
@@ -28,11 +27,5 @@ public class BuffLatexSharkFemaleRenderer extends AdvancedHumanoidRenderer<BuffL
     @Override
     public ResourceLocation getTextureLocation(BuffLatexSharkFemale entity) {
         return DEFAULT_SKIN_LOCATION;
-    }
-
-    @Override
-    protected void scale(BuffLatexSharkFemale entity, PoseStack pose, float partialTick) {
-        float modelScale = 1.025F;
-        pose.scale(modelScale, modelScale, modelScale);
     }
 }

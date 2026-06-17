@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TaurChestPackLayer;
@@ -26,11 +25,5 @@ public class HeadlessKnightRenderer extends AdvancedHumanoidRenderer<HeadlessKni
     @Override
     public ResourceLocation getTextureLocation(HeadlessKnight entity) {
         return DEFAULT_SKIN_LOCATION;
-    }
-
-    @Override
-    protected void scale(HeadlessKnight entity, PoseStack pose, float partialTick) {
-        super.scale(entity, pose, partialTick);
-        pose.scale(1.05f, 1.05f, 1.05f);
     }
 }
