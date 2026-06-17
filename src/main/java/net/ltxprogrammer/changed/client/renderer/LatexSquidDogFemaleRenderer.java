@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSquidDogFemaleModel;
@@ -26,11 +25,5 @@ public class LatexSquidDogFemaleRenderer extends AdvancedHumanoidRenderer<LatexS
     @Override
     public ResourceLocation getTextureLocation(LatexSquidDogFemale entity) {
         return DEFAULT_SKIN_LOCATION;
-    }
-
-    @Override
-    protected void scale(LatexSquidDogFemale entity, PoseStack pose, float partialTick) {
-        float f = 1.0525F;
-        pose.scale(1.0525F, 1.0525F, 1.0525F);
     }
 }

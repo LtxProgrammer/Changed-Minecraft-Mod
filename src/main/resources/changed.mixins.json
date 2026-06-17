@@ -21,6 +21,7 @@
     "block.PowderSnowBlockMixin",
     "block.SimpleBlockFeatureMixin",
     "block.SpreadingSnowyDirtBlockMixin",
+    "block.WebBlockMixin",
     "entity.ArrowMixin",
     "entity.EntityMixin",
     "entity.LightingBoltMixin",

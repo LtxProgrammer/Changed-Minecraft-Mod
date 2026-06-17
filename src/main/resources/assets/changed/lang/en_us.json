@@ -50,6 +50,10 @@
   "ability.changed.gale_force_winds.desc": "Flap your wings to send out a strong gust of wind.",
   "ability.changed.wall_climb": "Wall Climb",
   "ability.changed.wall_climb.desc": "Start crawling on nearby surfaces.",
+  "ability.changed.cobweb_rappel": "Cobweb Rappel",
+  "ability.changed.cobweb_rappel.desc": "Safely descend from a ceiling.",
+  "ability.changed.ink_smoke_screen": "Ink Smoke Screen",
+  "ability.changed.ink_smoke_screen.desc": "Unleash a cloud of ink to obscure your location and defend yourself.",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.desc": "Hold onto an entity to either transfur them or to protect them.",
@@ -84,6 +88,8 @@
   "attribute.name.changed.mining_speed.desc": "Multiplies mining speed.",
   "attribute.name.changed.max_flight_stamina": "Max Flight Stamina",
   "attribute.name.changed.max_flight_stamina.desc": "How long you can remain air-born using your own wings.",
+  "attribute.name.changed.scale": "Scale",
+  "attribute.name.changed.scale.desc": "Multiplies the entity's scale.",
 
   "subtitles.changed.block.cardboard_box.close": "Cardboard box closes",
   "subtitles.changed.block.cardboard_box.open": "Cardboard box opens",
@@ -1089,7 +1095,9 @@
 
   "changed.ability_tree.arachnidae.adapted_vision": "Adapted Vision",
   "changed.ability_tree.arachnidae.adapted_vision.flavor": "You've adapted to having multiple eyes. You're seeing things more clearly.",
-  "changed.ability_tree.arachnidae.rappel": "Rappel",
+  "changed.ability_tree.arachnidae.climb_cobweb": "Climb Cobweb",
+  "changed.ability_tree.arachnidae.climb_cobweb.flavor": "(DO NOT TRANSLATE) [Passive: the player can freely climb through cobweb like a ladder, straight through while in wall climb mode]",
+  "changed.ability_tree.arachnidae.rappel": "Cobweb Rappel",
   "changed.ability_tree.arachnidae.rappel.flavor": "Your silk allows you to safely descend from high places.",
   "changed.ability_tree.arachnidae.spinneret_practice1": "Spinneret Practice I",
   "changed.ability_tree.arachnidae.spinneret_practice1.flavor": "You're getting better at producing silk.",

@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -28,5 +29,6 @@ public abstract class AbstractLatexSquidDog extends AbstractAquaticEntity implem
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.925);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.3);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(30.0);
+        attributes.getInstance(ChangedAttributes.SCALE.get()).setBaseValue(1.0525);
     }
 }

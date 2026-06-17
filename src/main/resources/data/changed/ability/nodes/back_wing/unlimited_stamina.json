@@ -2,6 +2,7 @@
   "parent": "changed:back_wing/flight_stamina3",
   "titleId": "changed.ability_tree.back_wing.unlimited_stamina",
   "flavorId": "changed.ability_tree.back_wing.unlimited_stamina.flavor",
+  "display": { "icon": { "item": "minecraft:elytra" }, "frame": "ultimate" },
   "price": {
     "levels": 20,
     "items": [

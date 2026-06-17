@@ -45,4 +45,14 @@ public abstract class AttributePresets {
         map.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.85);
         map.getInstance(Attributes.MAX_HEALTH).setBaseValue(24.0);
     }
+
+    public static final double MINING_FATIGUE_0 = 0.3;
+    public static final double MINING_FATIGUE_1 = 0.09;
+    public static final double MINING_FATIGUE_2 = 0.0027;
+    public static final double MINING_FATIGUE_3 = 8.1E-4;
+
+    public static final double HASTE_0 = 1.2;
+    public static final double HASTE_1 = 1.4;
+    public static final double HASTE_2 = 1.6;
+    public static final double HASTE_3 = 1.8;
 }

@@ -2,11 +2,16 @@
   "parent": "changed:arachnidae/spinneret_practice1",
   "titleId": "changed.ability_tree.arachnidae.climb_cobweb",
   "flavorId": "changed.ability_tree.arachnidae.climb_cobweb.flavor",
+  "display": { "icon": { "item": "minecraft:cobweb" } },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1
   },
 
-  "comment": "This ability would allow the player to climb around cobweb as if it were scaffolding.",
-  "acquiredEffects": []
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:climb/cobweb"
+    }
+  ]
 }

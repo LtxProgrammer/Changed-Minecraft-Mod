@@ -2,6 +2,7 @@
   "parent": { "tree": "changed:arachnidae" },
   "titleId": "changed.ability_tree.arachnidae.adapted_vision",
   "flavorId": "changed.ability_tree.arachnidae.adapted_vision.flavor",
+  "display": { "icon": { "item": "minecraft:spider_eye" } },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

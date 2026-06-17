@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.entity.AttributePresets;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
@@ -33,6 +34,7 @@ public class GasWolfPup extends GasWolfMale {
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(2.0D);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(12.0);
         attributes.getInstance(ChangedAttributes.FALL_RESISTANCE.get()).setBaseValue(2.5);
+        attributes.getInstance(ChangedAttributes.MINING_SPEED.get()).setBaseValue(AttributePresets.MINING_FATIGUE_1);
     }
 
     @Override

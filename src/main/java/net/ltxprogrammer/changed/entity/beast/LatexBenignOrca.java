@@ -25,6 +25,7 @@ public class LatexBenignOrca extends AbstractAquaticEntity {
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.12);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.5);
         attributes.getInstance(ChangedAttributes.JUMP_STRENGTH.get()).setBaseValue(0.5);
+        attributes.getInstance(ChangedAttributes.MINING_SPEED.get()).setBaseValue(AttributePresets.MINING_FATIGUE_1);
     }
 
     @Override
@@ -39,12 +40,14 @@ public class LatexBenignOrca extends AbstractAquaticEntity {
                 attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.075);
                 attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
                 attributes.getInstance(ChangedAttributes.JUMP_STRENGTH.get()).setBaseValue(1.0);
+                attributes.getInstance(ChangedAttributes.MINING_SPEED.get()).setBaseValue(1.0);
             }
 
             else {
                 attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.15);
                 attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.2);
                 attributes.getInstance(ChangedAttributes.JUMP_STRENGTH.get()).setBaseValue(0.5);
+                attributes.getInstance(ChangedAttributes.MINING_SPEED.get()).setBaseValue(AttributePresets.MINING_FATIGUE_1);
             }
 
             hasExoLast = hasExo;
@@ -53,7 +56,6 @@ public class LatexBenignOrca extends AbstractAquaticEntity {
             if (instance != null) {
                 instance.visionType = hasExo ? VisionType.NORMAL : VisionType.BLIND;
                 instance.itemUseMode = hasExo ? UseItemMode.NORMAL : UseItemMode.NONE;
-                instance.miningStrength = hasExo ? MiningStrength.NORMAL : MiningStrength.WEAK;
 
                 instance.refreshAttributes();
             }

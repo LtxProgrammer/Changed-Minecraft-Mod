@@ -19,7 +19,9 @@
     "transfurred_aquatic": {
       "trigger": "changed:transfur",
       "conditions": {
-        "swimming": true
+        "variants": [
+          "#changed:aquatic"
+        ]
       }
     }
   },
