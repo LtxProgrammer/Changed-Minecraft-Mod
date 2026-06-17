@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.ability.tree;
 
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.JsonOps;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.network.packet.AbilityTreeSyncInstancePacket;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -29,35 +31,36 @@ import java.util.concurrent.Executor;
 
 public class AbilityTrees extends SimplePreparableReloadListener<Pair<Map<ResourceLocation, AbilityNode>, Set<AbilityTree>>> {
     public static final AbilityTrees INSTANCE = new AbilityTrees();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     private Map<ResourceLocation, AbilityNode> nodes = Map.of();
     private Set<AbilityTree> trees = Set.of();
     private Set<AbilityTree> treesRemote = Set.of();
 
-    private AbilityNode processNodeJSONFile(JsonObject root) {
+    private AbilityNode processNodeJSONFile(JsonObject root, ResourceLocation id) {
         return AbilityNode.CODEC.decode(JsonOps.INSTANCE, root)
-                .getOrThrow(false, error -> { throw new RuntimeException(error); }).getFirst();
+                .getOrThrow(false, error -> LOGGER.warn("{}: {}", id, error)).getFirst();
     }
 
-    private AbilityTree processTreeJSONFile(JsonObject root) {
+    private AbilityTree processTreeJSONFile(JsonObject root, ResourceLocation id) {
         return AbilityTree.CODEC.decode(JsonOps.INSTANCE, root)
-                .getOrThrow(false, error -> { throw new RuntimeException(error); }).getFirst();
+                .getOrThrow(false, error -> LOGGER.warn("{}: {}", id, error)).getFirst();
     }
 
     @Override
     @NotNull
     public Pair<Map<ResourceLocation, AbilityNode>, Set<AbilityTree>> prepare(ResourceManager resources, @Nonnull ProfilerFiller profiler) {
         var nodes = ResourceUtil.processJSONResources(new HashMap<ResourceLocation, AbilityNode>(), resources, "ability/nodes", (list, filename, id, json) -> {
-            var abilityNode = processNodeJSONFile(json);
+            var abilityNode = processNodeJSONFile(json, id);
             abilityNode.setNodeLocation(id);
             list.put(id, abilityNode);
-        }, (exception, filename) -> Changed.LOGGER.error("Failed to load ability node from \"{}\" : {}", filename, exception));
+        }, (exception, filename) -> LOGGER.error("Failed to load ability node from \"{}\"", filename));
 
         var trees = ResourceUtil.processJSONResources(new HashSet<AbilityTree>(), resources, "ability/trees", (list, filename, id, json) -> {
-            var abilityTree = processTreeJSONFile(json);
+            var abilityTree = processTreeJSONFile(json, id);
             abilityTree.setTreeLocation(id);
             list.add(abilityTree);
-        }, (exception, filename) -> Changed.LOGGER.error("Failed to load ability tree from \"{}\" : {}", filename, exception));
+        }, (exception, filename) -> LOGGER.error("Failed to load ability tree from \"{}\"", filename));
 
         return Pair.of(nodes, trees);
     }

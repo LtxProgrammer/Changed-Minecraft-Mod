@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.ability.tree;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.ltxprogrammer.changed.data.codec.OptionalKeyFieldCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.Criterion;
@@ -27,8 +28,8 @@ public class AbilityNode extends PartialNode {
             Codec.STRING.fieldOf("descriptionId").orElse("").forGetter(node -> node.descriptionId),
             Codec.STRING.fieldOf("flavorId").orElse("").forGetter(node -> node.flavorId),
             NodePrice.CODEC.fieldOf("price").forGetter(node -> node.price),
-            Codec.list(NodeEffect.EFFECT_CODEC).optionalFieldOf("acquiredEffects").xmap(opt -> opt.orElseGet(List::of), Optional::of).forGetter(node -> node.acquiredEffects),
-            Codec.list(NodeEffect.EFFECT_CODEC).optionalFieldOf("missingEffects").xmap(opt -> opt.orElseGet(List::of), Optional::of).forGetter(node -> node.missingEffects)
+            OptionalKeyFieldCodec.keyOptionalFieldOf("acquiredEffects", Codec.list(NodeEffect.EFFECT_CODEC), List.of()).forGetter(node -> node.acquiredEffects),
+            OptionalKeyFieldCodec.keyOptionalFieldOf("missingEffects", Codec.list(NodeEffect.EFFECT_CODEC), List.of()).forGetter(node -> node.missingEffects)
     ).apply(builder, AbilityNode::new));
 
     public final List<ResourceLocation> occludes;

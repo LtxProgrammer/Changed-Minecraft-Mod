@@ -11,7 +11,7 @@
   "acquiredEffects": [
     {
       "type": "changed:unlock_active_ability",
-      "attribute": "changed:autotool"
+      "ability": "changed:autotool"
     }
   ]
 }
