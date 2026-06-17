@@ -50,6 +50,10 @@
   "ability.changed.gale_force_winds.desc": "扇动翅膀，以释放一道强烈的狂风。",
   "ability.changed.wall_climb": "竖墙攀爬",
   "ability.changed.wall_climb.desc": "开始在附近的墙壁上攀爬。",
+  "ability.changed.cobweb_rappel": "蛛丝垂降",
+  "ability.changed.cobweb_rappel.desc": "安全地从蛛丝顶部降下来。",
+  "ability.changed.ink_smoke_screen": "墨云烟幕",
+  "ability.changed.ink_smoke_screen.desc": "释放一团墨雾，隐藏自己的位置并保护自己。",
 
   "ability.changed.grab_entity": "抓取生物",
   "ability.changed.grab_entity.desc": "在怀中紧紧抱住一个生物，以兽化或保护它。",
@@ -84,6 +88,8 @@
   "attribute.name.changed.mining_speed.desc": "提升你的挖矿速度。",
   "attribute.name.changed.max_flight_stamina": "最大飞行耐力",
   "attribute.name.changed.max_flight_stamina.desc": "仅靠翅膀时你能保持在空中的时长。",
+  "attribute.name.changed.scale": "缩放",
+  "attribute.name.changed.scale.desc": "将实体的大小按比例放大或缩小。",
 
   "subtitles.changed.block.cardboard_box.close": "纸箱关闭",
   "subtitles.changed.block.cardboard_box.open": "纸箱打开",
@@ -1089,6 +1095,8 @@
 
   "changed.ability_tree.arachnidae.adapted_vision": "适应性视觉",
   "changed.ability_tree.arachnidae.adapted_vision.flavor": "你适应了你的蛛眼，你发觉世界更加清晰了。",
+  "changed.ability_tree.arachnidae.climb_cobweb": "蛛网攀爬",
+  "changed.ability_tree.arachnidae.climb_cobweb.flavor": "(DO NOT TRANSLATE) [Passive: the player can freely climb through cobweb like a ladder, straight through while in wall climb mode]",
   "changed.ability_tree.arachnidae.rappel": "蛛丝垂降",
   "changed.ability_tree.arachnidae.rappel.flavor": "你的丝线现在能够帮助你安全地从高处垂降到地面了。",
   "changed.ability_tree.arachnidae.spinneret_practice1": "纺丝熟练 I",
