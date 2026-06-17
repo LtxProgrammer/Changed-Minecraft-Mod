@@ -40,6 +40,7 @@ public class ChangedAbilities {
     public static RegistryObject<GaleForceWindsAbility> GALE_FORCE_WINDS = REGISTRY.register("gale_force_winds", GaleForceWindsAbility::new);
     public static RegistryObject<WallClimbAbility> WALL_CLIMB = REGISTRY.register("wall_climb", WallClimbAbility::new);
     public static RegistryObject<CobwebRappelAbility> COBWEB_RAPPEL = REGISTRY.register("cobweb_rappel", CobwebRappelAbility::new);
+    public static RegistryObject<InkSmokeScreenAbility> INK_SMOKE_SCREEN = REGISTRY.register("ink_smoke_screen", InkSmokeScreenAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

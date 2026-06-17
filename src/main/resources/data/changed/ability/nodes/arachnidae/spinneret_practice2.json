@@ -2,6 +2,7 @@
   "parent": "changed:arachnidae/spinneret_practice1",
   "titleId": "changed.ability_tree.arachnidae.spinneret_practice2",
   "flavorId": "changed.ability_tree.arachnidae.spinneret_practice2.flavor",
+  "display": { "icon": { "item": "minecraft:string" } },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

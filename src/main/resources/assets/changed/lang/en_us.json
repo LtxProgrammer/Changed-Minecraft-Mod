@@ -52,6 +52,8 @@
   "ability.changed.wall_climb.desc": "Start crawling on nearby surfaces.",
   "ability.changed.cobweb_rappel": "Cobweb Rappel",
   "ability.changed.cobweb_rappel.desc": "Safely descend from a ceiling.",
+  "ability.changed.ink_smoke_screen": "Ink Smoke Screen",
+  "ability.changed.ink_smoke_screen.desc": "Unleash a cloud of ink to obscure your location and defend yourself.",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.desc": "Hold onto an entity to either transfur them or to protect them.",

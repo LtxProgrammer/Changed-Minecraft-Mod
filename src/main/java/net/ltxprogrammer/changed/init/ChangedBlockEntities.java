@@ -47,4 +47,5 @@ public class ChangedBlockEntities {
     public static final RegistryObject<BlockEntityType<StasisChamberBlockEntity>> STASIS_CHAMBER = REGISTRY.register("stasis_chamber", deferredProvider(StasisChamberBlockEntity::new, ChangedBlocks.STASIS_CHAMBER));
     public static final RegistryObject<BlockEntityType<ComputerBlockEntity>> COMPUTER = REGISTRY.register("computer", deferredProvider(ComputerBlockEntity::new, ChangedBlocks.COMPUTER));
     public static final RegistryObject<BlockEntityType<RouterBlockEntity>> ROUTER = REGISTRY.register("router", deferredProvider(RouterBlockEntity::new, ChangedBlocks.ROUTER));
+    public static final RegistryObject<BlockEntityType<InkCloudBlockEntity>> INK_CLOUD = REGISTRY.register("ink_cloud", deferredProvider(InkCloudBlockEntity::new, ChangedBlocks.INK_CLOUD));
 }
