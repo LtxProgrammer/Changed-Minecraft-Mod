@@ -15,7 +15,7 @@
     },
     {
       "type": "changed:attribute_modifier",
-      "attribute": "changed:generic.attack_damage",
+      "attribute": "minecraft:generic.attack_damage",
       "factor": 1.0
     }
   ]

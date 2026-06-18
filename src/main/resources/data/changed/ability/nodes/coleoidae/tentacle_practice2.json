@@ -7,7 +7,7 @@
   "acquiredEffects": [
     {
       "type": "changed:enable_feature",
-      "ability": "changed:switch_hands/bonus_hands",
+      "feature": "changed:switch_hands/bonus_hands",
       "factor": 2
     },
     {

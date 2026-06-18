@@ -31,8 +31,8 @@ public class DoubleItemInHandLayer<T extends ChangedEntity, M extends AdvancedHu
         var abilityInstance = entity.getAbilityInstance(ChangedAbilities.SWITCH_HANDS.get());
         if (abilityInstance == null) return;
 
-        ItemStack leftHandStack = abilityInstance.extraLeftHand;
-        ItemStack rightHandStack = abilityInstance.extraRightHand;
+        ItemStack leftHandStack = flag ? abilityInstance.getNextOffHandItem() : abilityInstance.getNextMainHandItem();
+        ItemStack rightHandStack = flag ? abilityInstance.getNextMainHandItem() : abilityInstance.getNextOffHandItem();
         if (!leftHandStack.isEmpty() || !rightHandStack.isEmpty()) {
             poseStack.pushPose();
             if (this.getParentModel().young) {

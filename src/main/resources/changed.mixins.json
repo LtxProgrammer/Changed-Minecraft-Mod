@@ -24,6 +24,7 @@
     "block.WebBlockMixin",
     "entity.ArrowMixin",
     "entity.EntityMixin",
+    "entity.InventoryMixin",
     "entity.LightingBoltMixin",
     "entity.LivingEntityMixin",
     "entity.MobMixin",
