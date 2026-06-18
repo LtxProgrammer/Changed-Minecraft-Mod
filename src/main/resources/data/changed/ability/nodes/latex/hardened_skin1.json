@@ -2,7 +2,7 @@
   "parent": "changed:latex/stability2",
   "titleId": "changed.ability_tree.latex.hardened_skin1",
   "flavorId": "changed.ability_tree.latex.hardened_skin1.flavor",
-  "display": { "icon": { "item": "minecraft:iron_chestplate" } },
+  "display": { "icon": { "item": "minecraft:iron_chestplate" }, "numeral": 1 },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

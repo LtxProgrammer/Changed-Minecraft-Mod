@@ -2,7 +2,7 @@
   "parent": { "tree": "changed:back_wing" },
   "titleId": "changed.ability_tree.back_wing.wing_flap1",
   "flavorId": "changed.ability_tree.back_wing.wing_flap1.flavor",
-  "display": { "icon": "changed:textures/gui/nodes/wing_flap.png" },
+  "display": { "icon": "changed:textures/gui/nodes/wing_flap.png", "numeral": 1 },
   "price": 0,
 
   "acquiredEffects": [

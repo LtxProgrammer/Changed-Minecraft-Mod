@@ -2,7 +2,7 @@
   "parent": "changed:coleoidae/ink_sac2",
   "titleId": "changed.ability_tree.coleoidae.ink_sac3",
   "flavorId": "changed.ability_tree.coleoidae.ink_sac3.flavor",
-  "display": { "icon": { "item": "minecraft:ink_sac" } },
+  "display": { "icon": { "item": "minecraft:ink_sac" }, "numeral": 3 },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

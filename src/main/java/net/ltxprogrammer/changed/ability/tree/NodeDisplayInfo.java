@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.ltxprogrammer.changed.data.codec.OptionalKeyFieldCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +15,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Arrays;
 import java.util.Optional;
 
-public record NodeDisplayInfo(Either<ResourceLocation, ItemStack> icon, FrameType frameType, int iconWidth, int iconHeight) {
+public record NodeDisplayInfo(Either<ResourceLocation, ItemStack> icon, FrameType frameType, Numeral numeral, int iconWidth, int iconHeight) {
     public enum FrameType implements StringRepresentable {
         BASIC("basic", 24, ChatFormatting.WHITE),
         STRONG("strong", 48, ChatFormatting.AQUA),
@@ -43,6 +44,48 @@ public record NodeDisplayInfo(Either<ResourceLocation, ItemStack> icon, FrameTyp
         }
     }
 
+    public enum Numeral {
+        ZERO(),
+        ONE(0, 0),
+        TWO(0, 16),
+        THREE(0, 32),
+        FOUR(0, 48),
+        FIVE(16, 0),
+        SIX(16, 16),
+        SEVEN(16, 32),
+        EIGHT(16, 48),
+        NINE(32, 0),
+        TEN(32, 16),
+        ELEVEN(32, 32),
+        TWELVE(32, 48),
+        THIRTEEN(48, 0),
+        FOURTEEN(48, 16),
+        FIFTEEN(48, 32),
+        SIXTEEN(48, 48);
+
+        public static Codec<Numeral> CODEC = Codec.INT.comapFlatMap(Numeral::fromOrdinal, Numeral::ordinal);
+
+        public final int xOffset;
+        public final int yOffset;
+
+        Numeral() {
+            this(-1, -1);
+        }
+
+        Numeral(int xOffset, int yOffset) {
+            this.xOffset = xOffset;
+            this.yOffset = yOffset;
+        }
+
+        public static DataResult<Numeral> fromOrdinal(int ordinal) {
+            var values = values();
+            if (ordinal < 0 || ordinal > values.length)
+                return DataResult.error(() -> ordinal + " is out of range [0, 16]");
+
+            return DataResult.success(values[ordinal]);
+        }
+    }
+
     private static final Codec<ItemStack> ITEMSTACK_CODEC = RecordCodecBuilder.create((builder) -> builder.group(
                     ForgeRegistries.ITEMS.getCodec().fieldOf("item").forGetter(ItemStack::getItem),
                     Codec.INT.fieldOf("count").orElse(1).forGetter(ItemStack::getCount),
@@ -55,10 +98,11 @@ public record NodeDisplayInfo(Either<ResourceLocation, ItemStack> icon, FrameTyp
 
     public static final Codec<NodeDisplayInfo> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.either(ResourceLocation.CODEC, ITEMSTACK_CODEC).fieldOf("icon").orElse(Either.left(ResourceLocation.withDefaultNamespace("missingno"))).forGetter(NodeDisplayInfo::icon),
-            FrameType.CODEC.fieldOf("frame").orElse(FrameType.BASIC).forGetter(NodeDisplayInfo::frameType),
+            OptionalKeyFieldCodec.keyOptionalFieldOf("frame", FrameType.CODEC, FrameType.BASIC).forGetter(NodeDisplayInfo::frameType),
+            OptionalKeyFieldCodec.keyOptionalFieldOf("numeral", Numeral.CODEC, Numeral.ZERO).forGetter(NodeDisplayInfo::numeral),
             Codec.INT.fieldOf("iconWidth").orElse(16).forGetter(NodeDisplayInfo::iconWidth),
             Codec.INT.fieldOf("iconHeight").orElse(16).forGetter(NodeDisplayInfo::iconHeight)
     ).apply(builder, NodeDisplayInfo::new));
 
-    public static final NodeDisplayInfo MISSING = new NodeDisplayInfo(Either.left(ResourceLocation.withDefaultNamespace("missingno")), FrameType.BASIC, 16, 16);
+    public static final NodeDisplayInfo MISSING = new NodeDisplayInfo(Either.left(ResourceLocation.withDefaultNamespace("missingno")), FrameType.BASIC, Numeral.ZERO, 16, 16);
 }

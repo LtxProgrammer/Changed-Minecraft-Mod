@@ -67,7 +67,7 @@ public abstract class ServerPlayerGameModeMixin {
         }
     }
 
-    @WrapOperation(method = "destroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayerGameMode;removeBlock(Lnet/minecraft/core/BlockPos;Z)Z"))
+    @WrapOperation(method = "destroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayerGameMode;removeBlock(Lnet/minecraft/core/BlockPos;Z)Z", remap = false))
     public boolean changed$cacheHarvested(ServerPlayerGameMode instance, BlockPos blockPos, boolean canHarvest, Operation<Boolean> original, @Local BlockState blockState) {
         changed$lastRemovedBlockState = blockState;
         boolean removed = original.call(instance, blockPos, canHarvest);
