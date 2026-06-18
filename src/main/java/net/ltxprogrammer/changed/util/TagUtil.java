@@ -5,12 +5,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -71,6 +73,23 @@ public class TagUtil {
     public static void putResourceLocation(CompoundTag cTag, String name, ResourceLocation location) {
         if (location != null)
             cTag.putString(name, location.toString());
+    }
+
+    public static <T> ListTag createList(Collection<T> list, Function<T, Tag> tagFunction) {
+        ListTag tag = new ListTag();
+        list.forEach(element -> {
+            var elementTag = tagFunction.apply(element);
+            if (elementTag != null)
+                tag.add(elementTag);
+        });
+        return tag;
+    }
+
+    public static <T, C extends Collection<T>> C readList(ListTag tag, Function<Tag, T> elementFunction, C list) {
+        tag.forEach(elementTag -> {
+            list.add(elementFunction.apply(elementTag));
+        });
+        return list;
     }
 
     public static <T, V> CompoundTag createMap(Map<T, V> map, TriConsumer<T, V, CompoundTag> consumer) {

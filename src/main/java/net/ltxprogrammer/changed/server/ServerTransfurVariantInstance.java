@@ -15,8 +15,9 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.packet.SyncActiveNodeEffectsPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -38,11 +39,19 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class ServerTransfurVariantInstance<T extends ChangedEntity> extends TransfurVariantInstance<T> {
     private final ServerPlayer host;
 
     protected final List<NodeEffect> lastSentNodeEffects = new ArrayList<>();
+
+    protected Stream<NodeEffect> gatherClientVisibleNodeEffects() {
+        return activeNodeEffects.values().stream()
+                .map(NodeEffect::getClientNodeEffect)
+                .filter(Optional::isPresent)
+                .map(Optional::get);
+    }
 
     protected static class FluidSubmersionVariables {
         final FluidType fluidType;
@@ -124,6 +133,18 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
     }
 
     @Override
+    public CompoundTag saveForNetwork() {
+        var tag = super.saveForNetwork();
+
+        List<NodeEffect> syncedEffects = gatherClientVisibleNodeEffects().toList();
+        tag.put("nodeEffects", TagUtil.createList(syncedEffects, effect -> {
+            return NodeEffect.EFFECT_CODEC.encodeStart(NbtOps.INSTANCE, effect).getOrThrow(false, onError -> {});
+        }));
+
+        return tag;
+    }
+
+    @Override
     public CompoundTag saveForStorage() {
         var tag = super.saveForStorage();
 
@@ -159,6 +180,12 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
                         .load(fluidTicksTag.getCompound(keyStr));
             });
         }
+    }
+
+    @Override
+    public void loadAbilities(CompoundTag tagAbilities) {
+        this.updateAbilitiesCache();
+        super.loadAbilities(tagAbilities);
     }
 
     @Override
@@ -231,7 +258,7 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
 
     public final Map<Attribute, UUID> attributesByUUID = new HashMap<>();
 
-    protected void tickAbilityTree() {
+    protected void updateAbilitiesCache() {
         var abilityTree = ((PlayerDataExtension)host).getAbilityTree();
         abilityTree.updateTrees(host);
         variantFeatures.clear();
@@ -239,6 +266,19 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
         abilityTree.gatherNodeEffects(this, nodeEffect -> {
             activeNodeEffects.put(nodeEffect.getCodec(), nodeEffect);
         });
+
+        List<NodeEffect> syncedEffects = gatherClientVisibleNodeEffects().toList();
+        if (!lastSentNodeEffects.equals(syncedEffects)) {
+            lastSentNodeEffects.clear();
+            lastSentNodeEffects.addAll(syncedEffects);
+
+            Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(this::getHost),
+                    new SyncActiveNodeEffectsPacket(host.getId(), lastSentNodeEffects));
+        }
+    }
+
+    protected void tickAbilityTree() {
+        this.updateAbilitiesCache();
 
         {
             Map<Attribute, Double> attributeAdders = getBaseAttributeValues(this.getHost().getAttributes());
@@ -285,18 +325,6 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
         visitActiveNodeEffects(ChangedAbilityTreeCodecs.MOB_EFFECT_EFFECT.get(), mobEffectNode -> {
             host.addEffect(new MobEffectInstance(mobEffectNode.mobEffect));
         });
-
-        List<NodeEffect> syncedEffects = activeNodeEffects.values().stream()
-                .map(NodeEffect::getClientNodeEffect)
-                .filter(Optional::isPresent)
-                .map(Optional::get).toList();
-        if (!lastSentNodeEffects.equals(syncedEffects)) {
-            lastSentNodeEffects.clear();
-            lastSentNodeEffects.addAll(syncedEffects);
-
-            Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(this::getHost),
-                    new SyncActiveNodeEffectsPacket(host.getId(), lastSentNodeEffects));
-        }
     }
 
     @Override

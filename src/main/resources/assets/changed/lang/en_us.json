@@ -58,6 +58,10 @@
   "ability.changed.autotool.desc": "Automatically use the correct item in your hands when destroying blocks.",
   "ability.changed.autotool.enable": "Autotool Enabled",
   "ability.changed.autotool.disable": "Autotool Disabled",
+  "ability.changed.excavate": "Toggle Excavation",
+  "ability.changed.excavate.desc": "Automatically break the block below when mining the side of a block and when equipped with an available tool.",
+  "ability.changed.excavate.enable": "Excavation Enabled",
+  "ability.changed.excavate.disable": "Excavation Disabled",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.desc": "Hold onto an entity to either transfur them or to protect them.",

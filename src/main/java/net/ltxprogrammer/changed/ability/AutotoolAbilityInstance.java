@@ -76,7 +76,7 @@ public class AutotoolAbilityInstance extends AbstractAbilityInstance {
             BlockPos targetBlockPos = blockHitResult.getBlockPos();
             BlockState targetBlockState = entity.getLevel().getBlockState(targetBlockPos);
 
-            targetItem = AutotoolAbility.getFirstCorrectItem(this.entity, targetBlockState);
+            targetItem = AutotoolAbility.getFirstCorrectItem(this.entity, targetBlockState, null);
             if (targetItem == null || targetItem == this.entity.getEntity().getMainHandItem())
                 targetItem = ItemStack.EMPTY;
         } else {

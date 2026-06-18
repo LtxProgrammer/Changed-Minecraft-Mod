@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Predicate;
 
 public class AutotoolAbility extends AbstractAbility<AutotoolAbilityInstance> {
     public AutotoolAbility() {
@@ -27,25 +28,48 @@ public class AutotoolAbility extends AbstractAbility<AutotoolAbilityInstance> {
     }
 
     public static @NotNull ItemStack getItemToUse(IAbstractChangedEntity entity, BlockState blockState) {
-        var correct = getFirstCorrectItem(entity, blockState);
+        var correct = getFirstCorrectItem(entity, blockState, null);
         if (correct == null)
             return entity.getEntity().getMainHandItem();
         return correct;
     }
 
-    public static @Nullable ItemStack getFirstCorrectItem(IAbstractChangedEntity entity, BlockState blockState) {
+    public static @Nullable ItemStack getFirstMainHandCorrectItem(IAbstractChangedEntity entity, BlockState blockState, @Nullable ItemStack skipItem) {
         var switchHands = entity.getAbilityInstance(ChangedAbilities.SWITCH_HANDS.get());
 
+        Predicate<ItemStack> predicate = itemStack -> {
+            return itemStack != skipItem && itemStack.isCorrectToolForDrops(blockState);
+        };
+
         if (switchHands == null) {
-            if (entity.getEntity().getMainHandItem().isCorrectToolForDrops(blockState))
+            if (predicate.test(entity.getEntity().getMainHandItem()))
                 return entity.getEntity().getMainHandItem();
-            if (entity.getEntity().getOffhandItem().isCorrectToolForDrops(blockState))
-                return entity.getEntity().getOffhandItem();
         } else {
-            var mainItem = switchHands.getMainHandItems().filter(itemStack -> itemStack.isCorrectToolForDrops(blockState)).findFirst();
+            var mainItem = switchHands.getMainHandItems().filter(predicate).findFirst();
             if (mainItem.isPresent())
                 return mainItem.get();
-            var offItem = switchHands.getOffHandItems().filter(itemStack -> itemStack.isCorrectToolForDrops(blockState)).findFirst();
+        }
+
+        return null;
+    }
+
+    public static @Nullable ItemStack getFirstCorrectItem(IAbstractChangedEntity entity, BlockState blockState, @Nullable ItemStack skipItem) {
+        var switchHands = entity.getAbilityInstance(ChangedAbilities.SWITCH_HANDS.get());
+
+        Predicate<ItemStack> predicate = itemStack -> {
+            return itemStack != skipItem && itemStack.isCorrectToolForDrops(blockState);
+        };
+
+        if (switchHands == null) {
+            if (predicate.test(entity.getEntity().getMainHandItem()))
+                return entity.getEntity().getMainHandItem();
+            if (predicate.test(entity.getEntity().getOffhandItem()))
+                return entity.getEntity().getOffhandItem();
+        } else {
+            var mainItem = switchHands.getMainHandItems().filter(predicate).findFirst();
+            if (mainItem.isPresent())
+                return mainItem.get();
+            var offItem = switchHands.getOffHandItems().filter(predicate).findFirst();
             if (offItem.isPresent())
                 return offItem.get();
         }

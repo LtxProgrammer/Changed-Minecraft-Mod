@@ -42,6 +42,7 @@ public class ChangedAbilities {
     public static RegistryObject<CobwebRappelAbility> COBWEB_RAPPEL = REGISTRY.register("cobweb_rappel", CobwebRappelAbility::new);
     public static RegistryObject<InkSmokeScreenAbility> INK_SMOKE_SCREEN = REGISTRY.register("ink_smoke_screen", InkSmokeScreenAbility::new);
     public static RegistryObject<AutotoolAbility> AUTOTOOL = REGISTRY.register("autotool", AutotoolAbility::new);
+    public static RegistryObject<ExcavateAbility> EXCAVATE = REGISTRY.register("excavate", ExcavateAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

@@ -4,11 +4,10 @@
   "flavorId": "changed.ability_tree.multi_arm.excavation.flavor",
   "price": 1,
 
-  "comment": "Allows the player to dig in a 1x2 tunnel if one of their main-side hands has the correct tool",
   "acquiredEffects": [
     {
       "type": "changed:unlock_active_ability",
-      "ability": "changed:excavation"
+      "ability": "changed:excavate"
     }
   ]
 }
