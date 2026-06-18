@@ -54,6 +54,10 @@
   "ability.changed.cobweb_rappel.desc": "Biztonságosan ereszkedj le a mennyezetről.",
   "ability.changed.ink_smoke_screen": "Tinta füstfüggöny",
   "ability.changed.ink_smoke_screen.desc": "Engedj szabadjára egy tintafelhőt, hogy eltakard a helyed és megvédd magad.",
+  "ability.changed.autotool": "Automatikus eszközhasználat kapcsolása",
+  "ability.changed.autotool.desc": "Automatikusan használd a kezedben lévő megfelelő tárgyat blokkok megsemmisítésekor.",
+  "ability.changed.autotool.enable": "Automatikus eszközhasználat bekapcsolva",
+  "ability.changed.autotool.disable": "Automatikus eszközhasználat kikapcsolva",
 
   "ability.changed.grab_entity": "Entitás megragadása",
   "ability.changed.grab_entity.desc": "Ragaszkodjon egy entitásba, hogy transzfurálja vagy megvédje.",
