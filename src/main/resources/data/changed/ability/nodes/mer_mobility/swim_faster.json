@@ -1,7 +1,7 @@
 {
-  "parent": "changed:digitigrade_mobility/practice3",
+  "parent": "changed:mer_mobility/practice3",
   "titleId": "changed.ability_tree.movement.swim_faster",
-  "flavorId": "changed.ability_tree.digitigrade_mobility.swim_faster.flavor",
+  "flavorId": "changed.ability_tree.mer_mobility.swim_faster.flavor",
   "price": {
     "levels": 2,
     "groupDiscountLevels": -1

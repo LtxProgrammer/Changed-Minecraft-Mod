@@ -1,8 +1,8 @@
 {
-  "parent": { "tree": "changed:digitigrade_mobility" },
+  "parent": { "tree": "changed:naga_mobility" },
   "titleId": "changed.ability_tree.practice1",
-  "flavorId": "changed.ability_tree.digitigrade_mobility.practice1.flavor",
-  "display": { "icon": { "item": "minecraft:leather_leggings" }, "numeral": 1 },
+  "flavorId": "changed.ability_tree.naga_mobility.practice1.flavor",
+  "display": { "icon": { "item": "changed:leather_upper_abdomen_armor" }, "numeral": 1 },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1
@@ -17,17 +17,17 @@
     {
       "type": "changed:attribute_modifier",
       "attribute": "minecraft:generic.movement_speed",
-      "factor": -0.1
+      "factor": -0.2
     },
     {
       "type": "changed:attribute_modifier",
       "attribute": "changed:sneak_speed",
-      "factor": -0.1
+      "factor": -0.2
     },
     {
       "type": "changed:attribute_modifier",
       "attribute": "forge:swim_speed",
-      "factor": -0.1
+      "factor": -0.2
     }
   ]
 }

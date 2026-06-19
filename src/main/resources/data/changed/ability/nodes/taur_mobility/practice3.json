@@ -1,8 +1,8 @@
 {
-  "parent": "changed:digitigrade_mobility/practice2",
+  "parent": "changed:taur_mobility/practice2",
   "titleId": "changed.ability_tree.practice3",
-  "flavorId": "changed.ability_tree.digitigrade_mobility.practice3.flavor",
-  "display": { "icon": { "item": "minecraft:diamond_leggings" }, "numeral": 3 },
+  "flavorId": "changed.ability_tree.taur_mobility.practice3.flavor",
+  "display": { "icon": { "item": "changed:diamond_quadrupedal_leggings" }, "numeral": 3 },
   "price": {
     "levels": 1
   },
@@ -11,17 +11,17 @@
     {
       "type": "changed:attribute_modifier",
       "attribute": "changed:sneak_speed",
-      "factor": -0.1
+      "factor": -0.15
     },
     {
       "type": "changed:attribute_modifier",
       "attribute": "changed:sprint_speed",
-      "factor": -0.1
+      "factor": -0.15
     },
     {
       "type": "changed:attribute_modifier",
       "attribute": "forge:swim_speed",
-      "factor": -0.15
+      "factor": -0.20
     }
   ]
 }

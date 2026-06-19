@@ -1,0 +1,14 @@
+{
+  "parent": "changed:naga_mobility/practice2",
+  "titleId": "changed.ability_tree.naga_mobility.slither1",
+  "flavorId": "changed.ability_tree.naga_mobility.slither1.flavor",
+  "price": 1,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:slither",
+      "level": 0
+    }
+  ]
+}

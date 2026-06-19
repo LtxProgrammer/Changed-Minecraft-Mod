@@ -1,0 +1,17 @@
+{
+  "parent": "changed:taur_mobility/practice1",
+  "titleId": "changed.ability_tree.taur_mobility.rear",
+  "flavorId": "changed.ability_tree.taur_mobility.rear.flavor",
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
+
+  "comment": "While held: the player's viewpoint raises up, allowing them to reach ~2+ blocks up. The player cannot move while rearing.",
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:taur/rear"
+    }
+  ]
+}
