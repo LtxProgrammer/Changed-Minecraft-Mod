@@ -58,6 +58,10 @@
   "ability.changed.autotool.desc": "Automatikusan használd a kezedben lévő megfelelő tárgyat blokkok megsemmisítésekor.",
   "ability.changed.autotool.enable": "Automatikus eszközhasználat bekapcsolva",
   "ability.changed.autotool.disable": "Automatikus eszközhasználat kikapcsolva",
+  "ability.changed.excavate": "Ásatás kapcsolása",
+  "ability.changed.excavate.desc": "Automatikusan töri az alatta lévő blokkot, amikor egy blokk oldalán bányászik, és ha van egy elérhető eszköze.",
+  "ability.changed.excavate.enable": "Ásatás bekapcsolva",
+  "ability.changed.excavate.disable": "Ásatás kikapcsolva",
 
   "ability.changed.grab_entity": "Entitás megragadása",
   "ability.changed.grab_entity.desc": "Ragaszkodjon egy entitásba, hogy transzfurálja vagy megvédje.",
