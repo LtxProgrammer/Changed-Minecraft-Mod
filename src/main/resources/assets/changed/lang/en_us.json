@@ -339,6 +339,8 @@
   "death.attack.changed:grab_escape.item": "%1$s couldn't hold on to %2$s",
   "death.attack.changed:gale_wind_burst": "%s was blown away",
   "death.attack.changed:gale_wind_burst.player": "%1$s was blown away by %2$s",
+  "death.attack.changed:mantle_stop": "%s could not stop themself from falling by grabbing a ledge",
+  "death.attack.changed:mantle_stop.player": "%1$s could not stop themself from falling by grabbing a ledge whilst fighting %2$s",
 
   "command.changed.success.transfurred.one": "Transfurred %s into %s",
   "command.changed.success.transfurred.many": "Transfurred %s player(s) into %s",
