@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.ability.tree;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.ltxprogrammer.changed.data.codec.OptionalKeyFieldCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +26,7 @@ public class PartialNode {
 
     public static final Codec<PartialNode> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.either(ResourceLocation.CODEC, TreeReference.CODEC).fieldOf("parent").forGetter(node -> node.parent),
-            NodeDisplayInfo.CODEC.fieldOf("display").orElse(NodeDisplayInfo.MISSING).forGetter(node -> node.displayInfo),
+            OptionalKeyFieldCodec.keyOptionalFieldOf("display", NodeDisplayInfo.CODEC, NodeDisplayInfo.MISSING).forGetter(node -> node.displayInfo),
             Codec.STRING.fieldOf("titleId").forGetter(node -> node.titleId),
             Codec.STRING.fieldOf("requirementsId").orElse("").forGetter(node -> node.requirementsId),
             Codec.STRING.fieldOf("descriptionId").orElse("").forGetter(node -> node.descriptionId),

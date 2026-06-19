@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 public class AbilityNode extends PartialNode {
     public static final Codec<AbilityNode> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.either(ResourceLocation.CODEC, TreeReference.CODEC).fieldOf("parent").forGetter(node -> node.parent),
-            NodeDisplayInfo.CODEC.fieldOf("display").orElse(NodeDisplayInfo.MISSING).forGetter(node -> node.displayInfo),
+            OptionalKeyFieldCodec.keyOptionalFieldOf("display", NodeDisplayInfo.CODEC, NodeDisplayInfo.MISSING).forGetter(node -> node.displayInfo),
             Codec.list(ResourceLocation.CODEC).fieldOf("occludes").orElseGet(List::of).forGetter(node -> node.occludes),
             Codec.STRING.fieldOf("titleId").forGetter(node -> node.titleId),
             Codec.STRING.fieldOf("requirementsId").orElse("").forGetter(node -> node.requirementsId),

@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.init;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.ability.GrabEntityAbility;
+import net.ltxprogrammer.changed.ability.active.GrabEntityAbility;
 import net.ltxprogrammer.changed.network.ExtraJumpKeybind;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.network.packet.AbilityTreeMenuPacket;

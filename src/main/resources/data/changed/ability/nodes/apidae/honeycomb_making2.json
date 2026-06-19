@@ -2,6 +2,7 @@
   "parent": "changed:apidae/honeycomb_making1",
   "titleId": "changed.ability_tree.apidae.honeycomb_making2",
   "flavorId": "changed.ability_tree.apidae.honeycomb_making2.flavor",
+  "display": { "icon": { "item": "minecraft:honeycomb" }, "numeral": 2 },
   "price": 1,
 
   "acquiredEffects": [

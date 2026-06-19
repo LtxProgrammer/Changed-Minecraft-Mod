@@ -4,6 +4,7 @@
   "flavorId": "changed.ability_tree.latex.hardened_skin3.flavor",
   "display": {
     "icon": { "item": "minecraft:netherite_chestplate" },
+    "numeral": 3,
     "frame": "strong"
   },
   "price": {

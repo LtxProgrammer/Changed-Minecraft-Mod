@@ -2,7 +2,7 @@
   "parent": "changed:latex/grab",
   "titleId": "changed.ability_tree.latex.aftertaste1",
   "flavorId": "changed.ability_tree.latex.aftertaste1.flavor",
-  "display": { "icon": { "item": "minecraft:apple" } },
+  "display": { "icon": { "item": "minecraft:apple" }, "numeral": 1 },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1
