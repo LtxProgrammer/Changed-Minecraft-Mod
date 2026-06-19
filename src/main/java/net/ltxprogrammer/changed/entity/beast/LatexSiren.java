@@ -1,14 +1,13 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
-import net.ltxprogrammer.changed.ability.SirenSingAbilityInstance;
+import net.ltxprogrammer.changed.ability.active.SirenSingAbilityInstance;
 import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.Color3;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;

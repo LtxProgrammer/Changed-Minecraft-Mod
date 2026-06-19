@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.server;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.ability.GrabEntityAbility;
+import net.ltxprogrammer.changed.ability.active.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
 import net.ltxprogrammer.changed.ability.tree.events.StatCriteria;

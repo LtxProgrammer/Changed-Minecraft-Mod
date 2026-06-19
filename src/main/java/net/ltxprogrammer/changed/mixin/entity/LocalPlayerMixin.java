@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.GrabEntityAbility;
+import net.ltxprogrammer.changed.ability.active.GrabEntityAbility;
 import net.ltxprogrammer.changed.client.InvertedInput;
 import net.ltxprogrammer.changed.client.LocalPlayerAccessor;
 import net.ltxprogrammer.changed.client.NullInput;

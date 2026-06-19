@@ -6,7 +6,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.AutotoolAbilityInstance;
+import net.ltxprogrammer.changed.ability.active.multiarm.AutotoolAbilityInstance;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.ltxprogrammer.changed.init.ChangedAbilities;

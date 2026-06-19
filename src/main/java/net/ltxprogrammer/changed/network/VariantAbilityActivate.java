@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.network;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.GrabEntityAbility;
+import net.ltxprogrammer.changed.ability.active.GrabEntityAbility;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.ChangedPacket;
@@ -18,7 +18,6 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 

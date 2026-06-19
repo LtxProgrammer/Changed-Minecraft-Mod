@@ -6,7 +6,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.AutotoolAbility;
+import net.ltxprogrammer.changed.ability.active.multiarm.AutotoolAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
