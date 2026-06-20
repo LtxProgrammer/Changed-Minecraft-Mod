@@ -47,6 +47,7 @@ public class ChangedAbilities {
     public static RegistryObject<InkSmokeScreenAbility> INK_SMOKE_SCREEN = REGISTRY.register("ink_smoke_screen", InkSmokeScreenAbility::new);
     public static RegistryObject<AutotoolAbility> AUTOTOOL = REGISTRY.register("autotool", AutotoolAbility::new);
     public static RegistryObject<ExcavateAbility> EXCAVATE = REGISTRY.register("excavate", ExcavateAbility::new);
+    public static RegistryObject<MantleAbility> MANTLE = REGISTRY.register("mantle", MantleAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

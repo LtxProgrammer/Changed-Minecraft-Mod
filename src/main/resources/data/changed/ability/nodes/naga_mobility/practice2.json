@@ -1,8 +1,8 @@
 {
-  "parent": "changed:digitigrade_mobility/practice1",
+  "parent": "changed:naga_mobility/practice1",
   "titleId": "changed.ability_tree.practice2",
-  "flavorId": "changed.ability_tree.digitigrade_mobility.practice2.flavor",
-  "display": { "icon": { "item": "minecraft:iron_leggings" }, "numeral": 2 },
+  "flavorId": "changed.ability_tree.naga_mobility.practice2.flavor",
+  "display": { "icon": { "item": "changed:iron_upper_abdomen_armor" }, "numeral": 2 },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1
@@ -12,18 +12,18 @@
     {
       "type": "changed:attribute_modifier",
       "attribute": "changed:sprint_speed",
-      "factor": -0.05
+      "factor": -0.25
     },
     {
       "type": "changed:attribute_modifier",
       "attribute": "forge:step_height_addition",
       "method": "add",
-      "factor": -2.0
+      "factor": -0.5
     },
     {
       "type": "changed:attribute_modifier",
       "attribute": "minecraft:generic.movement_speed",
-      "factor": -0.1
+      "factor": -0.15
     }
   ]
 }

@@ -4,5 +4,12 @@
   ],
   "titleId": "changed.ability_tree.mer_mobility",
   "flavorId": "changed.ability_tree.mer_mobility.flavor",
-  "flavorCompletedId": "changed.ability_tree.mer_mobility.mastered"
+  "flavorCompletedId": "changed.ability_tree.mer_mobility.mastered",
+  "pointEvents": [
+    {
+      "type": "changed:distance_swam",
+      "centimeters": 1000,
+      "reward": 1
+    }
+  ]
 }
