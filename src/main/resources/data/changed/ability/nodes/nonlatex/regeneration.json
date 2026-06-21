@@ -2,6 +2,10 @@
   "parent": "changed:nonlatex/overdrive_health",
   "titleId": "changed.ability_tree.nonlatex.regeneration",
   "flavorId": "changed.ability_tree.nonlatex.regeneration.flavor",
+  "display": { "icon": "minecraft:textures/mob_effect/regeneration.png",
+	  "icon_width": 18,
+	  "icon_height": 18,
+	  "frame": "ultimate" },
   "price": 20,
 
   "acquiredEffects": [

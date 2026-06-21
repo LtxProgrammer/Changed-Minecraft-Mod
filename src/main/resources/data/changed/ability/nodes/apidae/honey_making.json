@@ -2,7 +2,10 @@
   "parent": "changed:apidae/honeycomb_making2",
   "titleId": "changed.ability_tree.apidae.honey_making",
   "flavorId": "changed.ability_tree.apidae.honey_making.flavor",
-  "display": { "icon": { "item": "minecraft:honey_bottle" } },
+  "display": {
+    "icon": { "item": "minecraft:honey_bottle" },
+    "frame": "strong"
+  },
   "price": 1,
 
   "comment": "When surrounded by 3 flowers, fill empty bottle with honey",
