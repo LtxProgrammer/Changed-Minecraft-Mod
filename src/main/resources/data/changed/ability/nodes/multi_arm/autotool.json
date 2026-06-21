@@ -2,6 +2,10 @@
   "parent": "changed:multi_arm/dexterity3",
   "titleId": "changed.ability_tree.multi_arm.autotool",
   "flavorId": "changed.ability_tree.multi_arm.autotool.flavor",
+  "display": {
+    "icon": "changed:textures/gui/nodes/autotool.png",
+    "frame": "ultimate"
+  },
   "price": 1,
 
   "acquiredEffects": [

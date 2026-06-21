@@ -2,6 +2,12 @@
   "parent": "changed:nonlatex/healthy1",
   "titleId": "changed.ability_tree.nonlatex.healthy2",
   "flavorId": "changed.ability_tree.nonlatex.healthy2.flavor",
+  "display": {
+    "icon": "minecraft:textures/mob_effect/speed.png",
+	  "icon_width": 18,
+	  "icon_height": 18,
+    "numeral": 2
+  },
   "price": {
     "levels": 10,
     "groupDiscountLevels": -1

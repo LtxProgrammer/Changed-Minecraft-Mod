@@ -2,6 +2,11 @@
   "parent": "changed:back_wing/creative_flight",
   "titleId": "changed.ability_tree.back_wing.sky_dive1",
   "flavorId": "changed.ability_tree.back_wing.sky_dive1.flavor",
+  "display": {
+    "icon": "changed:textures/abilities/dive.png",
+    "frame": "strong",
+    "numeral": 1
+  },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1
