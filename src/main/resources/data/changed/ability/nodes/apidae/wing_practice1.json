@@ -2,6 +2,7 @@
   "parent": { "tree": "changed:apidae" },
   "titleId": "changed.ability_tree.apidae.wing_practice1",
   "flavorId": "changed.ability_tree.apidae.wing_practice1.flavor",
+  "display": { "icon": "changed:textures/gui/nodes/apidae_wing_practice.png", "numeral": 1 },
   "price": 1,
 
   "comment": "Bonus jumps +1"

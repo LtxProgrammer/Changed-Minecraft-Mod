@@ -2,6 +2,10 @@
   "parent": "changed:back_wing/wing_flap2",
   "titleId": "changed.ability_tree.back_wing.gale_force_winds",
   "flavorId": "changed.ability_tree.back_wing.gale_force_winds.flavor",
+  "display": {
+    "icon": "changed:textures/abilities/gale_force_winds.png",
+    "frame": "strong"
+  },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

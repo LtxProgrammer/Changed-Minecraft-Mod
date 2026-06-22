@@ -2,6 +2,10 @@
   "parent": "changed:nonlatex/healthy3",
   "titleId": "changed.ability_tree.nonlatex.overdrive_attack",
   "flavorId": "changed.ability_tree.nonlatex.overdrive_attack.flavor",
+  "display": { "icon": "minecraft:textures/mob_effect/speed.png",
+	  "icon_width": 18,
+	  "icon_height": 18,
+	  "frame": "strong" },
   "price": 20,
 
   "acquiredEffects": [

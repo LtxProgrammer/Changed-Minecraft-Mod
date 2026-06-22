@@ -2,6 +2,11 @@
   "parent": "changed:nonlatex/healthy2",
   "titleId": "changed.ability_tree.nonlatex.healthy3",
   "flavorId": "changed.ability_tree.nonlatex.healthy3.flavor",
+  "display": {
+    "icon": "changed:textures/gui/nodes/healthy3.png",
+    "numeral": 3
+  },
+
   "price": {
     "levels": 10,
     "groupDiscountLevels": -1

@@ -2,6 +2,13 @@
   "parent": { "tree": "changed:nonlatex" },
   "titleId": "changed.ability_tree.nonlatex.healthy1",
   "flavorId": "changed.ability_tree.nonlatex.healthy1.flavor",
+  "display": {
+    "icon": "minecraft:textures/mob_effect/instant_health.png",
+	  "icon_width": 18,
+	  "icon_height": 18,
+    "numeral": 1
+  },
+
   "price": {
     "levels": 10,
     "groupDiscountLevels": -1
