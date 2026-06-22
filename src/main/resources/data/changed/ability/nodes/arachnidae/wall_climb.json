@@ -2,6 +2,7 @@
   "parent": { "tree": "changed:arachnidae" },
   "titleId": "changed.ability_tree.arachnidae.wall_climb",
   "flavorId": "changed.ability_tree.arachnidae.wall_climb.flavor",
+  "display": { "icon": "changed:textures/gui/nodes/wall_climb.png" },
   "price": {
     "levels": 0
   },
