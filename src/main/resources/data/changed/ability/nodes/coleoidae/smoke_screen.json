@@ -3,7 +3,7 @@
   "titleId": "changed.ability_tree.coleoidae.smoke_screen",
   "flavorId": "changed.ability_tree.coleoidae.smoke_screen.flavor",
   "display": {
-	  "icon": "changed:textures/gui/node/ink_smoke_screen.png",
+	  "icon": "changed:textures/gui/nodes/ink_smoke_screen.png",
 	  "frame": "strong"
   },
   "price": {
