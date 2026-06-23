@@ -3,7 +3,7 @@
   "titleId": "changed.ability_tree.back_wing.sky_dive2",
   "flavorId": "changed.ability_tree.back_wing.sky_dive2.flavor",
   "display": {
-    "icon": "changed:textures/abilities/dive.png",
+    "icon": "changed:textures/gui/nodes/dive.png",
     "frame": "ultimate",
     "numeral": 2
   },

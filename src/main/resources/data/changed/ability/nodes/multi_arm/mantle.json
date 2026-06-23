@@ -2,6 +2,10 @@
   "parent": "changed:multi_arm/dexterity2",
   "titleId": "changed.ability_tree.multi_arm.mantle",
   "flavorId": "changed.ability_tree.multi_arm.mantle.flavor",
+  "display": {
+    "icon": "changed:textures/gui/nodes/mantle.png",
+    "frame": "strong"
+  },
   "price": 1,
 
   "comment": "Player grabs the ledge at head height, and pulls themself up to stand (or crawl)",

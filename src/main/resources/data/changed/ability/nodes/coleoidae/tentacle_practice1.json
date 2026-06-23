@@ -2,6 +2,10 @@
   "parent": { "tree": "changed:coleoidae" },
   "titleId": "changed.ability_tree.coleoidae.tentacle_practice1",
   "flavorId": "changed.ability_tree.coleoidae.tentacle_practice1.flavor",
+  "display": {
+   "icon": "changed:textures/gui/nodes/tentacle_practice.png",
+  "numeral": 1
+  },
   "price": 2,
 
   "acquiredEffects": [
