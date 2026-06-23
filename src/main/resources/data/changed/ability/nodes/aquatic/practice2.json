@@ -2,6 +2,12 @@
   "parent": "changed:aquatic/practice1",
   "titleId": "changed.ability_tree.practice2",
   "flavorId": "changed.ability_tree.aquatic.practice2",
+  "display": {
+	  "icon": {
+		  "item": "changed:wetsuit"
+	  },
+	  "numeral": 2
+  },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

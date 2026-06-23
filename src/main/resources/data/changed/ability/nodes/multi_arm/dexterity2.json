@@ -2,6 +2,12 @@
   "parent": "changed:multi_arm/dexterity1",
   "titleId": "changed.ability_tree.multi_arm.dexterity2",
   "flavorId": "changed.ability_tree.multi_arm.dexterity2.flavor",
+  "display": {
+	  "icon": {
+		  "item": "minecraft:diamond_pickaxe"
+	  },
+	  "numeral": 2
+  },
   "price": 1,
 
   "missingEffects": [

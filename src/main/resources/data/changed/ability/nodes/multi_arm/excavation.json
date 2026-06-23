@@ -2,6 +2,10 @@
   "parent": "changed:multi_arm/dexterity3",
   "titleId": "changed.ability_tree.multi_arm.excavation",
   "flavorId": "changed.ability_tree.multi_arm.excavation.flavor",
+  "display": {
+    "icon": "changed:textures/gui/nodes/excavate.png",
+    "frame": "ultimate"
+  },
   "price": 1,
 
   "acquiredEffects": [

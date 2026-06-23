@@ -2,6 +2,10 @@
   "parent": "changed:arachnidae/spinneret_practice3",
   "titleId": "changed.ability_tree.arachnidae.rappel",
   "flavorId": "changed.ability_tree.arachnidae.rappel.flavor",
+  "display": {
+	  "icon": "changed:textures/abilities/cobweb_rappel.png",
+	  "frame": "strong"
+  },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

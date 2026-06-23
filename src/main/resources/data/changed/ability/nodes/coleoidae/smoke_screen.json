@@ -2,6 +2,10 @@
   "parent": "changed:coleoidae/ink_sac3",
   "titleId": "changed.ability_tree.coleoidae.smoke_screen",
   "flavorId": "changed.ability_tree.coleoidae.smoke_screen.flavor",
+  "display": {
+	  "icon": "changed:textures/gui/nodes/ink_smoke_screen.png",
+	  "frame": "strong"
+  },
   "price": {
     "levels": 2,
     "groupDiscountLevels": -1
