@@ -4,7 +4,7 @@
   "flavorId": "changed.ability_tree.multi_arm.excavation.flavor",
   "display": {
     "icon": "changed:textures/gui/nodes/excavate.png",
-    "frame": "strong"
+    "frame": "ultimate"
   },
   "price": 1,
 

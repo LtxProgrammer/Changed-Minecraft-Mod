@@ -2,6 +2,12 @@
   "parent": { "tree": "changed:multi_arm" },
   "titleId": "changed.ability_tree.multi_arm.dexterity1",
   "flavorId": "changed.ability_tree.multi_arm.dexterity1.flavor",
+  "display": {
+	  "icon": {
+		  "item": "minecraft:iron_pickaxe"
+	  },
+	  "numeral": 1
+  },
   "price": 1,
 
   "acquiredEffects": [

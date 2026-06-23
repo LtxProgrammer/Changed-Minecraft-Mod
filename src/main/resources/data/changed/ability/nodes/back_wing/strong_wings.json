@@ -2,6 +2,10 @@
   "parent": "changed:back_wing/wing_flap2",
   "titleId": "changed.ability_tree.back_wing.strong_wings",
   "flavorId": "changed.ability_tree.back_wing.strong_wings.flavor",
+  "display": {
+    "icon": "changed:textures/gui/nodes/wing_flap_adv.png",
+    "frame": "strong"
+  },
   "price": 1,
 
   "comment": "Wing Flap and Gale Force Wind push harder",

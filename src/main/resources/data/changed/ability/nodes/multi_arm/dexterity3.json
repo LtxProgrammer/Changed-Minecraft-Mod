@@ -1,6 +1,13 @@
 {
   "parent": "changed:multi_arm/dexterity2",
   "titleId": "changed.ability_tree.multi_arm.dexterity3",
+  "display": {
+	  "icon": {
+		  "item": "minecraft:netherite_pickaxe"
+	  },
+	  "frame": "strong",
+	  "numeral": 3
+  },
   "flavorId": "changed.ability_tree.multi_arm.dexterity3.flavor",
   "price": 1,
 

@@ -2,6 +2,12 @@
   "parent": "changed:back_wing/strong_wings",
   "titleId": "changed.ability_tree.back_wing.autonomous_landing",
   "flavorId": "changed.ability_tree.back_wing.autonomous_landing.flavor",
+  "display": { 
+    "icon": "minecraft:textures/mob_effect/slow_falling.png",
+    "image_height": 18,
+    "image_width": 18,
+    "frame": "ultimate"
+  },
   "price": 1,
 
   "acquiredEffects": [
