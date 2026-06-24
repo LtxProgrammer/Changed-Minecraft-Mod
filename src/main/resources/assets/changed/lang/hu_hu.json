@@ -1053,8 +1053,8 @@
   "changed.ability_tree.apidae.mastered": "Fekete és sárga; egy keményen dolgozó munkás színei. Te teszed a magadét!",
 
   "changed.ability_tree.arachnidae": "Pókos elsajátítás",
-  "changed.ability_tree.arachnidae.flavor": "A barlangok és pókhálók olyanok számodra, mint az otthon. Válts otthonná bárhol a saját szövőmirigyeddel.",
   "changed.ability_tree.arachnidae.flavor": "Hirtelen vágyat érzel, hogy felmássz a falakra. Jobb szó híján „mászónak” érzed magad.",
+  "changed.ability_tree.arachnidae.mastered": "A barlangok és pókhálók olyanok számodra, mint az otthon. Váltsd bármelyik helyet a sajátoddá a szövőmirigyeddel.",
 
   "changed.ability_tree.lamnidae": "Cápás elsajátítás",
   "changed.ability_tree.lamnidae.flavor": "Érzed, ahogy hív az óceán.(Feel free to tweak or change if you have any ideas)",
