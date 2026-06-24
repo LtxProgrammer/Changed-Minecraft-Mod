@@ -1041,8 +1041,8 @@
   "changed.ability_tree.multi_arm.mastered": "Elsajátítottad az extra karod használatát. A többfeladatosság természetes számodra.",
 
   "changed.ability_tree.hypnosis": "Hipnózis elsajátítása",
-  "changed.ability_tree.hypnosis.flavor": "Hipnotikus tekinteted megkövesít minden lényt, aki a szemedbe kerül, transzba zárva, miközben behatolsz az elméjükbe.",
-  "changed.ability_tree.hypnosis.mastered": "(DO NOT TRANSLATE) [The player has unlocked all the nodes in this tree, and has mastered hypnosis]",
+  "changed.ability_tree.hypnosis.flavor": "Rájössz, hogy bárminek a figyelmét fel tudod kelteni, ami a szemedbe néz.",
+  "changed.ability_tree.hypnosis.mastered": "Hipnotikus tekinteted megkövesít minden lényt, aki a szemedbe kerül, transzba zárva, miközben behatolsz az elméjükbe.",
 
   "changed.ability_tree.chlorophyll": "Klorofilos elsajátítás",
   "changed.ability_tree.chlorophyll.flavor": "Zöld bőröd könnyen elnyeli a napfényt. Furcsa módon kielégítő érzés.",
