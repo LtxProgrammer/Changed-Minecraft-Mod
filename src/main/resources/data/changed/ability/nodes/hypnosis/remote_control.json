@@ -2,6 +2,10 @@
   "parent": "changed:hypnosis/potency2",
   "titleId": "changed.ability_tree.hypnosis.remote_control",
   "flavorId": "changed.ability_tree.hypnosis.remote_control.flavor",
+  "display": {
+	  "icon": "changed:textures/gui/nodes/remote_control.png",
+	  "frame": "ultimate"
+  },
   "price": 15,
 
   "comment": "After holding the attention of a mob/player for a duration, the latex can instruct the entity to walk to a block and/or attack an entity",
