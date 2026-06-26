@@ -1,0 +1,17 @@
+{
+  "parent": "changed:taur_mobility/practice2",
+  "titleId": "changed.ability_tree.taur_mobility.back_kick",
+  "flavorId": "changed.ability_tree.taur_mobility.back_kick.flavor",
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
+
+  "comment": "After charging for a brief duration, the player raises their hind legs and kicks behind them, dealing heavy damage and knockback.",
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:taur/back_kick"
+    }
+  ]
+}

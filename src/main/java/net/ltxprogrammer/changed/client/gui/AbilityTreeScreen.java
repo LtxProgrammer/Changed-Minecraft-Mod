@@ -219,6 +219,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
     public static class NodeButton extends TreeButton {
         public static final ResourceLocation DISTANT_NODE_ICON = Changed.modResource("textures/gui/nodes/distant.png");
+        public static final ResourceLocation NUMERALS = Changed.modResource("textures/gui/roman_numerals.png");
         protected static final Component DISTANT_NODE_TEXT = Component.literal("\"")
                 .append(Component.translatable("text.changed.ability_tree.distant_node"))
                 .append(Component.literal("\""))
@@ -316,6 +317,21 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             }).ifRight(itemStack -> {
                 graphics.renderFakeItem(itemStack, this.getX() + 4, this.getY() + 4);
             });
+
+            if (node.displayInfo.numeral().xOffset >= 0) {
+                graphics.pose().translate(0.0f, 0.0f, 200.0f);
+                graphics.setColor(0.25F, 0.25F, 0.25F, 1.0f);
+                graphics.blit(NUMERALS, this.getX() + 3, this.getY() + 3,
+                        node.displayInfo.numeral().xOffset, node.displayInfo.numeral().yOffset,
+                        16, 16,
+                        64, 64);
+                graphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+                graphics.blit(NUMERALS, this.getX() + 2, this.getY() + 2,
+                        node.displayInfo.numeral().xOffset, node.displayInfo.numeral().yOffset,
+                        16, 16,
+                        64, 64);
+                graphics.pose().translate(0.0f, 0.0f, -200.0f);
+            }
         }
     }
 

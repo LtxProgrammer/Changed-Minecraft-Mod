@@ -3,8 +3,11 @@ package net.ltxprogrammer.changed.mixin.entity;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.active.multiarm.AutotoolAbility;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.data.AccessorySlots;
@@ -23,14 +26,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Abilities;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -328,5 +330,14 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @WrapMethod(method = "getDigSpeed", remap = false)
     public float changed$multiplyMiningSpeedAttribute(BlockState blockState, BlockPos pos, Operation<Float> original) {
         return original.call(blockState, pos) * (float) getAttributeValue(ChangedAttributes.MINING_SPEED.get());
+    }
+
+    @WrapOperation(method = "hasCorrectToolForDrops", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;getSelected()Lnet/minecraft/world/item/ItemStack;"))
+    public ItemStack changed$getAutotoolItem(Inventory instance, Operation<ItemStack> original, @Local(argsOnly = true) BlockState blockState) {
+        var autotool = AbstractAbility.getAbilityInstance(this, ChangedAbilities.AUTOTOOL.get());
+        if (autotool == null || !autotool.isActive())
+            return original.call(instance);
+
+        return AutotoolAbility.getItemToUse(IAbstractChangedEntity.forPlayer((Player)(Object)this), blockState);
     }
 }

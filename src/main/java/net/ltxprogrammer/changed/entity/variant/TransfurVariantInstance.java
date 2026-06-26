@@ -7,8 +7,13 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.*;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
+import net.ltxprogrammer.changed.ability.active.GrabEntityAbility;
+import net.ltxprogrammer.changed.ability.active.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
 import net.ltxprogrammer.changed.ability.tree.NodeEffect;
@@ -30,6 +35,7 @@ import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.ltxprogrammer.changed.world.enchantments.FormFittingEnchantment;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -172,7 +178,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         return map;
     }
 
-    public CompoundTag saveForNetwork() {
+    public CompoundTag saveGeneral() {
         CompoundTag tag = new CompoundTag();
         tag.putInt("ageAsVariant", ageAsVariant);
         tag.putInt("jumpCharges", jumpCharges);
@@ -203,8 +209,12 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         return tag;
     }
 
+    public CompoundTag saveForNetwork() {
+        return this.saveGeneral();
+    }
+
     public CompoundTag saveForStorage() {
-        return this.saveForNetwork();
+        return this.saveGeneral();
     }
 
     public void load(CompoundTag tag) {
@@ -245,6 +255,12 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         isTemporaryFromSuit = tag.getBoolean("isTemporaryFromSuit");
 
         transfurContext = TransfurContext.fromTag(tag.getCompound("transfurContext"), host.level());
+
+        if (tag.contains("nodeEffects")) {
+            this.setNodeEffects(TagUtil.readList(tag.getList("nodeEffects", 10), effectTag -> {
+                return NodeEffect.EFFECT_CODEC.decode(NbtOps.INSTANCE, effectTag).getOrThrow(false, onError -> {}).getFirst();
+            }, new ObjectArrayList<>()));
+        }
 
         this.loadAbilities(tag.getCompound("abilities"));
 

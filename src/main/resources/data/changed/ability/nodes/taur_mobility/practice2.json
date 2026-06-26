@@ -1,0 +1,29 @@
+{
+  "parent": "changed:taur_mobility/practice1",
+  "titleId": "changed.ability_tree.practice2",
+  "flavorId": "changed.ability_tree.taur_mobility.practice2.flavor",
+  "display": { "icon": { "item": "changed:iron_quadrupedal_leggings" }, "numeral": 2 },
+  "price": {
+    "levels": 1,
+    "groupDiscountLevels": -1
+  },
+
+  "missingEffects": [
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "changed:sprint_speed",
+      "factor": -0.25
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "forge:step_height_addition",
+      "method": "add",
+      "factor": -0.5
+    },
+    {
+      "type": "changed:attribute_modifier",
+      "attribute": "minecraft:generic.movement_speed",
+      "factor": -0.15
+    }
+  ]
+}

@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.ability.tree;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.ltxprogrammer.changed.data.codec.OptionalKeyFieldCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.Criterion;
@@ -20,15 +21,15 @@ import java.util.function.Consumer;
 public class AbilityNode extends PartialNode {
     public static final Codec<AbilityNode> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.either(ResourceLocation.CODEC, TreeReference.CODEC).fieldOf("parent").forGetter(node -> node.parent),
-            NodeDisplayInfo.CODEC.fieldOf("display").orElse(NodeDisplayInfo.MISSING).forGetter(node -> node.displayInfo),
+            OptionalKeyFieldCodec.keyOptionalFieldOf("display", NodeDisplayInfo.CODEC, NodeDisplayInfo.MISSING).forGetter(node -> node.displayInfo),
             Codec.list(ResourceLocation.CODEC).fieldOf("occludes").orElseGet(List::of).forGetter(node -> node.occludes),
             Codec.STRING.fieldOf("titleId").forGetter(node -> node.titleId),
             Codec.STRING.fieldOf("requirementsId").orElse("").forGetter(node -> node.requirementsId),
             Codec.STRING.fieldOf("descriptionId").orElse("").forGetter(node -> node.descriptionId),
             Codec.STRING.fieldOf("flavorId").orElse("").forGetter(node -> node.flavorId),
             NodePrice.CODEC.fieldOf("price").forGetter(node -> node.price),
-            Codec.list(NodeEffect.EFFECT_CODEC).optionalFieldOf("acquiredEffects").xmap(opt -> opt.orElseGet(List::of), Optional::of).forGetter(node -> node.acquiredEffects),
-            Codec.list(NodeEffect.EFFECT_CODEC).optionalFieldOf("missingEffects").xmap(opt -> opt.orElseGet(List::of), Optional::of).forGetter(node -> node.missingEffects)
+            OptionalKeyFieldCodec.keyOptionalFieldOf("acquiredEffects", Codec.list(NodeEffect.EFFECT_CODEC), List.of()).forGetter(node -> node.acquiredEffects),
+            OptionalKeyFieldCodec.keyOptionalFieldOf("missingEffects", Codec.list(NodeEffect.EFFECT_CODEC), List.of()).forGetter(node -> node.missingEffects)
     ).apply(builder, AbilityNode::new));
 
     public final List<ResourceLocation> occludes;

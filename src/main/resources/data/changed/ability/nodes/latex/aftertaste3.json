@@ -4,6 +4,7 @@
   "flavorId": "changed.ability_tree.latex.aftertaste3.flavor",
   "display": {
     "icon": { "item": "minecraft:enchanted_golden_apple" },
+    "numeral": 3,
     "frame": "strong"
   },
   "price": {

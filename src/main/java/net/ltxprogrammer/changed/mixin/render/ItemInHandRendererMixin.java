@@ -1,19 +1,24 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import com.google.common.base.MoreObjects;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.active.multiarm.AutotoolAbilityInstance;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -32,6 +37,8 @@ public abstract class ItemInHandRendererMixin {
     @Shadow private float oMainHandHeight;
 
     @Shadow public abstract void renderItem(LivingEntity p_109323_, ItemStack p_109324_, ItemDisplayContext p_109325_, boolean p_109326_, PoseStack p_109327_, MultiBufferSource p_109328_, int p_109329_);
+
+    @Shadow protected abstract void renderArmWithItem(AbstractClientPlayer p_109372_, float p_109373_, float p_109374_, InteractionHand p_109375_, float p_109376_, ItemStack p_109377_, float p_109378_, PoseStack p_109379_, MultiBufferSource p_109380_, int p_109381_);
 
     @Inject(method = "renderItem", at = @At("HEAD"))
     public void renderItem(LivingEntity entity, ItemStack item, ItemDisplayContext type, boolean leftHand, PoseStack pose, MultiBufferSource buffers, int packedLight, CallbackInfo callback) {
@@ -102,5 +109,60 @@ public abstract class ItemInHandRendererMixin {
                     callback.cancel();
                     bufferSource.endBatch();
                 });
+    }
+    
+    @WrapOperation(method = "renderHandsWithItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderArmWithItem(Lnet/minecraft/client/player/AbstractClientPlayer;FFLnet/minecraft/world/InteractionHand;FLnet/minecraft/world/item/ItemStack;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"))
+    private void changed$renderAutotoolHandWithNormalHand(ItemInHandRenderer instance, AbstractClientPlayer player, float partialTicks, float interpPitch, InteractionHand hand, float swingProgress, ItemStack heldItem, float equipProgress, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Operation<Void> original) {
+        var autotool = AbstractAbility.getAbilityInstance(player, ChangedAbilities.AUTOTOOL.get());
+        if (autotool == null || hand != autotool.getRenderingSide() || autotool.getRenderingRaiseTicks(partialTicks) >= AutotoolAbilityInstance.ITEM_TRANSITION_TICKS) {
+            original.call(instance, player, partialTicks, interpPitch, hand, swingProgress, heldItem, equipProgress, poseStack, bufferSource, packedLight);
+            return;
+        }
+
+        if (hand == autotool.getRenderingSide()) {
+            // Shift arm over
+            float otherEquipPercent = 1.0f - (autotool.getRenderingRaiseTicks(partialTicks) / (float) AutotoolAbilityInstance.ITEM_TRANSITION_TICKS);
+            float otherEquipProgress = autotool.getRenderingRaiseTicks(partialTicks) * 0.4F;
+
+            float scaledDir = 0.2f * ((hand == InteractionHand.MAIN_HAND) == (player.getMainArm() == HumanoidArm.RIGHT) ? 1.0f : -1.0f);
+
+            poseStack.translate(otherEquipPercent * 2.0f * scaledDir, 0.0f, 0.0f);
+            original.call(instance, player, partialTicks, interpPitch, hand, autotool.shouldSwing() ? 0.0f : swingProgress, heldItem, equipProgress, poseStack, bufferSource, packedLight);
+            poseStack.translate(otherEquipPercent * -2.0f * scaledDir, 0.0f, 0.0f);
+            original.call(instance, player, partialTicks, interpPitch, hand, autotool.shouldSwing() ? swingProgress : 0.0f, autotool.getRenderingActiveItem(), otherEquipProgress, poseStack, bufferSource, packedLight);
+        }
+    }
+
+    @WrapOperation(method = "renderHandsWithItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"))
+    private void changed$renderAutotoolHandWithoutNormalHand(MultiBufferSource.BufferSource instance, Operation<Void> original,
+                                                             @Local(argsOnly = true) float partialTicks,
+                                                             @Local(argsOnly = true) PoseStack poseStack,
+                                                             @Local(argsOnly = true) MultiBufferSource.BufferSource bufferSource,
+                                                             @Local(argsOnly = true) LocalPlayer player,
+                                                             @Local(argsOnly = true) int packedLight,
+                                                             @Local ItemInHandRenderer.HandRenderSelection renderSelection) {
+        var autotool = AbstractAbility.getAbilityInstance(player, ChangedAbilities.AUTOTOOL.get());
+        if (autotool == null || autotool.getRenderingRaiseTicks(partialTicks) >= AutotoolAbilityInstance.ITEM_TRANSITION_TICKS) {
+            original.call(instance);
+            return; // autotool doesn't exist, or isn't active
+        }
+
+        if (renderSelection == ItemInHandRenderer.HandRenderSelection.RENDER_BOTH_HANDS) {
+            original.call(instance);
+            return; // autotool already rendered
+        }
+
+        float attackProgress = player.getAttackAnim(partialTicks);
+        InteractionHand interactionhand = MoreObjects.firstNonNull(player.swingingArm, InteractionHand.MAIN_HAND);
+        float swingProgress = interactionhand == autotool.getRenderingSide() ? attackProgress : 0.0F;
+        float interpPitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
+
+        float otherEquipProgress = autotool.getRenderingRaiseTicks(partialTicks) * 0.4F;
+        if ((renderSelection == ItemInHandRenderer.HandRenderSelection.RENDER_MAIN_HAND_ONLY && autotool.getRenderingSide() == InteractionHand.OFF_HAND) ||
+                (renderSelection == ItemInHandRenderer.HandRenderSelection.RENDER_OFF_HAND_ONLY && autotool.getRenderingSide() == InteractionHand.MAIN_HAND)) {
+            renderArmWithItem(player, partialTicks, interpPitch, autotool.getRenderingSide(), autotool.shouldSwing() ? swingProgress : 0.0f, autotool.getRenderingActiveItem(), otherEquipProgress, poseStack, bufferSource, packedLight);
+        }
+
+        original.call(instance);
     }
 }

@@ -2,12 +2,16 @@
   "parent": "changed:coleoidae/tentacle_practice1",
   "titleId": "changed.ability_tree.coleoidae.tentacle_practice2",
   "flavorId": "changed.ability_tree.coleoidae.tentacle_practice2.flavor",
+  "display": {
+   "icon": "changed:textures/gui/nodes/tentacle_practice.png",
+  "numeral": 2
+  },
   "price": 2,
 
   "acquiredEffects": [
     {
       "type": "changed:enable_feature",
-      "ability": "changed:switch_hands/bonus_hands",
+      "feature": "changed:switch_hands/bonus_hands",
       "factor": 2
     },
     {

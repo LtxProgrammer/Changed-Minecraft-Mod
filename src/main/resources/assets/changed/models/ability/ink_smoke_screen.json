@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:abilities/ink_smoke_screen"
+  }
+}

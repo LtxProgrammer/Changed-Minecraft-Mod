@@ -1,7 +1,11 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.ability.*;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.active.*;
+import net.ltxprogrammer.changed.ability.active.flying.*;
+import net.ltxprogrammer.changed.ability.active.multiarm.*;
+import net.ltxprogrammer.changed.ability.active.spider.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -41,6 +45,9 @@ public class ChangedAbilities {
     public static RegistryObject<WallClimbAbility> WALL_CLIMB = REGISTRY.register("wall_climb", WallClimbAbility::new);
     public static RegistryObject<CobwebRappelAbility> COBWEB_RAPPEL = REGISTRY.register("cobweb_rappel", CobwebRappelAbility::new);
     public static RegistryObject<InkSmokeScreenAbility> INK_SMOKE_SCREEN = REGISTRY.register("ink_smoke_screen", InkSmokeScreenAbility::new);
+    public static RegistryObject<AutotoolAbility> AUTOTOOL = REGISTRY.register("autotool", AutotoolAbility::new);
+    public static RegistryObject<ExcavateAbility> EXCAVATE = REGISTRY.register("excavate", ExcavateAbility::new);
+    public static RegistryObject<MantleAbility> MANTLE = REGISTRY.register("mantle", MantleAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

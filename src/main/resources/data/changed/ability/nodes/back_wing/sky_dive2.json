@@ -2,6 +2,11 @@
   "parent": "changed:back_wing/sky_dive1",
   "titleId": "changed.ability_tree.back_wing.sky_dive2",
   "flavorId": "changed.ability_tree.back_wing.sky_dive2.flavor",
+  "display": {
+    "icon": "changed:textures/gui/nodes/dive.png",
+    "frame": "ultimate",
+    "numeral": 2
+  },
   "price": 1,
 
   "acquiredEffects": [

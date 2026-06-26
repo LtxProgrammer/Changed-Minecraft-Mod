@@ -2,6 +2,10 @@
   "parent": "changed:latex/stability1",
   "titleId": "changed.ability_tree.latex.stability2",
   "flavorId": "changed.ability_tree.latex.stability2.flavor",
+  "display": {
+	  "icon": "changed:textures/gui/nodes/stability2.png",
+	  "numeral": 2
+  },
   "price": 1,
 
   "missingEffects": [

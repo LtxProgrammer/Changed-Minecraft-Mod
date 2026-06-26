@@ -2,6 +2,10 @@
   "parent": "changed:aquatic/practice2",
   "titleId": "changed.ability_tree.aquatic.depth_compression",
   "flavorId": "changed.ability_tree.aquatic.depth_compression.flavor",
+  "display": {
+	  "icon": "changed:textures/gui/nodes/depth_compression.png",
+	  "frame": "strong"
+  },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

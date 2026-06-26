@@ -1,7 +1,14 @@
 {
   "parent": "changed:digitigrade_mobility/practice3",
   "titleId": "changed.ability_tree.movement.swim_faster",
-  "flavorId": "changed.ability_tree.movement.swim_faster.digitigrade.flavor",
+  "flavorId": "changed.ability_tree.digitigrade_mobility.swim_faster.flavor",
+
+  "display": { "icon": "minecraft:textures/mob_effect/dolphins_grace.png",
+    "iconWidth": 18,
+    "iconHeight": 18,
+    "frame": "strong"
+
+  },
   "price": {
     "levels": 2,
     "groupDiscountLevels": -1

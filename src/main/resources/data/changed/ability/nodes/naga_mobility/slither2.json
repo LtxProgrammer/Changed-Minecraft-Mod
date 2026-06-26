@@ -1,0 +1,15 @@
+{
+  "parent": "changed:naga_mobility/slither1",
+  "titleId": "changed.ability_tree.naga_mobility.slither2",
+  "flavorId": "changed.ability_tree.naga_mobility.slither2.flavor",
+  "price": 1,
+
+  "comment": "Upgrades slither to allow the player coil up/down narrow tunnels, and wrap around 1 block wide pillars to anchor their position and climb",
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:slither",
+      "level": 1
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
   "parent": { "tree": "changed:digitigrade_mobility" },
   "titleId": "changed.ability_tree.practice1",
-  "flavorId": "changed.ability_tree.movement.digitigrade.practice1",
-  "display": { "icon": { "item": "minecraft:leather_leggings" } },
+  "flavorId": "changed.ability_tree.digitigrade_mobility.practice1.flavor",
+  "display": { "icon": { "item": "minecraft:leather_leggings" }, "numeral": 1 },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1
