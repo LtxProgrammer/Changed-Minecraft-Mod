@@ -2,6 +2,12 @@
   "parent": "changed:hypnosis/hypnosis",
   "titleId": "changed.ability_tree.hypnosis.potency1",
   "flavorId": "changed.ability_tree.hypnosis.potency1.flavor",
+  "display": {
+	  "icon": "minecraft:textures/mob_effect/darkness.png",
+	  "image_height": 18,
+	  "image_width": 18,
+	  "numeral": 1
+  },
   "price": 1,
 
   "comment": "Hypnotized entity gets Slowness II, Mining Fatigue II",

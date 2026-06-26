@@ -2,6 +2,10 @@
   "parent": "changed:latex/absorption",
   "titleId": "changed.ability_tree.latex.friendly_transfur",
   "flavorId": "changed.ability_tree.latex.friendly_transfur.flavor",
+  "display": {
+	 "icon": "changed:textures/gui/nodes/friendly_transfur.png",
+	 "frame": "ultimate"
+  },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

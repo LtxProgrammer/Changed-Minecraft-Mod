@@ -2,6 +2,9 @@
   "parent": "changed:lamnidae/summon_sharks1",
   "titleId": "changed.ability_tree.lamnidae.follow_my_lead",
   "flavorId": "changed.ability_tree.lamnidae.follow_my_lead.flavor",
+  "display": {
+	  "icon": "changed:textures/gui/nodes/follow_my_lead.png"
+  },
   "price": 1,
 
   "comment": "Summoned sharks will target your current enemy for the duration of the cooldown",
