@@ -2,6 +2,10 @@
   "parent": "changed:lamnidae/summon_sharks1",
   "titleId": "changed.ability_tree.lamnidae.summon_sharks2",
   "flavorId": "changed.ability_tree.lamnidae.summon_sharks2.flavor",
+  "display": {
+	  "icon": "changed:textures/abilities/summon_sharks.png",
+	  "numeral": 2
+  },
   "price": 1,
 
   "missingEffects": [

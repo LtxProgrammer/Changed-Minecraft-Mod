@@ -2,6 +2,10 @@
   "parent": { "tree": "changed:chlorophyll" },
   "titleId": "changed.ability_tree.chlorophyll.photosynthesis1",
   "flavorId": "changed.ability_tree.chlorophyll.photosynthesis1.flavor",
+  "display": { 
+	  "icon": "changed:textures/gui/nodes/photosynthesis.png",
+	  "numeral": 1
+  },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

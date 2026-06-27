@@ -2,6 +2,11 @@
   "parent": "changed:hypnosis/potency1",
   "titleId": "changed.ability_tree.hypnosis.potency2",
   "flavorId": "changed.ability_tree.hypnosis.potency2.flavor",
+  "display": {
+	  "icon": "changed:textures/gui/nodes/potency2.png",
+	  "frame": "strong",
+	  "numeral": 2
+  },
   "price": 2,
 
   "comment": "Hypnotized entity gets Slowness IV, Mining Fatigue III, Weakness I",
