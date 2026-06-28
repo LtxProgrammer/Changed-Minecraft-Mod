@@ -2,6 +2,10 @@
   "parent": "changed:naga_mobility/practice2",
   "titleId": "changed.ability_tree.naga_mobility.slither1",
   "flavorId": "changed.ability_tree.naga_mobility.slither1.flavor",
+  "display": {
+    "icon": "changed:textures/gui/nodes/slither.png",
+    "frame": "strong"
+  },
   "price": 1,
 
   "acquiredEffects": [

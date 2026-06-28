@@ -2,6 +2,11 @@
   "parent": "changed:hypnosis/allure1",
   "titleId": "changed.ability_tree.hypnosis.allure2",
   "flavorId": "changed.ability_tree.hypnosis.allure2.flavor",
+  "display": {
+	  "icon": "changed:textures/gui/nodes/allure2.png",
+	  "frame": "strong",
+	  "numeral": 2
+  },
   "price": 1,
 
   "comment": "Hypnosis is even harder to break",
