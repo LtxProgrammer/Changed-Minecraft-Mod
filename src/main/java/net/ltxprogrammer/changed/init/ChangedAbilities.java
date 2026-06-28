@@ -48,6 +48,7 @@ public class ChangedAbilities {
     public static RegistryObject<AutotoolAbility> AUTOTOOL = REGISTRY.register("autotool", AutotoolAbility::new);
     public static RegistryObject<ExcavateAbility> EXCAVATE = REGISTRY.register("excavate", ExcavateAbility::new);
     public static RegistryObject<MantleAbility> MANTLE = REGISTRY.register("mantle", MantleAbility::new);
+    public static RegistryObject<HighJumpAbility> HIGH_JUMP = REGISTRY.register("high_jump", HighJumpAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);
