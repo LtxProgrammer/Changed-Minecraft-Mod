@@ -64,6 +64,10 @@
   "ability.changed.excavate.disable": "Ásatás kikapcsolva",
   "ability.changed.mantle": "Mászás",
   "ability.changed.mantle.desc": "Készítsd elő a karjaidat, hogy kinyújtsd őket, és felhúzódj egy párkányra.",
+  "ability.changed.high_jump": "Magasugrás kapcsolása",
+  "ability.changed.high_jump.desc": "Guggolva ugorj, hogy előrelendülj.",
+  "ability.changed.high_jump.enable": "Magasugrás bekapcsolva",
+  "ability.changed.high_jump.disable": "Magasugrás kikapcsolva",
 
   "ability.changed.grab_entity": "Entitás megragadása",
   "ability.changed.grab_entity.desc": "Ragaszkodjon egy entitásba, hogy transzfurálja vagy megvédje.",
