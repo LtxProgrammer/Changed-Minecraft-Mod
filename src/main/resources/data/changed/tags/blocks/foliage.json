@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:moss_block",
+    "minecraft:moss_carpet",
+    "minecraft:grass_block",
+    "#minecraft:flowers",
+    "#minecraft:leaves",
+    "#minecraft:saplings",
+    "#minecraft:overworld_natural_logs",
+    "#minecraft:replaceable_by_trees"
+  ]
+}
