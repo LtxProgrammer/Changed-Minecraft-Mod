@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -87,7 +88,10 @@ public class Syringe extends Item implements SpecializedAnimations {
     }
 
     public static void addVariantTooltip(ItemStack stack, List<Component> builder) {
-        if (stack.getOrCreateTag().contains("form")) {
+        if (stack.getOrCreateTag().contains("variantName")) {
+            builder.add(Component.Serializer.fromJson(stack.getOrCreateTag().getString("variantName")));
+        }
+        else if (stack.getOrCreateTag().contains("form")) {
             builder.add(Component.translatable(getVariantDescriptionId(stack)));
         }
     }

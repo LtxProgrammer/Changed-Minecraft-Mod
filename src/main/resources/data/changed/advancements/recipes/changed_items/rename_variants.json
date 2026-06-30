@@ -1,0 +1,37 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:name_dark_latex_mask",
+      "changed:name_latex_flask",
+      "changed:name_latex_syringe",
+      "changed:name_latex_tipped_arrow"
+    ]
+  },
+  "criteria": {
+    "has_name_tag": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:name_tag"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:name_dark_latex_mask"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_name_tag",
+      "has_the_recipe"
+    ]
+  ]
+}
