@@ -21,9 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": [
-          "changed:beehive_wall"
-        ]
+        "recipe": "changed:beehive_wall"
       }
     }
   },
