@@ -72,6 +72,8 @@
   "ability.changed.camouflage.desc": "Crouch near foliage to blend into your surroundings.",
   "ability.changed.camouflage.enable": "Camouflage Enabled",
   "ability.changed.camouflage.disable": "Camouflage Disabled",
+  "ability.changed.mer.tail_whip": "Tail Whip",
+  "ability.changed.mer.tail_whip.desc": "Quickly spin in place to hit all surrounding entities.",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.desc": "Hold onto an entity to either transfur them or to protect them.",
