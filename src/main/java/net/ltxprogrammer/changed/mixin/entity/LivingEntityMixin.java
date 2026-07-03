@@ -34,6 +34,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -136,7 +137,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     }
 
     @WrapMethod(method = "getJumpPower")
-    public float getJumpPower(Operation<Float> original) {
+    public float changed$getJumpPower(Operation<Float> original) {
         var attributes = this.getAttributes();
         if (attributes.hasAttribute(ChangedAttributes.JUMP_STRENGTH.get())) {
             return original.call() * (float) attributes.getValue(ChangedAttributes.JUMP_STRENGTH.get());
@@ -367,6 +368,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Shadow public abstract boolean isFallFlying();
 
+    @Shadow protected abstract float getJumpPower();
+
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;
     }
@@ -564,5 +567,27 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         }
 
         return eyeHeight;
+    }
+
+    @WrapMethod(method = "jumpFromGround")
+    protected void changed$highJumpFromGround(Operation<Void> original) {
+        var highJump = AbstractAbility.getAbilityInstance((LivingEntity)(Object)this, ChangedAbilities.HIGH_JUMP.get());
+        if (highJump == null || !highJump.isActive() || !this.hasPose(Pose.CROUCHING)) {
+            original.call();
+            return;
+        }
+
+        var jumpPower = this.getJumpPower() * 2.125f;
+        Vec3 lookAngle = this.getLookAngle();
+        Vec3 vec3 = this.getDeltaMovement();
+        this.setDeltaMovement(
+                vec3.x + lookAngle.x * jumpPower * 0.75f,
+                jumpPower * Math.max(Math.abs(lookAngle.y), 0.65),
+                vec3.z + lookAngle.z * jumpPower * 0.75f
+        );
+
+        this.hasImpulse = true;
+
+        net.minecraftforge.common.ForgeHooks.onLivingJump((LivingEntity)(Object)this);
     }
 }

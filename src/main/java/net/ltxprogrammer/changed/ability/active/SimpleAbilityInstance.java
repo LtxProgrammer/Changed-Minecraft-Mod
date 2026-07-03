@@ -6,7 +6,7 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.minecraft.nbt.CompoundTag;
 
 public class SimpleAbilityInstance extends AbstractAbilityInstance {
-    public SimpleAbilityInstance(AbstractAbility<SimpleAbilityInstance> ability, IAbstractChangedEntity entity) {
+    public SimpleAbilityInstance(AbstractAbility<? extends SimpleAbilityInstance> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
     }
 
@@ -28,6 +28,11 @@ public class SimpleAbilityInstance extends AbstractAbilityInstance {
     @Override
     public void tick() {
         ability.tick(entity);
+    }
+
+    @Override
+    public void tickIdle() {
+        ability.tickIdle(entity);
     }
 
     @Override

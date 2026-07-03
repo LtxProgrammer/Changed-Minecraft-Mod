@@ -273,6 +273,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
 
     public void startUsing(IAbstractChangedEntity entity) {}
     public void tick(IAbstractChangedEntity entity) {}
+    public void tickIdle(IAbstractChangedEntity entity) {}
     public void stopUsing(IAbstractChangedEntity entity) {}
 
     public void tickCharge(IAbstractChangedEntity entity, float ticks) {}

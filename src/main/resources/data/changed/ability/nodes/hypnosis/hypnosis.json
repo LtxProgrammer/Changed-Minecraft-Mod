@@ -2,6 +2,11 @@
   "parent": { "tree": "changed:hypnosis" },
   "titleId": "changed.ability_tree.hypnosis.hypnosis",
   "flavorId": "changed.ability_tree.hypnosis.hypnosis.flavor",
+  "display": {
+	  "icon": "changed:textures/gui/nodes/hypnosis.png",
+	  "image_height": 18,
+	  "image_width": 18
+  },
   "price": 0,
 
   "acquiredEffects": [
