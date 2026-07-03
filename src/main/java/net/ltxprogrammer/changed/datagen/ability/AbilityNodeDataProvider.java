@@ -6,6 +6,7 @@ import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.ltxprogrammer.changed.ability.tree.*;
 import net.ltxprogrammer.changed.ability.tree.PartialNode.TreeReference;
+import net.ltxprogrammer.changed.ability.tree.requirements.AbstractRequirement;
 import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -72,6 +73,7 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
     public static final class AbilityNodeBuilder {
         private Either<ResourceLocation, TreeReference> parent;
         private NodeDisplayInfo displayInfo = NodeDisplayInfo.MISSING;
+        private final List<AbstractRequirement> requirements = new ObjectArrayList<>();
         private final List<ResourceLocation> occludes = new ObjectArrayList<>();
         private String titleId = "";
         private String requirementsId = "";
@@ -192,6 +194,11 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
             return this;
         }
 
+        public AbilityNodeBuilder addRequirement(AbstractRequirement requirement) {
+            this.requirements.add(requirement);
+            return this;
+        }
+
         private AbilityNode build(ResourceLocation loc) {
             if (this.parent == null) {
                 throw new IllegalStateException("AbilityNode '" + loc + "' must have a defined parent!");
@@ -201,7 +208,7 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
             }
 
             AbilityNode node = new AbilityNode(
-                    parent, displayInfo, occludes,
+                    parent, displayInfo, requirements, occludes,
                     titleId, requirementsId, descriptionId, flavorId,
                     new NodePrice(price, groupDiscount, experiencePrice, groupDiscountExperience, itemPrices), acquiredEffects, missingEffects
             );

@@ -23,15 +23,15 @@ public class AbilityTreeSyncInstancePacket implements ChangedPacket {
     }
 
     public static AbilityTreeSyncInstancePacket ofAllTrees(AbilityTreeInstance treeInstance) {
-        return new AbilityTreeSyncInstancePacket(treeInstance.save(), false);
+        return new AbilityTreeSyncInstancePacket(treeInstance.saveForNetwork(), false);
     }
 
     public static AbilityTreeSyncInstancePacket ofActiveTrees(AbilityTreeInstance treeInstance, TransfurVariant<?> variant) {
-        return new AbilityTreeSyncInstancePacket(treeInstance.saveActive(variant), true);
+        return new AbilityTreeSyncInstancePacket(treeInstance.saveActiveForNetwork(variant), true);
     }
 
     public static AbilityTreeSyncInstancePacket ofTree(AbilityTreeInstance treeInstance, AbilityTree tree) {
-        return new AbilityTreeSyncInstancePacket(treeInstance.saveTree(tree), true);
+        return new AbilityTreeSyncInstancePacket(treeInstance.saveTreeForNetwork(tree), true);
     }
 
     public AbilityTreeSyncInstancePacket(FriendlyByteBuf buffer) {

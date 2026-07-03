@@ -118,6 +118,7 @@ public class Changed {
         ChangedFacilityZones.REGISTRY.register(modEventBus);
         ChangedAbilityTreeCodecs.NODE_EFFECT_REGISTRY.register(modEventBus);
         ChangedAbilityTreeCodecs.EFFECT_CONDITION_REGISTRY.register(modEventBus);
+        ChangedAbilityTreeCodecs.PURCHASE_REQUIREMENT_REGISTRY.register(modEventBus);
         ChangedAbilityPointEvents.REGISTRY.register(modEventBus);
         ChangedVariantFeatures.REGISTRY.register(modEventBus);
         ChangedApplications.REGISTRY.register(modEventBus);

@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.NodePrice;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -91,7 +92,7 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
                             return CompletableFuture.failedFuture(new IllegalArgumentException("Cannot find TreeName"));
 
                         return levelFuture.thenAccept(level -> {
-                            if (!tree.get().hasPrerequisites(variant, nodeName.get()))
+                            if (!tree.get().hasPrerequisites(IAbstractChangedEntity.forPlayer(sender), nodeName.get()))
                                 return;
                             if (!tree.get().canAfford(sender, variant, nodeName.get()))
                                 return;

@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.events.AbstractPointEvent;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
@@ -16,13 +15,11 @@ import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -158,18 +155,25 @@ public class AbilityTreeInstance {
     }
 
     public static class AccountedTree {
+        private final Player player;
         private final AbilityTree tree;
         private final List<AccountedPurchase> purchasedNodes = new ArrayList<>();
         private final Map<TransfurVariant<?>, PointStore> pointStores = new HashMap<>();
 
-        public AccountedTree(AbilityTree tree) {
+        public AccountedTree(Player player, AbilityTree tree) {
+            this.player = player;
             this.tree = tree;
         }
 
-        public AccountedTree(AbilityTree tree, List<AccountedPurchase> purchasedNodes, Map<TransfurVariant<?>, PointStore> pointStores) {
+        public AccountedTree(Player player, AbilityTree tree, List<AccountedPurchase> purchasedNodes, Map<TransfurVariant<?>, PointStore> pointStores) {
+            this.player = player;
             this.tree = tree;
             this.purchasedNodes.addAll(purchasedNodes);
             this.pointStores.putAll(pointStores);
+        }
+
+        public Player getPlayer() {
+            return player;
         }
 
         public boolean canAfford(Player player, TransfurVariant<?> variant, ResourceLocation nodeName) {
@@ -237,14 +241,25 @@ public class AbilityTreeInstance {
             return purchasedNodes.stream().filter(purchase -> purchase.nodeName.equals(nodeName));
         }
 
-        public boolean hasPrerequisites(TransfurVariant<?> forVariant, ResourceLocation nodeName) {
+        public boolean hasPrerequisites(IAbstractChangedEntity entity, ResourceLocation nodeName) {
             final var node = tree.getNamedNode(nodeName);
             if (node == null)
                 return false;
-            // TODO maybe let node specify criteria as well
+
+            if (!node.getRequirementProgress().isEmpty()) { // Requirements are likely being evaluated on the client, use progress
+                for (var requirement : node.getRequirementProgress()) {
+                    if (!requirement.requirementMet())
+                        return false;
+                }
+            } else {
+                for (var requirement : node.requirements) {
+                    if (!requirement.requirementMet(this, node))
+                        return false;
+                }
+            }
 
             return node.parent.map(
-                    parentName -> getNodeStates(forVariant, pair -> {
+                    parentName -> getNodeStates(entity.getSelfVariant(), pair -> {
                         return pair.getFirst().equals(parentName);
                     }).allMatch(NodeState::unlocked),
                     treeReference -> true
@@ -359,7 +374,7 @@ public class AbilityTreeInstance {
             return tree.appliesTo(variant);
         }
 
-        public CompoundTag save() {
+        public CompoundTag saveForDisk() {
             CompoundTag tag = new CompoundTag();
 
             {
@@ -400,6 +415,28 @@ public class AbilityTreeInstance {
             return tag;
         }
 
+        public CompoundTag saveForNetwork() {
+            var tag = this.saveForDisk();
+
+            {
+                CompoundTag nodeRequirementProgresses = new CompoundTag();
+
+                tree.getTreeNodes().forEach(pair -> {
+                    ListTag requirementProgresses = new ListTag();
+
+                    pair.getSecond().requirements.forEach(requirement -> {
+                        requirementProgresses.add(requirement.serializeProgress(this, pair.getSecond()));
+                    });
+
+                    nodeRequirementProgresses.put(pair.getFirst().toString(), requirementProgresses);
+                });
+
+                tag.put("requirements", nodeRequirementProgresses);
+            }
+
+            return tag;
+        }
+
         public void read(CompoundTag tag) {
             purchasedNodes.clear();
             pointStores.clear();
@@ -414,6 +451,23 @@ public class AbilityTreeInstance {
                 var variant = ChangedRegistry.TRANSFUR_VARIANT.getValue(ResourceLocation.parse(key));
                 pointStores.computeIfAbsent(variant, PointStore::new).read(pointStoreTag.getCompound(key));
             });
+
+            if (tag.contains("requirements")) {
+                var nodeRequirementProgresses = tag.getCompound("requirements");
+
+                nodeRequirementProgresses.getAllKeys().forEach(key -> {
+                    ResourceLocation id = ResourceLocation.parse(key);
+                    ListTag list = (ListTag)nodeRequirementProgresses.get(key);
+
+                    var node = tree.getNamedNode(id);
+                    var progressList = node.getRequirementProgress();
+                    progressList.clear();
+
+                    for (int i = 0; i < node.requirements.size() && i < list.size(); ++i) {
+                        progressList.add(node.requirements.get(i).deserializeProgress(list.get(i)));
+                    }
+                });
+            }
         }
     }
 
@@ -440,7 +494,7 @@ public class AbilityTreeInstance {
             var newTree = treeDefinitions.stream().filter(accountedTree.tree::matchLocation).findFirst();
             if (newTree.isEmpty())
                 return;
-            var newAccountedTree = new AccountedTree(
+            var newAccountedTree = new AccountedTree(player,
                     newTree.get(),
                     accountedTree.purchasedNodes,
                     accountedTree.pointStores
@@ -453,7 +507,7 @@ public class AbilityTreeInstance {
             if (newAccountedTrees.stream().anyMatch(accountedTree -> accountedTree.tree == abilityTree))
                 return;
 
-            newAccountedTrees.add(new AccountedTree(abilityTree));
+            newAccountedTrees.add(new AccountedTree(player, abilityTree));
         });
 
         trees.clear();
@@ -500,31 +554,40 @@ public class AbilityTreeInstance {
         tree.offerPointEventToTrees(variantInstance, pointEventType, criteria);
     }
 
-    public CompoundTag save() {
+    public CompoundTag saveForDisk() {
         CompoundTag tag = new CompoundTag();
         trees.forEach(accountedTree -> {
             tag.put(accountedTree.getTree().getTreeLocation().toString(),
-                    accountedTree.save());
+                    accountedTree.saveForDisk());
         });
         return tag;
     }
 
-    public CompoundTag saveActive(TransfurVariant<?> variant) {
+    public CompoundTag saveForNetwork() {
+        CompoundTag tag = new CompoundTag();
+        trees.forEach(accountedTree -> {
+            tag.put(accountedTree.getTree().getTreeLocation().toString(),
+                    accountedTree.saveForNetwork());
+        });
+        return tag;
+    }
+
+    public CompoundTag saveActiveForNetwork(TransfurVariant<?> variant) {
         CompoundTag tag = new CompoundTag();
         trees.forEach(accountedTree -> {
             if (accountedTree.appliesTo(variant))
                 tag.put(accountedTree.getTree().getTreeLocation().toString(),
-                        accountedTree.save());
+                        accountedTree.saveForNetwork());
         });
         return tag;
     }
 
-    public CompoundTag saveTree(AbilityTree tree) {
+    public CompoundTag saveTreeForNetwork(AbilityTree tree) {
         CompoundTag tag = new CompoundTag();
         trees.forEach(accountedTree -> {
             if (accountedTree.getTree() == tree)
                 tag.put(accountedTree.getTree().getTreeLocation().toString(),
-                        accountedTree.save());
+                        accountedTree.saveForNetwork());
         });
         return tag;
     }
@@ -540,7 +603,7 @@ public class AbilityTreeInstance {
                 return;
             var existingAccountedTree = trees.stream().filter(tree -> tree.tree == newTree.get()).findAny();
 
-            var newAccountedTree = existingAccountedTree.orElseGet(() -> new AccountedTree(
+            var newAccountedTree = existingAccountedTree.orElseGet(() -> new AccountedTree(player,
                     newTree.get(),
                     List.of(),
                     Map.of()
