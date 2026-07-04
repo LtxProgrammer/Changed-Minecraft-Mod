@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.AbilityTree;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.AbilityNode;
@@ -58,10 +59,9 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         bufferBuilder.vertex(matrix4f, x0 - dyOffset, y0 + dxOffset, (float)0).color(red, green, blue, alpha).endVertex();
     }
 
-    public static class TreeButton extends AbstractButton {
+    public class TreeButton extends AbstractButton {
         public static final ResourceLocation WIDGETS = Changed.modResource("textures/gui/node_frames.png");
 
-        protected final TransfurVariant<?> variant;
         protected final AbilityTreeInstance.AccountedTree accountedTree;
         protected final AbilityTree tree;
         protected final Cacheable<List<Component>> tooltip;
@@ -85,7 +85,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             /// Distant node (parent node is not connected to an unlocked node). Darkened, icon and details hidden.
             DISTANT(BackgroundState.DARKENED, true, true, ChatFormatting.RED),
             /// Pre-requisites locked (parent node and conditions). Darkened, icon and details visible.
-            PRE_REQ_LOCKED(BackgroundState.DARKENED, false, false, ChatFormatting.RED),
+            PRE_REQ_LOCKED(BackgroundState.DARKENED, false, false, null),
             /// Pre-requisites met, but cannot afford. Regular color, icon and details visible: cost tinted red
             PRE_REQ_MET(BackgroundState.REGULAR, false, false, null),
             /// Pre-requisites met and can afford. Regular color, icon and details visible
@@ -106,12 +106,10 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             }
         }
 
-        public TreeButton(TransfurVariant<?> variant,
-                          AbilityTreeInstance.AccountedTree accountedTree,
+        public TreeButton(AbilityTreeInstance.AccountedTree accountedTree,
                           int x, int y, int width, int height, Component message,
                           @Nullable TreeButton parent, RandomSource random) {
             super(x, y, width, height, message);
-            this.variant = variant;
             this.accountedTree = accountedTree;
             this.tree = accountedTree.getTree();
             this.parent = parent;
@@ -141,7 +139,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         }
 
         protected NodeRenderState determineRenderState() {
-            if (accountedTree.hasAllNodes(variant))
+            if (accountedTree.hasAllNodes(AbilityTreeScreen.this.entity.getSelfVariant()))
                 return NodeRenderState.UNLOCKED;
             return NodeRenderState.PRE_REQ_MET;
         }
@@ -217,7 +215,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         }
     }
 
-    public static class NodeButton extends TreeButton {
+    public class NodeButton extends TreeButton {
         public static final ResourceLocation DISTANT_NODE_ICON = Changed.modResource("textures/gui/nodes/distant.png");
         public static final ResourceLocation NUMERALS = Changed.modResource("textures/gui/roman_numerals.png");
         protected static final Component DISTANT_NODE_TEXT = Component.literal("\"")
@@ -230,12 +228,11 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         private final AbilityNode node;
         private final ResourceLocation nodeName;
 
-        public NodeButton(TransfurVariant<?> variant,
-                          AbilityTreeInstance.AccountedTree accountedTree,
+        public NodeButton(AbilityTreeInstance.AccountedTree accountedTree,
                           AbilityNode node,
                           int x, int y, int width, int height, Component message,
                           @Nullable TreeButton parent, RandomSource random) {
-            super(variant, accountedTree, x, y, width, height, message, parent, random);
+            super(accountedTree, x, y, width, height, message, parent, random);
             this.node = node;
             this.nodeName = node.getNodeLocation();
         }
@@ -246,9 +243,9 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                 return NodeRenderState.UNLOCKED;
             if (parent != null && !parent.isUnlocked())
                 return NodeRenderState.DISTANT;
-            if (!accountedTree.hasPrerequisites(variant, nodeName))
+            if (!accountedTree.hasPrerequisites(AbilityTreeScreen.this.entity, nodeName))
                 return NodeRenderState.PRE_REQ_LOCKED;
-            if (!accountedTree.canAfford(UniversalDist.getLocalPlayer(), variant, nodeName))
+            if (!accountedTree.canAfford(UniversalDist.getLocalPlayer(), AbilityTreeScreen.this.entity.getSelfVariant(), nodeName))
                 return NodeRenderState.PRE_REQ_MET;
             return NodeRenderState.CAN_ACQUIRE;
         }
@@ -261,7 +258,8 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                 tooltipBuilder.add(DISTANT_NODE_TEXT);
             } else {
                 tooltipBuilder.add(node.getTitle().withStyle(node.displayInfo.frameType().titleColor));
-                accountedTree.getEffectivePriceText(UniversalDist.getLocalPlayer(), variant, nodeName, tooltipBuilder::add, renderState.costFormatting);
+                accountedTree.getEffectivePriceText(UniversalDist.getLocalPlayer(), AbilityTreeScreen.this.entity.getSelfVariant(), nodeName, tooltipBuilder::add, renderState.costFormatting);
+                node.getRequirementProgress().forEach(progress -> progress.buildDescription(tooltipBuilder::add));
                 node.buildDescription(tooltipBuilder::add);
                 if (renderState == NodeRenderState.UNLOCKED)
                     node.getFlavorText().ifPresent(tooltipBuilder::add);
@@ -271,16 +269,16 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         }
 
         protected boolean canPurchase() {
-            if (!accountedTree.hasPrerequisites(variant, nodeName))
+            if (!accountedTree.hasPrerequisites(AbilityTreeScreen.this.entity, nodeName))
                 return false;
-            if (!accountedTree.canAfford(UniversalDist.getLocalPlayer(), variant, nodeName))
+            if (!accountedTree.canAfford(UniversalDist.getLocalPlayer(), AbilityTreeScreen.this.entity.getSelfVariant(), nodeName))
                 return false;
             return true;
         }
 
         @Override
         protected boolean isUnlocked() {
-            return accountedTree.getNodeState(variant, node).map(AbilityTreeInstance.NodeState::unlocked).orElse(false);
+            return accountedTree.getNodeState(AbilityTreeScreen.this.entity.getSelfVariant(), node).map(AbilityTreeInstance.NodeState::unlocked).orElse(false);
         }
 
         @Override
@@ -473,8 +471,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             var accountedTree = treeToAccountedTree.get(tree);
 
             nodeButtons.put(Either.left(tree),
-                    new TreeButton(variant,
-                            accountedTree,
+                    new TreeButton(accountedTree,
                             layout.getNodeX(0, 1, 0, orderedTrees.size(), treeIndex),
                             layout.getNodeY(0, 1, 0, orderedTrees.size(), treeIndex),
                             24,
@@ -509,8 +506,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                 }
 
                 nodeButtons.put(Either.right(node),
-                        new NodeButton(variant,
-                                tree,
+                        new NodeButton(tree,
                                 node,
                                 layout.getNodeX(layerIndex + 1, nodesInTreeAtLayer, nodeIndexInTree, orderedTrees.size(), treeIndex),
                                 layout.getNodeY(layerIndex + 1, nodesInTreeAtLayer, nodeIndexInTree, orderedTrees.size(), treeIndex),
@@ -530,6 +526,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         return nodeButtons;
     }
 
+    private final IAbstractChangedEntity entity;
     private final GraphLayout graphLayout;
     private final Map<Either<AbilityTree, AbilityNode>, TreeButton> nodeGraph;
     private final int layerCount;
@@ -539,6 +536,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
 
     public AbilityTreeScreen(AbilityTreeMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
+        this.entity = IAbstractChangedEntity.forPlayerWithVariant(inventory.player, menu.variant);
         this.graphLayout = GraphLayout.RADIAL;
         AtomicInteger layerCount = new AtomicInteger(0);
         this.nodeGraph = buildNodeGraph(menu.variant.getParent(), graphLayout, layerCount, inventory.player.getRandom());

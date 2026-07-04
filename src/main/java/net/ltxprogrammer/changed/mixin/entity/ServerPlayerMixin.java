@@ -189,7 +189,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
     protected void addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
         tag.putInt("PaleExposure", Pale.getPaleExposure(this));
         tag.putFloat("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this));
-        tag.put("AccountedAbilityTrees", getAbilityTree().save());
+        tag.put("AccountedAbilityTrees", getAbilityTree().saveForDisk());
         ProcessTransfur.ifPlayerTransfurred(this, variant -> {
             TagUtil.putResourceLocation(tag, "TransfurVariant", variant.getFormId());
             tag.put("TransfurVariantData", variant.saveForStorage());

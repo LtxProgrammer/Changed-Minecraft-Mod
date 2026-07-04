@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.active.*;
 import net.ltxprogrammer.changed.ability.active.flying.*;
+import net.ltxprogrammer.changed.ability.active.mer.*;
 import net.ltxprogrammer.changed.ability.active.multiarm.*;
 import net.ltxprogrammer.changed.ability.active.spider.*;
 import net.minecraft.resources.ResourceLocation;
@@ -50,6 +51,7 @@ public class ChangedAbilities {
     public static RegistryObject<MantleAbility> MANTLE = REGISTRY.register("mantle", MantleAbility::new);
     public static RegistryObject<HighJumpAbility> HIGH_JUMP = REGISTRY.register("high_jump", HighJumpAbility::new);
     public static RegistryObject<CamouflageAbility> CAMOUFLAGE = REGISTRY.register("camouflage", CamouflageAbility::new);
+    public static RegistryObject<TailWhip> MER_TAIL_WHIP = REGISTRY.register("mer/tail_whip", TailWhip::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

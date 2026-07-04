@@ -2,43 +2,18 @@ package net.ltxprogrammer.changed.advancements.critereon;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.*;
-import com.mojang.serialization.DataResult;
+import net.ltxprogrammer.changed.advancements.MatchMode;
 import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.util.StringRepresentable;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.Set;
 
 public class TransfurPredicate {
     public static final TransfurPredicate ANY = new TransfurPredicate();
-    public enum MatchMode implements StringRepresentable {
-        ALL_OF("all_of"),
-        ANY_OF("any_of"),
-        NONE_OF("none_of");
-
-        private final String serializedName;
-
-        MatchMode(String serializedName) {
-            this.serializedName = serializedName;
-        }
-
-        @Override
-        public String getSerializedName() {
-            return serializedName;
-        }
-
-        public static DataResult<MatchMode> fromSerial(String serializedName) {
-            return Arrays.stream(values()).filter(value -> value.serializedName.equals(serializedName))
-                    .findAny().map(DataResult::success).orElse(DataResult.error(
-                            () -> "Invalid match mode " + serializedName
-                    ));
-        }
-    }
 
     private final MatchMode matchMode;
     private final Set<RegistryElementPredicate<TransfurVariant<?>>> elementPredicates;
@@ -57,11 +32,7 @@ public class TransfurPredicate {
         if (this == ANY)
             return true;
         var variant = form.getParent();
-        return switch (matchMode) {
-            case ALL_OF -> elementPredicates.stream().allMatch(predicate -> predicate.test(variant));
-            case ANY_OF -> elementPredicates.stream().anyMatch(predicate -> predicate.test(variant));
-            case NONE_OF -> elementPredicates.stream().noneMatch(predicate -> predicate.test(variant));
-        };
+        return matchMode.apply(elementPredicates.stream(), predicate -> predicate.test(variant));
     }
 
     public static TransfurPredicate fromJson(@Nullable JsonElement json) {
