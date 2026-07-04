@@ -12,6 +12,9 @@
       }
     ]
   },
+  "requirements": [
+    { "type": "changed:has_all_other_nodes" }
+  ],
 
   "acquiredEffects": [
     {

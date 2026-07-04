@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.ability.tree;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.ltxprogrammer.changed.ability.tree.requirements.RequirementProgress;
 import net.ltxprogrammer.changed.data.codec.OptionalKeyFieldCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.List;
 import java.util.Optional;
 
 public class PartialNode {
@@ -43,6 +46,7 @@ public class PartialNode {
     public final NodePrice price;
 
     private ResourceLocation nodeLocation;
+    private final List<RequirementProgress<?>> requirementProgress = new ObjectArrayList<>();
 
     public PartialNode(Either<ResourceLocation, TreeReference> parent, NodeDisplayInfo displayInfo, String titleId, String requirementsId, String descriptionId, String flavorId, NodePrice price) {
         this.parent = parent;
@@ -60,6 +64,10 @@ public class PartialNode {
 
     public ResourceLocation getNodeLocation() {
         return nodeLocation;
+    }
+
+    public List<RequirementProgress<?>> getRequirementProgress() {
+        return requirementProgress;
     }
 
     public MutableComponent getTitle() {

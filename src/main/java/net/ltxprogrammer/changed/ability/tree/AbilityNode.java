@@ -3,25 +3,20 @@ package net.ltxprogrammer.changed.ability.tree;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.ltxprogrammer.changed.ability.tree.requirements.AbstractRequirement;
 import net.ltxprogrammer.changed.data.codec.OptionalKeyFieldCodec;
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.advancements.FrameType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public class AbilityNode extends PartialNode {
     public static final Codec<AbilityNode> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.either(ResourceLocation.CODEC, TreeReference.CODEC).fieldOf("parent").forGetter(node -> node.parent),
             OptionalKeyFieldCodec.keyOptionalFieldOf("display", NodeDisplayInfo.CODEC, NodeDisplayInfo.MISSING).forGetter(node -> node.displayInfo),
+            OptionalKeyFieldCodec.keyOptionalFieldOf("requirements", Codec.list(AbstractRequirement.REQUIREMENT_CODEC), List.of()).forGetter(node -> node.requirements),
             Codec.list(ResourceLocation.CODEC).fieldOf("occludes").orElseGet(List::of).forGetter(node -> node.occludes),
             Codec.STRING.fieldOf("titleId").forGetter(node -> node.titleId),
             Codec.STRING.fieldOf("requirementsId").orElse("").forGetter(node -> node.requirementsId),
@@ -32,18 +27,18 @@ public class AbilityNode extends PartialNode {
             OptionalKeyFieldCodec.keyOptionalFieldOf("missingEffects", Codec.list(NodeEffect.EFFECT_CODEC), List.of()).forGetter(node -> node.missingEffects)
     ).apply(builder, AbilityNode::new));
 
+    public final List<AbstractRequirement> requirements;
     public final List<ResourceLocation> occludes;
     public final List<NodeEffect> acquiredEffects;
     public final List<NodeEffect> missingEffects;
 
-    /*public final Map<String, Criterion> criteria;
-    public final String[][] requirements;*/
-
-    public AbilityNode(Either<ResourceLocation, TreeReference> parent, NodeDisplayInfo displayInfo, List<ResourceLocation> occludes,
+    public AbilityNode(Either<ResourceLocation, TreeReference> parent, NodeDisplayInfo displayInfo,
+                       List<AbstractRequirement> requirements, List<ResourceLocation> occludes,
                        String titleId, String requirementsId, String descriptionId, String flavorId,
                        NodePrice price, List<NodeEffect> acquiredEffects, List<NodeEffect> missingEffects) {
         super(parent, displayInfo, titleId, requirementsId, descriptionId, flavorId, price);
 
+        this.requirements = requirements;
         this.occludes = occludes;
         this.acquiredEffects = acquiredEffects;
         this.missingEffects = missingEffects;
@@ -63,18 +58,4 @@ public class AbilityNode extends PartialNode {
             effect.buildDescription(componentConsumer, false);
         }
     }
-
-    /*public Advancement.Builder createAdvancement() {
-        Advancement.Builder builder = Advancement.Builder.advancement();
-        criteria.forEach(builder::addCriterion);
-        builder.requirements(requirements);
-        builder.display(new DisplayInfo(
-                ItemStack.EMPTY,
-                Component.translatable(titleId),
-                Component.translatable(titleId),
-                *//* background *//* null,
-                FrameType.GOAL,
-                *//* showToast *//* true, *//* announceChat *//* false, *//* hidden *//* true));
-        return builder;
-    }*/
 }

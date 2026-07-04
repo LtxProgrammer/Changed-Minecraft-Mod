@@ -256,7 +256,9 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     }
 
     public Component getAbilityName(IAbstractChangedEntity entity) {
-        return Component.translatable("ability." + ChangedRegistry.ABILITY.getKey(this).toString().replace(':', '.'));
+        return Component.translatable("ability." + ChangedRegistry.ABILITY.getKey(this).toString()
+                .replace(':', '.')
+                .replace('/', '.'));
     }
 
     public Collection<Component> getAbilityDescription(IAbstractChangedEntity entity) {

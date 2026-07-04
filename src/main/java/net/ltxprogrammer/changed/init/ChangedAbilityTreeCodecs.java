@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.tree.*;
 import net.ltxprogrammer.changed.ability.tree.condition.*;
 import net.ltxprogrammer.changed.ability.tree.effects.*;
+import net.ltxprogrammer.changed.ability.tree.requirements.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -86,4 +87,10 @@ public class ChangedAbilityTreeCodecs {
      * This can be used to test if the entity is exposed varying facets of light, such as sun exposure, moon exposure, absence of light, etc.
      */
     public static final RegistryObject<Codec<LightExposureCondition>> LIGHT_EXPOSURE_CONDITION = EFFECT_CONDITION_REGISTRY.register("light_exposure", () -> LightExposureCondition.CODEC);
+
+    public static final DeferredRegister<Codec<? extends AbstractRequirement>> PURCHASE_REQUIREMENT_REGISTRY = ChangedRegistry.PURCHASE_REQUIREMENTS.createDeferred(Changed.MODID);
+
+    public static final RegistryObject<Codec<HasAdvancementsRequirement>> HAS_ADVANCEMENTS_REQUIREMENT = PURCHASE_REQUIREMENT_REGISTRY.register("has_advancements", () -> HasAdvancementsRequirement.CODEC);
+
+    public static final RegistryObject<Codec<HasAllOtherNodesInTreeRequirement>> HAS_ALL_OTHER_NODES = PURCHASE_REQUIREMENT_REGISTRY.register("has_all_other_nodes", () -> HasAllOtherNodesInTreeRequirement.CODEC);
 }
