@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.events.AbstractPointEvent;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
@@ -11,6 +12,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.process.TransfurEvents;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -121,6 +123,16 @@ public class AbilityTreeInstance {
         }
 
         public void convertPointsToLevels(int conversionThreshold) {
+            while (points < 0) {
+                points += conversionThreshold;
+                if (getLevels() > 0)
+                    addLevels(-1);
+                else {
+                    points = 0;
+                    break;
+                }
+            }
+
             if (points < conversionThreshold)
                 return;
 
@@ -231,6 +243,40 @@ public class AbilityTreeInstance {
             });
 
             return toRemove.size();
+        }
+
+        public void regressTree(TransfurVariantInstance<?> variantInstance, AbilityRegressConfig config) {
+            if (Changed.postModEvent(new TransfurEvents.RegressAbilityTreeEvent(variantInstance.getHost(), variantInstance, config, tree)))
+                return;
+
+            var variant = variantInstance.getParent();
+            var points = pointStores.getOrDefault(variant, AbilityTreeInstance.PointStore.IMMUTABLE_ZERO);
+            points.setPoints(
+                    Math.max(points.getPoints() - config.pointsLost(), 0)
+            );
+            points.setLevels(
+                    Math.max(points.getLevels() - config.levelsLost(), 0)
+            );
+
+            if (config.nodesLost() <= 0)
+                return;
+
+            long variantPurchaseCount = purchasedNodes.stream().filter(purchase -> purchase.variant == variant).count();
+            if (variantPurchaseCount <= 0)
+                return;
+
+            var comparator = config.removalDirection() == AbilityRegressConfig.RemovalDirection.LEAST_TO_MOST_EXPENSIVE ?
+                    Comparator.comparingInt(AccountedPurchase::levels) :
+                    Comparator.comparingInt(AccountedPurchase::levels).reversed();
+
+            Set<AccountedPurchase> toRemove = new HashSet<>();
+            purchasedNodes.stream()
+                    .filter(purchase -> purchase.variant == variant)
+                    .sorted(comparator)
+                    .limit(Math.min(variantPurchaseCount, config.nodesLost()))
+                    .forEach(toRemove::add);
+
+            purchasedNodes.removeAll(toRemove);
         }
 
         public AbilityTree getTree() {
@@ -473,6 +519,10 @@ public class AbilityTreeInstance {
 
     private final Set<AccountedTree> trees = new HashSet<>();
 
+    public @Nullable AccountedTree getTree(PartialNode.TreeReference treeReference) {
+        return trees.stream().filter(accountedTree -> accountedTree.tree.is(treeReference)).findFirst().orElse(null);
+    }
+
     public Set<AccountedTree> getTrees() {
         return ImmutableSet.copyOf(trees);
     }
@@ -512,6 +562,12 @@ public class AbilityTreeInstance {
 
         trees.clear();
         trees.addAll(newAccountedTrees);
+    }
+
+    public void regressTrees(TransfurVariantInstance<?> variantInstance, AbilityRegressConfig config) {
+        trees.forEach(tree -> {
+            tree.regressTree(variantInstance, config);
+        });
     }
 
     public void gatherNodeEffects(TransfurVariantInstance<?> variantInstance, Consumer<NodeEffect> sink) {
