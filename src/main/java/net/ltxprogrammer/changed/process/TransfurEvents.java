@@ -1,7 +1,11 @@
 package net.ltxprogrammer.changed.process;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
+import net.ltxprogrammer.changed.ability.tree.AbilityRegressConfig;
+import net.ltxprogrammer.changed.ability.tree.AbilityTree;
+import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
@@ -112,6 +116,41 @@ public abstract class TransfurEvents {
     }
 
     /**
+     * Fired whenever a tree is about to have its progress regressed (from dying, untransfurring).
+     * Canceling this event will prevent the player from losing their progress on the tree.
+     */
+    public static class RegressAbilityTreeEvent extends Event {
+        public final @NotNull Player player;
+        public final @NotNull TransfurVariantInstance<?> variantInstance;
+        public final @NotNull AbilityRegressConfig config;
+        public final @NotNull AbilityTree tree;
+
+        public RegressAbilityTreeEvent(@NotNull Player player, @NotNull TransfurVariantInstance<?> variantInstance, @NotNull AbilityRegressConfig config, @NotNull AbilityTree tree) {
+            this.player = player;
+            this.variantInstance = variantInstance;
+            this.config = config;
+            this.tree = tree;
+        }
+
+        public @NotNull Player getPlayer() {
+            return player;
+        }
+
+        public @NotNull TransfurVariantInstance<?> getVariantInstance() {
+            return variantInstance;
+        }
+
+        public @NotNull AbilityRegressConfig getConfig() {
+            return config;
+        }
+
+        @Override
+        public boolean isCancelable() {
+            return true;
+        }
+    }
+
+    /**
      * Fired any time a player is about to be untransfurred.
      * Canceling this event will cause the player to remain as their current variant.
      * Setting the next variant will cause the player to change into that variant if the event is not canceled.
@@ -155,8 +194,14 @@ public abstract class TransfurEvents {
             return true;
         }
 
+        protected void regressAbilityTrees() {
+            AbilityTreeInstance.getForPlayer(player).regressTrees(variantInstance, Changed.config.server.regressOnUntf.get());
+        }
+
         /// Allows the event to specify how its results should be handled if the event isn't canceled.
         protected void finalizeEvent() {
+            this.regressAbilityTrees();
+
             if (nextVariant == null) {
                 ProcessTransfur.removePlayerTransfurVariant(player);
                 ProcessTransfur.setPlayerTransfurProgress(player, 0.0f);

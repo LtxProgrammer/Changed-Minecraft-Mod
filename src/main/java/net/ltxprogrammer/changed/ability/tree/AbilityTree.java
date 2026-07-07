@@ -71,6 +71,10 @@ public class AbilityTree {
                 .sum();
     }
 
+    public boolean is(PartialNode.TreeReference treeReference) {
+        return treeLocation.equals(treeReference.treeName());
+    }
+
     public void markRemote() {
         isRemote = true;
     }

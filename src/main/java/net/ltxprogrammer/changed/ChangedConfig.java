@@ -1,22 +1,17 @@
 package net.ltxprogrammer.changed;
 
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import net.ltxprogrammer.changed.ability.tree.AbilityRegressConfig;
 import net.ltxprogrammer.changed.client.gui.TransfurProgressOverlay;
 import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ConfigTracker;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
-import net.minecraftforge.registries.GameData;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,6 +21,7 @@ import org.apache.logging.log4j.MarkerManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class ChangedConfig {
@@ -33,6 +29,12 @@ public class ChangedConfig {
         String getName();
         void load(CompoundTag tag);
         void save(CompoundTag tag);
+    }
+
+    public interface WrappedConfig<T> extends Supplier<T> {
+        T getDefault();
+        void save();
+        void setValue(T value);
     }
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -129,6 +131,9 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Integer> facilityRollForSizeAttempts;
         public final ForgeConfigSpec.ConfigValue<Integer> facilityPlacementAttemptsPerPieceType;
 
+        public final WrappedConfig<AbilityRegressConfig> regressOnDeath;
+        public final WrappedConfig<AbilityRegressConfig> regressOnUntf;
+
         public Server(ForgeConfigSpec.Builder builder) {
             builder.comment("Should transfurred players have a nametag");
             showTFNametags = builder.define("showTFNametags", true);
@@ -161,6 +166,9 @@ public class ChangedConfig {
             facilityRollForSizeAttempts = builder.defineInRange("facility.rollForSizeAttempts", 1, 1, 256);
             builder.comment("How many attempts should the facility generator try to place pieces before giving up (Lower = faster).");
             facilityPlacementAttemptsPerPieceType = builder.defineInRange("facility.placementAttemptsPerPieceType", 8, 1, 256);
+
+            regressOnDeath = AbilityRegressConfig.createConfig(builder, "abilityRegressOnDeath", AbilityRegressConfig.DEFAULT);
+            regressOnUntf = AbilityRegressConfig.createConfig(builder, "abilityRegressOnUntf", AbilityRegressConfig.DEFAULT);
         }
 
         public Stream<RegistryElementPredicate<Block>> getBlacklistedCoverBlocks() {
