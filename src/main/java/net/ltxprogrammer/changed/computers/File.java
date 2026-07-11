@@ -5,13 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.CompoundTag;
 
 public class File {
-    public static final Codec<File> CODEC = RecordCodecBuilder.create(instance ->
-        instance.group(
-                Type.CODEC.fieldOf("t").forGetter(f -> f.type),
-                Codec.STRING.fieldOf("c").forGetter(f -> f.content)
-        ).apply(instance, File::new)
-    );
-
     public enum Type {
         APP("app", 16, 0),
         DATA("dat", 32, 0),
@@ -32,17 +25,24 @@ public class File {
         public final int yTexture;
     }
 
+    protected final Runnable markModified;
     public final Type type;
     public final String content;
 
-    public File(Type type, String content) {
+    public File(Type type, String content, Runnable markModified) {
         this.type = type;
         this.content = content;
+        this.markModified = markModified;
     }
 
-    public File(CompoundTag tag) {
+    public File(CompoundTag tag, Runnable markModified) {
         this.type = Type.valueOf(tag.getString("t"));
         this.content = tag.getString("c");
+        this.markModified = markModified;
+    }
+
+    public void markModified() {
+        this.markModified.run();
     }
 
     public void saveTo(CompoundTag tag) {

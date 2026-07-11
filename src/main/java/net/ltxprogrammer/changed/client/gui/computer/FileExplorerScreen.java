@@ -47,58 +47,95 @@ public class FileExplorerScreen implements ApplicationScreen {
         });
     }
 
-    @Override
-    public void initialize(int desktopLeft, int desktopTop, int desktopWidth, int desktopHeight) {
-        screen.clearApplicationWidgets();
-
-        this.desktopLeft = desktopLeft;
-        this.desktopTop = desktopTop;
-        this.desktopWidth = desktopWidth;
-        this.desktopHeight = desktopHeight;
-
+    protected int buildBasicWidgets() {
         int x = desktopLeft + 4;
         int y = desktopTop + 4;
         AtomicInteger yOffset = new AtomicInteger(0);
-
-        ComputerMenu menu = screen.getMenu();
 
         screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y, desktopWidth - 8, 20,
                         application.getType().getDisplayName(), screen.getMinecraft().font)
                 .alignCenter().setColor(0x404040));
 
         screen.addApplicationWidget(Button.builder(Component.literal("Desktop"), (self) -> {
-            appCloser.run();
-        }).bounds(x, y + yOffset.getAndAdd(23), 20, 20)
+                    appCloser.run();
+                }).bounds(x, y + yOffset.getAndAdd(23), 20, 20)
                 .tooltip(Tooltip.create(Component.literal("Exit")))
                 .build(ApplicationScreen.iconButton(screen::getTheme, 200, 0)));
+
+        return yOffset.getAcquire();
+    }
+
+    protected void buildRegularListings() {
+        screen.clearApplicationWidgets();
+
+        int x = desktopLeft + 4;
+        int y = desktopTop + 4;
+        AtomicInteger yOffset = new AtomicInteger(buildBasicWidgets());
+
+        ComputerMenu menu = screen.getMenu();
 
         menu.computer.getFolderSafe(menu.getWorkingDir()).ifPresent(cwd -> {
             if (menu.getWorkingDir().getParent() != null) {
                 Path parentDir = menu.getWorkingDir().getParent();
                 screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
-                    menu.setWorkingDir(parentDir);
-                    initialize(desktopLeft, desktopTop, desktopWidth, desktopHeight);
-                }).bounds(x + 23, y, 20, 20)
+                            menu.setWorkingDir(parentDir);
+                            buildRegularListings();
+                        }).bounds(x + 23, y, 20, 20)
                         .tooltip(Tooltip.create(Component.literal("Parent Directory")))
+                        .build(ApplicationScreen.iconButton(screen::getTheme, 220, 0)));
+            } else if (menu.getWorkingDir().getRoot().equals(menu.getWorkingDir())) {
+                screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
+                            buildDriveListings();
+                        }).bounds(x + 23, y, 20, 20)
+                        .tooltip(Tooltip.create(Component.literal("Drives")))
                         .build(ApplicationScreen.iconButton(screen::getTheme, 220, 0)));
             }
             cwd.folders.forEach((name, folder) -> {
                 Path subDir = menu.getWorkingDir().resolve(Path.of(name + "/"));
                 screen.addApplicationWidget(Button.builder(Component.literal(name + "/"), (self) -> {
-                    menu.setWorkingDir(subDir);
-                    initialize(desktopLeft, desktopTop, desktopWidth, desktopHeight);
-                }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
+                            menu.setWorkingDir(subDir);
+                            buildRegularListings();
+                        }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
                         .build(explorerListItemButton(screen::getTheme, 0, 0)));
             });
             cwd.files.forEach((name, file) -> {
                 int iconX = file.type.xTexture;
                 int iconY = file.type.yTexture;
                 screen.addApplicationWidget(Button.builder(Component.literal(name), (self) -> {
-                        screen.openFile(menu.getWorkingDir().resolve(Path.of(name)));
-                }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
+                            screen.openFile(menu.getWorkingDir().resolve(Path.of(name)));
+                        }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
                         .build(explorerListItemButton(screen::getTheme, iconX, iconY)));
             });
         });
+    }
+
+    protected void buildDriveListings() {
+        screen.clearApplicationWidgets();
+
+        int x = desktopLeft + 4;
+        int y = desktopTop + 4;
+        AtomicInteger yOffset = new AtomicInteger(buildBasicWidgets());
+
+        ComputerMenu menu = screen.getMenu();
+
+        menu.computer.visitMountedFileSystems((driveLetter, discData) -> {
+            Path subDir = Path.of(driveLetter + ":/");
+            screen.addApplicationWidget(Button.builder(Component.literal(driveLetter + ":/ [" + discData.getName() + "]"), (self) -> {
+                        menu.setWorkingDir(subDir);
+                        buildRegularListings();
+                    }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
+                    .build(explorerListItemButton(screen::getTheme, 0, 0)));
+        });
+    }
+
+    @Override
+    public void initialize(int desktopLeft, int desktopTop, int desktopWidth, int desktopHeight) {
+        this.desktopLeft = desktopLeft;
+        this.desktopTop = desktopTop;
+        this.desktopWidth = desktopWidth;
+        this.desktopHeight = desktopHeight;
+
+        buildRegularListings();
     }
 
     @Override
