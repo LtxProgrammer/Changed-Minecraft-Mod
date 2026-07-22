@@ -23,16 +23,18 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -40,11 +42,12 @@ import static net.ltxprogrammer.changed.entity.variant.TransfurVariant.getNextEn
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedEntities {
+    @Deprecated(forRemoval = true)
     public interface VoidConsumer { void accept(); }
 
     private static final Map<ResourceLocation, Pair<Integer, Integer>> ENTITY_COLOR_MAP = new HashMap<>();
     private static final List<Pair<Supplier<EntityType<? extends ChangedEntity>>, Supplier<AttributeSupplier.Builder>>> ATTR_FUNC_REGISTRY = new ArrayList<>();
-    private static final List<VoidConsumer> INIT_FUNC_REGISTRY = new ArrayList<>();
+    private static final List<Consumer<SpawnPlacementRegisterEvent>> SPAWN_PLACEMENT_REGISTRY = new ArrayList<>();
     private static final Map<Level, Map<EntityType<?>, Entity>> CACHED_ENTITIES = new HashMap<>();
 
     public static Pair<Integer, Integer> getEntityColor(ResourceLocation location) {
@@ -458,17 +461,12 @@ public class ChangedEntities {
         registerEntityColor(Changed.modResource(name), eggBack, eggHighlight);
         String regName = Changed.modResource(name).toString();
         RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
-        INIT_FUNC_REGISTRY.add(ChangedEntity.getInit(entityType, spawnType, spawnPredicate));
+        SPAWN_PLACEMENT_REGISTRY.add(event -> event.register(entityType.get(), spawnType, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawnPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE));
         ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, attributes));
         RegistryObject<ForgeSpawnEggItem> spawnEggItem = ChangedItems.REGISTRY.register(name + "_spawn_egg", () -> new ForgeSpawnEggItem(entityType, eggBack, eggHighlight, new Item.Properties()));
         SPAWN_EGGS.put(entityType, spawnEggItem);
         DIMENSION_RESTRICTIONS.put(entityType, dimension);
         return entityType;
-    }
-
-    @SubscribeEvent
-    public static void init(FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> INIT_FUNC_REGISTRY.forEach(VoidConsumer::accept));
     }
 
     @SubscribeEvent
@@ -479,5 +477,10 @@ public class ChangedEntities {
         event.put(BIPED_ARMOR_STAND.get(), LivingEntity.createLivingAttributes().build());
         event.put(CENTAUR_ARMOR_STAND.get(), LivingEntity.createLivingAttributes().build());
         event.put(LEGLESS_ARMOR_STAND.get(), LivingEntity.createLivingAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
+        SPAWN_PLACEMENT_REGISTRY.forEach(consumer -> consumer.accept(event));
     }
 }

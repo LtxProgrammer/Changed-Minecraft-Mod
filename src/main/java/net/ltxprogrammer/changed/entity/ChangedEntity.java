@@ -205,7 +205,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(ChangedEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
-    protected static final EntityDataAccessor<BasicPlayerInfo> DATA_LOCAL_VARIANT_INFO = SynchedEntityData.defineId(ChangedEntity.class, ChangedEntityDataSerializers.BASIC_PLAYER_INFO);
+    protected static final EntityDataAccessor<BasicPlayerInfo> DATA_LOCAL_VARIANT_INFO = SynchedEntityData.defineId(ChangedEntity.class, ChangedEntityDataSerializers.BASIC_PLAYER_INFO.get());
     protected static final EntityDataAccessor<Byte> DATA_CHANGED_ENTITY_FLAGS = SynchedEntityData.defineId(ChangedEntity.class, EntityDataSerializers.BYTE);
     public static final int FLAG_IS_FLYING = 0;
 
@@ -477,10 +477,6 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     @Override
     public float getWalkTargetValue(BlockPos p_33013_, LevelReader p_33014_) {
         return 0.0f;
-    }
-
-    public static <T extends ChangedEntity> ChangedEntities.VoidConsumer getInit(RegistryObject<EntityType<T>> registryObject, SpawnPlacements.Type spawnPlacement, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
-        return () -> SpawnPlacements.register(registryObject.get(), spawnPlacement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawnPredicate);
     }
 
     @Deprecated
