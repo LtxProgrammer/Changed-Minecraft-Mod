@@ -540,6 +540,111 @@ public abstract class TransfurEvents {
     }
 
     /**
+     * Fired immediately before assimilation progress is applied to an entity, indicating the step progress and if this step will assimilate.
+     * This event cannot be canceled.
+     * Write an event listener for {@link LatexAssimilationSteppedEvent} or {@link NonLatexAssimilationSteppedEvent}
+     * if you need more event information.
+     */
+    public static abstract class AssimilationSteppedEvent extends Event {
+        public final @NotNull LivingEntity entity;
+        public final float stepProgress;
+        public final boolean willAssimilate;
+
+        public AssimilationSteppedEvent(@NotNull LivingEntity entity, float stepProgress, boolean willAssimilate) {
+            this.entity = entity;
+            this.stepProgress = stepProgress;
+            this.willAssimilate = willAssimilate;
+        }
+
+        public @NotNull LivingEntity getEntity() {
+            return entity;
+        }
+
+        public float getStepProgress() {
+            return stepProgress;
+        }
+
+        public boolean willAssimilate() {
+            return willAssimilate;
+        }
+
+        public abstract @NotNull TransfurVariant<?> getTransfurVariant();
+        public abstract @NotNull TransfurCause getTransfurCause();
+        public abstract @Nullable LivingEntity getSourceEntity();
+
+        @Override
+        public boolean isCancelable() {
+            return false;
+        }
+    }
+
+    /**
+     * Fired immediately before a latex assimilating source progresses assimilation.
+     * This event cannot be canceled.
+     */
+    public static class LatexAssimilationSteppedEvent extends AssimilationSteppedEvent {
+        public final @NotNull LatexAssimilationDecision<?> decision;
+
+        public LatexAssimilationSteppedEvent(@NotNull LivingEntity entity, float stepProgress, boolean willAssimilate, @NotNull LatexAssimilationDecision<?> decision) {
+            super(entity, stepProgress, willAssimilate);
+            this.decision = decision;
+        }
+
+        @Override
+        public @NotNull TransfurVariant<?> getTransfurVariant() {
+            return decision.transfurVariant();
+        }
+
+        @Override
+        public @NotNull TransfurCause getTransfurCause() {
+            return decision.context().cause();
+        }
+
+        @Override
+        public @Nullable LivingEntity getSourceEntity() {
+            return decision.context().source() == null ? null :
+                    decision.context().source().map(IAbstractChangedEntity::getEntity, ILatexAssimilatedEntity::getEntity);
+        }
+
+        public @NotNull LatexAssimilationDecision<?> getDecision() {
+            return decision;
+        }
+    }
+
+    /**
+     * Fired immediately before a non-latex assimilating source progresses assimilation.
+     * This event cannot be canceled.
+     */
+    public static class NonLatexAssimilationSteppedEvent extends AssimilationSteppedEvent {
+        public final @NotNull NonLatexAssimilationDecision<?> decision;
+
+        public NonLatexAssimilationSteppedEvent(@NotNull LivingEntity entity, float stepProgress, boolean willAssimilate, @NotNull NonLatexAssimilationDecision<?> decision) {
+            super(entity, stepProgress, willAssimilate);
+            this.decision = decision;
+        }
+
+        @Override
+        public @NotNull TransfurVariant<?> getTransfurVariant() {
+            return decision.transfurVariant();
+        }
+
+        @Override
+        public @NotNull TransfurCause getTransfurCause() {
+            return decision.cause();
+        }
+
+        @Override
+        public @Nullable LivingEntity getSourceEntity() {
+            return decision.source() == null ? null :
+                    decision.source().getEntity();
+        }
+
+        public @NotNull NonLatexAssimilationDecision<?> getDecision() {
+            return decision;
+        }
+    }
+
+    /**
      * Fired before a TransfurVariantInstance is assigned to a player.
      */
     public static class PreProcessTransfurVariantInstanceEvent extends Event {

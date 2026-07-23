@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.packet.AssimilatedEntitySyncPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.process.TransfurEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -303,24 +304,32 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
 
             // Override latex assimilation to animate player or possibly allow them to "survive" the transfur
             return switch (decision.method()) {
-                case REPLICATION -> AssimilationBehavior.progressPlayerThenTransfur(assimilationVictim, decision.getDamageSource(assimilationVictim.level().registryAccess()), decision.transfurProgress(), () -> {
-                    var newEntity = this.transfurPlayer(assimilationVictim, decision.transfurVariant(), decision.context(), false);
-                    if (decision.context().source() != null)
-                        decision.context().source().ifLeft(sourceEntity -> {
-                            AbilityTreeInstance.offerPointEvent(sourceEntity, ChangedAbilityPointEvents.ON_TRANSFUR_OTHER.get(), new OnTransfurOther.Criteria(assimilationVictim));
-                            ProcessTransfur.onAssimilateEntity(sourceEntity);
+                case REPLICATION -> AssimilationBehavior.progressPlayerThenTransfur(assimilationVictim, decision.getDamageSource(assimilationVictim.level().registryAccess()), decision.transfurProgress(),
+                        (scaledDamage, willAssimilate) -> {
+                            Changed.postModEvent(new TransfurEvents.LatexAssimilationSteppedEvent(assimilationVictim, scaledDamage, willAssimilate, decision));
+                        },
+                        () -> {
+                            var newEntity = this.transfurPlayer(assimilationVictim, decision.transfurVariant(), decision.context(), false);
+                            if (decision.context().source() != null)
+                                decision.context().source().ifLeft(sourceEntity -> {
+                                    AbilityTreeInstance.offerPointEvent(sourceEntity, ChangedAbilityPointEvents.ON_TRANSFUR_OTHER.get(), new OnTransfurOther.Criteria(assimilationVictim));
+                                    ProcessTransfur.onAssimilateEntity(sourceEntity);
+                                });
+                            decision.postTransfurListener().accept(newEntity);
+                            return newEntity;
                         });
-                    decision.postTransfurListener().accept(newEntity);
-                    return newEntity;
-                });
-                case ABSORPTION -> AssimilationBehavior.progressPlayerThenTransfur(assimilationVictim, decision.getDamageSource(assimilationVictim.level().registryAccess()), decision.transfurProgress(), () -> {
-                    var newEntity = this.transfurPlayer(assimilationVictim, decision.transfurVariant(), decision.context(), false);
-                    // Intentionally don't call ProcessTransfur.onAbsorbEntity because the player will get buffs from ProcessTransfur.onNewlyTransfurred()
-                    decision.postTransfurListener().accept(newEntity);
-                    if (decision.context().source() != null)
-                        decision.context().source().map(IAbstractChangedEntity::getEntity, ILatexAssimilatedEntity::getEntity).discard();
-                    return newEntity;
-                });
+                case ABSORPTION -> AssimilationBehavior.progressPlayerThenTransfur(assimilationVictim, decision.getDamageSource(assimilationVictim.level().registryAccess()), decision.transfurProgress(),
+                        (scaledDamage, willAssimilate) -> {
+                            Changed.postModEvent(new TransfurEvents.LatexAssimilationSteppedEvent(assimilationVictim, scaledDamage, willAssimilate, decision));
+                        },
+                        () -> {
+                            var newEntity = this.transfurPlayer(assimilationVictim, decision.transfurVariant(), decision.context(), false);
+                            // Intentionally don't call ProcessTransfur.onAbsorbEntity because the player will get buffs from ProcessTransfur.onNewlyTransfurred()
+                            decision.postTransfurListener().accept(newEntity);
+                            if (decision.context().source() != null)
+                                decision.context().source().map(IAbstractChangedEntity::getEntity, ILatexAssimilatedEntity::getEntity).discard();
+                            return newEntity;
+                        });
             };
         }
 
@@ -329,11 +338,15 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
             if (isPlayerTransfurred(assimilationVictim))
                 return null;
 
-            return AssimilationBehavior.progressPlayerThenTransfur(assimilationVictim, decision.getDamageSource(assimilationVictim.level().registryAccess()), decision.transfurProgress(), () -> {
-                var newEntity = this.transfurPlayer(assimilationVictim, decision.transfurVariant(), TransfurContext.latexHazard(decision.source(), decision.cause()), false);
-                decision.postTransfurListener().accept(newEntity);
-                return newEntity;
-            });
+            return AssimilationBehavior.progressPlayerThenTransfur(assimilationVictim, decision.getDamageSource(assimilationVictim.level().registryAccess()), decision.transfurProgress(),
+                    (scaledDamage, willAssimilate) -> {
+                        Changed.postModEvent(new TransfurEvents.NonLatexAssimilationSteppedEvent(assimilationVictim, scaledDamage, willAssimilate, decision));
+                    },
+                    () -> {
+                        var newEntity = this.transfurPlayer(assimilationVictim, decision.transfurVariant(), TransfurContext.latexHazard(decision.source(), decision.cause()), false);
+                        decision.postTransfurListener().accept(newEntity);
+                        return newEntity;
+                    });
         }
 
         @Override
