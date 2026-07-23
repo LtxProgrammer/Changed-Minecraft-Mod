@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.computers;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.nbt.CompoundTag;
 
 import javax.annotation.Nullable;
@@ -8,24 +9,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Folder {
-    public Map<String, Folder> folders = new HashMap<>();
-    public Map<String, File> files = new HashMap<>();
+    protected final Runnable markModified;
+    public Map<String, Folder> folders = new Object2ObjectArrayMap<>();
+    public Map<String, File> files = new Object2ObjectArrayMap<>();
 
-    public Folder() {}
-
-    public Folder(Map<String, Folder> folders, Map<String, File> files) {
-        this.folders.putAll(folders);
-        this.files.putAll(files);
+    public Folder(Runnable markModified) {
+        this.markModified = markModified;
     }
 
-    public Folder(CompoundTag tag) {
+    public Folder(Map<String, Folder> folders, Map<String, File> files, Runnable markModified) {
+        this.folders.putAll(folders);
+        this.files.putAll(files);
+        this.markModified = markModified;
+    }
+
+    public Folder(CompoundTag tag, Runnable markModified) {
         tag.getAllKeys().forEach(key -> {
             var instance = tag.getCompound(key);
             if (instance.contains("//folders"))
-                folders.put(key, new Folder(instance.getCompound("//folders")));
+                folders.put(key, new Folder(instance.getCompound("//folders"), markModified));
             else
-                files.put(key, new File(instance));
+                files.put(key, new File(instance, markModified));
         });
+        this.markModified = markModified;
     }
 
     public CompoundTag serialize() {

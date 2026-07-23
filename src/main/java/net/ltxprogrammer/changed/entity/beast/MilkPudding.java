@@ -24,12 +24,6 @@ public class MilkPudding extends ChangedEntity {
         super(p_19870_, p_19871_);
     }
 
-    public static void init() {
-        SpawnPlacements.register(ChangedEntities.MILK_PUDDING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                (entityType, world, reason, pos, random) -> (world.getDifficulty() != Difficulty.PEACEFUL
-                        && Monster.isDarkEnoughToSpawn(world, pos, random) && Mob.checkMobSpawnRules(entityType, world, reason, pos, random)));
-    }
-
     @Override
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);

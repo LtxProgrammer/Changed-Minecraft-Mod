@@ -1,15 +1,14 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import it.unimi.dsi.fastutil.bytes.Byte2ObjectArrayMap;
+import it.unimi.dsi.fastutil.bytes.Byte2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.computers.BasicNIC;
-import net.ltxprogrammer.changed.computers.DiscData;
-import net.ltxprogrammer.changed.computers.File;
-import net.ltxprogrammer.changed.computers.Folder;
+import net.ltxprogrammer.changed.computers.*;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -33,22 +32,88 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class ComputerBlockEntity extends BaseContainerBlockEntity implements StackedContentsCompatible, NetworkInterface {
     public final RandomSource random = RandomSource.create();
 
+    /// Act as slots for hot swappable devices (e.g. CD)
     public NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
     public final BasicNIC nic;
     public Path currentWorkingDirectory;
     public Path homeDirectory;
     public Path binariesDirectory;
-    public DiscData localFileSystem = Util.make(new DiscData(), data -> {
-        currentWorkingDirectory = DiscData.generatePCFileSystem(data, random);
-        homeDirectory = currentWorkingDirectory;
-        binariesDirectory = Path.of("C:/Binaries/");
-    });
+
+    /// Parallels an HDD or SSD in a computer. Saves with the block entity.
+    protected DiscData primaryDisc;
+    /// Mapping of drive letter to mounted disc (C -> primaryDisc)
+    protected final Byte2ObjectMap<SourcedDiscData> mountedFileSystems = new Byte2ObjectArrayMap<>();
+
+    public boolean mountDisc(SourcedDiscData disc) {
+        byte nextLetter = 'C';
+        while (mountedFileSystems.containsKey(nextLetter)) {
+            nextLetter++;
+            if (nextLetter > 'Z')
+                nextLetter = 'A';
+            if (nextLetter == 'C')
+                return false;
+        }
+
+        return mountDisc(nextLetter, disc);
+    }
+
+    public boolean mountDisc(byte driveLetter, SourcedDiscData disc) {
+        if (disc == null)
+            return false; // Do not mount a null disc
+        if (driveLetter < 'A' || driveLetter > 'Z')
+            return false; // Do not mount outside the letter range
+        if (mountedFileSystems.containsValue(disc))
+            return false; // Do not double mount
+        mountedFileSystems.put(driveLetter, disc);
+        return true;
+    }
+
+    public boolean unmountDisc(DiscData disc) {
+        var it = mountedFileSystems.byte2ObjectEntrySet().iterator();
+        while (it.hasNext()) {
+            var entry = it.next();
+            if (entry.getValue().matchesOrigin(disc)) {
+                entry.getValue().writeBack();
+                it.remove();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean unmountDisc(ItemStack disc) {
+        var it = mountedFileSystems.byte2ObjectEntrySet().iterator();
+        while (it.hasNext()) {
+            var entry = it.next();
+            if (entry.getValue().matchesOrigin(disc)) {
+                entry.getValue().writeBack();
+                it.remove();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean unmountDisc(byte driveLetter) {
+        var unmounted = mountedFileSystems.remove(driveLetter);
+        if (unmounted != null) {
+            unmounted.writeBack();
+            return true;
+        }
+
+        return false;
+    }
+
     @Nullable
     public ServerPlayer activeUser;
 
@@ -73,6 +138,9 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         super(ChangedBlockEntities.COMPUTER.get(), blockPos, blockState);
         nic = new BasicNIC(Address.forBlock(blockPos.immutable()));
         nic.logicalAddress = this.random.nextInt();
+
+        primaryDisc = createFileSystem(random);
+        this.mountDisc(SourcedDiscData.wrap(primaryDisc));
     }
 
     public boolean isEmpty() {
@@ -85,28 +153,44 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return true;
     }
 
-    public ItemStack getItem(int p_58328_) {
-        return this.items.get(p_58328_);
+    public ItemStack getItem(int slot) {
+        return this.items.get(slot);
     }
 
-    public ItemStack removeItem(int p_58330_, int p_58331_) {
-        return ContainerHelper.removeItem(this.items, p_58330_, p_58331_);
+    public ItemStack removeItem(int slot, int count) {
+        var slotted =  ContainerHelper.removeItem(this.items, slot, count);
+        this.handleSlotChanged(slot, slotted, this.items.get(slot));
+        return slotted;
     }
 
-    public ItemStack removeItemNoUpdate(int p_58387_) {
-        return ContainerHelper.takeItem(this.items, p_58387_);
+    public ItemStack removeItemNoUpdate(int slot) {
+        var slotted = ContainerHelper.takeItem(this.items, slot);
+        this.handleSlotChanged(slot, slotted, this.items.get(slot));
+        return slotted;
     }
 
-    public void setItem(int slotId, ItemStack stack) {
-        ItemStack existingItem = this.items.get(slotId);
+    public void setItem(int slot, ItemStack stack) {
+        ItemStack existingItem = this.items.get(slot);
         boolean flag = !stack.isEmpty() && ItemStack.isSameItemSameTags(stack, existingItem);
-        this.items.set(slotId, stack);
+        this.items.set(slot, stack);
         if (stack.getCount() > this.getMaxStackSize()) {
             stack.setCount(this.getMaxStackSize());
         }
 
-        if (slotId == 0 && !flag) {
+        if (slot == 0 && !flag) {
             this.setChanged();
+        }
+
+        this.handleSlotChanged(slot, existingItem, stack);
+    }
+
+    protected void handleSlotChanged(int slot, ItemStack previousItem, ItemStack currentItem) {
+        if (slot == 0) {
+            if (!previousItem.isEmpty())
+                this.unmountDisc(previousItem);
+
+            if (!currentItem.isEmpty())
+                this.mountDisc(SourcedDiscData.fromItem(currentItem));
         }
     }
 
@@ -122,15 +206,17 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         }
     }
 
-    public boolean canPlaceItem(int slotId, ItemStack stack) {
-        if (slotId == 0)
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        if (slot == 0)
             return stack.is(ChangedItems.COMPACT_DISC.get());
         else
             return false;
     }
 
     public void clearContent() {
-        this.items.clear();
+        for (int index = 0; index < this.items.size(); ++index) {
+            this.handleSlotChanged(index, this.items.set(index, ItemStack.EMPTY), ItemStack.EMPTY);
+        }
     }
 
     public void fillStackedContents(StackedContents contents) {
@@ -141,12 +227,14 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
 
     protected void saveAdditional(CompoundTag tag) {
         ContainerHelper.saveAllItems(tag, this.items);
-        tag.put("fs", this.localFileSystem.serialize());
+        tag.put("fs", this.primaryDisc.serialize());
     }
 
     public void load(CompoundTag tag) {
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        this.localFileSystem = new DiscData(tag.getCompound("fs"));
+        this.unmountDisc(primaryDisc);
+        this.primaryDisc = new DiscData(tag.getCompound("fs"));
+        this.mountDisc(SourcedDiscData.wrap(primaryDisc));
     }
 
     @Override
@@ -197,15 +285,31 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public DiscData getFileSystem(Path drive) {
-        return localFileSystem;
+    public void visitMountedFileSystems(BiConsumer<Byte, DiscData> consumer) {
+        for (var entry : mountedFileSystems.byte2ObjectEntrySet()) {
+            consumer.accept(entry.getByteKey(), entry.getValue().getDiscData());
+        }
+    }
+
+    public @Nullable DiscData getFileSystem(byte driveLetter) {
+        var sourcedData = mountedFileSystems.get(driveLetter);
+        if (sourcedData == null)
+            return null;
+        return sourcedData.getDiscData();
+    }
+
+    public @Nullable DiscData getFileSystem(Path drive) {
+        var driveText = drive.toString();
+        if (driveText.length() != 3)
+            return null;
+        return getFileSystem(driveText.getBytes()[0]);
     }
 
     public @Nullable File getFile(Path path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
-            return localFileSystem.getFile(driveName.relativize(path));
+            return primaryDisc.getFile(driveName.relativize(path));
         return null;
     }
 
@@ -213,7 +317,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
-            return Optional.ofNullable(localFileSystem.getFile(driveName.relativize(path)));
+            return Optional.ofNullable(primaryDisc.getFile(driveName.relativize(path)));
         return Optional.empty();
     }
 
@@ -221,7 +325,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
-            return localFileSystem.getFolder(driveName.relativize(path));
+            return primaryDisc.getFolder(driveName.relativize(path));
         return null;
     }
 
@@ -236,5 +340,13 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     @Override
     public CompoundTag getUpdateTag() {
         return this.saveWithoutMetadata();
+    }
+
+    protected DiscData createFileSystem(RandomSource random) {
+        var data = new DiscData();
+        currentWorkingDirectory = DiscData.generatePCFileSystem(data, random);
+        homeDirectory = currentWorkingDirectory;
+        binariesDirectory = Path.of("C:/Binaries/");
+        return data;
     }
 }
