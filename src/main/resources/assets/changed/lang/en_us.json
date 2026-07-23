@@ -1110,7 +1110,7 @@
   "changed.ability_tree.apidae.wing_practice3.flavor": "According to all known laws of aviation, there is no way you should be able to fly. You, of course, fly anyway, because you don't care what humans think is impossible.",
 
   "changed.ability_tree.aquatic.air_adaption": "Air Adaptation",
-  "changed.ability_tree.aquatic.air_adaption.flavor": "You've finally regained your ability to breathe air freely.",
+  "changed.ability_tree.aquatic.air_adaption.flavor": "You've finally regained your ability to breathe air freely. It feels far dryer than you remember.",
   "changed.ability_tree.aquatic.aqua_affinity": "Aqua Affinity",
   "changed.ability_tree.aquatic.aqua_affinity.flavor": "Your new body is quite good at underwater work.",
   "changed.ability_tree.aquatic.depth_compression": "Depth Compression",
@@ -1250,7 +1250,7 @@
   "changed.ability_tree.mer_mobility.practice3.flavor": "",
   "changed.ability_tree.mer_mobility.swim_faster.flavor": "Your powerful tail lets you swim much faster than you expected.",
   "changed.ability_tree.mer_mobility.tail_whip": "Tail Whip",
-  "changed.ability_tree.mer_mobility.tail_whip.flavor": "Leveraging your body in a spin turns that long tail of yours into a handy weapon.",
+  "changed.ability_tree.mer_mobility.tail_whip.flavor": "Leveraging your body in a spin turns that big tail of yours into a handy weapon.",
 
   "changed.ability_tree.multi_arm.autotool": "Autotool",
   "changed.ability_tree.multi_arm.autotool.flavor": "You subconsciously start using appropriate tools with your extra hands.",
@@ -1288,16 +1288,16 @@
   "changed.ability_tree.nonlatex.regeneration.flavor": "This body seems to heal much more efficiently than any human can.",
 
   "changed.ability_tree.taur_mobility.back_kick": "Back Kick",
-  "changed.ability_tree.taur_mobility.back_kick.flavor": "(DO NOT TRANSLATE) [Active: the player kicks their hind legs to melee damage behind themself]",
+  "changed.ability_tree.taur_mobility.back_kick.flavor": "Deliver a powerful blow to anything unfortunate enough to be behind you.",
   "changed.ability_tree.taur_mobility.extra_inventory": "Extra Inventory",
-  "changed.ability_tree.taur_mobility.extra_inventory.flavor": "(DO NOT TRANSLATE) [Allows access to the contents in their equipped chest]",
-  "changed.ability_tree.taur_mobility.jump_higher.flavor": "(DO NOT TRANSLATE) [Active: The player can jump higher]",
+  "changed.ability_tree.taur_mobility.extra_inventory.flavor": "You can access your own saddlebags, though it's a bit of a pain in the midsection.",
+  "changed.ability_tree.taur_mobility.jump_higher.flavor": "Your powerful legs allow you to jump higher.",
   "changed.ability_tree.taur_mobility.practice1.flavor": "",
   "changed.ability_tree.taur_mobility.practice2.flavor": "",
   "changed.ability_tree.taur_mobility.practice3.flavor": "",
   "changed.ability_tree.taur_mobility.rear": "Rear",
-  "changed.ability_tree.taur_mobility.rear.flavor": "(DO NOT TRANSLATE) [Active: The player stands tall to intimidate and reach high above]",
-  "changed.ability_tree.taur_mobility.run_faster.flavor": "(DO NOT TRANSLATE) [Passive: The player can run faster]",
+  "changed.ability_tree.taur_mobility.rear.flavor": "Stand on your hind legs to reach higher, or to intimidate your foes!",
+  "changed.ability_tree.taur_mobility.run_faster.flavor": "Four powerful legs allow you to run much faster.",
 
   "application.changed.file_explorer": "File Explorer",
   "application.changed.door_controller": "Door Controller"
