@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.ai;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
@@ -7,6 +8,7 @@ import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.process.TransfurEvents;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -62,6 +64,9 @@ public record NonLatexAssimilationDecision<T extends ChangedEntity>(TransfurVari
         return AssimilationBehavior.progressThenTransfur(target,
                 this.getDamageSource(target.level().registryAccess()),
                 transfurProgress,
+                (scaledDamage, willAssimilate) -> {
+                    Changed.postModEvent(new TransfurEvents.NonLatexAssimilationSteppedEvent(target, scaledDamage, willAssimilate, this));
+                },
                 () -> {
                     var newEntity = transfurVariant.replaceEntity(target, sourceEntity);
                     ChangedSounds.broadcastSound(newEntity.getEntity(), transfurVariant.sound, 1.0f, 1.0f);

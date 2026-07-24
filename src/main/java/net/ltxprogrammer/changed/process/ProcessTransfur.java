@@ -446,6 +446,11 @@ public class ProcessTransfur {
         return Optional.empty();
     }
 
+    /**
+     * @deprecated Subscribe to {@link net.ltxprogrammer.changed.process.TransfurEvents.AssimilationSteppedEvent} to listen for assimilation progressing.
+     * Subscribe to {@link net.ltxprogrammer.changed.process.TransfurEvents.AssimilationDecisionEvent} to change or cancel assimilation decisions.
+     */
+    @Deprecated(forRemoval = true)
     public static class TransfurAttackEvent extends Event {
         public final LivingEntity target;
         public final TransfurVariant<?> variant;
