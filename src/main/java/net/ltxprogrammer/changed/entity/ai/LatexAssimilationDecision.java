@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.ai;
 
 import com.mojang.datafixers.util.Either;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
@@ -12,6 +13,7 @@ import net.ltxprogrammer.changed.init.ChangedAbilityPointEvents;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.process.TransfurEvents;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -116,6 +118,9 @@ public record LatexAssimilationDecision<T extends ChangedEntity>(DecisionStrengt
         return AssimilationBehavior.progressThenTransfur(target,
                 this.getDamageSource(target.level().registryAccess()),
                 transfurProgress,
+                (scaledDamage, willAssimilate) -> {
+                    Changed.postModEvent(new TransfurEvents.LatexAssimilationSteppedEvent(target, scaledDamage, willAssimilate, this));
+                },
                 () -> {
                     var newEntity = transfurVariant.replaceEntity(target, transfurSource);
                     AbilityTreeInstance.offerPointEvent(transfurSource, ChangedAbilityPointEvents.ON_TRANSFUR_OTHER.get(), new OnTransfurOther.Criteria(target));
@@ -130,6 +135,9 @@ public record LatexAssimilationDecision<T extends ChangedEntity>(DecisionStrengt
         return AssimilationBehavior.progressThenTransfur(target,
                 this.getDamageSource(target.level().registryAccess()),
                 transfurProgress,
+                (scaledDamage, willAssimilate) -> {
+                    Changed.postModEvent(new TransfurEvents.LatexAssimilationSteppedEvent(target, scaledDamage, willAssimilate, this));
+                },
                 () -> {
                     if (target instanceof Player player) {
                         ProcessTransfur.killPlayerByAbsorption(player, transfurSource.getEntity());
@@ -150,6 +158,9 @@ public record LatexAssimilationDecision<T extends ChangedEntity>(DecisionStrengt
         return AssimilationBehavior.progressThenTransfur(target,
                 this.getDamageSource(target.level().registryAccess()),
                 transfurProgress,
+                (scaledDamage, willAssimilate) -> {
+                    Changed.postModEvent(new TransfurEvents.LatexAssimilationSteppedEvent(target, scaledDamage, willAssimilate, this));
+                },
                 () -> {
                     var newEntity = transfurVariant.replaceEntity(target, transfurSource);
 
@@ -184,6 +195,9 @@ public record LatexAssimilationDecision<T extends ChangedEntity>(DecisionStrengt
         return AssimilationBehavior.progressThenTransfur(target,
                 this.getDamageSource(target.level().registryAccess()),
                 transfurProgress,
+                (scaledDamage, willAssimilate) -> {
+                    Changed.postModEvent(new TransfurEvents.LatexAssimilationSteppedEvent(target, scaledDamage, willAssimilate, this));
+                },
                 () -> {
                     var newEntity = transfurVariant.replaceEntity(target, (LivingEntity)null);
                     postTransfurListener.accept(newEntity);

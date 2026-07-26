@@ -1,7 +1,11 @@
 package net.ltxprogrammer.changed.process;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
+import net.ltxprogrammer.changed.ability.tree.AbilityRegressConfig;
+import net.ltxprogrammer.changed.ability.tree.AbilityTree;
+import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
@@ -112,6 +116,41 @@ public abstract class TransfurEvents {
     }
 
     /**
+     * Fired whenever a tree is about to have its progress regressed (from dying, untransfurring).
+     * Canceling this event will prevent the player from losing their progress on the tree.
+     */
+    public static class RegressAbilityTreeEvent extends Event {
+        public final @NotNull Player player;
+        public final @NotNull TransfurVariantInstance<?> variantInstance;
+        public final @NotNull AbilityRegressConfig config;
+        public final @NotNull AbilityTree tree;
+
+        public RegressAbilityTreeEvent(@NotNull Player player, @NotNull TransfurVariantInstance<?> variantInstance, @NotNull AbilityRegressConfig config, @NotNull AbilityTree tree) {
+            this.player = player;
+            this.variantInstance = variantInstance;
+            this.config = config;
+            this.tree = tree;
+        }
+
+        public @NotNull Player getPlayer() {
+            return player;
+        }
+
+        public @NotNull TransfurVariantInstance<?> getVariantInstance() {
+            return variantInstance;
+        }
+
+        public @NotNull AbilityRegressConfig getConfig() {
+            return config;
+        }
+
+        @Override
+        public boolean isCancelable() {
+            return true;
+        }
+    }
+
+    /**
      * Fired any time a player is about to be untransfurred.
      * Canceling this event will cause the player to remain as their current variant.
      * Setting the next variant will cause the player to change into that variant if the event is not canceled.
@@ -155,8 +194,14 @@ public abstract class TransfurEvents {
             return true;
         }
 
+        protected void regressAbilityTrees() {
+            AbilityTreeInstance.getForPlayer(player).regressTrees(variantInstance, Changed.config.server.regressOnUntf.get());
+        }
+
         /// Allows the event to specify how its results should be handled if the event isn't canceled.
         protected void finalizeEvent() {
+            this.regressAbilityTrees();
+
             if (nextVariant == null) {
                 ProcessTransfur.removePlayerTransfurVariant(player);
                 ProcessTransfur.setPlayerTransfurProgress(player, 0.0f);
@@ -491,6 +536,111 @@ public abstract class TransfurEvents {
         public void setDecision(@NotNull ImmediateTransfurDecision<?> decision) {
             Objects.requireNonNull(decision);
             this.decision = decision;
+        }
+    }
+
+    /**
+     * Fired immediately before assimilation progress is applied to an entity, indicating the step progress and if this step will assimilate.
+     * This event cannot be canceled.
+     * Write an event listener for {@link LatexAssimilationSteppedEvent} or {@link NonLatexAssimilationSteppedEvent}
+     * if you need more event information.
+     */
+    public static abstract class AssimilationSteppedEvent extends Event {
+        public final @NotNull LivingEntity entity;
+        public final float stepProgress;
+        public final boolean willAssimilate;
+
+        public AssimilationSteppedEvent(@NotNull LivingEntity entity, float stepProgress, boolean willAssimilate) {
+            this.entity = entity;
+            this.stepProgress = stepProgress;
+            this.willAssimilate = willAssimilate;
+        }
+
+        public @NotNull LivingEntity getEntity() {
+            return entity;
+        }
+
+        public float getStepProgress() {
+            return stepProgress;
+        }
+
+        public boolean willAssimilate() {
+            return willAssimilate;
+        }
+
+        public abstract @NotNull TransfurVariant<?> getTransfurVariant();
+        public abstract @NotNull TransfurCause getTransfurCause();
+        public abstract @Nullable LivingEntity getSourceEntity();
+
+        @Override
+        public boolean isCancelable() {
+            return false;
+        }
+    }
+
+    /**
+     * Fired immediately before a latex assimilating source progresses assimilation.
+     * This event cannot be canceled.
+     */
+    public static class LatexAssimilationSteppedEvent extends AssimilationSteppedEvent {
+        public final @NotNull LatexAssimilationDecision<?> decision;
+
+        public LatexAssimilationSteppedEvent(@NotNull LivingEntity entity, float stepProgress, boolean willAssimilate, @NotNull LatexAssimilationDecision<?> decision) {
+            super(entity, stepProgress, willAssimilate);
+            this.decision = decision;
+        }
+
+        @Override
+        public @NotNull TransfurVariant<?> getTransfurVariant() {
+            return decision.transfurVariant();
+        }
+
+        @Override
+        public @NotNull TransfurCause getTransfurCause() {
+            return decision.context().cause();
+        }
+
+        @Override
+        public @Nullable LivingEntity getSourceEntity() {
+            return decision.context().source() == null ? null :
+                    decision.context().source().map(IAbstractChangedEntity::getEntity, ILatexAssimilatedEntity::getEntity);
+        }
+
+        public @NotNull LatexAssimilationDecision<?> getDecision() {
+            return decision;
+        }
+    }
+
+    /**
+     * Fired immediately before a non-latex assimilating source progresses assimilation.
+     * This event cannot be canceled.
+     */
+    public static class NonLatexAssimilationSteppedEvent extends AssimilationSteppedEvent {
+        public final @NotNull NonLatexAssimilationDecision<?> decision;
+
+        public NonLatexAssimilationSteppedEvent(@NotNull LivingEntity entity, float stepProgress, boolean willAssimilate, @NotNull NonLatexAssimilationDecision<?> decision) {
+            super(entity, stepProgress, willAssimilate);
+            this.decision = decision;
+        }
+
+        @Override
+        public @NotNull TransfurVariant<?> getTransfurVariant() {
+            return decision.transfurVariant();
+        }
+
+        @Override
+        public @NotNull TransfurCause getTransfurCause() {
+            return decision.cause();
+        }
+
+        @Override
+        public @Nullable LivingEntity getSourceEntity() {
+            return decision.source() == null ? null :
+                    decision.source().getEntity();
+        }
+
+        public @NotNull NonLatexAssimilationDecision<?> getDecision() {
+            return decision;
         }
     }
 

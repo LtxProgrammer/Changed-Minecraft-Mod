@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ChangedPackets;
+import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.world.ChangedDataFixer;
@@ -90,6 +91,7 @@ public class Changed {
 
         ChangedAttributes.REGISTRY.register(modEventBus);
         ChangedEnchantments.REGISTRY.register(modEventBus);
+        ChangedEntityDataSerializers.REGISTRY.register(modEventBus);
         ChangedRecipeSerializers.REGISTRY.register(modEventBus);
         ChangedStructureTypes.REGISTRY.register(modEventBus);
         ChangedStructurePieceTypes.REGISTRY.register(modEventBus);

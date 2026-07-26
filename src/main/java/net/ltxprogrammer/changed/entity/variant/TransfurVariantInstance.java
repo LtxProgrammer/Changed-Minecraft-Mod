@@ -508,6 +508,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             ProcessTransfur.ifPlayerTransfurred(player, instance -> {
                 instance.setDead();
                 instance.unhookAll(player);
+
+                AbilityTreeInstance.getForPlayer(player).regressTrees(instance, Changed.config.server.regressOnDeath.get());
             });
         }
     }

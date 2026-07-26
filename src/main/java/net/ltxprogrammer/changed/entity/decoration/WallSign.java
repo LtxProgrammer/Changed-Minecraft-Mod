@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class WallSign extends HangingEntity {
-    private static final EntityDataAccessor<WallSignVariant> DATA_WALL_SIGN_VARIANT_ID = SynchedEntityData.defineId(WallSign.class, ChangedEntityDataSerializers.WALL_SIGN_VARIANT);
+    private static final EntityDataAccessor<WallSignVariant> DATA_WALL_SIGN_VARIANT_ID = SynchedEntityData.defineId(WallSign.class, ChangedEntityDataSerializers.WALL_SIGN_VARIANT.get());
     private static final ResourceLocation DEFAULT_VARIANT = ChangedWallSigns.DO_NOT_TOUCH.getId();
     public static final String VARIANT_TAG = "variant";
 
