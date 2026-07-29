@@ -13,6 +13,7 @@ import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.lwjgl.glfw.GLFW;
 
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -136,6 +137,16 @@ public class FileExplorerScreen implements ApplicationScreen {
         this.desktopHeight = desktopHeight;
 
         buildRegularListings();
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scanCode, int modifiers) {
+        if (key == GLFW.GLFW_KEY_ESCAPE) {
+            this.appCloser.run();
+            return true;
+        }
+
+        return ApplicationScreen.super.keyPressed(key, scanCode, modifiers);
     }
 
     @Override

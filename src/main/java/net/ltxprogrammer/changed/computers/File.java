@@ -25,9 +25,19 @@ public class File {
         public final int yTexture;
     }
 
+    public enum Error {
+        FILESYSTEM_NOT_FOUND,
+        FILE_NOT_FOUND,
+        FILE_ALREADY_EXISTS,
+        NO_READ_PERMISSION,
+        NO_WRITE_PERMISSION,
+        INVALID_PATH,
+        INVALID_TYPE
+    }
+
     protected final Runnable markModified;
     public final Type type;
-    public final String content;
+    private String content;
 
     public File(Type type, String content, Runnable markModified) {
         this.type = type;
@@ -54,5 +64,14 @@ public class File {
         var t = new CompoundTag();
         saveTo(t);
         return t;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+        this.markModified();
     }
 }

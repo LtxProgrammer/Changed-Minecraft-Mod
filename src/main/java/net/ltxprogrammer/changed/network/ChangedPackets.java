@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.network;
 
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
 import net.ltxprogrammer.changed.block.CustomFallable;
@@ -8,8 +9,16 @@ import net.ltxprogrammer.changed.network.packet.*;
 import net.ltxprogrammer.changed.network.packet.debugger.FacilityAddPiecesPayload;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.util.LogicalSidedProvider;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,6 +29,28 @@ import java.util.function.Supplier;
 public class ChangedPackets {
     private final SimpleChannel packetHandler;
     private int messageID = 0;
+
+    /**
+     * Send to all tracking the Chunk in the Supplier.
+     * Same as {@link net.minecraftforge.network.PacketDistributor#TRACKING_CHUNK}, but accepts a level and chunk access
+     */
+    public static final PacketDistributor<Pair<Level, ChunkAccess>> TRACKING_CHUNK = new PacketDistributor<>((distributor, argument) -> {
+        return p -> {
+            final Pair<Level, ChunkAccess> chunk = argument.get();
+            ((ServerChunkCache)chunk.getFirst().getChunkSource()).chunkMap.getPlayers(chunk.getSecond().getPos(), false).forEach(e -> e.connection.send(p));
+        };
+    }, NetworkDirection.PLAY_TO_CLIENT);
+
+    /**
+     * Send to all tracking the BlockEntity in the Supplier.
+     * Same as {@link net.minecraftforge.network.PacketDistributor#TRACKING_CHUNK}, but accepts a block entity for convenience
+     */
+    public static final PacketDistributor<BlockEntity> TRACKING_BLOCK_ENTITY = new PacketDistributor<>((distributor, argument) -> {
+        return p -> {
+            final BlockEntity blockEntity = argument.get();
+            ((ServerChunkCache)blockEntity.getLevel().getChunkSource()).chunkMap.getPlayers(new ChunkPos(blockEntity.getBlockPos()), false).forEach(e -> e.connection.send(p));
+        };
+    }, NetworkDirection.PLAY_TO_CLIENT);
 
     public ChangedPackets(SimpleChannel packetHandler) {
         this.packetHandler = packetHandler;
