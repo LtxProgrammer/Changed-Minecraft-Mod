@@ -1299,5 +1299,6 @@
   "changed.ability_tree.taur_mobility.run_faster.flavor": "A négy erős lábnak köszönhetően sokkal gyorsabban tudsz futni.",
   
   "application.changed.file_explorer": "Fájlkezelő",
-  "application.changed.door_controller": "Ajtóvezérlő"
+  "application.changed.door_controller": "Ajtóvezérlő",
+  "application.changed.text_editor": "Szövegszerkesztő"
 }
