@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.client.gui.computer.*;
 import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.UITheme;
 import net.ltxprogrammer.changed.computers.application.ApplicationType;
+import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.ComputerAppLaunchPacket;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
@@ -17,6 +18,7 @@ import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -62,6 +64,7 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
     public void clearApplicationWidgets() {
         widgets.forEach(this::removeWidget);
         widgets.clear();
+        setFocused((GuiEventListener) null);
     }
 
     @Override
@@ -101,6 +104,12 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
         return theme.desktopBackground();
     }
 
+    protected @Nullable ApplicationScreen getTopApplication() {
+        if (!this.applicationScreens.empty())
+            return this.applicationScreens.peek();
+        return null;
+    }
+
     @Override
     public void render(GuiGraphics graphics, int cursorX, int cursorY, float partialTicks) {
         this.renderBackground(graphics);
@@ -109,16 +118,82 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
         graphics.blit(getBackground(), this.leftPos+6, this.topPos+6, 0, 0,
                 this.imageWidth - 12, this.imageHeight - 12, this.imageWidth - 12, this.imageHeight - 12);
 
-        if (!this.applicationScreens.empty())
-            this.applicationScreens.peek().render(graphics, cursorX, cursorY, partialTicks);
+        var top = getTopApplication();
+        if (top != null)
+            top.render(graphics, cursorX, cursorY, partialTicks);
         super.render(graphics, cursorX, cursorY, partialTicks);
     }
 
     @Override
     public void tick() {
-        if (!this.applicationScreens.empty())
-            this.applicationScreens.peek().tick(this.leftPos + 6, this.topPos + 6, this.imageWidth - 12, this.imageHeight - 12);
+        var top = getTopApplication();
+        if (top != null)
+            top.tick(this.leftPos + 6, this.topPos + 6, this.imageWidth - 12, this.imageHeight - 12);
         super.tick();
+    }
+
+    @Override
+    public void mouseMoved(double x, double y) {
+        var top = getTopApplication();
+        if (top != null)
+            top.mouseMoved(x, y);
+        super.mouseMoved(x, y);
+    }
+
+    @Override
+    public boolean mouseClicked(double x, double y, int button) {
+        var top = getTopApplication();
+        if (top != null && top.mouseClicked(x, y, button))
+            return true;
+        return super.mouseClicked(x, y, button);
+    }
+
+    @Override
+    public boolean mouseReleased(double x, double y, int button) {
+        var top = getTopApplication();
+        if (top != null && top.mouseReleased(x, y, button))
+            return true;
+        return super.mouseReleased(x, y, button);
+    }
+
+    @Override
+    public boolean mouseDragged(double x, double y, int button, double dx, double dy) {
+        var top = getTopApplication();
+        if (top != null && top.mouseDragged(x, y, button, dx, dy))
+            return true;
+        return super.mouseDragged(x, y, button, dx, dy);
+    }
+
+    @Override
+    public boolean mouseScrolled(double x, double y, double yOffset) {
+        var top = getTopApplication();
+        if (top != null && top.mouseScrolled(x, y, yOffset))
+            return true;
+        return super.mouseScrolled(x, y, yOffset);
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scanCode, int modifiers) {
+        var top = getTopApplication();
+        if (top != null && top.keyPressed(key, scanCode, modifiers))
+            return true;
+        return super.keyPressed(key, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean keyReleased(int key, int scanCode, int modifiers) {
+        var top = getTopApplication();
+        if (top != null && top.keyReleased(key, scanCode, modifiers))
+            return true;
+        return super.keyReleased(key, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean charTyped(char c, int modifiers) {
+        var top = getTopApplication();
+        if (top != null && top.charTyped(c, modifiers))
+            return true;
+        return super.charTyped(c, modifiers);
     }
 
     @Override
@@ -129,20 +204,18 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
     }
 
     public void openFile(Path fullPath) {
-        File file = this.menu.computer.getFile(fullPath);
-        if (file == null) // 404
-            return;
-
-        switch (file.type) {
-            case APP -> {
-                var app = ChangedRegistry.APPLICATION_TYPES.getValue(ResourceLocation.parse(file.content));
-                Changed.PACKET_HANDLER.sendToServer(ComputerAppLaunchPacket.launchApplication(app));
+        this.menu.computer.getFile(fullPath).ifLeft(file -> {
+            switch (file.type) {
+                case APP -> {
+                    var app = ChangedRegistry.APPLICATION_TYPES.getValue(ResourceLocation.parse(file.getContent()));
+                    Changed.PACKET_HANDLER.sendToServer(ComputerAppLaunchPacket.launchApplication(app));
+                }
+                //case PICTURE -> {} // TODO open window with picture
+                case TEXT -> Changed.PACKET_HANDLER.sendToServer(ComputerAppLaunchPacket.launchApplication(ChangedApplications.TEXT_EDITOR.get(), fullPath.toString()));
+                case RECIPE -> this.menu.setDirty(this.menu.requestRecipe(fullPath));
+                default -> {} // No action
             }
-            //case PICTURE -> {} // TODO open window with picture
-            //case TEXT -> this.minecraft.setScreen(new ComputerTextScreen(/*this, */this.menu, this.inventory, ComputerTextScreen.TITLE));
-            case RECIPE -> this.menu.setDirty(this.menu.requestRecipe(fullPath));
-            default -> {} // No action
-        }
+        });
     }
 
     @Override

@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectArrayMap;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.*;
 import net.ltxprogrammer.changed.computers.protocol.*;
@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -114,6 +113,12 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return false;
     }
 
+    public void writeBackAll() {
+        for (var entry : mountedFileSystems.byte2ObjectEntrySet()) {
+            entry.getValue().writeBack();
+        }
+    }
+
     @Nullable
     public ServerPlayer activeUser;
 
@@ -190,7 +195,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
                 this.unmountDisc(previousItem);
 
             if (!currentItem.isEmpty())
-                this.mountDisc(SourcedDiscData.fromItem(currentItem));
+                this.mountDisc(SourcedDiscData.fromItem(currentItem, this::setChanged));
         }
     }
 
@@ -220,12 +225,13 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     public void fillStackedContents(StackedContents contents) {
-        for(ItemStack itemstack : this.items) {
+        for (ItemStack itemstack : this.items) {
             contents.accountStack(itemstack);
         }
     }
 
     protected void saveAdditional(CompoundTag tag) {
+        this.writeBackAll();
         ContainerHelper.saveAllItems(tag, this.items);
         tag.put("fs", this.primaryDisc.serialize());
     }
@@ -233,7 +239,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     public void load(CompoundTag tag) {
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         this.unmountDisc(primaryDisc);
-        this.primaryDisc = new DiscData(tag.getCompound("fs"));
+        this.primaryDisc = new DiscData(tag.getCompound("fs"), this::setChanged);
         this.mountDisc(SourcedDiscData.wrap(primaryDisc));
     }
 
@@ -305,20 +311,42 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return getFileSystem(driveText.getBytes()[0]);
     }
 
-    public @Nullable File getFile(Path path) {
+    public Either<File, File.Error> getFile(Path path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
-            return primaryDisc.getFile(driveName.relativize(path));
-        return null;
+            return fs.getFile(driveName.relativize(path));
+        return Either.right(File.Error.FILESYSTEM_NOT_FOUND);
     }
 
-    public Optional<File> getFileSafe(Path path) {
+    /**
+     * Like {@link #getFile(Path)}, but returns a file error if the type does not match.
+     */
+    public Either<File, File.Error> getFileOfType(Path path, File.Type type) {
+        var f = getFile(path);
+        if (f.left().isPresent()) {
+            if (f.left().get().type != type)
+                return Either.right(File.Error.INVALID_TYPE);
+        }
+
+        return f;
+    }
+
+    public Either<File, File.Error> createFile(Path path, File.Type type) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
-            return Optional.ofNullable(primaryDisc.getFile(driveName.relativize(path)));
-        return Optional.empty();
+            return fs.createFile(driveName.relativize(path), type);
+        return Either.right(File.Error.FILESYSTEM_NOT_FOUND);
+    }
+
+    public Either<File, File.Error> getOrCreateFile(Path path, File.Type type) {
+        var f = getFileOfType(path, type);
+        if (f.left().isPresent())
+            return f;
+        if (f.right().isPresent() && f.right().get() == File.Error.INVALID_TYPE)
+            return f;
+        return createFile(path, type);
     }
 
     public @Nullable Folder getFolder(Path path) {
@@ -343,7 +371,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     protected DiscData createFileSystem(RandomSource random) {
-        var data = new DiscData();
+        var data = new DiscData(this::setChanged);
         currentWorkingDirectory = DiscData.generatePCFileSystem(data, random);
         homeDirectory = currentWorkingDirectory;
         binariesDirectory = Path.of("C:/Binaries/");

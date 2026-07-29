@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.computers;
 
+import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
@@ -14,13 +15,18 @@ public class DiscData {
     protected boolean modified = false;
     protected String name;
     protected final Folder rootFolder;
+    protected final Runnable modifiedListener;
 
-    public DiscData() {
+    public DiscData(Runnable modifiedListener) {
+        this.modifiedListener = modifiedListener;
+
         name = "New Disk";
         rootFolder = createFolder();
     }
 
-    public DiscData(CompoundTag tag) {
+    public DiscData(CompoundTag tag, Runnable modifiedListener) {
+        this.modifiedListener = modifiedListener;
+
         name = tag.getString("n");
         rootFolder = new Folder(tag.getCompound("r"), this::markModified);
     }
@@ -40,12 +46,12 @@ public class DiscData {
         return name;
     }
 
-    public @Nullable File getFile(Path path) {
+    public Either<File, File.Error> getFile(Path path) {
         return rootFolder.getFile(path);
     }
 
-    public Optional<File> getFileSafe(Path path) {
-        return Optional.ofNullable(rootFolder.getFile(path));
+    public Either<File, File.Error> createFile(Path path, File.Type type) {
+        return rootFolder.createFile(path, type);
     }
 
     public @Nullable Folder getFolder(Path path) {
@@ -84,7 +90,12 @@ public class DiscData {
     }
 
     public void markModified() {
-        this.modified = true;
+        if (!this.modified) {
+            this.modified = true;
+            if (modifiedListener != null) {
+                modifiedListener.run();
+            }
+        }
     }
 
     public void clearModified() {

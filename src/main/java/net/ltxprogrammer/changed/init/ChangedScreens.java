@@ -31,6 +31,7 @@ public class ChangedScreens {
             ApplicationScreens.register(ChangedApplications.DESKTOP.get(), DesktopScreen::new);
             ApplicationScreens.register(ChangedApplications.FILE_EXPLORER.get(), FileExplorerScreen::new);
             ApplicationScreens.register(ChangedApplications.DOOR_CONTROLLER.get(), DoorControllerScreen::new);
+            ApplicationScreens.register(ChangedApplications.TEXT_EDITOR.get(), TextEditorScreen::new);
         });
     }
 }

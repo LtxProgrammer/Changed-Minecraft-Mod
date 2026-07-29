@@ -1281,5 +1281,6 @@
   "changed.ability_tree.taur_mobility.run_faster.flavor": "(DO NOT TRANSLATE) [Passive: The player can run faster]",
 
   "application.changed.file_explorer": "File Explorer",
-  "application.changed.door_controller": "Door Controller"
+  "application.changed.door_controller": "Door Controller",
+  "application.changed.text_editor": "Text Editor"
 }

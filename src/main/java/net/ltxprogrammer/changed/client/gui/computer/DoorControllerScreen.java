@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -192,6 +193,16 @@ public class DoorControllerScreen implements ApplicationScreen {
         }
 
         this.updateDoorActionButtons(this.selectedDoor);
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scanCode, int modifiers) {
+        if (key == GLFW.GLFW_KEY_ESCAPE) {
+            this.appCloser.run();
+            return true;
+        }
+
+        return ApplicationScreen.super.keyPressed(key, scanCode, modifiers);
     }
 
     @Override
