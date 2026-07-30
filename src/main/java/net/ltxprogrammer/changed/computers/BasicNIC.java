@@ -65,7 +65,9 @@ public class BasicNIC implements LogicalNetworkInterface {
             return;
 
         ticksSpentConnecting++;
-        if (ticksSpentConnecting % 64 != pos.hashCode() % 64)
+        int tickMod = ticksSpentConnecting % 64;
+        int posMod = Math.abs(pos.hashCode()) % 64;
+        if (tickMod != posMod)
             return;
 
         NetworkInterface.findNearbyAddresses(level, pos, 16).forEach(address -> {
