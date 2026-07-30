@@ -1,9 +1,13 @@
 package net.ltxprogrammer.changed.computers;
 
 import com.mojang.datafixers.util.Either;
+import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
+import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.init.ChangedApplications;
+import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,6 +18,8 @@ import java.util.Optional;
 public class DiscData {
     protected boolean modified = false;
     protected String name;
+    protected @Nullable ResourceLocation generatorId;
+    protected long generatorSeed;
     protected final Folder rootFolder;
     protected final Runnable modifiedListener;
 
@@ -21,21 +27,57 @@ public class DiscData {
         this.modifiedListener = modifiedListener;
 
         name = "New Disk";
+        generatorId = null;
         rootFolder = createFolder();
     }
 
     public DiscData(CompoundTag tag, Runnable modifiedListener) {
         this.modifiedListener = modifiedListener;
 
-        name = tag.getString("n");
-        rootFolder = new Folder(tag.getCompound("r"), this::markModified);
+        if (!this.tryLoadGenerator(tag)) {
+            name = tag.getString("n");
+            rootFolder = new Folder(tag.getCompound("r"), this::markModified);
+        } else {
+            rootFolder = createFolder();
+        }
+    }
+
+    protected boolean tryLoadGenerator(CompoundTag tag) {
+        if (tag.contains("generator")) {
+            generatorId = TagUtil.getResourceLocation(tag, "generator");
+            generatorSeed = tag.getLong("generatorSeed");
+            return true;
+        }
+
+        return false;
     }
 
     public CompoundTag serialize() {
         var tag = new CompoundTag();
-        tag.putString("n", name);
-        tag.put("r", rootFolder.serialize());
+        if (generatorId != null) {
+            TagUtil.putResourceLocation(tag, "generator", generatorId);
+            tag.putLong("generatorSeed", generatorSeed);
+        } else {
+            tag.putString("n", name);
+            tag.put("r", rootFolder.serialize());
+        }
         return tag;
+    }
+
+    public DiscData generateIfNecessary(FileSystemGenerator.DirectoryConsumer consumer) {
+        if (generatorId != null) {
+            var generator = ConfiguredFileSystemGenerators.getGenerator(generatorId);
+            generatorId = null;
+
+            if (generator != null)
+                generator.generate(RandomSource.create(generatorSeed), this, consumer);
+        }
+
+        return this;
+    }
+
+    public Folder getRootFolder() {
+        return rootFolder;
     }
 
     public static @NotNull String getName(@Nullable CompoundTag tag) {
@@ -44,6 +86,10 @@ public class DiscData {
 
     public @NotNull String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Either<File, File.Error> getFile(Path path) {
@@ -64,29 +110,6 @@ public class DiscData {
 
     protected Folder createFolder() {
         return new Folder(this::markModified);
-    }
-
-    protected File createFile(File.Type type, String content) {
-        return new File(type, content, this::markModified);
-    }
-
-    public static Path generatePCFileSystem(DiscData data, RandomSource random) {
-        data.name = "C:";
-        data.rootFolder.folders.put("OperatingSystem", data.createFolder()
-                .addFile("krnl.bin", data.createFile(File.Type.DATA, ""))
-                .addFile("resources.dat", data.createFile(File.Type.DATA, "")));
-        data.rootFolder.folders.put("Binaries", data.createFolder()
-                .addFile("explorer.app", data.createFile(File.Type.APP, ChangedApplications.FILE_EXPLORER.getId().toString())));
-        data.rootFolder.folders.put("Users", Util.make(data.createFolder(), usersFolder -> {
-            usersFolder.folders.put("TSCUser", Util.make(data.createFolder(), userFolder -> {
-                userFolder.folders.put("Desktop", data.createFolder()
-                        .addFile("lore2.txt", data.createFile(File.Type.TEXT, "I'm a lore2 thing")));
-                userFolder.folders.put("Documents", data.createFolder()
-                        .addFile("lore.txt", data.createFile(File.Type.TEXT, "I'm a lore thing"))
-                        .addFile("dl_wolf.rcp", data.createFile(File.Type.RECIPE, "changed:form_dark_latex_wolf")));
-            }));
-        }));
-        return Path.of("C:/Users/TSCUser/");
     }
 
     public void markModified() {

@@ -2,9 +2,12 @@ package net.ltxprogrammer.changed.block.entity;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.DiscData;
 import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.Folder;
+import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
+import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.util.CollectionUtil;
@@ -36,10 +39,22 @@ public class RouterBlockEntity extends BlockEntity implements NetworkInterface {
     public Path homeDirectory;
     public Path binariesDirectory;
     public DiscData localFileSystem = Util.make(new DiscData(this::setChanged), data -> {
-        currentWorkingDirectory = DiscData.generatePCFileSystem(data, random);
-        homeDirectory = currentWorkingDirectory;
-        binariesDirectory = Path.of("C:/Binaries/");
+        var generator = ConfiguredFileSystemGenerators.getGenerator(Changed.modResource("default_pc"));
+        if (generator == null)
+            return;
+
+        generator.generate(random, data, this.configureDirectory());
+        currentWorkingDirectory = homeDirectory;
     });
+
+    protected FileSystemGenerator.DirectoryConsumer configureDirectory() {
+        return (dir, path) -> {
+            switch (dir) {
+                case HOME_DIR -> homeDirectory = path;
+                case BIN_DIR -> binariesDirectory = path;
+            }
+        };
+    }
 
     public RouterBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ChangedBlockEntities.ROUTER.get(), blockPos, blockState);

@@ -130,10 +130,10 @@ public class DoorControllerScreen implements ApplicationScreen {
                 application.getType().getDisplayName(), screen.getMinecraft().font)
                 .alignCenter().setColor(0x404040));
 
-        screen.addApplicationWidget(Button.builder(Component.literal("Desktop"), (self) -> {
+        screen.addApplicationWidget(Button.builder(COMPONENT_EXIT, (self) -> {
             appCloser.run();
         }).bounds(x, y + yOffset.getAndAdd(23), 20, 20)
-                .tooltip(Tooltip.create(Component.literal("Exit")))
+                .tooltip(Tooltip.create(COMPONENT_EXIT))
                 .build(ApplicationScreen.iconButton(screen::getTheme, 200, 0)));
 
         application.reachableDevices.entrySet().stream().sorted(
@@ -155,7 +155,7 @@ public class DoorControllerScreen implements ApplicationScreen {
 
         this.doorNameWidget = screen.addApplicationWidget(new EditBox(screen.getMinecraft().font, operationsPaneX, operationsPaneY, operationsPaneWidth, 20, Component.literal("Door Name")));
 
-        this.openDoorButton = screen.addApplicationWidget(Button.builder(Component.literal("Open Door"), (self) -> {
+        this.openDoorButton = screen.addApplicationWidget(Button.builder(Component.translatable("application.changed.door_controller.open"), (self) -> {
             if (this.selectedDoor != null)
                 application.requestCommand(DoorControllerApplication.Command.OPEN_DOOR, this.selectedDoor);
 
@@ -165,7 +165,7 @@ public class DoorControllerScreen implements ApplicationScreen {
         }).bounds(operationsPaneX, operationsPaneY + 23, operationsPaneHalfWidth, 20)
                 .build(ApplicationScreen.textButton(screen::getTheme)));
 
-        this.closeDoorButton = screen.addApplicationWidget(Button.builder(Component.literal("Close Door"), (self) -> {
+        this.closeDoorButton = screen.addApplicationWidget(Button.builder(Component.translatable("application.changed.door_controller.close"), (self) -> {
             if (this.selectedDoor != null)
                 application.requestCommand(DoorControllerApplication.Command.CLOSE_DOOR, this.selectedDoor);
 
@@ -175,7 +175,7 @@ public class DoorControllerScreen implements ApplicationScreen {
         }).bounds(operationsPaneX + operationsPaneHalfWidth + 3, operationsPaneY + 23, operationsPaneHalfWidth, 20)
                 .build(ApplicationScreen.textButton(screen::getTheme)));
 
-        this.automaticCheckbox = screen.addApplicationWidget(ApplicationScreen.checkBox(screen::getTheme, operationsPaneX, operationsPaneY + 46, operationsPaneWidth, 20, Component.literal("Automatic"), true, self -> {
+        this.automaticCheckbox = screen.addApplicationWidget(ApplicationScreen.checkBox(screen::getTheme, operationsPaneX, operationsPaneY + 46, operationsPaneWidth, 20, Component.translatable("application.changed.door_controller.automatic"), true, self -> {
             if (this.selectedDoor != null)
                 application.requestCommand(self.selected() ?
                         DoorControllerApplication.Command.AUTOMATIC :

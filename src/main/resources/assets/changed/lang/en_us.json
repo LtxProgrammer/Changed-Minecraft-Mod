@@ -423,6 +423,10 @@
   "text.changed.warning.content1": "This modded version of Minecraft contains content from Changed,",
   "text.changed.warning.content2": "and is not suitable for all audiences.",
 
+  "text.changed.exit": "Exit",
+  "text.changed.edit": "Edit",
+  "text.changed.save": "Save",
+
   "effect.changed.caffeinated": "Caffeinated",
   "effect.changed.confusion": "Confusion",
   "effect.changed.hypercoagulation": "Hypercoagulation",
@@ -1301,5 +1305,11 @@
 
   "application.changed.file_explorer": "File Explorer",
   "application.changed.door_controller": "Door Controller",
-  "application.changed.text_editor": "Text Editor"
+  "application.changed.text_editor": "Text Editor",
+
+  "application.changed.file_explorer.parent_dir": "Parent Directory",
+  "application.changed.file_explorer.drives": "Drives",
+  "application.changed.door_controller.open": "Open Door",
+  "application.changed.door_controller.close": "Close Door",
+  "application.changed.door_controller.automatic": "Automatic"
 }

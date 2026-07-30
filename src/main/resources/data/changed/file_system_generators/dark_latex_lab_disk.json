@@ -1,0 +1,23 @@
+{
+  "type": "changed:disk",
+  "diskName": [ "DL", "Dark Latex" ],
+  "rootFolder": [
+    {
+      "rolls": 1,
+      "files": [
+        {
+          "weight": 5,
+          "type": "recipe",
+          "name": [ "dl_wolf.rcp", "dark_latex_wolf.rcp" ],
+          "content": "changed:form_dark_latex_wolf"
+        },
+        {
+          "weight": 1,
+          "type": "recipe",
+          "name": [ "dl_yufeng.rcp", "dark_latex_yufeng.rcp" ],
+          "content": "changed:form_dark_latex_yufeng"
+        }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed;
 import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
 import net.ltxprogrammer.changed.client.*;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
+import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
 import net.ltxprogrammer.changed.data.BuiltinRepositorySource;
 import net.ltxprogrammer.changed.entity.AccessoryEntities;
 import net.ltxprogrammer.changed.entity.HairStyle;
@@ -124,6 +125,7 @@ public class Changed {
         ChangedAbilityPointEvents.REGISTRY.register(modEventBus);
         ChangedVariantFeatures.REGISTRY.register(modEventBus);
         ChangedApplications.REGISTRY.register(modEventBus);
+        ChangedFileSystemGenerators.REGISTRY.register(modEventBus);
 
         // Our DFU references the above registries, so they need to be initialized before the DFU is created
         dataFixer = new ChangedDataFixer();
@@ -170,6 +172,7 @@ public class Changed {
         event.addListener(FacilityPieces.INSTANCE);
         event.addListener(FacilityZoneEntities.INSTANCE);
         event.addListener(AbilityTrees.INSTANCE);
+        event.addListener(ConfiguredFileSystemGenerators.INSTANCE);
         ChangedCompatibility.addDataListeners(event);
     }
 
