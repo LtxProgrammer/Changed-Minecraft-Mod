@@ -423,6 +423,10 @@
   "text.changed.warning.content1": "A Minecraft ezen módosított verziója Changed-ből származó tartalmat tartalmaz,",
   "text.changed.warning.content2": "és nem minden korosztály számára ajánlott.",
 
+  "text.changed.exit": "Kilépés",
+  "text.changed.edit": "Szerkesztés",
+  "text.changed.save": "Mentés",
+
   "effect.changed.caffeinated": "Koffeinezett",
   "effect.changed.confusion": "Összezavarodás",
   "effect.changed.hypercoagulation": "Hiperkoaguláció",
@@ -1300,5 +1304,11 @@
   
   "application.changed.file_explorer": "Fájlkezelő",
   "application.changed.door_controller": "Ajtóvezérlő",
-  "application.changed.text_editor": "Szövegszerkesztő"
+  "application.changed.text_editor": "Szövegszerkesztő",
+
+  "application.changed.file_explorer.parent_dir": "Szülőkönyvtár",
+  "application.changed.file_explorer.drives": "Meghajtók",
+  "application.changed.door_controller.open": "Ajtó nyitása",
+  "application.changed.door_controller.close": "Ajtó zárása",
+  "application.changed.door_controller.automatic": "Automatikus"
 }
