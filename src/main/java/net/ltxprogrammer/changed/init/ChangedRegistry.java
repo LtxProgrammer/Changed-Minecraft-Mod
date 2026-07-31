@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.ability.tree.events.AbstractPointEvent;
 import net.ltxprogrammer.changed.ability.tree.requirements.AbstractRequirement;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
 import net.ltxprogrammer.changed.computers.application.ApplicationType;
+import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
@@ -214,7 +215,8 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
     public static final RegistryHolder<Codec<? extends AbstractPointEvent<?>>> POINT_EVENTS = new RegistryHolder<>(registryKey("ability/point_events"));
     public static final RegistryHolder<VariantFeature> TRANSFUR_VARIANT_FEATURES = new RegistryHolder<>(registryKey("ability/variant_features"));
 
-    public static final RegistryHolder<ApplicationType<?>> APPLICATION_TYPES = new RegistryHolder<>(registryKey("computer/application_type"));
+    public static final RegistryHolder<ApplicationType<?>> APPLICATION_TYPES = new RegistryHolder<>(registryKey("computer/application_types"));
+    public static final RegistryHolder<Codec<? extends FileSystemGenerator>> FILE_SYSTEM_GENERATORS = new RegistryHolder<>(registryKey("computer/file_system_generators"));
 
     private static class ClearableObjectIntIdentityMap<I> extends IdMapper<I> {
         void clear()
@@ -289,6 +291,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
         createRegistry(event, POINT_EVENTS.key);
         createRegistry(event, TRANSFUR_VARIANT_FEATURES.key);
         createRegistry(event, APPLICATION_TYPES.key, RegistryBuilder::hasTags, null);
+        createRegistry(event, FILE_SYSTEM_GENERATORS.key);
     }
 
     private static <T> void createRegistry(NewRegistryEvent event, ResourceKey<? extends Registry<T>> key) {

@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -18,8 +19,13 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public interface ApplicationScreen {
+public interface ApplicationScreen extends GuiEventListener {
     ResourceLocation WIDGETS = Changed.modResource("widgets");
+    ResourceLocation WIDGETS2 = Changed.modResource("widgets2");
+
+    Component COMPONENT_EXIT = Component.translatable("text.changed.exit");
+    Component COMPONENT_SAVE = Component.translatable("text.changed.save");
+    Component COMPONENT_EDIT = Component.translatable("text.changed.edit");
 
     static StringWidget shadowlessString(int x, int y, int width, int height, Component text, Font font) {
         return new StringWidget(x, y, width, height, text, font) {
@@ -158,6 +164,11 @@ public interface ApplicationScreen {
 
     static Function<Button.Builder, Button> iconButton(Supplier<UITheme> themeSupplier, int iconX, int iconY) {
         return iconButton(themeSupplier, WIDGETS, iconX, iconY,
+                0, 0, 20, 20, 256, 256, 64);
+    }
+
+    static Function<Button.Builder, Button> iconButton2(Supplier<UITheme> themeSupplier, int iconX, int iconY) {
+        return iconButton(themeSupplier, WIDGETS2, iconX, iconY,
                 0, 0, 20, 20, 256, 256, 64);
     }
 
@@ -352,6 +363,10 @@ public interface ApplicationScreen {
         };
     }
 
+    static ScrollBarVerticalStepped verticalScrollBarStepped(Supplier<UITheme> themeSupplier, int x, int y, int width, int height) {
+        return new ScrollBarVerticalStepped(themeSupplier, x, y, width, height, Component.empty());
+    }
+
     void initialize(int desktopLeft, int desktopTop, int desktopWidth, int desktopHeight);
 
     default void render(GuiGraphics graphics, int cursorX, int cursorY, float partialTicks) {
@@ -372,5 +387,13 @@ public interface ApplicationScreen {
 
     default void closed() {
 
+    }
+
+    default void setFocused(boolean focused) {
+
+    }
+
+    default boolean isFocused() {
+        return true;
     }
 }

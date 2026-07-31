@@ -1,10 +1,12 @@
 package net.ltxprogrammer.changed.block.entity;
 
-import it.unimi.dsi.fastutil.bytes.Byte2ObjectArrayMap;
-import it.unimi.dsi.fastutil.bytes.Byte2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
+import com.mojang.datafixers.util.Either;
+import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
+import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.*;
+import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
+import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -32,7 +34,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -50,10 +51,10 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     /// Parallels an HDD or SSD in a computer. Saves with the block entity.
     protected DiscData primaryDisc;
     /// Mapping of drive letter to mounted disc (C -> primaryDisc)
-    protected final Byte2ObjectMap<SourcedDiscData> mountedFileSystems = new Byte2ObjectArrayMap<>();
+    protected final Char2ObjectMap<SourcedDiscData> mountedFileSystems = new Char2ObjectArrayMap<>();
 
     public boolean mountDisc(SourcedDiscData disc) {
-        byte nextLetter = 'C';
+        char nextLetter = 'C';
         while (mountedFileSystems.containsKey(nextLetter)) {
             nextLetter++;
             if (nextLetter > 'Z')
@@ -65,7 +66,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return mountDisc(nextLetter, disc);
     }
 
-    public boolean mountDisc(byte driveLetter, SourcedDiscData disc) {
+    public boolean mountDisc(char driveLetter, SourcedDiscData disc) {
         if (disc == null)
             return false; // Do not mount a null disc
         if (driveLetter < 'A' || driveLetter > 'Z')
@@ -77,7 +78,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     public boolean unmountDisc(DiscData disc) {
-        var it = mountedFileSystems.byte2ObjectEntrySet().iterator();
+        var it = mountedFileSystems.char2ObjectEntrySet().iterator();
         while (it.hasNext()) {
             var entry = it.next();
             if (entry.getValue().matchesOrigin(disc)) {
@@ -91,7 +92,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     public boolean unmountDisc(ItemStack disc) {
-        var it = mountedFileSystems.byte2ObjectEntrySet().iterator();
+        var it = mountedFileSystems.char2ObjectEntrySet().iterator();
         while (it.hasNext()) {
             var entry = it.next();
             if (entry.getValue().matchesOrigin(disc)) {
@@ -104,7 +105,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return false;
     }
 
-    public boolean unmountDisc(byte driveLetter) {
+    public boolean unmountDisc(char driveLetter) {
         var unmounted = mountedFileSystems.remove(driveLetter);
         if (unmounted != null) {
             unmounted.writeBack();
@@ -112,6 +113,12 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         }
 
         return false;
+    }
+
+    public void writeBackAll() {
+        for (var entry : mountedFileSystems.char2ObjectEntrySet()) {
+            entry.getValue().writeBack();
+        }
     }
 
     @Nullable
@@ -190,7 +197,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
                 this.unmountDisc(previousItem);
 
             if (!currentItem.isEmpty())
-                this.mountDisc(SourcedDiscData.fromItem(currentItem));
+                this.mountDisc(SourcedDiscData.fromItem(currentItem, this::setChanged));
         }
     }
 
@@ -220,12 +227,13 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     public void fillStackedContents(StackedContents contents) {
-        for(ItemStack itemstack : this.items) {
+        for (ItemStack itemstack : this.items) {
             contents.accountStack(itemstack);
         }
     }
 
     protected void saveAdditional(CompoundTag tag) {
+        this.writeBackAll();
         ContainerHelper.saveAllItems(tag, this.items);
         tag.put("fs", this.primaryDisc.serialize());
     }
@@ -233,7 +241,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     public void load(CompoundTag tag) {
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         this.unmountDisc(primaryDisc);
-        this.primaryDisc = new DiscData(tag.getCompound("fs"));
+        this.primaryDisc = new DiscData(tag.getCompound("fs"), this::setChanged);
         this.mountDisc(SourcedDiscData.wrap(primaryDisc));
     }
 
@@ -285,47 +293,69 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public void visitMountedFileSystems(BiConsumer<Byte, DiscData> consumer) {
-        for (var entry : mountedFileSystems.byte2ObjectEntrySet()) {
-            consumer.accept(entry.getByteKey(), entry.getValue().getDiscData());
+    public void visitMountedFileSystems(BiConsumer<Character, DiscData> consumer) {
+        for (var entry : mountedFileSystems.char2ObjectEntrySet()) {
+            consumer.accept(entry.getCharKey(), entry.getValue().getDiscData().generateIfNecessary(this.configureDirectory(entry.getCharKey())));
         }
     }
 
-    public @Nullable DiscData getFileSystem(byte driveLetter) {
+    public @Nullable DiscData getFileSystem(char driveLetter) {
         var sourcedData = mountedFileSystems.get(driveLetter);
         if (sourcedData == null)
             return null;
-        return sourcedData.getDiscData();
+        return sourcedData.getDiscData().generateIfNecessary(this.configureDirectory(driveLetter));
     }
 
     public @Nullable DiscData getFileSystem(Path drive) {
         var driveText = drive.toString();
         if (driveText.length() != 3)
             return null;
-        return getFileSystem(driveText.getBytes()[0]);
+        return getFileSystem(driveText.charAt(0));
     }
 
-    public @Nullable File getFile(Path path) {
+    public Either<File, File.Error> getFile(Path path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
-            return primaryDisc.getFile(driveName.relativize(path));
-        return null;
+            return fs.getFile(driveName.relativize(path));
+        return Either.right(File.Error.FILESYSTEM_NOT_FOUND);
     }
 
-    public Optional<File> getFileSafe(Path path) {
+    /**
+     * Like {@link #getFile(Path)}, but returns a file error if the type does not match.
+     */
+    public Either<File, File.Error> getFileOfType(Path path, File.Type type) {
+        var f = getFile(path);
+        if (f.left().isPresent()) {
+            if (f.left().get().type != type)
+                return Either.right(File.Error.INVALID_TYPE);
+        }
+
+        return f;
+    }
+
+    public Either<File, File.Error> createFile(Path path, File.Type type) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
-            return Optional.ofNullable(primaryDisc.getFile(driveName.relativize(path)));
-        return Optional.empty();
+            return fs.createFile(driveName.relativize(path), type);
+        return Either.right(File.Error.FILESYSTEM_NOT_FOUND);
+    }
+
+    public Either<File, File.Error> getOrCreateFile(Path path, File.Type type) {
+        var f = getFileOfType(path, type);
+        if (f.left().isPresent())
+            return f;
+        if (f.right().isPresent() && f.right().get() == File.Error.INVALID_TYPE)
+            return f;
+        return createFile(path, type);
     }
 
     public @Nullable Folder getFolder(Path path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
-            return primaryDisc.getFolder(driveName.relativize(path));
+            return fs.getFolder(driveName.relativize(path));
         return null;
     }
 
@@ -342,11 +372,24 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return this.saveWithoutMetadata();
     }
 
+    protected FileSystemGenerator.DirectoryConsumer configureDirectory(char driveLetter) {
+        var driveRoot = Path.of(driveLetter + ":/");
+        return (dir, path) -> {
+            switch (dir) {
+                case HOME_DIR -> homeDirectory = driveRoot.resolve(path);
+                case BIN_DIR -> binariesDirectory = driveRoot.resolve(path);
+            }
+        };
+    }
+
     protected DiscData createFileSystem(RandomSource random) {
-        var data = new DiscData();
-        currentWorkingDirectory = DiscData.generatePCFileSystem(data, random);
-        homeDirectory = currentWorkingDirectory;
-        binariesDirectory = Path.of("C:/Binaries/");
+        var data = new DiscData(this::setChanged);
+        var generator = ConfiguredFileSystemGenerators.getGenerator(Changed.modResource("default_pc"));
+        if (generator == null)
+            return data;
+
+        generator.generate(random, data, this.configureDirectory('C'));
+        currentWorkingDirectory = homeDirectory;
         return data;
     }
 }

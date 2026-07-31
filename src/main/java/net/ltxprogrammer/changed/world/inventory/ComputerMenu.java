@@ -89,8 +89,8 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
             switch (requestedOp) {
                 case GET_RECIPE -> {
                     Path fullPath = Path.of(payload.getString("path"));
-                    computer.getFileSafe(fullPath).flatMap(file -> {
-                        var recipeLoc = ResourceLocation.parse(file.content);
+                    computer.getFileOfType(fullPath, File.Type.RECIPE).left().flatMap(file -> {
+                        var recipeLoc = ResourceLocation.parse(file.getContent());
                         return origin.serverLevel().getRecipeManager().byKey(recipeLoc);
                     }).ifPresent(recipe -> {
                         origin.awardRecipes(Collections.singleton(recipe));
@@ -140,7 +140,7 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
                 if (file.type != File.Type.APP)
                     return;
 
-                var app = ChangedRegistry.APPLICATION_TYPES.getValue(ResourceLocation.parse(file.content));
+                var app = ChangedRegistry.APPLICATION_TYPES.getValue(ResourceLocation.parse(file.getContent()));
                 if (!applications.contains(app))
                     applications.add(app);
             });

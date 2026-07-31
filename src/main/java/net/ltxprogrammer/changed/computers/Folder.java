@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.computers;
 
+import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.nbt.CompoundTag;
 
@@ -47,19 +48,39 @@ public class Folder {
         return tag;
     }
 
-    public @Nullable File getFile(Path path) {
+    public Either<File, File.Error> getFile(Path path) {
         var it = path.iterator();
         if (!it.hasNext())
-            return null;
+            return Either.right(File.Error.INVALID_PATH);
         Path p = it.next();
         String rep = p.toString();
         if (rep.isEmpty())
-            return null;
-        if (files.containsKey(rep))
-            return files.get(rep);
+            return Either.right(File.Error.NO_READ_PERMISSION);
+        if (!it.hasNext() && files.containsKey(rep))
+            return Either.left(files.get(rep));
         if (folders.containsKey(rep))
             return folders.get(rep).getFile(p.relativize(path));
-        return null;
+        return Either.right(File.Error.FILE_NOT_FOUND);
+    }
+
+    public Either<File, File.Error> createFile(Path path, File.Type type) {
+        var it = path.iterator();
+        if (!it.hasNext())
+            return Either.right(File.Error.INVALID_PATH);
+        Path p = it.next();
+        String rep = p.toString();
+        if (rep.isEmpty())
+            return Either.right(File.Error.NO_WRITE_PERMISSION);
+        if (!it.hasNext() && files.containsKey(rep))
+            return Either.right(File.Error.FILE_ALREADY_EXISTS);
+        if (!it.hasNext()) {
+            var f = new File(type, "", this.markModified);
+            files.put(rep, f);
+            return Either.left(f);
+        }
+        if (folders.containsKey(rep))
+            return folders.get(rep).createFile(p.relativize(path), type);
+        return Either.right(File.Error.FILE_NOT_FOUND);
     }
 
     public @Nullable Folder getFolder(Path path) {

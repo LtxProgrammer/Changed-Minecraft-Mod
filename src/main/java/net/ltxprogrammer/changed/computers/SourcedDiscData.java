@@ -14,8 +14,8 @@ public interface SourcedDiscData {
         return getDiscData().getName();
     }
 
-    static SourcedDiscData fromItem(ItemStack itemStack) {
-        return new ItemStackSource(itemStack);
+    static SourcedDiscData fromItem(ItemStack itemStack, Runnable modifiedListener) {
+        return new ItemStackSource(itemStack, modifiedListener);
     }
 
     static SourcedDiscData wrap(DiscData data) {
@@ -77,9 +77,11 @@ public interface SourcedDiscData {
     class ItemStackSource implements SourcedDiscData {
         DiscData cachedDiscData = null;
         final ItemStack originItem;
+        final Runnable modifiedListener;
 
-        public ItemStackSource(ItemStack originItem) {
+        public ItemStackSource(ItemStack originItem, Runnable modifiedListener) {
             this.originItem = originItem;
+            this.modifiedListener = modifiedListener;
         }
 
         @Override
@@ -87,9 +89,9 @@ public interface SourcedDiscData {
             if (cachedDiscData == null) {
                 var tag = originItem.getOrCreateTag();
                 if (tag.contains("fs"))
-                    cachedDiscData = new DiscData(originItem.getOrCreateTag().getCompound("fs"));
+                    cachedDiscData = new DiscData(originItem.getOrCreateTag().getCompound("fs"), modifiedListener);
                 else
-                    cachedDiscData = new DiscData();
+                    cachedDiscData = new DiscData(modifiedListener);
             }
 
             return cachedDiscData;

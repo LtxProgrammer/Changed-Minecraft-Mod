@@ -1,9 +1,13 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.DiscData;
 import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.Folder;
+import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
+import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.util.CollectionUtil;
@@ -34,11 +38,23 @@ public class RouterBlockEntity extends BlockEntity implements NetworkInterface {
     public Path currentWorkingDirectory;
     public Path homeDirectory;
     public Path binariesDirectory;
-    public DiscData localFileSystem = Util.make(new DiscData(), data -> {
-        currentWorkingDirectory = DiscData.generatePCFileSystem(data, random);
-        homeDirectory = currentWorkingDirectory;
-        binariesDirectory = Path.of("C:/Binaries/");
+    public DiscData localFileSystem = Util.make(new DiscData(this::setChanged), data -> {
+        var generator = ConfiguredFileSystemGenerators.getGenerator(Changed.modResource("default_pc"));
+        if (generator == null)
+            return;
+
+        generator.generate(random, data, this.configureDirectory());
+        currentWorkingDirectory = homeDirectory;
     });
+
+    protected FileSystemGenerator.DirectoryConsumer configureDirectory() {
+        return (dir, path) -> {
+            switch (dir) {
+                case HOME_DIR -> homeDirectory = path;
+                case BIN_DIR -> binariesDirectory = path;
+            }
+        };
+    }
 
     public RouterBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ChangedBlockEntities.ROUTER.get(), blockPos, blockState);
@@ -51,7 +67,7 @@ public class RouterBlockEntity extends BlockEntity implements NetworkInterface {
     }
 
     public void load(CompoundTag tag) {
-        this.localFileSystem = new DiscData(tag.getCompound("fs"));
+        this.localFileSystem = new DiscData(tag.getCompound("fs"), this::setChanged);
     }
 
     @Override
@@ -121,27 +137,19 @@ public class RouterBlockEntity extends BlockEntity implements NetworkInterface {
         return localFileSystem;
     }
 
-    public @Nullable File getFile(Path path) {
+    public Either<File, File.Error> getFile(Path path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
-            return localFileSystem.getFile(driveName.relativize(path));
-        return null;
-    }
-
-    public Optional<File> getFileSafe(Path path) {
-        var driveName = path.getRoot();
-        var fs = getFileSystem(driveName);
-        if (fs != null)
-            return Optional.ofNullable(localFileSystem.getFile(driveName.relativize(path)));
-        return Optional.empty();
+            return fs.getFile(driveName.relativize(path));
+        return Either.right(File.Error.FILESYSTEM_NOT_FOUND);
     }
 
     public @Nullable Folder getFolder(Path path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
-            return localFileSystem.getFolder(driveName.relativize(path));
+            return fs.getFolder(driveName.relativize(path));
         return null;
     }
 
