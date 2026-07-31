@@ -74,6 +74,8 @@
   "ability.changed.camouflage.disable": "Camouflage Disabled",
   "ability.changed.mer.tail_whip": "Tail Whip",
   "ability.changed.mer.tail_whip.desc": "Quickly spin in place to hit all surrounding entities.",
+  "ability.changed.taur.back_kick": "Back Kick",
+  "ability.changed.taur.back_kick.desc": "Attack entities that happen to be behind you.",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.desc": "Hold onto an entity to either transfur them or to protect them.",
@@ -353,6 +355,10 @@
   "death.attack.changed:gale_wind_burst.player": "%1$s was blown away by %2$s",
   "death.attack.changed:mantle_stop": "%s could not stop themself from falling by grabbing a ledge",
   "death.attack.changed:mantle_stop.player": "%1$s could not stop themself from falling by grabbing a ledge whilst fighting %2$s",
+  "death.attack.changed:mer_tail_whip": "%s was slapped in the face by a mer tail",
+  "death.attack.changed:mer_tail_whip.player": "%1$s was slapped in the face by %2$s's mer tail",
+  "death.attack.changed:taur_back_kick": "%s was kicked by a taur's hind legs",
+  "death.attack.changed:taur_back_kick.player": "%1$s was kicked by %2$s's hind legs",
 
   "command.changed.success.transfurred.one": "Transfurred %s into %s",
   "command.changed.success.transfurred.many": "Transfurred %s player(s) into %s",
