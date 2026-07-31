@@ -23,6 +23,10 @@ public interface ApplicationScreen extends GuiEventListener {
     ResourceLocation WIDGETS = Changed.modResource("widgets");
     ResourceLocation WIDGETS2 = Changed.modResource("widgets2");
 
+    Component COMPONENT_EXIT = Component.translatable("text.changed.exit");
+    Component COMPONENT_SAVE = Component.translatable("text.changed.save");
+    Component COMPONENT_EDIT = Component.translatable("text.changed.edit");
+
     static StringWidget shadowlessString(int x, int y, int width, int height, Component text, Font font) {
         return new StringWidget(x, y, width, height, text, font) {
             private float alignX = 0.5f;

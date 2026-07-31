@@ -109,22 +109,22 @@ public class TextEditorScreen implements ApplicationScreen {
                         Component.empty(), font)
                 .alignLeft().setColor(0x404040));
 
-        screen.addApplicationWidget(Button.builder(Component.literal("Desktop"), (self) -> {
+        screen.addApplicationWidget(Button.builder(COMPONENT_EXIT, (self) -> {
                     appCloser.run();
                 }).bounds(x, y, 20, 20)
-                .tooltip(Tooltip.create(Component.literal("Exit")))
+                .tooltip(Tooltip.create(COMPONENT_EXIT))
                 .build(ApplicationScreen.iconButton(screen::getTheme, 200, 0)));
 
-        this.enableEditButton = screen.addApplicationWidget(Button.builder(Component.literal("Edit"), (self) -> {
+        this.enableEditButton = screen.addApplicationWidget(Button.builder(COMPONENT_EDIT, (self) -> {
                     this.editing = true;
                 }).bounds(x + 23, y, 20, 20)
-                .tooltip(Tooltip.create(Component.literal("Edit")))
+                .tooltip(Tooltip.create(COMPONENT_EDIT))
                 .build(ApplicationScreen.iconButton2(screen::getTheme, 20, 0)));
 
-        this.saveButton = screen.addApplicationWidget(Button.builder(Component.literal("Save"), (self) -> {
+        this.saveButton = screen.addApplicationWidget(Button.builder(COMPONENT_SAVE, (self) -> {
                     saveChanges(true);
                 }).bounds(x + 23, y, 20, 20)
-                .tooltip(Tooltip.create(Component.literal("Save")))
+                .tooltip(Tooltip.create(COMPONENT_SAVE))
                 .build(ApplicationScreen.iconButton2(screen::getTheme, 0, 0)));
 
         this.scrollBar = screen.addApplicationWidget(ApplicationScreen.verticalScrollBarStepped(screen::getTheme, desktopLeft + 314, desktopTop + 27, 6, 163)

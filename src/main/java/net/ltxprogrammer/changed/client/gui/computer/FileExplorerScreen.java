@@ -57,10 +57,10 @@ public class FileExplorerScreen implements ApplicationScreen {
                         application.getType().getDisplayName(), screen.getMinecraft().font)
                 .alignCenter().setColor(0x404040));
 
-        screen.addApplicationWidget(Button.builder(Component.literal("Desktop"), (self) -> {
+        screen.addApplicationWidget(Button.builder(COMPONENT_EXIT, (self) -> {
                     appCloser.run();
                 }).bounds(x, y + yOffset.getAndAdd(23), 20, 20)
-                .tooltip(Tooltip.create(Component.literal("Exit")))
+                .tooltip(Tooltip.create(COMPONENT_EXIT))
                 .build(ApplicationScreen.iconButton(screen::getTheme, 200, 0)));
 
         return yOffset.getAcquire();
@@ -82,13 +82,13 @@ public class FileExplorerScreen implements ApplicationScreen {
                             menu.setWorkingDir(parentDir);
                             buildRegularListings();
                         }).bounds(x + 23, y, 20, 20)
-                        .tooltip(Tooltip.create(Component.literal("Parent Directory")))
+                        .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.parent_dir")))
                         .build(ApplicationScreen.iconButton(screen::getTheme, 220, 0)));
             } else if (menu.getWorkingDir().getRoot().equals(menu.getWorkingDir())) {
                 screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
                             buildDriveListings();
                         }).bounds(x + 23, y, 20, 20)
-                        .tooltip(Tooltip.create(Component.literal("Drives")))
+                        .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.drives")))
                         .build(ApplicationScreen.iconButton(screen::getTheme, 220, 0)));
             }
             cwd.folders.forEach((name, folder) -> {
