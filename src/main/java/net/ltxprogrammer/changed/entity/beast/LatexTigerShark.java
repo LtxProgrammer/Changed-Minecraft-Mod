@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.active.SimpleAbilityInstance;
+import net.ltxprogrammer.changed.ability.active.SummonSharksAbilityInstance;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.Color3;
@@ -12,11 +13,11 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 
 public class LatexTigerShark extends AbstractAquaticEntity {
-    protected final SimpleAbilityInstance summonSharks;
+    protected final SummonSharksAbilityInstance summonSharks;
 
     public LatexTigerShark(EntityType<? extends LatexTigerShark> type, Level level) {
         super(type, level);
-        summonSharks = registerAbility(ability -> this.wantToSummon(), new SimpleAbilityInstance(ChangedAbilities.SUMMON_SHARKS.get(), IAbstractChangedEntity.forEntity(this)));
+        summonSharks = registerAbility(ability -> this.wantToSummon(), new SummonSharksAbilityInstance(ChangedAbilities.SUMMON_SHARKS.get(), IAbstractChangedEntity.forEntity(this)));
     }
 
     @Override
