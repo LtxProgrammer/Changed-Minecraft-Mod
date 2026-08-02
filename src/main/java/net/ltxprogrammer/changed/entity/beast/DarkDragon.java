@@ -8,7 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 
-public class DarkDragon extends ChangedEntity implements DarkLatexEntity, PatronOC {
+public class DarkDragon extends ChangedEntity implements DarkLatexEntity, PatronOC, WingedEntity {
     public DarkDragon(EntityType<? extends ChangedEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -36,5 +36,10 @@ public class DarkDragon extends ChangedEntity implements DarkLatexEntity, Patron
     @Override
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.DARK;
+    }
+
+    @Override
+    public WingDesign getWingDesign() {
+        return WingDesign.WEBBED_DARK;
     }
 }

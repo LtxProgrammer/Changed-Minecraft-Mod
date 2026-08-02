@@ -852,7 +852,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                 double staminaEfficiency = getFeatureLevel(ChangedVariantFeatures.GLIDE_STAMINA_EFFICIENCY.get());
                 if (staminaEfficiency < 1.0d) {
                     chargeFlightStamina((1.0d - staminaEfficiency) * 0.05);
-                    host.displayClientMessage(Component.literal("Flight Stamina: " + flightStamina), true);
                 }
 
                 return getFlightStamina() > 0.0d;
@@ -882,7 +881,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                     double staminaEfficiency = getFeatureLevel(ChangedVariantFeatures.FLIGHT_STAMINA_EFFICIENCY.get());
                     if (staminaEfficiency < 1.0d) {
                         chargeFlightStamina((1.0d - staminaEfficiency) * 0.05);
-                        host.displayClientMessage(Component.literal("Flight Stamina: " + flightStamina), true);
                     }
 
                     float horizontalPenalty = host.isSprinting() ? 0.825f : 0.8f;
@@ -909,7 +907,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         } else if (ticksRechargingFlightStamina > 0) {
             ticksRechargingFlightStamina++;
             flightStamina = Math.min(flightStamina + 0.02 * ticksRechargingFlightStamina, maxFlightStamina);
-            host.displayClientMessage(Component.literal("Flight Stamina: " + flightStamina), true);
         }
     }
 

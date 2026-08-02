@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 
-public class LatexPinkYuinDragon extends LatexPinkWyvern implements PowderSnowWalkable {
+public class LatexPinkYuinDragon extends LatexPinkWyvern implements PowderSnowWalkable, WingedEntity {
     public LatexPinkYuinDragon(EntityType<? extends LatexPinkYuinDragon> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -29,5 +29,10 @@ public class LatexPinkYuinDragon extends LatexPinkWyvern implements PowderSnowWa
             return Color3.WHITE;
         else
             return Color3.fromInt(0xf7aebe);
+    }
+
+    @Override
+    public WingDesign getWingDesign() {
+        return WingDesign.WEBBED_PINK;
     }
 }
