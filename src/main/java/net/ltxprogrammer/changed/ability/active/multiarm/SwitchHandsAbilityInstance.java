@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.ability.active.multiarm;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.init.ChangedVariantFeatures;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -11,11 +12,12 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
-    private final NonNullList<ItemStack> extraMainHandSlots = NonNullList.createWithCapacity(1);
-    private final NonNullList<ItemStack> extraOffHandSlots = NonNullList.createWithCapacity(1);
+    private NonNullList<ItemStack> extraMainHandSlots = NonNullList.createWithCapacity(1);
+    private NonNullList<ItemStack> extraOffHandSlots = NonNullList.createWithCapacity(1);
 
     public SwitchHandsAbilityInstance(AbstractAbility<?> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
@@ -24,11 +26,23 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
     }
 
     public ItemStack getNextMainHandItem() {
-        return extraMainHandSlots.isEmpty() ? ItemStack.EMPTY : extraMainHandSlots.get(0);
+        return getNthNextMainHandItem(0);
     }
 
     public ItemStack getNextOffHandItem() {
-        return extraOffHandSlots.isEmpty() ? ItemStack.EMPTY : extraOffHandSlots.get(0);
+        return getNthNextOffHandItem(0);
+    }
+
+    public ItemStack getNthNextMainHandItem(int index) {
+        if (extraMainHandSlots.size() < index)
+            return ItemStack.EMPTY;
+        return extraMainHandSlots.get(index);
+    }
+
+    public ItemStack getNthNextOffHandItem(int index) {
+        if (extraOffHandSlots.size() < index)
+            return ItemStack.EMPTY;
+        return extraOffHandSlots.get(index);
     }
 
     public Stream<ItemStack> getMainHandItems() {
@@ -43,6 +57,37 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
                 Stream.of(entity.getEntity().getOffhandItem()),
                 extraOffHandSlots.stream()
         );
+    }
+
+    protected void updateSlotCount() {
+        int extraSlots = Math.max((int)entity.getFeatureLevel(ChangedVariantFeatures.SWITCH_HANDS_BONUS_HANDS.get()), 0);
+        if ((extraMainHandSlots.size() + extraOffHandSlots.size() - 2) == extraSlots)
+            return;
+
+        var lastExtraMain = extraMainHandSlots;
+        var lastExtraOff = extraOffHandSlots;
+
+        int slotCountMain = 1 + (extraSlots / 2) + (extraSlots % 2);
+        int slotCountOff = 1 + (extraSlots / 2);
+
+        extraMainHandSlots = NonNullList.createWithCapacity(slotCountMain);
+        extraOffHandSlots = NonNullList.createWithCapacity(slotCountOff);
+
+        for (int i = 0; i < lastExtraMain.size(); ++i) {
+            var item = lastExtraMain.get(i);
+            if (i < extraMainHandSlots.size())
+                extraMainHandSlots.set(i, item);
+            else
+                this.addOrDrop(item);
+        }
+
+        for (int i = 0; i < lastExtraOff.size(); ++i) {
+            var item = lastExtraOff.get(i);
+            if (i < extraOffHandSlots.size())
+                extraOffHandSlots.set(i, item);
+            else
+                this.addOrDrop(item);
+        }
     }
 
     protected void cycle() {
@@ -75,11 +120,18 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
             ability.setDirty(entity);
     }
 
+    protected void addOrDrop(ItemStack item) {
+        if (item.isEmpty())
+            return;
+        if (!entity.addItem(item))
+            entity.drop(item, false, true);
+    }
+
     @Override
     public void onRemove() {
         super.onRemove();
-        extraMainHandSlots.forEach(this.entity::addItem);
-        extraOffHandSlots.forEach(this.entity::addItem);
+        extraMainHandSlots.forEach(this::addOrDrop);
+        extraOffHandSlots.forEach(this::addOrDrop);
     }
 
     @Override
@@ -101,6 +153,12 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
     public void tick() {}
 
     @Override
+    public void tickIdle() {
+        super.tickIdle();
+        this.updateSlotCount();
+    }
+
+    @Override
     public void stopUsing() {}
 
     protected ListTag saveList(NonNullList<ItemStack> items) {
@@ -113,7 +171,10 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
         AtomicInteger slot = new AtomicInteger(0);
         tag.forEach(itemTag -> {
             int itemSlot = slot.getAndIncrement();
-            outputItems.set(itemSlot, ItemStack.of((CompoundTag)itemTag));
+            if (itemSlot < outputItems.size())
+                outputItems.set(itemSlot, ItemStack.of((CompoundTag)itemTag));
+            else
+                this.addOrDrop(ItemStack.of((CompoundTag)itemTag));
         });
     }
 
@@ -128,6 +189,7 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
     public void readData(CompoundTag tag) {
         super.readData(tag);
 
+        this.updateSlotCount();
         loadList(tag.getList("mainHands", 10), extraMainHandSlots);
         loadList(tag.getList("offHands", 10), extraOffHandSlots);
 
