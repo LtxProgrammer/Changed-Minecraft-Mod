@@ -1,13 +1,12 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 
-public class LatexGoldenDragon extends ChangedEntity implements PatronOC {
+public class LatexGoldenDragon extends ChangedEntity implements PatronOC, WingedEntity {
     public LatexGoldenDragon(EntityType<? extends LatexGoldenDragon> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -24,6 +23,11 @@ public class LatexGoldenDragon extends ChangedEntity implements PatronOC {
     }
 
     public Color3 getTransfurColor(TransfurCause cause) {
-        return Color3.getColor("#ffdb4f");
+        return Color3.fromInt(0xffdb4f);
+    }
+
+    @Override
+    public WingDesign getWingDesign() {
+        return WingDesign.WEBBED_GOLDEN;
     }
 }

@@ -7,10 +7,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.gui.AbilityOverlay;
-import net.ltxprogrammer.changed.client.gui.GrabOverlay;
-import net.ltxprogrammer.changed.client.gui.TransfurProgressOverlay;
-import net.ltxprogrammer.changed.client.gui.VariantBlindnessOverlay;
+import net.ltxprogrammer.changed.client.gui.*;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.fluid.TransfurGas;
 import net.minecraft.client.Minecraft;
@@ -32,6 +29,7 @@ public class ChangedOverlays {
     public static final ResourceLocation GRABBED_OVERLAY = Changed.modResource("grabbed");
     public static final ResourceLocation GAS_VFX_OVERLAY = Changed.modResource("gas_vfx");
     public static final ResourceLocation VARIANT_BLINDNESS_OVERLAY = Changed.modResource("variant_blindness");
+    public static final ResourceLocation FLIGHT_STAMINA_OVERLAY = Changed.modResource("flight_stamina");
 
     public static void registerOverlays(RegisterGuiOverlaysEvent event) {
         event.registerAboveAll(DANGER_OVERLAY.getPath(), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
@@ -73,5 +71,6 @@ public class ChangedOverlays {
             }
         });
         event.registerBelowAll(VARIANT_BLINDNESS_OVERLAY.getPath(), VariantBlindnessOverlay::render);
+        event.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), FLIGHT_STAMINA_OVERLAY.getPath(), FlightStaminaOverlay::render);
     }
 }

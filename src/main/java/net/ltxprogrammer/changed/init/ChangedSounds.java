@@ -81,6 +81,7 @@ public class ChangedSounds {
 
     public static final RegistryObject<SoundEvent> UNDERWATER_BOOST = register("ability.underwater_dash.boost");
     public static final RegistryObject<SoundEvent> MER_TAIL_WHIP = register("ability.mer.tail_whip");
+    public static final RegistryObject<SoundEvent> TAUR_BACK_KICK = register("ability.taur.back_kick");
     public static final RegistryObject<SoundEvent> WING_FLAP = register("ability.wing_flap");
     public static final RegistryObject<SoundEvent> INK_SMOKE_SCREEN = register("ability.ink_smoke_screen");
 

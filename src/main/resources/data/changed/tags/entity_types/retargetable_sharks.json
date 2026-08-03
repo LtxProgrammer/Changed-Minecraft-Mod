@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "changed:latex_mermaid_shark",
+    "changed:latex_shark",
+    "changed:latex_shark_feral",
+    "changed:latex_shark_female",
+    "changed:latex_shark_male",
+    "changed:latex_siren",
+    "changed:latex_tiger_shark"
+  ]
+}

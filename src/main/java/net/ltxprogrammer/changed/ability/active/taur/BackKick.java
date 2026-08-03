@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.ability.active.mer;
+package net.ltxprogrammer.changed.ability.active.taur;
 
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.active.SimpleAbility;
@@ -18,7 +18,7 @@ import net.minecraftforge.common.ForgeMod;
 import java.util.Collection;
 import java.util.Collections;
 
-public class TailWhip extends SimpleAbility {
+public class BackKick extends SimpleAbility {
     @Override
     public UseType getUseType(IAbstractChangedEntity entity) {
         return UseType.CHARGE_RELEASE_MINIMUM;
@@ -36,20 +36,20 @@ public class TailWhip extends SimpleAbility {
 
     @Override
     public boolean canUse(IAbstractChangedEntity entity) {
-        return entity.getEntity().isVisuallySwimming() && entity.getEntity().isEyeInFluidType(ForgeMod.WATER_TYPE.get());
+        return entity.getEntity().onGround();
     }
 
-    private static final Collection<Component> DESCRIPTION = Collections.singleton(Component.translatable("ability.changed.mer.tail_whip.desc"));
+    private static final Collection<Component> DESCRIPTION = Collections.singleton(Component.translatable("ability.changed.taur.back_kick.desc"));
 
     @Override
     public Collection<Component> getAbilityDescription(IAbstractChangedEntity entity) {
         return DESCRIPTION;
     }
 
-    protected void playTailWhipSound(IAbstractChangedEntity entity, boolean strong) {
+    protected void playKickSound(IAbstractChangedEntity entity, boolean strong) {
         var random = entity.getEntity().getRandom();
         entity.getEntity().playSound(
-                ChangedSounds.MER_TAIL_WHIP.get(),
+                ChangedSounds.TAUR_BACK_KICK.get(),
                 1.0f,
                 (1.0F + (random.nextFloat() - random.nextFloat()) * 0.4F) * (strong ? 1.0f : 1.35f));
     }
@@ -58,16 +58,17 @@ public class TailWhip extends SimpleAbility {
     public void startUsing(IAbstractChangedEntity entity) {
         super.startUsing(entity);
 
-        this.playTailWhipSound(entity, false);
+        this.playKickSound(entity, false);
 
         if (entity.getLevel().isClientSide())
             return;
 
-        DamageSource source = ChangedDamageSources.MER_TAIL_WHIP.source(entity.getLevel().registryAccess(), entity.getEntity());
-        float damage = (float) entity.getEntity().getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
+        DamageSource source = ChangedDamageSources.TAUR_BACK_KICK.source(entity.getLevel().registryAccess(), entity.getEntity());
+        float damage = (float) entity.getEntity().getAttributeBaseValue(Attributes.ATTACK_DAMAGE) * 1.2f;
 
         AABB entityBox = entity.getEntity().getBoundingBox();
-        AABB attackBox = entityBox.inflate(entityBox.getXsize(), 0, entityBox.getZsize());
+        double yRot = Math.toRadians(entity.getEntity().yHeadRot);
+        AABB attackBox = entityBox.move(Math.sin(yRot) * 1.2, 0.0, -Math.cos(yRot) * 1.2).inflate(0.25);
         entity.getLevel().getEntitiesOfClass(Entity.class, attackBox, EntitySelector.NO_CREATIVE_OR_SPECTATOR).forEach(victim -> {
             if (victim == entity.getEntity())
                 return;
