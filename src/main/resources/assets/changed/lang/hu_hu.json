@@ -74,6 +74,8 @@
   "ability.changed.camouflage.disable": "Álcázás kikapcsolva",
   "ability.changed.mer.tail_whip": "Farokostor",
   "ability.changed.mer.tail_whip.desc": "Gyorsan pörögj egy helyben, hogy eltaláld az összes környező entitást.",
+  "ability.changed.taur.back_kick": "Hátrarugás",
+  "ability.changed.taur.back_kick.desc": "Támadd meg azokat az entitásokat, akik éppen mögötted vannak.",
 
   "ability.changed.grab_entity": "Entitás megragadása",
   "ability.changed.grab_entity.desc": "Ragaszkodjon egy entitásba, hogy transzfurálja vagy megvédje.",
@@ -353,6 +355,10 @@
   "death.attack.changed:gale_wind_burst.player": "%s-t elfújta %2$s széllökése",
   "death.attack.changed:mantle_stop": "%s nem tudta megakadályozni az esést egy párkány megragadásával",
   "death.attack.changed:mantle_stop.player": "%1$s nem tudta megakadályozni az esést egy párkány megragadásával, miközben %2$s ellen harcolt.",
+  "death.attack.changed:mer_tail_whip": "%s játékost arcon csapta egy sellőfarok",
+  "death.attack.changed:mer_tail_whip.player": "%1$s játékost arcon csapta %2$s sellőfarka",
+  "death.attack.changed:taur_back_kick": "%s játékost egy taur hátsó lábai rúgták meg",
+  "death.attack.changed:taur_back_kick.player": "%1$s játékost %2$s hátsó lábai rúgták meg",
 
   "command.changed.success.transfurred.one": "%s játékos %s formára lett transzfurálva",
   "command.changed.success.transfurred.many": "%s játékosok %s formára lettek transzfurálva",
