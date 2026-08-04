@@ -14,7 +14,6 @@ public class ChangedVariantFeatures {
 
     public static final RegistryObject<VariantFeature> ABSORPTION = REGISTRY.register("grab/absorption", VariantFeature::binary);
     public static final RegistryObject<VariantFeature> OXYGEN_SYMBIOSIS = REGISTRY.register("grab/oxygen_symbiosis", VariantFeature::binary);
-    public static final RegistryObject<VariantFeature> FRIENDLY_TRANSFUR = REGISTRY.register("grab/friendly_transfur", VariantFeature::binary);
 
     public static final RegistryObject<VariantFeature> DEPTH_COMPRESSION = REGISTRY.register("aquatic/depth_compression", VariantFeature::maxPresent);
     public static final RegistryObject<VariantFeature> PREVENT_SINKING = REGISTRY.register("aquatic/prevent_sinking", VariantFeature::binary);

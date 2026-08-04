@@ -86,6 +86,15 @@
   "ability.changed.grab_entity.how_to_suit": "Hold [%s] to switch to suit",
   "ability.changed.grab_entity.how_to_toggle_control": "Press [%s] to toggle control",
 
+  "ability.changed.friendly_transfur": "Friendly Transfur",
+  "ability.changed.friendly_transfur.desc": "Safely transfur consenting players you are holding.",
+  "ability.changed.friendly_transfur.requested": "You ask %1$s if they want to be safely transfurred.",
+  "ability.changed.friendly_transfur.request": "%1$s would like to safely transfur you into another one of their kind. Do you %2$s?",
+  "ability.changed.friendly_transfur.consent": "consent",
+  "ability.changed.friendly_transfur.consent.tip": "Clicking \"consent\" will permit your grabber to safely transfur you.",
+  "ability.changed.friendly_transfur.accept": "You consent to let %1$s transfur you.",
+  "ability.changed.friendly_transfur.accepted": "%1$s consents to being safely transfurred.",
+
   "attribute.name.changed.transfur_damage": "Transfur Damage",
   "attribute.name.changed.transfur_damage.desc": "How capable you are of transfurring enemies (Only applies while transfurred).",
   "attribute.name.changed.transfur_tolerance": "Transfur Tolerance",

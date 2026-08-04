@@ -15,8 +15,8 @@
   "comment2": "Successfully safe transfurring another player will leave both players in a temporary weakened state.",
   "acquiredEffects": [
     {
-      "type": "changed:enable_feature",
-      "feature": "changed:grab/friendly_transfur"
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:friendly_transfur"
     }
   ]
 }
