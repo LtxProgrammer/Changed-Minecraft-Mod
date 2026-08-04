@@ -16,13 +16,11 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
-    private NonNullList<ItemStack> extraMainHandSlots = NonNullList.createWithCapacity(1);
-    private NonNullList<ItemStack> extraOffHandSlots = NonNullList.createWithCapacity(1);
+    private NonNullList<ItemStack> extraMainHandSlots = NonNullList.withSize(1, ItemStack.EMPTY);
+    private NonNullList<ItemStack> extraOffHandSlots = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public SwitchHandsAbilityInstance(AbstractAbility<?> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
-        extraMainHandSlots.add(ItemStack.EMPTY);
-        extraOffHandSlots.add(ItemStack.EMPTY);
     }
 
     public ItemStack getNextMainHandItem() {
@@ -34,13 +32,13 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
     }
 
     public ItemStack getNthNextMainHandItem(int index) {
-        if (extraMainHandSlots.size() < index)
+        if (extraMainHandSlots.size() <= index)
             return ItemStack.EMPTY;
         return extraMainHandSlots.get(index);
     }
 
     public ItemStack getNthNextOffHandItem(int index) {
-        if (extraOffHandSlots.size() < index)
+        if (extraOffHandSlots.size() <= index)
             return ItemStack.EMPTY;
         return extraOffHandSlots.get(index);
     }
@@ -70,8 +68,8 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
         int slotCountMain = 1 + (extraSlots / 2) + (extraSlots % 2);
         int slotCountOff = 1 + (extraSlots / 2);
 
-        extraMainHandSlots = NonNullList.createWithCapacity(slotCountMain);
-        extraOffHandSlots = NonNullList.createWithCapacity(slotCountOff);
+        extraMainHandSlots = NonNullList.withSize(slotCountMain, ItemStack.EMPTY);
+        extraOffHandSlots = NonNullList.withSize(slotCountOff, ItemStack.EMPTY);
 
         for (int i = 0; i < lastExtraMain.size(); ++i) {
             var item = lastExtraMain.get(i);
@@ -115,9 +113,6 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
                 extraOffHandSlots.set(i, extraOffHandSlots.get(i + 1));
             }
         }
-
-        if (!entity.getLevel().isClientSide)
-            ability.setDirty(entity);
     }
 
     protected void addOrDrop(ItemStack item) {
