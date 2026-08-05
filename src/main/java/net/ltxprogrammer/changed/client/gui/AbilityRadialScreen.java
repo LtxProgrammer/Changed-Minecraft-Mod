@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,9 +32,7 @@ public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> 
         this.imageHeight = 0;
         this.menu = menu;
         this.variant = menu.variant;
-        this.abilities = menu.variant.abilityInstances.keySet().stream().filter(ability ->
-                ability != ChangedAbilities.SELECT_HAIRSTYLE.get() || ability.canUse(IAbstractChangedEntity.forPlayer(menu.player)))
-                .collect(Collectors.toList());
+        this.abilities = new ArrayList<>(menu.variant.abilityInstances.keySet());
     }
 
     @Override
@@ -73,37 +72,16 @@ public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> 
             }
         }
 
-        var ability = abilities.get(section);
-        if (ability == ChangedAbilities.SELECT_HAIRSTYLE.get()) {
-            x = x * 0.9;
-            y = (y * 0.9) - 16;
-
-            HairStyleRadialScreen.renderEntityHeadWithHair(graphics, (int)x + this.leftPos, (int)y + 32 + this.topPos, 40,
-                    (float)(this.leftPos) - mouseX + (int)x,
-                    (float)(this.topPos) - mouseY + (int)y,
-                    variant.getChangedEntity(), alpha);
-        }
-
-        else {
-            ChangedClient.abilityRenderer.getOrThrow().renderAndDecorateAbility(
-                    graphics,
-                    menu.player,
-                    menu.variant.getAbilityInstance(abilities.get(section)),
-                    (int) (x - 24 + this.leftPos),
-                    (int) (y - 24 + this.topPos),
-                    48,
-                    (enabled ? 1 : 0.5f),
-                    enabled,
-                    0);
-
-            /*RenderSystem.setShaderTexture(0, abilities.get(section).getTexture(IAbstractChangedEntity.forPlayer(menu.player)));
-            if (enabled) {
-                RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
-                GuiComponent.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
-            }
-            RenderSystem.setShaderColor(red, green, blue, (enabled ? 1 : 0.5f) * alpha);
-            GuiComponent.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos, 0, 0, 48, 48, 48, 48);*/
-        }
+        ChangedClient.abilityRenderer.getOrThrow().renderAndDecorateAbility(
+                graphics,
+                menu.player,
+                menu.variant.getAbilityInstance(abilities.get(section)),
+                (int) (x - 24 + this.leftPos),
+                (int) (y - 24 + this.topPos),
+                48,
+                (enabled ? 1 : 0.5f),
+                enabled,
+                0);
     }
 
     @Override

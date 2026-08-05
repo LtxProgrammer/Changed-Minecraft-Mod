@@ -56,9 +56,7 @@ import java.util.Set;
 
 public class AbilityRenderer implements ResourceManagerReloadListener {
     public static final ResourceLocation ENCHANT_GLINT_LOCATION = ResourceLocation.parse("textures/misc/enchanted_item_glint.png");
-    public static final Set<ResourceLocation> IGNORED = Sets.newHashSet(
-            ChangedAbilities.SELECT_HAIRSTYLE.getId()
-    );
+    public static final Set<ResourceLocation> IGNORED = Sets.newHashSet();
     public float blitOffset;
     private final AbilityModelShaper abilityModelShaper;
     private final TextureManager textureManager;
