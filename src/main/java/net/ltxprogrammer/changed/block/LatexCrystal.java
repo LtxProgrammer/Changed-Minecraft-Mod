@@ -45,7 +45,7 @@ public class LatexCrystal extends TransfurCrystalBlock {
             return;
         if (level.getDifficulty() == Difficulty.PEACEFUL)
             return;
-        if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0 ||
+        if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
                 random.nextInt(2000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
             return;
 

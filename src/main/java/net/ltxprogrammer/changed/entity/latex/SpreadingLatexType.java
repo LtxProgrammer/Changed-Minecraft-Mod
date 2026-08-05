@@ -247,7 +247,7 @@ public abstract class SpreadingLatexType extends LatexType {
             return;
         }
         if (!this.canSpread(state)) return;
-        if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0) return;
+        if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0) return;
         if (!level.isAreaLoaded(blockPos, 3)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         if (random.nextInt(10 * level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE)) < 600) return;
 
@@ -624,7 +624,7 @@ public abstract class SpreadingLatexType extends LatexType {
         public void randomTick(LatexCoverState state, ServerLevel level, BlockPos blockPos, RandomSource random) {
             super.randomTick(state, level, blockPos, random);
 
-            if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0 ||
+            if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
                     random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
                 return;
 
@@ -769,7 +769,7 @@ public abstract class SpreadingLatexType extends LatexType {
                 return;
             if (level.getDifficulty() == Difficulty.PEACEFUL)
                 return;
-            if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0 ||
+            if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
                     random.nextInt(1000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
                 return;
             if (!WhiteLatexBlock.targetNearby(level, position))
