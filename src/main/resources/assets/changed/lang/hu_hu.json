@@ -86,6 +86,15 @@
   "ability.changed.grab_entity.how_to_suit": "Tartsa nyomva a(z) [%s] gombot beburkoláshoz",
   "ability.changed.grab_entity.how_to_toggle_control": "Nyomja meg a(z) [%s] gombot az irányítás váltásához",
 
+  "ability.changed.friendly_transfur": "Barátságos transzfur",
+  "ability.changed.friendly_transfur.desc": "Biztonságosan transzfuráld a beleegyező játékosokat, akiket tartasz.",
+  "ability.changed.friendly_transfur.requested": "Megkérdezed %1$s játékost, hogy biztonságosan akarnak-e transzfurálni.",
+  "ability.changed.friendly_transfur.request": "%1$s szeretne biztonságosan transzfurálni téged egy másik hasonlóvá. Te is szeretnéd, %2$s?",
+  "ability.changed.friendly_transfur.consent": "beleegyezés",
+  "ability.changed.friendly_transfur.consent.tip": "A \"beleegyezés\" gombra kattintva engedélyezed a megragadódnak, hogy biztonságosan transzfuráljon téged.",
+  "ability.changed.friendly_transfur.accept": "Beleegyezel, hogy %1$s transzfuráljon téged.",
+  "ability.changed.friendly_transfur.accepted": "%1$s beleegyezik a biztonságos transzfurhoz.",
+
   "attribute.name.changed.transfur_damage": "Transzfur okozta sebzés",
   "attribute.name.changed.transfur_damage.desc": "Mennyire vagy képes transzfurálni az ellenségeidet (Csak transzfurált állapotban érvényes).",
   "attribute.name.changed.transfur_tolerance": "Transzfur-tűrés",
