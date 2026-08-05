@@ -317,7 +317,7 @@ public class LatexSquidDogFemaleModel extends AdvancedHumanoidModel<LatexSquidDo
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
-    public void translateToUpperTentapaw(LatexSquidDogMale entity, HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperTentapaw(LatexSquidDogFemale entity, HumanoidArm arm, PoseStack poseStack) {
         Torso.translateAndRotate(poseStack);
         (arm == HumanoidArm.RIGHT ? RightUpperTentapaw : LeftUpperTentapaw).forEach(part -> {
             part.translateAndRotate(poseStack);
@@ -326,7 +326,7 @@ public class LatexSquidDogFemaleModel extends AdvancedHumanoidModel<LatexSquidDo
         poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
     }
 
-    public void translateToLowerTentapaw(LatexSquidDogMale entity, HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerTentapaw(LatexSquidDogFemale entity, HumanoidArm arm, PoseStack poseStack) {
         Torso.translateAndRotate(poseStack);
         (arm == HumanoidArm.RIGHT ? RightLowerTentapaw : LeftLowerTentapaw).forEach(part -> {
             part.translateAndRotate(poseStack);
