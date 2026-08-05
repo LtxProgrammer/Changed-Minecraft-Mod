@@ -116,6 +116,8 @@ public abstract class AbstractAbilityInstance {
 
     public void acceptPayload(CompoundTag tag) {}
 
+    public void acceptPayloadFromNonHost(CompoundTag tag, Player sender) {}
+
     public void sendPayload(CompoundTag tag) {
         if (this.entity.getLevel().isClientSide) {
             Changed.PACKET_HANDLER.sendToServer(

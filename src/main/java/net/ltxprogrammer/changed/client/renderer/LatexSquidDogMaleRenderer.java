@@ -15,6 +15,8 @@ public class LatexSquidDogMaleRenderer extends AdvancedHumanoidRenderer<LatexSqu
     public LatexSquidDogMaleRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSquidDogMaleModel(context.bakeLayer(LatexSquidDogMaleModel.LAYER_LOCATION)), ArmorLatexMaleSquidDogModel.MODEL_SET, 0.65f);
         this.addLayer(new DoubleItemInHandLayer<>(this, context.getItemInHandRenderer()));
+        this.addLayer(new ExtraItemInHandLayer<>(this, context.getItemInHandRenderer(), 1, LatexSquidDogMaleModel::translateToLowerTentapaw));
+        this.addLayer(new ExtraItemInHandLayer<>(this, context.getItemInHandRenderer(), 2, LatexSquidDogMaleModel::translateToUpperTentapaw));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())

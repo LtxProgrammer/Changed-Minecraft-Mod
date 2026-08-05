@@ -155,15 +155,13 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
         if (this.entity.getEntity() instanceof Player player && player == UniversalDist.getLocalPlayer())
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.release(player, this.grabbedEntity));
-        if (this.entity.getEntity() instanceof Player player) {
+        if (this.grabbedEntity instanceof Player player) {
             this.grabbedEntity.setDeltaMovement(Vec3.ZERO);
 
-            if (ProcessTransfur.isPlayerTransfurred(player)) {
-                ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-                    if (variant.isTemporaryFromSuit())
-                        ProcessTransfur.removePlayerTransfurVariant(player);
-                });
-            }
+            ProcessTransfur.ifPlayerTransfurred(player, variant -> {
+                if (variant.isTemporaryFromSuit())
+                    ProcessTransfur.removePlayerTransfurVariant(player);
+            });
         }
 
         if (!(this.grabbedEntity instanceof Player)) {
