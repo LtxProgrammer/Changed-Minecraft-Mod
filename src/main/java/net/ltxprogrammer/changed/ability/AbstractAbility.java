@@ -322,6 +322,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(this, data, entity.getId()));
     }
 
+    public @Nullable Integer getCharges(IAbstractChangedEntity entity) {
+        return null;
+    }
+
     @Nullable
     public static <T extends AbstractAbilityInstance> T getAbilityInstance(LivingEntity livingEntity, AbstractAbility<T> ability) {
         if (livingEntity == null) return null;

@@ -59,7 +59,7 @@ public class AbilityOverlay {
     }
 
     public static void renderForeground(int x, int y, GuiGraphics graphics, AbstractRadialScreen.ColorScheme scheme, Player player, TransfurVariantInstance<?> variant, AbstractAbilityInstance selected) {
-        ChangedClient.abilityRenderer.getOrThrow().renderAndDecorateAbility(
+        ChangedClient.abilityRenderer.getOrThrow().renderAbility(
                 graphics,
                 player,
                 selected,
@@ -69,6 +69,14 @@ public class AbilityOverlay {
                 1.0f,
                 true,
                 0
+        );
+        ChangedClient.abilityRenderer.getOrThrow().renderGuiAbilityDecorations(
+                graphics,
+                Minecraft.getInstance().font,
+                selected,
+                x,
+                y,
+                32
         );
     }
 
