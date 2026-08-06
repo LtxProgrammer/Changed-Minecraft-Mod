@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.ability.KeyReference;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;

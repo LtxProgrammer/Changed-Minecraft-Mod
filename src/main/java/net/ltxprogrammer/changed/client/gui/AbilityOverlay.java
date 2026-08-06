@@ -40,16 +40,21 @@ public class AbilityOverlay {
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
         var controller = selected.getController();
-        int cool = selected.canUse() ? (int)(controller.coolDownPercent() * 32) : 0;
+        int cool = (int)(controller.coolDownPercent() * 32);
         int active = cool >= 32 ? (int)(controller.getProgressActive() * 32) : 0;
 
         int gooOrNot = variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX) ? 0 : 32;
-        graphics.blit(ABILITY_BACKGROUNDS, x, y, gooOrNot, 0, 32, 32, 64, 96); // back
+        graphics.blit(ABILITY_BACKGROUNDS, x, y, gooOrNot, 0, 32, 32, 64, 128); // back
         if (cool > 0)
-            graphics.blit(ABILITY_BACKGROUNDS, x, y + (32 - cool), gooOrNot, 32 + (32 - cool), 32, cool, 64, 96); // ready
+            graphics.blit(ABILITY_BACKGROUNDS, x, y + (32 - cool), gooOrNot, 32 + (32 - cool), 32, cool, 64, 128); // ready
         if (active > 0) {
             graphics.setColor(scheme.foreground().red(), scheme.foreground().green(), scheme.foreground().blue(), 1.0F);
-            graphics.blit(ABILITY_BACKGROUNDS, x, y + (32 - active), gooOrNot, 64 + (32 - active), 32, active, 64, 96); // active
+            graphics.blit(ABILITY_BACKGROUNDS, x, y + (32 - active), gooOrNot, 64 + (32 - active), 32, active, 64, 128); // active
+        }
+
+        if (selected.canUse() && !controller.isCoolingDown()) {
+            graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+            graphics.blit(ABILITY_BACKGROUNDS, x, y, gooOrNot, 96, 32, 32, 64, 128); // available
         }
     }
 
@@ -68,23 +73,28 @@ public class AbilityOverlay {
     }
 
     public static void renderSelectedAbility(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
-        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(Minecraft.getInstance().cameraEntity), (player, variant) -> {
-            var ability = variant.getSelectedAbility();
-            if (ability == null || ability.getUseType() == AbstractAbility.UseType.MENU)
-                return;
-            if (variant.isTemporaryFromSuit())
-                return;
-            if (!variant.shouldApplyAbilities())
-                return;
-            int offset = (int)(Transition.easeInOutSine(Mth.clamp(
-                    Mth.map(variant.getTicksSinceLastAbilityActivity() + partialTick, 100.0f, 130.0f, 0.0f, 1.0f),
-                    0.0f, 1.0f)) * 40.0f);
-            if (offset >= 39)
-                return;
-            var color = AbstractRadialScreen.getColors(variant).setForegroundToBright();
+        var player = EntityUtil.playerOrNull(Minecraft.getInstance().cameraEntity);
+        var variant = ProcessTransfur.getPlayerTransfurVariant(player);
+        if (variant == null)
+            return;
+        if (variant.isTemporaryFromSuit())
+            return;
+        if (!variant.shouldApplyAbilities())
+            return;
 
-            renderBackground(10 - offset, screenHeight - 42 + offset, graphics, color, player, variant, ability);
-            renderForeground(15 - offset, screenHeight - 47 + offset, graphics, color, player, variant, ability);
+        int offset = (int)(Transition.easeInOutSine(Mth.clamp(
+                Mth.map(variant.getTicksSinceLastAbilityActivity() + partialTick, 100.0f, 130.0f, 0.0f, 1.0f),
+                0.0f, 1.0f)) * 60.0f);
+        if (offset >= 59)
+            return;
+        var color = AbstractRadialScreen.getColors(variant).setForegroundToBright();
+
+        variant.abilityHandler.visitSelected((index, totalCount, key, ability, abilityInstance) -> {
+            if (ability == null || abilityInstance == null || abilityInstance.getUseType() == AbstractAbility.UseType.MENU)
+                return;
+
+            renderBackground(10 - offset, screenHeight - 42 - 48 * index, graphics, color, player, variant, abilityInstance);
+            renderForeground(15 - offset, screenHeight - 47 - (48 * index), graphics, color, player, variant, abilityInstance);
         });
     }
 }

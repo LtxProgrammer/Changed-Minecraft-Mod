@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
+import net.ltxprogrammer.changed.ability.KeyReference;
 import net.ltxprogrammer.changed.ability.active.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
@@ -104,19 +104,17 @@ public class GrabOverlay {
         renderSuit(graphics, GRAB_PROGRESS_BAR_LATEX, x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, grabAbility.getSuitTransitionProgress(partialTicks), barColor);
     }
 
-    public static void renderEscapeKeyAt(Gui gui, GuiGraphics graphics, int x, int y, AbstractAbilityInstance.KeyReference key, float alpha) {
+    public static void renderEscapeKeyAt(Gui gui, GuiGraphics graphics, int x, int y, KeyReference key, float alpha) {
         if (alpha <= 0.05f)
             return;
 
         graphics.setColor(1.0f, 1.0f, 1.0f, alpha);
         int keyX, keyY;
-        switch (key) {
-            case MOVE_FORWARD -> { keyX = 0; keyY = 0; }
-            case MOVE_RIGHT -> { keyX = 16; keyY = 0; }
-            case MOVE_BACKWARD -> { keyX = 16; keyY = 16; }
-            case MOVE_LEFT -> { keyX = 0; keyY = 16; }
-            default -> { keyX = 0; keyY = 0; }
-        }
+        if (key == KeyReference.MOVE_FORWARD) { keyX = 0; keyY = 0; }
+        else if (key == KeyReference.MOVE_RIGHT) { keyX = 16; keyY = 0; }
+        else if (key == KeyReference.MOVE_BACKWARD) { keyX = 16; keyY = 16; }
+        else if (key == KeyReference.MOVE_LEFT) { keyX = 0; keyY = 16; }
+        else { keyX = 0; keyY = 0; }
 
         RenderSystem.setShaderTexture(0, GRAB_ESCAPE_KEYS);
 
