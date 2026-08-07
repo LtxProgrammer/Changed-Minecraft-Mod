@@ -8,19 +8,22 @@ import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class AbilityTreeProvider extends AbilityTreeDataProvider {
     public static final Multimap<TreeReference, RegistryObject<TransfurVariant<?>>> treeForVariants = ArrayListMultimap.create();
+    public static final Multimap<DefaultAbilityTree, Supplier<AbilityTreeBuilder>> defaultAbilityTreeForVariants = ArrayListMultimap.create();
+
+    public static final String DEFAULT_ABILITIES = "/default_abilities";
+
+    public record DefaultAbilityTree(Supplier<TransfurVariant<?>> variant, TreeReference treeReference) {}
 
     public AbilityTreeProvider(PackOutput output) {
         super(output, Changed.MODID);
@@ -28,6 +31,7 @@ public class AbilityTreeProvider extends AbilityTreeDataProvider {
 
     @Override
     protected void addTrees() {
+        addVariantsDefaultAbilitiesTrees();
         addVariantsToCurrentTrees();
     }
 
@@ -37,8 +41,36 @@ public class AbilityTreeProvider extends AbilityTreeDataProvider {
         AbilityTreeProvider.treeForVariants.put(reference, (RegistryObject<TransfurVariant<?>>) (RegistryObject) register);
     }
 
+    public static <T extends ChangedEntity> void addDefaultAbilityTreeEntry(Supplier<AbilityTreeBuilder> builder, RegistryObject<TransfurVariant<T>> variantRegistryObject) {
+        // O cast para (RegistryObject) remove a invariância estrita e permite converter para a assinatura com o wildcard <?>
+        ResourceLocation variantID = variantRegistryObject.getId();
+        ResourceLocation treeLoc = variantID.withPath(variantID.getPath() + DEFAULT_ABILITIES);
+        AbilityTreeProvider.defaultAbilityTreeForVariants.put(new DefaultAbilityTree(variantRegistryObject::get, new TreeReference(treeLoc)), builder);
+    }
+
+    public static <T extends ChangedEntity> void addDefaultAbilityTreeEntry(Supplier<AbilityTreeBuilder> builder, DefaultAbilityTree defaultAbilityTree) {
+        // O cast para (RegistryObject) remove a invariância estrita e permite converter para a assinatura com o wildcard <?>
+        AbilityTreeProvider.defaultAbilityTreeForVariants.put(defaultAbilityTree, builder);
+    }
+
     // Call this after all tree registrations or else it will fail.
-    private void addVariantsToCurrentTrees() {
+    public void addVariantsDefaultAbilitiesTrees() {
+        for (DefaultAbilityTree defaultAbilityTree : defaultAbilityTreeForVariants.keySet()) {
+            for (Supplier<AbilityTreeBuilder> builder : defaultAbilityTreeForVariants.get(defaultAbilityTree)) {
+                ResourceLocation variantId = defaultAbilityTree.variant.get().getFormId();
+                ResourceLocation treeLoc = variantId.withPath(variantId.getPath() + DEFAULT_ABILITIES);
+
+                if (builder != null) {
+                    addTree(treeLoc, builder.get());
+                } else {
+                    Changed.LOGGER.warn("Something got wrong when generating an default abilities tree, treeLoc: {}", treeLoc);
+                }
+            }
+        }
+    }
+
+    // Call this after all tree registrations or else it will fail.
+    public void addVariantsToCurrentTrees() {
         var registry = ChangedRegistry.TRANSFUR_VARIANT.get();
         for (TreeReference treeReference : treeForVariants.keySet()) {
             ResourceLocation treeLoc = treeReference.treeName();
@@ -53,7 +85,7 @@ public class AbilityTreeProvider extends AbilityTreeDataProvider {
 
                 builder.withVariants(predicates);
             } else {
-                Changed.LOGGER.warn("Attempted to inject variants into non-existent ability tree: {}", treeLoc);
+                Changed.LOGGER.warn("Attempted to inject variants into non-existent (in datagen) ability tree: {}", treeLoc);
             }
         }
     }
