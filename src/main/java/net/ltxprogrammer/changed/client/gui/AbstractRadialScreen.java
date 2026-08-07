@@ -54,12 +54,20 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
 
     public AbstractRadialScreen(T menu, Inventory inventory, Component text, Color3 primary, Color3 secondary, LivingEntity centerEntity) {
         super(menu, inventory, text);
-        this.imageWidth = 0;
-        this.imageHeight = 0;
         this.menu = menu;
         this.primaryColor = primary;
         this.secondaryColor = secondary;
         this.centerEntity = centerEntity;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+
+        this.imageWidth = this.width;
+        this.imageHeight = this.height;
+        this.leftPos = (this.width) / 2;
+        this.topPos = (this.height) / 2;
     }
 
     public abstract int getCount();

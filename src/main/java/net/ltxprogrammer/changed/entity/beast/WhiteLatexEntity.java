@@ -13,11 +13,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
@@ -27,9 +29,8 @@ public abstract class WhiteLatexEntity extends WhiteLatexWolfMale {
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, WhiteLatexEntity.class)));
+    protected @Nullable Goal makeHurtByTargetGoal() {
+        return new HurtByTargetGoal(this, WhiteLatexEntity.class).setAlertOthers();
     }
 
     @Override
