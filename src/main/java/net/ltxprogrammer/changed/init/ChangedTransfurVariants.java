@@ -1,11 +1,13 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.ability.tree.PartialNode;
 import net.ltxprogrammer.changed.ability.tree.PartialNode.TreeReference;
-import net.ltxprogrammer.changed.datagen.ability.AbilityTreeDataProvider;
+import net.ltxprogrammer.changed.datagen.ability.AbilityNodeProvider;
+import net.ltxprogrammer.changed.datagen.ability.AbilityNodeProvider.DefaultAbility;
 import net.ltxprogrammer.changed.datagen.ability.AbilityTreeProvider;
-import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.VisionType;
 import net.ltxprogrammer.changed.entity.ai.EntityAssimilationBehavior;
 import net.ltxprogrammer.changed.entity.ai.TransfurDecider;
 import net.ltxprogrammer.changed.entity.beast.*;
@@ -18,7 +20,9 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -214,6 +218,21 @@ public class ChangedTransfurVariants {
         for (TreeReference reference : treeReference) {
             AbilityTreeProvider.addEntry(reference, register);
         }
+        return register;
+    }
+
+    private static <T extends ChangedEntity> RegistryObject<TransfurVariant<T>> registerWithDefaultAbilities(String name, TransfurVariant.Builder<T> builder, List<DefaultAbility> abilities) {
+        RegistryObject<TransfurVariant<T>> register = REGISTRY.register(name, builder::build);
+        AbilityNodeProvider.addEntry(register, abilities);
+        return register;
+    }
+
+    private static <T extends ChangedEntity> RegistryObject<TransfurVariant<T>> registerWithAbilityTreeAndDefaultAbilities(String name, TransfurVariant.Builder<T> builder, List<TreeReference> treeReferences, List<DefaultAbility> abilities) {
+        RegistryObject<TransfurVariant<T>> register = REGISTRY.register(name, builder::build);
+        for (TreeReference reference : treeReferences) {
+            AbilityTreeProvider.addEntry(reference, register);
+        }
+        AbilityNodeProvider.addEntry(register, abilities);
         return register;
     }
 
