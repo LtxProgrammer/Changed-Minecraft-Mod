@@ -92,7 +92,16 @@ public abstract class AbilityTreeDataProvider implements DataProvider {
         private String flavorCompletedId = "";
         private boolean hidden = false;
 
+        public static AbilityTreeBuilder builder() {
+            return new AbilityTreeBuilder(new ArrayList<>());
+        }
+
+        public AbilityTreeBuilder() {
+            super();
+        }
+
         public AbilityTreeBuilder(List<RegistryElementPredicate<TransfurVariant<?>>> variants) {
+            super();
             this.variants = variants;
         }
 

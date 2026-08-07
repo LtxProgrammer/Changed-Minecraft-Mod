@@ -4,7 +4,10 @@ import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.ltxprogrammer.changed.ability.tree.*;
+import net.ltxprogrammer.changed.ability.tree.AbilityNode;
+import net.ltxprogrammer.changed.ability.tree.NodeDisplayInfo;
+import net.ltxprogrammer.changed.ability.tree.NodeEffect;
+import net.ltxprogrammer.changed.ability.tree.NodePrice;
 import net.ltxprogrammer.changed.ability.tree.PartialNode.TreeReference;
 import net.ltxprogrammer.changed.ability.tree.requirements.AbstractRequirement;
 import net.ltxprogrammer.changed.data.RegistryElementPredicate;
@@ -16,6 +19,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -27,7 +31,7 @@ import java.util.concurrent.CompletableFuture;
 public abstract class AbilityNodeDataProvider implements DataProvider {
     protected final PackOutput output;
     protected final String modid;
-    private final Map<ResourceLocation, AbilityNodeBuilder> nodeBuilders = new HashMap<>();
+    protected final Map<ResourceLocation, AbilityNodeBuilder> nodeBuilders = new HashMap<>();
 
     public AbilityNodeDataProvider(PackOutput output, String modid) {
         this.output = output;
@@ -36,8 +40,16 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
 
     protected abstract void addNodes();
 
-    protected AbilityNodeBuilder addNode(ResourceLocation loc){
+    protected AbilityNodeBuilder addNode(ResourceLocation loc) {
         return nodeBuilders.computeIfAbsent(loc, l -> new AbilityNodeBuilder());
+    }
+
+    protected AbilityNodeBuilder addNode(AbilityNode node) {
+        return nodeBuilders.computeIfAbsent(node.getNodeLocation(), l -> AbilityNodeBuilder.fromAbilityNode(node));
+    }
+
+    protected AbilityNodeBuilder addNode(ResourceLocation nodeLoc, AbilityNodeBuilder abilityNodeBuilder) {
+        return nodeBuilders.computeIfAbsent(nodeLoc, l -> abilityNodeBuilder);
     }
 
     @Override
@@ -71,23 +83,48 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
     }
 
     public static final class AbilityNodeBuilder {
+        @Nullable
+        private ResourceLocation nodeLocation = null; //Is Here as a fail safe.
         private Either<ResourceLocation, TreeReference> parent;
         private NodeDisplayInfo displayInfo = NodeDisplayInfo.MISSING;
-        private final List<AbstractRequirement> requirements = new ObjectArrayList<>();
-        private final List<ResourceLocation> occludes = new ObjectArrayList<>();
+        private List<AbstractRequirement> requirements = new ObjectArrayList<>();
+        private List<ResourceLocation> occludes = new ObjectArrayList<>();
         private String titleId = "";
         private String requirementsId = "";
         private String descriptionId = "";
         private String flavorId = "";
-        private int price;
-        private int groupDiscount = 0;
-        private int experiencePrice = 0;
-        private int groupDiscountExperience = 0;
-        private final List<NodePrice.ItemEntry> itemPrices = new ObjectArrayList<>();
-        private final List<NodeEffect> acquiredEffects = new ObjectArrayList<>();
-        private final List<NodeEffect> missingEffects = new ObjectArrayList<>();
+        private NodePrice nodePrice = new NodePrice(
+                0,
+                0,
+                0,
+                0,
+                new ArrayList<>(),
+                null
+        );
+        private List<NodeEffect> acquiredEffects = new ObjectArrayList<>();
+        private List<NodeEffect> missingEffects = new ObjectArrayList<>();
 
-        private AbilityNodeBuilder() {}
+        private AbilityNodeBuilder() {
+        }
+
+        public static AbilityNodeBuilder fromAbilityNode(AbilityNode node) {
+            AbilityNodeBuilder builder = builder();
+            builder.parent = node.parent;
+            builder.displayInfo = node.displayInfo;
+            builder.requirements = node.requirements;
+            builder.occludes = node.occludes;
+            builder.titleId = node.titleId;
+            builder.requirementsId = node.requirementsId;
+            builder.descriptionId = node.descriptionId;
+            builder.nodePrice = node.price;
+            builder.acquiredEffects = node.acquiredEffects;
+            builder.missingEffects = node.missingEffects;
+            return builder;
+        }
+
+        public static AbilityNodeBuilder builder() {
+            return new AbilityNodeBuilder();
+        }
 
         public AbilityNodeBuilder parent(ResourceLocation parentNode) {
             this.parent = Either.left(parentNode);
@@ -129,27 +166,48 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
             return this;
         }
 
-        public AbilityNodeBuilder price(int price) {
-            this.price = price;
+        public AbilityNodeBuilder level(int level) {
+            this.nodePrice = new NodePrice(level,
+                    nodePrice.groupDiscountLevels(),
+                    nodePrice.experience(),
+                    nodePrice.groupDiscountExperience(),
+                    nodePrice.items(),
+                    nodePrice.computedDiscountPrice()
+            );
             return this;
         }
 
         public AbilityNodeBuilder groupDiscount(int groupDiscount) {
-            this.groupDiscount = groupDiscount;
+            this.nodePrice = new NodePrice(nodePrice.levels(),
+                    groupDiscount,
+                    nodePrice.experience(),
+                    nodePrice.groupDiscountExperience(),
+                    nodePrice.items(),
+                    nodePrice.computedDiscountPrice());
             return this;
         }
 
-        public AbilityNodeBuilder price(int price, int groupDiscount) {
-            return price(price).groupDiscount(groupDiscount);
+        public AbilityNodeBuilder level(int price, int groupDiscount) {
+            return level(price).groupDiscount(groupDiscount);
         }
 
         public AbilityNodeBuilder experiencePrice(int levels) {
-            this.experiencePrice = levels;
+            this.nodePrice = new NodePrice(nodePrice.levels(),
+                    nodePrice.groupDiscountLevels(),
+                    nodePrice.experience(),
+                    nodePrice.groupDiscountExperience(),
+                    nodePrice.items(),
+                    nodePrice.computedDiscountPrice());
             return this;
         }
 
         public AbilityNodeBuilder experiencePriceDiscount(int levels) {
-            this.groupDiscountExperience = levels;
+            this.nodePrice = new NodePrice(nodePrice.levels(),
+                    nodePrice.groupDiscountLevels(),
+                    nodePrice.experience(),
+                    levels,
+                    nodePrice.items(),
+                    nodePrice.computedDiscountPrice());
             return this;
         }
 
@@ -162,7 +220,14 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
         }
 
         public AbilityNodeBuilder addItemCost(RegistryElementPredicate<Item> item, boolean groupDiscounted) {
-            this.itemPrices.add(new NodePrice.ItemEntry(item, groupDiscounted));
+            List<NodePrice.ItemEntry> itemEntries = new ArrayList<>(nodePrice.items());
+            itemEntries.add(new NodePrice.ItemEntry(item, groupDiscounted));
+            this.nodePrice = new NodePrice(nodePrice.levels(),
+                    nodePrice.groupDiscountLevels(),
+                    nodePrice.experience(),
+                    nodePrice.levels(),
+                    itemEntries,
+                    nodePrice.computedDiscountPrice());
             return this;
         }
 
@@ -171,7 +236,14 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
         }
 
         public AbilityNodeBuilder addItemCost(ResourceLocation item, boolean groupDiscounted) {
-            this.itemPrices.add(new NodePrice.ItemEntry(RegistryElementPredicate.forID(ForgeRegistries.ITEMS, item), groupDiscounted));
+            List<NodePrice.ItemEntry> itemPrices = new ArrayList<>(nodePrice.items());
+            itemPrices.add(new NodePrice.ItemEntry(RegistryElementPredicate.forID(ForgeRegistries.ITEMS, item), groupDiscounted));
+            this.nodePrice = new NodePrice(nodePrice.levels(),
+                    nodePrice.groupDiscountLevels(),
+                    nodePrice.experience(),
+                    nodePrice.levels(),
+                    itemPrices,
+                    nodePrice.computedDiscountPrice());
             return this;
         }
 
@@ -180,7 +252,14 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
         }
 
         public AbilityNodeBuilder addItemCost(TagKey<Item> item, boolean groupDiscounted) {
-            this.itemPrices.add(new NodePrice.ItemEntry(RegistryElementPredicate.forTag(ForgeRegistries.ITEMS, item), groupDiscounted));
+            List<NodePrice.ItemEntry> itemPrices = new ArrayList<>(nodePrice.items());
+            itemPrices.add(new NodePrice.ItemEntry(RegistryElementPredicate.forTag(ForgeRegistries.ITEMS, item), groupDiscounted));
+            this.nodePrice = new NodePrice(nodePrice.levels(),
+                    nodePrice.groupDiscountLevels(),
+                    nodePrice.experience(),
+                    nodePrice.levels(),
+                    itemPrices,
+                    nodePrice.computedDiscountPrice());
             return this;
         }
 
@@ -199,7 +278,13 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
             return this;
         }
 
-        private AbilityNode build(ResourceLocation loc) {
+        public AbilityNodeBuilder withNodeLocation(ResourceLocation nodeLocation) {
+            this.nodeLocation = nodeLocation;
+            return this;
+        }
+
+        public AbilityNode build(ResourceLocation loc) {
+            if (nodeLocation != null && loc == null) loc = nodeLocation;
             if (this.parent == null) {
                 throw new IllegalStateException("AbilityNode '" + loc + "' must have a defined parent!");
             }
@@ -210,7 +295,7 @@ public abstract class AbilityNodeDataProvider implements DataProvider {
             AbilityNode node = new AbilityNode(
                     parent, displayInfo, requirements, occludes,
                     titleId, requirementsId, descriptionId, flavorId,
-                    new NodePrice(price, groupDiscount, experiencePrice, groupDiscountExperience, itemPrices), acquiredEffects, missingEffects
+                    nodePrice, acquiredEffects, missingEffects
             );
             node.setNodeLocation(loc);
             return node;
