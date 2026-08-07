@@ -35,8 +35,9 @@ import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.ltxprogrammer.changed.world.enchantments.FormFittingEnchantment;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.chat.Component;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -78,9 +79,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     private final Player host;
     public final Map<AbstractAbility<?>, AbstractAbilityInstance> abilityInstances = new Object2ObjectArrayMap<>();
 
-    public AbstractAbility<?> selectedAbility = null;
+    public AbilityHandler abilityHandler = new AbilityHandler(this.abilityInstances);
     public AbstractAbility<?> menuAbility = null;
-    public KeyStateTracker abilityKey = new KeyStateTracker();
     public TransfurMode transfurMode;
     public TransfurVariant.BreatheMode breatheMode;
     public VisionType visionType;
@@ -997,19 +997,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                 instance.tickIdle();
             }
 
-            if (selectedAbility != null) {
-                var instance = abilityInstances.get(selectedAbility);
-                if (instance != null) {
-                    var controller = instance.getController();
-                    this.abilityKey.handleStateUpdates((isDown, wasDown, unique) -> {
-                        boolean oldState = controller.exchangeKeyState(isDown);
-                        if (isDown || instance.getController().isCoolingDown())
-                            this.resetTicksSinceLastAbilityActivity();
-                        if (!host.isUsingItem() && !instance.getController().isCoolingDown())
-                            instance.getUseType().check(isDown, oldState, unique, controller);
-                    });
-                }
-            }
+            if (abilityHandler.handleKeyFlips(host))
+                this.resetTicksSinceLastAbilityActivity();
 
             if (menuAbility != null) {
                 var instance = abilityInstances.get(menuAbility);
@@ -1101,9 +1090,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     public CompoundTag saveAbilities() {
         CompoundTag tagAbilities = new CompoundTag();
-        ResourceLocation selectedKey = ChangedRegistry.ABILITY.get().getKey(this.selectedAbility);
-        if (selectedKey != null)
-            TagUtil.putResourceLocation(tagAbilities, "selectedAbility", selectedKey);
+        tagAbilities.put("selectedAbility", abilityHandler.saveSelected());
         abilityInstances.forEach((name, ability) -> {
             CompoundTag tagAbility = new CompoundTag();
             ability.saveData(tagAbility);
@@ -1117,9 +1104,13 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         this.updateAbilitiesMap();
 
         if (tagAbilities.contains("selectedAbility")) {
-            var savedSelected = ChangedRegistry.ABILITY.getValue(TagUtil.getResourceLocation(tagAbilities, "selectedAbility"));
-            if (abilityInstances.containsKey(savedSelected))
-                this.selectedAbility = savedSelected;
+            if (tagAbilities.get("selectedAbility") instanceof ListTag list) {
+                abilityHandler.loadSelected(list);
+            } else {
+                var savedSelected = ChangedRegistry.ABILITY.getValue(TagUtil.getResourceLocation(tagAbilities, "selectedAbility"));
+                if (abilityInstances.containsKey(savedSelected))
+                    abilityHandler.setSelected(KeyReference.ABILITY, savedSelected);
+            }
         }
         tagAbilities.getAllKeys().stream().filter(key -> !"selectedAbility".equals(key)).forEach(key -> {
             var ability = ChangedRegistry.ABILITY.getValue(ResourceLocation.parse(key));
@@ -1167,23 +1158,38 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         return parent.is(variant);
     }
 
-    @Nullable
-    public AbstractAbilityInstance getSelectedAbility() {
-        return abilityInstances.get(this.selectedAbility);
+    protected AbstractAbility<?>[] createAbilitySlots() {
+        return new AbstractAbility[2];
     }
 
-    public void setSelectedAbility(AbstractAbility<?> ability) {
+    public boolean isAbilitySelected(AbstractAbility<?> ability) {
+        return abilityHandler.isSelected(ability);
+    }
+
+    @Nullable
+    public AbstractAbility<?> getSelectedAbility(KeyReference slot) {
+        return abilityHandler.getSelected(slot);
+    }
+
+    @Nullable
+    public AbstractAbilityInstance getSelectedAbilityInstance(KeyReference slot) {
+        var ability = getSelectedAbility(slot);
+        return ability == null ? null : abilityInstances.get(ability);
+    }
+
+    public void setSelectedAbility(KeyReference slot, AbstractAbility<?> ability) {
         if (abilityInstances.containsKey(ability)) {
-            this.resetTicksSinceLastAbilityActivity();
             var instance = abilityInstances.get(ability);
 
             if (instance.getUseType() != AbstractAbility.UseType.MENU) {
-                if (this.selectedAbility != ability)
+                if (abilityHandler.setSelected(slot, ability)) {
                     instance.onSelected();
-                this.selectedAbility = ability;
+                    this.resetTicksSinceLastAbilityActivity();
+                }
             } else {
                 instance.startUsing();
                 this.menuAbility = ability;
+                this.resetTicksSinceLastAbilityActivity();
             }
         }
     }

@@ -33,10 +33,15 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
     private int viewOffsetO = 0;
     private int viewOffset = 0;
     private int viewTransitionTicksLeft = 0;
+    private Integer sectionUnderMouse = null;
     private static final int VIEW_TRANSITION_LENGTH = 8;
 
     private float getViewOffset() {
         return Mth.lerp((float)viewTransitionTicksLeft / (float)VIEW_TRANSITION_LENGTH, (float)viewOffset, (float)viewOffsetO);
+    }
+
+    protected @Nullable Integer getSectionUnderMouse() {
+        return sectionUnderMouse;
     }
 
     private final Color3 primaryColor;
@@ -209,6 +214,12 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
             viewOffset--;
             viewTransitionTicksLeft = VIEW_TRANSITION_LENGTH;
         }
+    }
+
+    @Override
+    public void mouseMoved(double mx, double my) {
+        super.mouseMoved(mx, my);
+        sectionUnderMouse = getSectionAt((int)mx, (int)my).orElse(null);
     }
 
     @Override

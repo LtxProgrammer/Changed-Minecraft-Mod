@@ -17,7 +17,6 @@ public class ChangedScreens {
             MenuScreens.register(ChangedMenus.INFUSER.get(), InfuserScreen::new);
             MenuScreens.register(ChangedMenus.PURIFIER.get(), PurifierScreen::new);
             MenuScreens.register(ChangedMenus.ABILITY_RADIAL.get(), AbilityRadialScreen::new);
-            MenuScreens.register(ChangedMenus.HAIRSTYLE_RADIAL.get(), HairStyleRadialScreen::new);
             MenuScreens.register(ChangedMenus.KEYPAD.get(), KeypadScreen::new);
             MenuScreens.register(ChangedMenus.CLIPBOARD.get(), ClipboardScreen::new);
             MenuScreens.register(ChangedMenus.NOTE.get(), NoteScreen::new);

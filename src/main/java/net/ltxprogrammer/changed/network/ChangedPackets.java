@@ -67,7 +67,6 @@ public class ChangedPackets {
         addNetworkMessage(SyncTransfurPacket.class, SyncTransfurPacket::new);
         addNetworkMessage(SyncTransfurProgressPacket.class, SyncTransfurProgressPacket::new);
         addNetworkMessage(QueryTransfurPacket.class, QueryTransfurPacket::new);
-        addNetworkMessage(VariantAbilityActivate.class, VariantAbilityActivate::new);
         addNetworkMessage(SyncVariantAbilityPacket.class, SyncVariantAbilityPacket::new);
         addNetworkMessage(MenuUpdatePacket.class, MenuUpdatePacket::new);
         addNetworkMessage(EmotePacket.class, EmotePacket::new);
@@ -97,6 +96,9 @@ public class ChangedPackets {
         addNetworkMessage(ComputerAppLaunchPacket.class, ComputerAppLaunchPacket::new);
         addNetworkMessage(ComputerAppClosePacket.class, ComputerAppClosePacket::new);
         addNetworkMessage(ComputerAppSyncPacket.class, ComputerAppSyncPacket::new);
+        addNetworkMessage(AbilitySelectMenuRequestPacket.class, AbilitySelectMenuRequestPacket::read);
+        addNetworkMessage(AbilityKeyStatePacket.class, AbilityKeyStatePacket::new);
+        addNetworkMessage(AbilitySelectPacket.class, AbilitySelectPacket::new);
 
         addNetworkMessage(DebuggerPacket.class, DebuggerPacket::new);
         DebuggerPacket.registerDebugPacket(FacilityAddPiecesPayload.IDENTIFIER, FacilityAddPiecesPayload::new);

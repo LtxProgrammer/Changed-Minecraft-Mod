@@ -14,7 +14,6 @@ public class ChangedMenus {
     public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Changed.MODID);
 
     public static final RegistryObject<MenuType<AbilityRadialMenu>> ABILITY_RADIAL = register("ability_radial", AbilityRadialMenu::new);
-    public static final RegistryObject<MenuType<HairStyleRadialMenu>> HAIRSTYLE_RADIAL = register("hairstyle_radial", HairStyleRadialMenu::new);
     public static final RegistryObject<MenuType<SpecialStateRadialMenu>> SPECIAL_RADIAL = register("special_radial", SpecialStateRadialMenu::new);
     public static final RegistryObject<MenuType<ComputerMenu>> COMPUTER = register("computer", ComputerMenu::new);
     public static final RegistryObject<MenuType<InfuserMenu>> INFUSER = register("infuser", InfuserMenu::new);

@@ -449,6 +449,7 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
         return true;
     }
 
+    @Override
     public void tame(Player player) {
         this.setTame(true);
         this.setFollowOwner(true);

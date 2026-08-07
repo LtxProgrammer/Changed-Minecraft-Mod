@@ -32,7 +32,6 @@ public class ChangedAbilities {
     public static RegistryObject<AccessChestAbility> ACCESS_CHEST = REGISTRY.register("access_chest", AccessChestAbility::new);
     public static RegistryObject<SwitchGenderAbility> SWITCH_GENDER = REGISTRY.register("switch_gender", SwitchGenderAbility::new);
     public static RegistryObject<SlitherAbility> SLITHER = REGISTRY.register("slither", SlitherAbility::new);
-    public static RegistryObject<SelectHairstyleAbility> SELECT_HAIRSTYLE = REGISTRY.register("select_hairstyle", SelectHairstyleAbility::new);
     public static RegistryObject<SummonSharksAbility> SUMMON_SHARKS = REGISTRY.register("summon_sharks", SummonSharksAbility::new);
     public static RegistryObject<HypnosisAbility> HYPNOSIS = REGISTRY.register("hypnosis", HypnosisAbility::new);
     public static RegistryObject<SirenSingAbility> SIREN_SING = REGISTRY.register("siren_sing", SirenSingAbility::new);
