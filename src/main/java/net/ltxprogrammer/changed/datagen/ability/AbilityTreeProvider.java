@@ -37,19 +37,16 @@ public class AbilityTreeProvider extends AbilityTreeDataProvider {
 
     @SuppressWarnings("unchecked")
     public static <T extends ChangedEntity> void addEntry(TreeReference reference, RegistryObject<TransfurVariant<T>> register) {
-        // O cast para (RegistryObject) remove a invariância estrita e permite converter para a assinatura com o wildcard <?>
         AbilityTreeProvider.treeForVariants.put(reference, (RegistryObject<TransfurVariant<?>>) (RegistryObject) register);
     }
 
     public static <T extends ChangedEntity> void addDefaultAbilityTreeEntry(Supplier<AbilityTreeBuilder> builder, RegistryObject<TransfurVariant<T>> variantRegistryObject) {
-        // O cast para (RegistryObject) remove a invariância estrita e permite converter para a assinatura com o wildcard <?>
         ResourceLocation variantID = variantRegistryObject.getId();
         ResourceLocation treeLoc = variantID.withPath(variantID.getPath() + DEFAULT_ABILITIES);
         AbilityTreeProvider.defaultAbilityTreeForVariants.put(new DefaultAbilityTree(variantRegistryObject::get, new TreeReference(treeLoc)), builder);
     }
 
     public static <T extends ChangedEntity> void addDefaultAbilityTreeEntry(Supplier<AbilityTreeBuilder> builder, DefaultAbilityTree defaultAbilityTree) {
-        // O cast para (RegistryObject) remove a invariância estrita e permite converter para a assinatura com o wildcard <?>
         AbilityTreeProvider.defaultAbilityTreeForVariants.put(defaultAbilityTree, builder);
     }
 
@@ -63,7 +60,7 @@ public class AbilityTreeProvider extends AbilityTreeDataProvider {
                 if (builder != null) {
                     addTree(treeLoc, builder.get());
                 } else {
-                    Changed.LOGGER.warn("Something got wrong when generating an default abilities tree, treeLoc: {}", treeLoc);
+                    Changed.LOGGER.warn("Something went wrong when generating an default ability tree: {}", treeLoc);
                 }
             }
         }
