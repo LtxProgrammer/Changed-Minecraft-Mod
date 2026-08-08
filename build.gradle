@@ -172,8 +172,8 @@ def modIndex = [
     "caelus": [ artifact: "curse.maven:caelus-308989:5281700", compile: false, clientOnly: false ],
     "fabrication": [ artifact: "curse.maven:forgery-434087:6586436", compile: true, clientOnly: false ],
     "do_a_barrel_roll": [ artifact: "curse.maven:do-a-barrel-roll-663658:5326142", compile: true, clientOnly: false ], // Forge 1.20.1 v3.5.6
-    "etf": [ artifact: "curse.maven:entity-texture-features-fabric-568563:5982136", compile: true, clientOnly: false ], // Forge 1.20.1 v6.2.9
-    "emf": [ artifact: "curse.maven:entity-model-features-844662:6001134", compile: true, clientOnly: false ], // Forge 1.20.1 v2.4.1
+    "etf": [ artifact: "curse.maven:entity-texture-features-fabric-568563:7930617", compile: true, clientOnly: false ], // Forge 1.20.1 v7.1
+    "emf": [ artifact: "curse.maven:entity-model-features-844662:8063556", compile: true, clientOnly: false ], // Forge 1.20.1 v3.2.4
     "tacz": [ artifact: "curse.maven:timeless-and-classics-zero-1028108:6654541", compile: true, clientOnly: false ], // Forge 1.20.1 v1.1.6-hotfix
     "parcool": [ artifact: "curse.maven:parcool-482378:6652972", compile: true, clientOnly: false ], // Forge 1.20.1 v3.4.0.7
     "personality": [ artifact: "curse.maven:personality-415974:6248892", compile: true, clientOnly: false ], // Forge 1.20.1 v4.1.0

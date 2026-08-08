@@ -28,8 +28,6 @@ public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> 
 
     public AbilityRadialScreen(AbilityRadialMenu menu, Inventory inventory, Component text) {
         super(menu, inventory, text, menu.variant);
-        this.imageWidth = 0;
-        this.imageHeight = 0;
         this.menu = menu;
         this.variant = menu.variant;
         this.abilities = new ArrayList<>(menu.variant.abilityInstances.keySet());

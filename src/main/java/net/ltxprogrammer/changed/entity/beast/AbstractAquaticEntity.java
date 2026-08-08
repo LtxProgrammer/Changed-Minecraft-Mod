@@ -129,6 +129,11 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
     }
 
     @Override
+    protected @Nullable Goal makeFloatGoal() {
+        return null;
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new GoToWaterGoal(this, 0.3));
