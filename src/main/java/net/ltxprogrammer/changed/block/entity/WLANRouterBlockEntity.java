@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.*;
 
-public class RouterBlockEntity extends BlockEntity implements NetworkInterface {
+public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterface {
     public final RandomSource random = RandomSource.create();
 
     protected final NetworkInterface.Address physicalAddress;
@@ -56,8 +56,8 @@ public class RouterBlockEntity extends BlockEntity implements NetworkInterface {
         };
     }
 
-    public RouterBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(ChangedBlockEntities.ROUTER.get(), blockPos, blockState);
+    public WLANRouterBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(ChangedBlockEntities.WLAN_ROUTER.get(), blockPos, blockState);
         this.physicalAddress = Address.forBlock(blockPos);
         this.logicalAddress = this.random.nextInt();
     }
@@ -117,7 +117,7 @@ public class RouterBlockEntity extends BlockEntity implements NetworkInterface {
             menu.currentApplication().handlePacket(level, logicalSource, packet);*/
     }
 
-    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, RouterBlockEntity blockEntity) {
+    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, WLANRouterBlockEntity blockEntity) {
         if (level instanceof ServerLevel serverLevel) {
             CollectionUtil.deplete(blockEntity.unprocessedPackets, packet -> {
                 blockEntity.handlePacket(serverLevel, packet.getFirst(), packet.getSecond());

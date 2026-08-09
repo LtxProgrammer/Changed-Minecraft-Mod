@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.block.entity.RouterBlockEntity;
+import net.ltxprogrammer.changed.block.entity.WLANRouterBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,14 +25,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class Router extends AbstractCustomShapeEntityBlock {
+public class WLANRouter extends AbstractCustomShapeEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final VoxelShape SHAPE_SCREEN = Block.box(0.0D, 3.0D, 11.0D, 16.0D, 14.0D, 13.0D);
     public static final VoxelShape SHAPE_STAND = Block.box(6.0D, 1.0D, 13.0D, 10.0D, 8.0D, 14.0D);
     public static final VoxelShape SHAPE_BASE = Block.box(1.0D, 0.0D, 3.0D, 15.0D, 1.0D, 15.0D);
     public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_SCREEN, SHAPE_STAND, SHAPE_BASE);
 
-    public Router(Properties properties) {
+    public WLANRouter(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
@@ -85,13 +85,13 @@ public class Router extends AbstractCustomShapeEntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new RouterBlockEntity(blockPos, blockState);
+        return new WLANRouterBlockEntity(blockPos, blockState);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTicker(level, type, ChangedBlockEntities.ROUTER.get());
+        return createTicker(level, type, ChangedBlockEntities.WLAN_ROUTER.get());
     }
 
     @Nullable
@@ -100,7 +100,7 @@ public class Router extends AbstractCustomShapeEntityBlock {
     }
 
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type, BlockEntityType<? extends RouterBlockEntity> newType) {
-        return level.isClientSide ? null : createTickerHelper(type, newType, RouterBlockEntity::serverTick);
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type, BlockEntityType<? extends WLANRouterBlockEntity> newType) {
+        return level.isClientSide ? null : createTickerHelper(type, newType, WLANRouterBlockEntity::serverTick);
     }
 }

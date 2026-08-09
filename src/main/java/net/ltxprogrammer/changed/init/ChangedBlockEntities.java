@@ -46,6 +46,7 @@ public class ChangedBlockEntities {
     }, ChangedBlocks.LAB_DOORS.stream()));
     public static final RegistryObject<BlockEntityType<StasisChamberBlockEntity>> STASIS_CHAMBER = REGISTRY.register("stasis_chamber", deferredProvider(StasisChamberBlockEntity::new, ChangedBlocks.STASIS_CHAMBER));
     public static final RegistryObject<BlockEntityType<ComputerBlockEntity>> COMPUTER = REGISTRY.register("computer", deferredProvider(ComputerBlockEntity::new, ChangedBlocks.COMPUTER));
-    public static final RegistryObject<BlockEntityType<RouterBlockEntity>> ROUTER = REGISTRY.register("router", deferredProvider(RouterBlockEntity::new, ChangedBlocks.ROUTER));
+    public static final RegistryObject<BlockEntityType<WLANRouterBlockEntity>> WLAN_ROUTER = REGISTRY.register("wlan_router", deferredProvider(WLANRouterBlockEntity::new, ChangedBlocks.WLAN_ROUTER));
+    public static final RegistryObject<BlockEntityType<ServerStackBlockEntity>> SERVER_STACK = REGISTRY.register("server_stack", deferredProvider(ServerStackBlockEntity::new, ChangedBlocks.SERVER_STACK));
     public static final RegistryObject<BlockEntityType<InkCloudBlockEntity>> INK_CLOUD = REGISTRY.register("ink_cloud", deferredProvider(InkCloudBlockEntity::new, ChangedBlocks.INK_CLOUD));
 }
