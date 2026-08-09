@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -13,10 +14,14 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -27,14 +32,23 @@ import javax.annotation.Nullable;
 
 public class WLANRouter extends AbstractCustomShapeEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final VoxelShape SHAPE_SCREEN = Block.box(0.0D, 3.0D, 11.0D, 16.0D, 14.0D, 13.0D);
-    public static final VoxelShape SHAPE_STAND = Block.box(6.0D, 1.0D, 13.0D, 10.0D, 8.0D, 14.0D);
-    public static final VoxelShape SHAPE_BASE = Block.box(1.0D, 0.0D, 3.0D, 15.0D, 1.0D, 15.0D);
-    public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_SCREEN, SHAPE_STAND, SHAPE_BASE);
+    public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
+
+    public static final VoxelShape SHAPE_HANGING = Shapes.or(
+            Block.box(3.0D, 6.0D, 3.0D, 13.0D, 9.0D, 13.0D),
+            Block.box(7.0D, 9.0D, 7.0D, 9.0D, 16.0D, 9.0D)
+    );
+    public static final VoxelShape SHAPE_SITTING = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 3.0D, 13.0D);
 
     public WLANRouter(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HANGING, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(HANGING);
     }
 
     public RenderShape getRenderShape(BlockState blockState) {
@@ -43,10 +57,6 @@ public class WLANRouter extends AbstractCustomShapeEntityBlock {
 
     public PushReaction getPistonPushReaction(BlockState p_52814_) {
         return PushReaction.DESTROY;
-    }
-
-    public void setPlacedBy(Level p_52749_, BlockPos p_52750_, BlockState p_52751_, LivingEntity p_52752_, ItemStack p_52753_) {
-        super.setPlacedBy(p_52749_, p_52750_, p_52751_, p_52752_, p_52753_);
     }
 
     @Override
@@ -59,28 +69,44 @@ public class WLANRouter extends AbstractCustomShapeEntityBlock {
         }
     }
 
-    public boolean canSurvive(BlockState p_52783_, LevelReader p_52784_, BlockPos p_52785_) {
-        return p_52784_.getBlockState(p_52785_.below()).isFaceSturdy(p_52784_, p_52785_.below(), Direction.UP);
+    public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
+        if (blockState.getValue(HANGING))
+            return level.getBlockState(blockPos.above()).isFaceSturdy(level, blockPos.above(), Direction.DOWN, SupportType.CENTER);
+        else
+            return level.getBlockState(blockPos.below()).isFaceSturdy(level, blockPos.below(), Direction.UP, SupportType.RIGID);
     }
 
-    public VoxelShape getCollisionShape(BlockState p_54577_, BlockGetter p_54578_, BlockPos p_54579_, CollisionContext p_54580_) {
-        return getInteractionShape(p_54577_, p_54578_, p_54579_);
+    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter level, BlockPos blockPos, CollisionContext context) {
+        return getInteractionShape(blockState, level, blockPos);
     }
 
-    public VoxelShape getOcclusionShape(BlockState p_54584_, BlockGetter p_54585_, BlockPos p_54586_) {
-        return getInteractionShape(p_54584_, p_54585_, p_54586_);
+    public VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
+        return getInteractionShape(blockState, level, blockPos);
     }
 
     public VoxelShape getInteractionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
-        return Shapes.block();
+        return blockState.getValue(HANGING) ? SHAPE_HANGING : SHAPE_SITTING;
     }
 
     public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos blockPos, CollisionContext context) {
         return getInteractionShape(blockState, level, blockPos);
     }
 
-    public BlockState updateShape(BlockState p_52796_, Direction p_52797_, BlockState p_52798_, LevelAccessor p_52799_, BlockPos p_52800_, BlockPos p_52801_) {
-        return super.updateShape(p_52796_, p_52797_, p_52798_, p_52799_, p_52800_, p_52801_);
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        var state = super.getStateForPlacement(context);
+        if (state == null)
+            return null;
+
+        var sitting = state.setValue(HANGING, false);
+        var hanging = state.setValue(HANGING, true);
+
+        if (canSurvive(sitting, context.getLevel(), context.getClickedPos()))
+            return sitting;
+        if (canSurvive(hanging, context.getLevel(), context.getClickedPos()))
+            return hanging;
+        
+        return null;
     }
 
     @Override
