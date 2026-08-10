@@ -523,6 +523,7 @@
   "block.changed.purifier": "Tisztító",
   "block.changed.retinal_scanner": "Retina szkenner",
   "block.changed.roomba_charger": "Robotporszívó töltő",
+  "block.changed.server_stack": "Szerverrendszer",
   "block.changed.shipping_container_blue": "Kék konténer",
   "block.changed.shipping_container_orange": "Narancssárga konténer",
   "block.changed.skunk_gas": "Bűzösborz transzfur gáz",
@@ -594,6 +595,7 @@
   "block.changed.white_latex_pillar": "Fehér latexoszlop",
   "block.changed.white_latex_puddle_female": "Nőstény fehér latex farkas pocsolya",
   "block.changed.white_latex_puddle_male": "Hím fehér latex farkas pocsolya",
+  "block.changed.wlan_router": "WLAN router",
   "block.changed.wolf_gas": "Farkas transzfur gáz",
   "block.changed.wolf_gas_canister": "Farkas transzfur gázpalack",
   
