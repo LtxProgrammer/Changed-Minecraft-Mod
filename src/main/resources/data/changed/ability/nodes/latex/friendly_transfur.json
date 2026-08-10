@@ -10,6 +10,13 @@
     "levels": 1,
     "groupDiscountLevels": -1
   },
+  "requirements": [
+    {
+      "type": "changed:is_not_entity",
+      "entities": [ "#changed:armless" ],
+      "explainId": "changed.ability_tree.latex.grab.bad_variant"
+    }
+  ],
 
   "comment": "This node will allow the player to safe transfur a suited player, should they consent.",
   "comment2": "Successfully safe transfurring another player will leave both players in a temporary weakened state.",

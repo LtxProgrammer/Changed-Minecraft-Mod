@@ -93,4 +93,12 @@ public class ChangedAbilityTreeCodecs {
     public static final RegistryObject<Codec<HasAdvancementsRequirement>> HAS_ADVANCEMENTS_REQUIREMENT = PURCHASE_REQUIREMENT_REGISTRY.register("has_advancements", () -> HasAdvancementsRequirement.CODEC);
 
     public static final RegistryObject<Codec<HasAllOtherNodesInTreeRequirement>> HAS_ALL_OTHER_NODES = PURCHASE_REQUIREMENT_REGISTRY.register("has_all_other_nodes", () -> HasAllOtherNodesInTreeRequirement.CODEC);
+
+    public static final RegistryObject<Codec<IsVariantRequirement>> IS_VARIANT_REQUIREMENT = PURCHASE_REQUIREMENT_REGISTRY.register("is_variant", () -> IsVariantRequirement.CODEC);
+
+    public static final RegistryObject<Codec<IsNotVariantRequirement>> IS_NOT_VARIANT_REQUIREMENT = PURCHASE_REQUIREMENT_REGISTRY.register("is_not_variant", () -> IsNotVariantRequirement.CODEC);
+
+    public static final RegistryObject<Codec<IsEntityRequirement>> IS_ENTITY_REQUIREMENT = PURCHASE_REQUIREMENT_REGISTRY.register("is_entity", () -> IsEntityRequirement.CODEC);
+
+    public static final RegistryObject<Codec<IsNotEntityRequirement>> IS_NOT_ENTITY_REQUIREMENT = PURCHASE_REQUIREMENT_REGISTRY.register("is_not_entity", () -> IsNotEntityRequirement.CODEC);
 }

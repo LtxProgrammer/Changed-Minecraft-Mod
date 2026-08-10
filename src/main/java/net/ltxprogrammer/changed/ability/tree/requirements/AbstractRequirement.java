@@ -24,4 +24,8 @@ public abstract class AbstractRequirement {
     public boolean hideNodeIfNotMet() {
         return false;
     }
+
+    public boolean skipIfNotMet() {
+        return false;
+    }
 }

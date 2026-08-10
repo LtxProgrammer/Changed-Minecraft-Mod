@@ -7,6 +7,13 @@
     "levels": 1,
     "groupDiscountLevels": -1
   },
+  "requirements": [
+    {
+      "type": "changed:is_not_entity",
+      "entities": [ "#changed:armless" ],
+      "explainId": "changed.ability_tree.latex.grab.bad_variant"
+    }
+  ],
 
   "comment": "This node would grant the grab ability to the player, but not suiting",
   "acquiredEffects": [

@@ -1252,6 +1252,7 @@
   "changed.ability_tree.latex.friendly_transfur": "Friendly Transfur",
   "changed.ability_tree.latex.friendly_transfur.flavor": "With some focus, you can transfur humans without completely destroying their mind.",
   "changed.ability_tree.latex.grab": "Grab",
+  "changed.ability_tree.latex.grab.bad_variant": "Your current form is not capable of grabbing",
   "changed.ability_tree.latex.grab.flavor": "You discovered your gooey arms are good for grabbing humanoid mobs... Or people.",
   "changed.ability_tree.latex.hardened_skin1": "Hardened Skin I",
   "changed.ability_tree.latex.hardened_skin1.flavor": "Your surface reacts to physical attacks, softening the blow.",
