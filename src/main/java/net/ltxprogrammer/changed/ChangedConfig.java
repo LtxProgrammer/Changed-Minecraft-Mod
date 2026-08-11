@@ -126,6 +126,7 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> debugFacilitiesEnabled;
         public final ForgeConfigSpec.ConfigValue<Boolean> unlimitedLatexSpread;
         public final ForgeConfigSpec.ConfigValue<Boolean> doMobAssimilation;
+        public final ForgeConfigSpec.ConfigValue<Boolean> requireRecipeToInfuseVariants;
 
         public final ForgeConfigSpec.ConfigValue<Integer> facilityGenerateDepth;
         public final ForgeConfigSpec.ConfigValue<Integer> facilityRollForSizeAttempts;
@@ -159,6 +160,8 @@ public class ChangedConfig {
             unlimitedLatexSpread = builder.define("unlimitedLatexSpread", false);
             builder.comment("Should latexes be able to assimilate certain mobs to become a transfur source.");
             doMobAssimilation = builder.define("doMobAssimilation", true);
+            builder.comment("Should a player be required to have a recipe to infuse transfur variants.");
+            requireRecipeToInfuseVariants = builder.define("requireRecipeToInfuseVariants", false);
 
             builder.comment("How many pieces deep should the facility generator generate for (Higher = larger, takes way longer to generate).");
             facilityGenerateDepth = builder.defineInRange("facility.generateDepth", 20, 1, 64);

@@ -1,10 +1,12 @@
 package net.ltxprogrammer.changed.client.gui.computer;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.ComputerScreen;
 import net.ltxprogrammer.changed.computers.application.DesktopApplication;
 import net.ltxprogrammer.changed.network.packet.ComputerAppLaunchPacket;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 
@@ -49,5 +51,16 @@ public class DesktopScreen implements ApplicationScreen {
             .build(ApplicationScreen.iconButton(screen::getTheme, app.getIconLocation(),
                     0, 0, 0, 0, 32, 32, 32, 96, 32)));
         }
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int mods) {
+        InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
+        if (Minecraft.getInstance().options.keyInventory.isActiveAndMatches(mouseKey)) {
+            screen.onClose();
+            return true;
+        }
+
+        return ApplicationScreen.super.keyPressed(keyCode, scanCode, mods);
     }
 }

@@ -302,6 +302,11 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
                     .getRecipeFor(ChangedRecipeTypes.INFUSER_RECIPE.get(), copyContainer, serverplayer.level());
             ItemStack input = this.internal.getStackInSlot(1);
             recipeOptional.ifPresentOrElse(recipe -> {
+                if (Changed.config.server.requireRecipeToInfuseVariants.get() && !serverplayer.getRecipeBook().contains(recipe)) {
+                    this.getResultSlot().set(ItemStack.EMPTY);
+                    return;
+                }
+
                 if (input.isEmpty()) {
                     this.getResultSlot().set(ItemStack.EMPTY);
                     return;

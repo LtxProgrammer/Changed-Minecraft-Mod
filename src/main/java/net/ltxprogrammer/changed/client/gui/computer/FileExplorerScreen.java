@@ -134,8 +134,8 @@ public class FileExplorerScreen implements ApplicationScreen {
             });
 
             if (cwd.folders.isEmpty() && cwd.files.isEmpty()) {
-                screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20,
-                                Component.translatable("application.changed.file_explorer.empty"), screen.getMinecraft().font)
+                screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth, 20,
+                                Component.translatable("application.changed.file_explorer.empty_folder"), screen.getMinecraft().font)
                         .alignCenter().setColor(0x404040));
             }
         });
@@ -147,7 +147,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                     .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.drives")))
                     .build(ApplicationScreen.iconButton(screen::getTheme, 220, 0)));
 
-            screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20,
+            screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth, 20,
                             Component.translatable("application.changed.file_explorer.invalid_folder", menu.getWorkingDir().toString()), screen.getMinecraft().font)
                     .alignCenter().setColor(0x404040));
         }
@@ -214,6 +214,12 @@ public class FileExplorerScreen implements ApplicationScreen {
                     }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
                     .build(explorerListItemButton(screen::getTheme, 0, 0)));
         });
+
+        if (application.reachableDevices.isEmpty()) {
+            screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth, 20,
+                            Component.translatable("application.changed.file_explorer.empty_network"), screen.getMinecraft().font)
+                    .alignCenter().setColor(0x404040));
+        }
 
         application.devicesDirty = false;
         application.listingsDirty = false;
