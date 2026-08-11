@@ -23,13 +23,13 @@ public abstract class BinaryRequirement extends AbstractRequirement {
 
     @Override
     public RequirementProgress<?> deserializeProgress(Tag progressTag) {
-        return new Progress(this, ((ByteTag)progressTag).getAsInt() > 0);
+        return new Progress<>(this, ((ByteTag)progressTag).getAsInt() > 0);
     }
 
-    private static class Progress extends RequirementProgress<BinaryRequirement> {
+    protected static class Progress<T extends BinaryRequirement> extends RequirementProgress<T> {
         protected final boolean met;
 
-        public Progress(BinaryRequirement requirement, boolean met) {
+        public Progress(T requirement, boolean met) {
             super(requirement);
             this.met = met;
         }

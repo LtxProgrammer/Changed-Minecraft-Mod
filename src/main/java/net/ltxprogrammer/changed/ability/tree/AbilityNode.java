@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.ltxprogrammer.changed.ability.tree.requirements.AbstractRequirement;
+import net.ltxprogrammer.changed.ability.tree.requirements.RequirementProgress;
 import net.ltxprogrammer.changed.data.codec.OptionalKeyFieldCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -42,6 +43,22 @@ public class AbilityNode extends PartialNode {
         this.occludes = occludes;
         this.acquiredEffects = acquiredEffects;
         this.missingEffects = missingEffects;
+    }
+
+    public boolean areRequirementsMet(AbilityTreeInstance.AccountedTree tree, boolean isClientSide) {
+        if (isClientSide)
+            return getRequirementProgress().stream().allMatch(RequirementProgress::requirementMet);
+        else
+            return requirements.stream().allMatch(requirement -> requirement.requirementMet(tree, this));
+    }
+
+    public boolean skipIfRequirementsNotMet(AbilityTreeInstance.AccountedTree tree, boolean isClientSide) {
+        if (isClientSide)
+            return getRequirementProgress().stream().filter(progress -> progress.requirement.skipIfNotMet())
+                    .anyMatch(progress -> !progress.requirementMet());
+        else
+            return requirements.stream().filter(AbstractRequirement::skipIfNotMet)
+                    .anyMatch(requirement -> !requirement.requirementMet(tree, this));
     }
 
     public void buildDescription(Consumer<Component> componentConsumer) {
