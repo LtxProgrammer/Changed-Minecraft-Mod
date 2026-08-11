@@ -153,6 +153,12 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
         return applications.peek();
     }
 
+    public void syncBlockEntity() {
+        if (player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.connection.send(computer.getUpdatePacket());
+        }
+    }
+
     /// INTERNAL
     public Application launchApplication(ApplicationType<?> applicationType, List<String> args) {
         var app = applicationType.createApplication(this, args);
@@ -165,6 +171,6 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
     public void closeApplication(ApplicationType<?> applicationType) {
         if (applications.peek().getType() != applicationType)
             throw new IllegalArgumentException("Application type mismatch");
-        applications.pop();
+        applications.pop().onClose();
     }
 }

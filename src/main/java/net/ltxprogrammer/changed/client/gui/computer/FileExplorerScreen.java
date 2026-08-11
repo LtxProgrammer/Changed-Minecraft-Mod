@@ -5,12 +5,13 @@ import net.ltxprogrammer.changed.client.gui.ComputerScreen;
 import net.ltxprogrammer.changed.computers.UITheme;
 import net.ltxprogrammer.changed.computers.application.FileExplorerApplication;
 import net.ltxprogrammer.changed.network.packet.ComputerAppClosePacket;
+import net.ltxprogrammer.changed.network.packet.ComputerAppSyncPacket;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
@@ -31,12 +32,17 @@ public class FileExplorerScreen implements ApplicationScreen {
     protected final FileExplorerApplication application;
     protected final ComputerScreen screen;
 
+    protected Integer networkDevice = null;
+
     protected final SingleRunnable appCloser;
 
     protected int desktopLeft;
     protected int desktopTop;
     protected int desktopWidth;
     protected int desktopHeight;
+
+    protected boolean listenForDeviceUpdates = false;
+    protected Runnable refreshListings = () -> buildRegularListings(true);
 
     public FileExplorerScreen(FileExplorerApplication application, ComputerScreen screen) {
         this.application = application;
@@ -66,7 +72,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         return yOffset.getAcquire();
     }
 
-    protected void buildRegularListings() {
+    protected void buildRegularListings(boolean isLocal) {
         screen.clearApplicationWidgets();
 
         int x = desktopLeft + 4;
@@ -75,16 +81,35 @@ public class FileExplorerScreen implements ApplicationScreen {
 
         ComputerMenu menu = screen.getMenu();
 
-        menu.computer.getFolderSafe(menu.getWorkingDir()).ifPresent(cwd -> {
+        if (isLocal) {
+            screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
+                        buildNetworkListings(false);
+                    }).bounds(x + 46, y, 20, 20)
+                    .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.network")))
+                    .build(ApplicationScreen.iconButton2(screen::getTheme, 40, 0)));
+        } else {
+            screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
+                        CompoundTag payload = new CompoundTag();
+                        payload.putString("control", "unmount");
+                        Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
+
+                        buildDriveListings();
+                    }).bounds(x + 46, y, 20, 20)
+                    .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.local")))
+                    .build(ApplicationScreen.iconButton2(screen::getTheme, 60, 0)));
+        }
+
+        var workingFolder = menu.computer.getFolderSafe(menu.getWorkingDir());
+        workingFolder.ifPresent(cwd -> {
             if (menu.getWorkingDir().getParent() != null) {
                 Path parentDir = menu.getWorkingDir().getParent();
                 screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
                             menu.setWorkingDir(parentDir);
-                            buildRegularListings();
+                            buildRegularListings(isLocal);
                         }).bounds(x + 23, y, 20, 20)
                         .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.parent_dir")))
                         .build(ApplicationScreen.iconButton(screen::getTheme, 220, 0)));
-            } else if (menu.getWorkingDir().getRoot().equals(menu.getWorkingDir())) {
+            } else if (isLocal && menu.getWorkingDir().getRoot().equals(menu.getWorkingDir())) {
                 screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
                             buildDriveListings();
                         }).bounds(x + 23, y, 20, 20)
@@ -95,7 +120,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                 Path subDir = menu.getWorkingDir().resolve(Path.of(name + "/"));
                 screen.addApplicationWidget(Button.builder(Component.literal(name + "/"), (self) -> {
                             menu.setWorkingDir(subDir);
-                            buildRegularListings();
+                            buildRegularListings(isLocal);
                         }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
                         .build(explorerListItemButton(screen::getTheme, 0, 0)));
             });
@@ -107,7 +132,29 @@ public class FileExplorerScreen implements ApplicationScreen {
                         }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
                         .build(explorerListItemButton(screen::getTheme, iconX, iconY)));
             });
+
+            if (cwd.folders.isEmpty() && cwd.files.isEmpty()) {
+                screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20,
+                                Component.translatable("application.changed.file_explorer.empty"), screen.getMinecraft().font)
+                        .alignCenter().setColor(0x404040));
+            }
         });
+
+        if (workingFolder.isEmpty()) {
+            screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
+                        buildDriveListings();
+                    }).bounds(x + 23, y, 20, 20)
+                    .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.drives")))
+                    .build(ApplicationScreen.iconButton(screen::getTheme, 220, 0)));
+
+            screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20,
+                            Component.translatable("application.changed.file_explorer.invalid_folder", menu.getWorkingDir().toString()), screen.getMinecraft().font)
+                    .alignCenter().setColor(0x404040));
+        }
+
+        application.listingsDirty = false;
+        listenForDeviceUpdates = false;
+        refreshListings = () -> buildRegularListings(isLocal);
     }
 
     protected void buildDriveListings() {
@@ -119,14 +166,59 @@ public class FileExplorerScreen implements ApplicationScreen {
 
         ComputerMenu menu = screen.getMenu();
 
+        screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
+                    buildNetworkListings(true);
+                }).bounds(x + 46, y, 20, 20)
+                .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.network")))
+                .build(ApplicationScreen.iconButton2(screen::getTheme, 40, 0)));
+
         menu.computer.visitMountedFileSystems((driveLetter, discData) -> {
             Path subDir = Path.of(driveLetter + ":/");
             screen.addApplicationWidget(Button.builder(Component.literal(driveLetter + ":/ [" + discData.getName() + "]"), (self) -> {
                         menu.setWorkingDir(subDir);
-                        buildRegularListings();
+                        buildRegularListings(true);
                     }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
                     .build(explorerListItemButton(screen::getTheme, 0, 0)));
         });
+
+        application.listingsDirty = false;
+        listenForDeviceUpdates = false;
+        refreshListings = this::buildDriveListings;
+    }
+
+    protected void buildNetworkListings(boolean returnToDrives) {
+        screen.clearApplicationWidgets();
+
+        int x = desktopLeft + 4;
+        int y = desktopTop + 4;
+        AtomicInteger yOffset = new AtomicInteger(buildBasicWidgets());
+
+        ComputerMenu menu = screen.getMenu();
+        screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
+                    if (returnToDrives)
+                        buildDriveListings();
+                    else
+                        buildRegularListings(true);
+                }).bounds(x + 46, y, 20, 20)
+                .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.local")))
+                .build(ApplicationScreen.iconButton2(screen::getTheme, 60, 0)));
+
+        application.reachableDevices.forEach((logicalAddress, deviceInfo) -> {
+            screen.addApplicationWidget(Button.builder(deviceInfo.deviceName(), (self) -> {
+                        CompoundTag payload = new CompoundTag();
+                        payload.putString("control", "mount");
+                        payload.putInt("address", logicalAddress);
+                        Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
+
+                        self.setMessage(Component.literal("Reading..."));
+                    }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
+                    .build(explorerListItemButton(screen::getTheme, 0, 0)));
+        });
+
+        application.devicesDirty = false;
+        application.listingsDirty = false;
+        listenForDeviceUpdates = true;
+        refreshListings = () -> buildNetworkListings(returnToDrives);
     }
 
     @Override
@@ -136,7 +228,31 @@ public class FileExplorerScreen implements ApplicationScreen {
         this.desktopWidth = desktopWidth;
         this.desktopHeight = desktopHeight;
 
-        buildRegularListings();
+        refreshListings.run();
+    }
+
+    @Override
+    public void tick(int desktopLeft, int desktopTop, int desktopWidth, int desktopHeight) {
+        ApplicationScreen.super.tick(desktopLeft, desktopTop, desktopWidth, desktopHeight);
+        if (application.openDriveLetter != null) {
+            screen.getMenu().setWorkingDir(Path.of(application.openDriveLetter + ":/"));
+            buildRegularListings(false);
+
+            application.openDriveLetter = null;
+        }
+
+        if (application.listingsDirty) {
+            refreshListings.run();
+
+            application.listingsDirty = false;
+        }
+
+        if (application.devicesDirty) {
+            if (listenForDeviceUpdates)
+                refreshListings.run();
+
+            application.devicesDirty = false;
+        }
     }
 
     @Override

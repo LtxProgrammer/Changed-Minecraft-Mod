@@ -3,9 +3,7 @@ package net.ltxprogrammer.changed.computers;
 import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
 import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
-import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.ltxprogrammer.changed.util.TagUtil;
-import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -23,12 +21,29 @@ public class DiscData {
     protected final Folder rootFolder;
     protected final Runnable modifiedListener;
 
+    protected Permissions permissions = Permissions.READ_WRITE;
+
     public DiscData(Runnable modifiedListener) {
         this.modifiedListener = modifiedListener;
 
         name = "New Disk";
         generatorId = null;
         rootFolder = createFolder();
+    }
+
+    public static DiscData copyOf(Folder folder, Runnable modifiedListener) {
+        return new DiscData(
+                new Folder(folder.serialize(), modifiedListener),
+                modifiedListener
+        );
+    }
+
+    private DiscData(Folder rootFolder, Runnable modifiedListener) {
+        this.modifiedListener = modifiedListener;
+
+        name = "New Disk";
+        generatorId = null;
+        this.rootFolder = rootFolder;
     }
 
     public DiscData(CompoundTag tag, Runnable modifiedListener) {
@@ -40,6 +55,8 @@ public class DiscData {
         } else {
             rootFolder = createFolder();
         }
+
+        permissions = tag.contains("p") ? Permissions.fromByte(tag.getByte("p")) : Permissions.READ_WRITE;
     }
 
     protected boolean tryLoadGenerator(CompoundTag tag) {
@@ -61,6 +78,7 @@ public class DiscData {
             tag.putString("n", name);
             tag.put("r", rootFolder.serialize());
         }
+        tag.putByte("p", permissions.toByte());
         return tag;
     }
 
@@ -90,6 +108,14 @@ public class DiscData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Permissions getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Permissions permissions) {
+        this.permissions = permissions;
     }
 
     public Either<File, File.Error> getFile(Path path) {

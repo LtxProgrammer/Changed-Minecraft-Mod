@@ -224,7 +224,10 @@ public class TextEditorScreen implements ApplicationScreen {
     }
 
     protected boolean canEdit() {
-        return true;
+        if (application.getActiveFile() != null)
+            return screen.getMenu().computer.getFilePermissions(application.getActiveFile()).canWrite();
+        else
+            return true;
     }
 
     protected boolean isEditing() {

@@ -42,7 +42,7 @@ public abstract class NetworkDeviceControllerApplication implements Application 
     }
 
     @Override
-    public void handlePacket(ServerLevel level, int logicalSource, Object packet) {
+    public void handlePacket(ServerLevel level, int logicalSource, Packet packet) {
         if (packet instanceof DiscoveryProtocol discoveryProtocol && discoveryProtocol.isReply() &&
             discoveryProtocol.contains(this.getNetworkDeviceProtocol()) &&
             discoveryProtocol.contains(DeviceInfoProtocol.Query.class)) {
