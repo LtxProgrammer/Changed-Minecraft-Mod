@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -18,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
@@ -27,6 +29,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -130,6 +133,16 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         }
     }
 
+    public boolean eject(char driveLetter) {
+        if (!mountedFileSystems.containsKey(driveLetter))
+            return false;
+        var sourcedDisc = mountedFileSystems.get(driveLetter);
+        if (!sourcedDisc.canEject())
+            return false;
+        sourcedDisc.eject();
+        return true;
+    }
+
     @Nullable
     public ServerPlayer activeUser;
 
@@ -147,7 +160,9 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     protected @NotNull AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory) {
-        return new ComputerMenu(id, inventory, this);
+        var menu = new ComputerMenu(id, inventory, this);
+        menu.syncBlockEntity();
+        return menu;
     }
 
     public ComputerBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -156,7 +171,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         nic.logicalAddress = this.random.nextInt();
 
         primaryDisc = createFileSystem(random);
-        this.mountDisc(SourcedDiscData.wrap(primaryDisc));
+        this.mountDisc(SourcedDiscData.wrap(primaryDisc, false));
     }
 
     public boolean isEmpty() {
@@ -206,7 +221,11 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
                 this.unmountDisc(previousItem);
 
             if (!currentItem.isEmpty())
-                this.mountDisc(SourcedDiscData.fromItem(currentItem, this::setChanged));
+                this.mountDisc(SourcedDiscData.fromItem(currentItem, this::setChanged, disc -> {
+                    this.setItem(slot, ItemStack.EMPTY);
+                    level.playSound(null, getBlockPos(), ChangedSounds.COMPUTER_DISC_EJECT.get(), SoundSource.BLOCKS, 1.0f, 0.9F + level.random.nextFloat() * 0.2F);
+                    Block.popResource(level, getBlockPos(), disc);
+                }));
         }
     }
 
@@ -254,7 +273,10 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
 
         CompoundTag mounted = new CompoundTag();
         for (var entry : mountedFileSystems.char2ObjectEntrySet()) {
-            mounted.put(String.valueOf(entry.getCharKey()), entry.getValue().getDiscData().serialize());
+            CompoundTag discInfo = new CompoundTag();
+            discInfo.put("fs", entry.getValue().getDiscData().generateIfNecessary(this.configureDirectory(entry.getCharKey())).serialize());
+            discInfo.putBoolean("ejectable", entry.getValue().canEject());
+            mounted.put(String.valueOf(entry.getCharKey()), discInfo);
         }
 
         tag.remove("fs");
@@ -266,15 +288,20 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     @Override
     public void load(CompoundTag tag) {
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(tag, this.items);
+        for (int slot = 0; slot < this.items.size(); ++slot)
+            this.handleSlotChanged(slot, ItemStack.EMPTY, this.items.get(slot));
         if (tag.contains("fs")) {
             this.unmountDisc(primaryDisc);
             this.primaryDisc = new DiscData(tag.getCompound("fs"), this::setChanged);
-            this.mountDisc(SourcedDiscData.wrap(primaryDisc));
+            this.mountDisc(SourcedDiscData.wrap(primaryDisc, false));
         } else {
             this.unmountAll();
             var mounted = tag.getCompound("mounted");
             mounted.getAllKeys().forEach(letter -> {
-                mountedFileSystems.put(letter.charAt(0), SourcedDiscData.wrap(new DiscData(mounted.getCompound(letter), this::setChanged)));
+                CompoundTag discInfo = mounted.getCompound(letter);
+                mountedFileSystems.put(letter.charAt(0), SourcedDiscData.wrap(new DiscData(discInfo.getCompound("fs"), this::setChanged),
+                        discInfo.getBoolean("ejectable")));
             });
         }
     }
@@ -328,9 +355,13 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public void visitMountedFileSystems(BiConsumer<Character, DiscData> consumer) {
+    public void visitMountedFileSystems(FileSystemVisitor consumer) {
         for (var entry : mountedFileSystems.char2ObjectEntrySet()) {
-            consumer.accept(entry.getCharKey(), entry.getValue().getDiscData().generateIfNecessary(this.configureDirectory(entry.getCharKey())));
+            consumer.visit(
+                    entry.getCharKey(),
+                    entry.getValue().getDiscData().generateIfNecessary(this.configureDirectory(entry.getCharKey())),
+                    entry.getValue().canEject()
+            );
         }
     }
 

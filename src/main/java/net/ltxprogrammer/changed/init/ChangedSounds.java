@@ -33,6 +33,8 @@ public class ChangedSounds {
     public static final RegistryObject<SoundEvent> CARDBOARD_BOX_CLOSE = register("block.cardboard_box.close");
     public static final RegistryObject<SoundEvent> CARDBOARD_BOX_OPEN = register("block.cardboard_box.open");
     public static final RegistryObject<SoundEvent> CONTAINER_BREAK = register("block.container.break");
+    public static final RegistryObject<SoundEvent> COMPUTER_DISC_INSERT = register("block.computer.disc_insert");
+    public static final RegistryObject<SoundEvent> COMPUTER_DISC_EJECT = register("block.computer.disc_eject");
     public static final RegistryObject<SoundEvent> CRYSTAL_EXTEND = register("block.crystal.extend");
     public static final RegistryObject<SoundEvent> GAS_HISS = register("block.gas.ambient");
     public static final RegistryObject<SoundEvent> KEYPAD_CLICK = register("block.keypad.click");

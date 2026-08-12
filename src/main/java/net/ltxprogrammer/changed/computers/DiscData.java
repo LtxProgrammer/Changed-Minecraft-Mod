@@ -89,6 +89,8 @@ public class DiscData {
 
             if (generator != null)
                 generator.generate(RandomSource.create(generatorSeed), this, consumer);
+
+            this.markModified();
         }
 
         return this;

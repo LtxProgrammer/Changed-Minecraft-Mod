@@ -172,12 +172,27 @@ public class FileExplorerScreen implements ApplicationScreen {
                 .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.network")))
                 .build(ApplicationScreen.iconButton2(screen::getTheme, 40, 0)));
 
-        menu.computer.visitMountedFileSystems((driveLetter, discData) -> {
+        menu.computer.visitMountedFileSystems((driveLetter, discData, ejectable) -> {
             Path subDir = Path.of(driveLetter + ":/");
+            int buttonWidth = desktopWidth - 8;
+            if (ejectable) {
+                screen.addApplicationWidget(Button.builder(Component.literal("Eject"), (self) -> {
+                            CompoundTag payload = new CompoundTag();
+                            payload.putString("control", "eject");
+                            payload.putString("letter", String.valueOf(driveLetter));
+                            Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
+
+                            self.active = false;
+                        }).bounds(x + (buttonWidth - 20), y + yOffset.get(), 20, 20)
+                        .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.eject_drive")))
+                        .build(ApplicationScreen.iconButton(screen::getTheme, 220, 0)));
+                buttonWidth -= 23;
+            }
+
             screen.addApplicationWidget(Button.builder(Component.literal(driveLetter + ":/ [" + discData.getName() + "]"), (self) -> {
                         menu.setWorkingDir(subDir);
                         buildRegularListings(true);
-                    }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
+                    }).bounds(x, y + yOffset.getAndAdd(23), buttonWidth, 20)
                     .build(explorerListItemButton(screen::getTheme, 0, 0)));
         });
 
@@ -210,6 +225,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                         payload.putInt("address", logicalAddress);
                         Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
 
+                        self.active = false;
                         self.setMessage(Component.literal("Reading..."));
                     }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
                     .build(explorerListItemButton(screen::getTheme, 0, 0)));

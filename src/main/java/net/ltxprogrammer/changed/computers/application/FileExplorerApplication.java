@@ -44,6 +44,14 @@ public class FileExplorerApplication extends NetworkDeviceControllerApplication 
         return FileSystemShareProtocol.Query.class;
     }
 
+    private void refreshRemoteListings() {
+        CompoundTag response = new CompoundTag();
+        response.putString("control", "refreshListings");
+
+        Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) menu.getPlayer()),
+                ComputerAppSyncPacket.syncApplication(this.getType(), response));
+    }
+
     @Override
     public void update(CompoundTag payload, LogicalSide receiver, @Nullable ServerPlayer origin) {
         if (receiver.isServer()) {
@@ -70,12 +78,13 @@ public class FileExplorerApplication extends NetworkDeviceControllerApplication 
                 if (remoteDriveLetter != null) {
                     menu.computer.unmountDisc(remoteDriveLetter);
                     menu.syncBlockEntity();
-
-                    CompoundTag response = new CompoundTag();
-                    response.putString("control", "refreshListings");
-
-                    Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) menu.getPlayer()),
-                            ComputerAppSyncPacket.syncApplication(this.getType(), response));
+                    this.refreshRemoteListings();
+                }
+            } else if ("eject".equals(control)) {
+                char driveLetter = payload.getString("letter").charAt(0);
+                if (menu.computer.eject(driveLetter)) {
+                    menu.syncBlockEntity();
+                    this.refreshRemoteListings();
                 }
             }
         } else {

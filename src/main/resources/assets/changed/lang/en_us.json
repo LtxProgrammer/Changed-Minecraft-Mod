@@ -1335,6 +1335,7 @@
   "application.changed.file_explorer.empty_network": "No devices on the network.",
   "application.changed.file_explorer.empty_folder": "This folder is empty.",
   "application.changed.file_explorer.invalid_folder": "Cannot find folder %s.",
+  "application.changed.file_explorer.eject_drive": "Eject Drive",
   "application.changed.door_controller.open": "Open Door",
   "application.changed.door_controller.close": "Close Door",
   "application.changed.door_controller.automatic": "Automatic"
