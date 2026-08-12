@@ -3,18 +3,16 @@ package net.ltxprogrammer.changed.block.entity;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.BasicNIC;
 import net.ltxprogrammer.changed.computers.DiscData;
-import net.ltxprogrammer.changed.computers.SourcedDiscData;
+import net.ltxprogrammer.changed.computers.Permissions;
 import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
+import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -61,6 +59,7 @@ public class ServerStackBlockEntity extends BlockEntity implements NetworkInterf
             Set<Class<?>> protocols = new HashSet<>();
             protocols.add(DiscoveryProtocol.class);
             protocols.add(DeviceInfoProtocol.Query.class);
+            protocols.add(FileSystemShareProtocol.Query.class);
             nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(protocols));
         }
 
@@ -69,6 +68,13 @@ public class ServerStackBlockEntity extends BlockEntity implements NetworkInterf
                     Component.literal("Server"),
                     this.getBlockPos(),
                     Changed.modResource("server")
+            ));
+        }
+
+        if (packet == FileSystemShareProtocol.Query.INSTANCE) {
+            nic.sendPacket(level, logicalSource, new FileSystemShareProtocol(
+                    primaryDisc.generateIfNecessary(this.configureDirectory()).getRootFolder(),
+                    Permissions.READ_ONLY
             ));
         }
     }
@@ -80,13 +86,22 @@ public class ServerStackBlockEntity extends BlockEntity implements NetworkInterf
         }
     }
 
+    protected FileSystemGenerator.DirectoryConsumer configureDirectory() {
+        return (dir, path) -> {
+            /*switch (dir) {
+                case HOME_DIR -> homeDirectory = path;
+                case BIN_DIR -> binariesDirectory = path;
+            }*/
+        };
+    }
+
     protected DiscData createFileSystem(RandomSource random) {
         var data = new DiscData(this::setChanged);
         var generator = ConfiguredFileSystemGenerators.getGenerator(Changed.modResource("default_server"));
         if (generator == null)
             return data;
 
-        generator.generate(random, data, (label, path) -> {});
+        generator.generate(random, data, this.configureDirectory());
         return data;
     }
 }

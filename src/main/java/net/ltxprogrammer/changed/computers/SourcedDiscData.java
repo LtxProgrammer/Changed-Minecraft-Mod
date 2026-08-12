@@ -1,6 +1,9 @@
 package net.ltxprogrammer.changed.computers;
 
+import net.ltxprogrammer.changed.computers.protocol.FileSystemShareProtocol;
+import net.ltxprogrammer.changed.computers.protocol.LogicalNetworkInterface;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -24,6 +27,10 @@ public interface SourcedDiscData {
 
     static SourcedDiscData wrap(DiscData data, Consumer<DiscData> writer, boolean onlyWriteWhenModified) {
         return new WrappedDiscDataSource(data, writer, onlyWriteWhenModified);
+    }
+
+    static SourcedDiscData fromRemote(int logicalAddress, String name, @Nullable FileSystemShareProtocol share) {
+        return new RemoteSource(logicalAddress, name, share);
     }
 
     class WrappedDiscDataSource implements SourcedDiscData {
@@ -126,6 +133,49 @@ public interface SourcedDiscData {
         public String toString() {
             return "ItemStackSource{" +
                     "originItem=" + originItem +
+                    '}';
+        }
+    }
+
+    class RemoteSource implements SourcedDiscData {
+        final int logicalAddress;
+        DiscData data;
+
+        public RemoteSource(int logicalAddress, String name, @Nullable FileSystemShareProtocol share) {
+            this.logicalAddress = logicalAddress;
+            if (share != null) {
+                data = DiscData.copyOf(share.getRootFolder(), this::markModified);
+                data.setPermissions(share.getPermissions());
+            } else
+                data = new DiscData(this::markModified);
+            data.setName(name);
+        }
+
+        @Override
+        public DiscData getDiscData() {
+            return data;
+        }
+
+        @Override
+        public void writeBack() {
+            if (data.getPermissions().canWrite()) {
+                // TODO
+            }
+        }
+
+        protected void markModified() {
+
+        }
+
+        @Override
+        public boolean matchesOrigin(Object origin) {
+            return origin.equals(logicalAddress);
+        }
+
+        @Override
+        public String toString() {
+            return "RemoteSource{" +
+                    "address=" + LogicalNetworkInterface.logicalAddressAsString(logicalAddress) +
                     '}';
         }
     }

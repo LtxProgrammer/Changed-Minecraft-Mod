@@ -1329,7 +1329,12 @@
   "application.changed.text_editor": "Text Editor",
 
   "application.changed.file_explorer.parent_dir": "Parent Directory",
-  "application.changed.file_explorer.drives": "Drives",
+  "application.changed.file_explorer.drives": "View Drives",
+  "application.changed.file_explorer.network": "View Network Files",
+  "application.changed.file_explorer.local": "View Local Files",
+  "application.changed.file_explorer.empty_network": "No devices on the network.",
+  "application.changed.file_explorer.empty_folder": "This folder is empty.",
+  "application.changed.file_explorer.invalid_folder": "Cannot find folder %s.",
   "application.changed.door_controller.open": "Open Door",
   "application.changed.door_controller.close": "Close Door",
   "application.changed.door_controller.automatic": "Automatic"

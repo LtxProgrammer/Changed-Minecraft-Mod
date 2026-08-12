@@ -53,17 +53,17 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     /// Mapping of drive letter to mounted disc (C -> primaryDisc)
     protected final Char2ObjectMap<SourcedDiscData> mountedFileSystems = new Char2ObjectArrayMap<>();
 
-    public boolean mountDisc(SourcedDiscData disc) {
+    public Optional<Character> mountDisc(SourcedDiscData disc) {
         char nextLetter = 'C';
         while (mountedFileSystems.containsKey(nextLetter)) {
             nextLetter++;
             if (nextLetter > 'Z')
                 nextLetter = 'A';
             if (nextLetter == 'C')
-                return false;
+                return Optional.empty();
         }
 
-        return mountDisc(nextLetter, disc);
+        return mountDisc(nextLetter, disc) ? Optional.of(nextLetter) : Optional.empty();
     }
 
     public boolean mountDisc(char driveLetter, SourcedDiscData disc) {
@@ -113,6 +113,15 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         }
 
         return false;
+    }
+
+    protected void unmountAll() {
+        var it = mountedFileSystems.char2ObjectEntrySet().iterator();
+        while (it.hasNext()) {
+            var entry = it.next();
+            entry.getValue().writeBack();
+            it.remove();
+        }
     }
 
     public void writeBackAll() {
@@ -232,17 +241,42 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         }
     }
 
+    @Override
     protected void saveAdditional(CompoundTag tag) {
         this.writeBackAll();
         ContainerHelper.saveAllItems(tag, this.items);
         tag.put("fs", this.primaryDisc.serialize());
     }
 
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = this.saveWithoutMetadata();
+
+        CompoundTag mounted = new CompoundTag();
+        for (var entry : mountedFileSystems.char2ObjectEntrySet()) {
+            mounted.put(String.valueOf(entry.getCharKey()), entry.getValue().getDiscData().serialize());
+        }
+
+        tag.remove("fs");
+        tag.put("mounted", mounted);
+
+        return tag;
+    }
+
+    @Override
     public void load(CompoundTag tag) {
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        this.unmountDisc(primaryDisc);
-        this.primaryDisc = new DiscData(tag.getCompound("fs"), this::setChanged);
-        this.mountDisc(SourcedDiscData.wrap(primaryDisc));
+        if (tag.contains("fs")) {
+            this.unmountDisc(primaryDisc);
+            this.primaryDisc = new DiscData(tag.getCompound("fs"), this::setChanged);
+            this.mountDisc(SourcedDiscData.wrap(primaryDisc));
+        } else {
+            this.unmountAll();
+            var mounted = tag.getCompound("mounted");
+            mounted.getAllKeys().forEach(letter -> {
+                mountedFileSystems.put(letter.charAt(0), SourcedDiscData.wrap(new DiscData(mounted.getCompound(letter), this::setChanged)));
+            });
+        }
     }
 
     @Override
@@ -262,6 +296,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
             Set<Class<?>> protocols = new HashSet<>();
             protocols.add(DiscoveryProtocol.class);
             protocols.add(DeviceInfoProtocol.Query.class);
+            protocols.add(FileSystemShareProtocol.Query.class);
             if (menu != null)
                 protocols.addAll(menu.currentApplication().getNetworkProtocols());
             nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(protocols));
@@ -321,6 +356,14 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return Either.right(File.Error.FILESYSTEM_NOT_FOUND);
     }
 
+    public Permissions getFilePermissions(Path path) {
+        var driveName = path.getRoot();
+        var fs = getFileSystem(driveName);
+        if (fs != null)
+            return fs.getPermissions();
+        return Permissions.NONE;
+    }
+
     /**
      * Like {@link #getFile(Path)}, but returns a file error if the type does not match.
      */
@@ -365,11 +408,6 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         if (fs != null)
             return Optional.ofNullable(fs.getFolder(driveName.relativize(path)));
         return Optional.empty();
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        return this.saveWithoutMetadata();
     }
 
     protected FileSystemGenerator.DirectoryConsumer configureDirectory(char driveLetter) {
