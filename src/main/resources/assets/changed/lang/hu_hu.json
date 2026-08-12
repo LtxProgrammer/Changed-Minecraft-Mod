@@ -1329,7 +1329,12 @@
   "application.changed.text_editor": "Szövegszerkesztő",
 
   "application.changed.file_explorer.parent_dir": "Szülőkönyvtár",
-  "application.changed.file_explorer.drives": "Meghajtók",
+  "application.changed.file_explorer.drives": "Meghajtók megtekintése",
+  "application.changed.file_explorer.network": "Hálózati fájlok megtekintése",
+  "application.changed.file_explorer.local": "Helyi fájlok megtekintése",
+  "application.changed.file_explorer.empty_network": "Nincsenek eszközök a hálózaton.",
+  "application.changed.file_explorer.empty_folder": "Ez a mappa üres.",
+  "application.changed.file_explorer.invalid_folder": "A(z) '%s' mappa nem található.",
   "application.changed.door_controller.open": "Ajtó nyitása",
   "application.changed.door_controller.close": "Ajtó zárása",
   "application.changed.door_controller.automatic": "Automatikus"
