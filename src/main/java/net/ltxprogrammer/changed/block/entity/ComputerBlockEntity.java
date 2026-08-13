@@ -35,11 +35,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiConsumer;
 
 public class ComputerBlockEntity extends BaseContainerBlockEntity implements StackedContentsCompatible, NetworkInterface {
     public final RandomSource random = RandomSource.create();
@@ -47,9 +45,9 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     /// Act as slots for hot swappable devices (e.g. CD)
     public NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
     public final BasicNIC nic;
-    public Path currentWorkingDirectory;
-    public Path homeDirectory;
-    public Path binariesDirectory;
+    public LexicalPath.Absolute currentWorkingDirectory;
+    public LexicalPath.Absolute homeDirectory;
+    public LexicalPath.Absolute binariesDirectory;
 
     /// Parallels an HDD or SSD in a computer. Saves with the block entity.
     protected DiscData primaryDisc;
@@ -372,14 +370,11 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return sourcedData.getDiscData().generateIfNecessary(this.configureDirectory(driveLetter));
     }
 
-    public @Nullable DiscData getFileSystem(Path drive) {
-        var driveText = drive.toString();
-        if (driveText.length() != 3)
-            return null;
-        return getFileSystem(driveText.charAt(0));
+    public @Nullable DiscData getFileSystem(LexicalPath.Absolute drive) {
+        return getFileSystem(drive.getDriveLetter());
     }
 
-    public Either<File, File.Error> getFile(Path path) {
+    public Either<File, File.Error> getFile(LexicalPath.Absolute path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
@@ -387,7 +382,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return Either.right(File.Error.FILESYSTEM_NOT_FOUND);
     }
 
-    public Permissions getFilePermissions(Path path) {
+    public Permissions getFilePermissions(LexicalPath.Absolute path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
@@ -396,9 +391,9 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     /**
-     * Like {@link #getFile(Path)}, but returns a file error if the type does not match.
+     * Like {@link #getFile(LexicalPath.Absolute)}, but returns a file error if the type does not match.
      */
-    public Either<File, File.Error> getFileOfType(Path path, File.Type type) {
+    public Either<File, File.Error> getFileOfType(LexicalPath.Absolute path, File.Type type) {
         var f = getFile(path);
         if (f.left().isPresent()) {
             if (f.left().get().type != type)
@@ -408,7 +403,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return f;
     }
 
-    public Either<File, File.Error> createFile(Path path, File.Type type) {
+    public Either<File, File.Error> createFile(LexicalPath.Absolute path, File.Type type) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
@@ -416,7 +411,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return Either.right(File.Error.FILESYSTEM_NOT_FOUND);
     }
 
-    public Either<File, File.Error> getOrCreateFile(Path path, File.Type type) {
+    public Either<File, File.Error> getOrCreateFile(LexicalPath.Absolute path, File.Type type) {
         var f = getFileOfType(path, type);
         if (f.left().isPresent())
             return f;
@@ -425,7 +420,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return createFile(path, type);
     }
 
-    public @Nullable Folder getFolder(Path path) {
+    public @Nullable Folder getFolder(LexicalPath.Absolute path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
@@ -433,7 +428,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return null;
     }
 
-    public Optional<Folder> getFolderSafe(Path path) {
+    public Optional<Folder> getFolderSafe(LexicalPath.Absolute path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
@@ -442,7 +437,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     protected FileSystemGenerator.DirectoryConsumer configureDirectory(char driveLetter) {
-        var driveRoot = Path.of(driveLetter + ":/");
+        var driveRoot = LexicalPath.fromDriveLetter(driveLetter);
         return (dir, path) -> {
             switch (dir) {
                 case HOME_DIR -> homeDirectory = driveRoot.resolve(path);

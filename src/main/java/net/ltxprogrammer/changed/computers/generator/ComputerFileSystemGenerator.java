@@ -2,15 +2,10 @@ package net.ltxprogrammer.changed.computers.generator;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.ltxprogrammer.changed.computers.DiscData;
-import net.ltxprogrammer.changed.computers.File;
-import net.ltxprogrammer.changed.computers.Folder;
-import net.ltxprogrammer.changed.computers.RecognizedDirectory;
+import net.ltxprogrammer.changed.computers.*;
 import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.minecraft.Util;
 import net.minecraft.util.RandomSource;
-
-import java.nio.file.Path;
 
 public class ComputerFileSystemGenerator implements FileSystemGenerator {
     public static final Codec<ComputerFileSystemGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -49,8 +44,8 @@ public class ComputerFileSystemGenerator implements FileSystemGenerator {
             }));
         }));
 
-        consumer.accept(RecognizedDirectory.HOME_DIR, Path.of("/Users", resolvedUsername));
-        consumer.accept(RecognizedDirectory.BIN_DIR, Path.of("/Binaries"));
+        consumer.accept(RecognizedDirectory.HOME_DIR, LexicalPath.of("/Users", resolvedUsername));
+        consumer.accept(RecognizedDirectory.BIN_DIR, LexicalPath.of("/Binaries"));
     }
 
     @Override

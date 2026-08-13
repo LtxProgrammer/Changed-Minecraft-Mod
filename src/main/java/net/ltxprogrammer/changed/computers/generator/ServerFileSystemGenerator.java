@@ -2,15 +2,8 @@ package net.ltxprogrammer.changed.computers.generator;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.ltxprogrammer.changed.computers.DiscData;
-import net.ltxprogrammer.changed.computers.File;
-import net.ltxprogrammer.changed.computers.Folder;
-import net.ltxprogrammer.changed.computers.RecognizedDirectory;
-import net.ltxprogrammer.changed.init.ChangedApplications;
-import net.minecraft.Util;
+import net.ltxprogrammer.changed.computers.*;
 import net.minecraft.util.RandomSource;
-
-import java.nio.file.Path;
 
 public class ServerFileSystemGenerator implements FileSystemGenerator {
     public static final Codec<ServerFileSystemGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -36,7 +29,7 @@ public class ServerFileSystemGenerator implements FileSystemGenerator {
                 /*.addFile("explorer.app", new File(File.Type.APP, ChangedApplications.FILE_EXPLORER.getId().toString(), data::markModified))*/);
         data.getRootFolder().folders.put("Documents", documentsGenerator.generate(random, data, new Folder(data::markModified)));
 
-        consumer.accept(RecognizedDirectory.BIN_DIR, Path.of("/Binaries"));
+        consumer.accept(RecognizedDirectory.BIN_DIR, LexicalPath.of("/Binaries"));
     }
 
     @Override

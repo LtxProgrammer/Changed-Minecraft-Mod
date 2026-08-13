@@ -10,7 +10,6 @@ import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.nio.file.Path;
 import java.util.Optional;
 
 public class DiscData {
@@ -120,19 +119,19 @@ public class DiscData {
         this.permissions = permissions;
     }
 
-    public Either<File, File.Error> getFile(Path path) {
+    public Either<File, File.Error> getFile(LexicalPath path) {
         return rootFolder.getFile(path);
     }
 
-    public Either<File, File.Error> createFile(Path path, File.Type type) {
+    public Either<File, File.Error> createFile(LexicalPath path, File.Type type) {
         return rootFolder.createFile(path, type);
     }
 
-    public @Nullable Folder getFolder(Path path) {
+    public @Nullable Folder getFolder(LexicalPath path) {
         return rootFolder.getFolder(path);
     }
 
-    public Optional<Folder> getFolderSafe(Path path) {
+    public Optional<Folder> getFolderSafe(LexicalPath path) {
         return Optional.ofNullable(rootFolder.getFolder(path));
     }
 

@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.gui.computer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.ComputerScreen;
+import net.ltxprogrammer.changed.computers.LexicalPath;
 import net.ltxprogrammer.changed.computers.UITheme;
 import net.ltxprogrammer.changed.computers.application.FileExplorerApplication;
 import net.ltxprogrammer.changed.network.packet.ComputerAppClosePacket;
@@ -16,7 +17,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 
-import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -102,7 +102,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         var workingFolder = menu.computer.getFolderSafe(menu.getWorkingDir());
         workingFolder.ifPresent(cwd -> {
             if (menu.getWorkingDir().getParent() != null) {
-                Path parentDir = menu.getWorkingDir().getParent();
+                var parentDir = menu.getWorkingDir().getParent();
                 screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
                             menu.setWorkingDir(parentDir);
                             buildRegularListings(isLocal);
@@ -117,7 +117,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                         .build(ApplicationScreen.iconButton(screen::getTheme, 220, 0)));
             }
             cwd.folders.forEach((name, folder) -> {
-                Path subDir = menu.getWorkingDir().resolve(Path.of(name + "/"));
+                var subDir = menu.getWorkingDir().resolve(LexicalPath.of(name + "/"));
                 screen.addApplicationWidget(Button.builder(Component.literal(name + "/"), (self) -> {
                             menu.setWorkingDir(subDir);
                             buildRegularListings(isLocal);
@@ -128,7 +128,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                 int iconX = file.type.xTexture;
                 int iconY = file.type.yTexture;
                 screen.addApplicationWidget(Button.builder(Component.literal(name), (self) -> {
-                            screen.openFile(menu.getWorkingDir().resolve(Path.of(name)));
+                            screen.openFile(menu.getWorkingDir().resolve(LexicalPath.of(name)));
                         }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
                         .build(explorerListItemButton(screen::getTheme, iconX, iconY)));
             });
@@ -173,7 +173,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                 .build(ApplicationScreen.iconButton2(screen::getTheme, 40, 0)));
 
         menu.computer.visitMountedFileSystems((driveLetter, discData, ejectable) -> {
-            Path subDir = Path.of(driveLetter + ":/");
+            var subDir = LexicalPath.fromDriveLetter(driveLetter);
             int buttonWidth = desktopWidth - 8;
             if (ejectable) {
                 screen.addApplicationWidget(Button.builder(Component.literal("Eject"), (self) -> {
@@ -257,7 +257,7 @@ public class FileExplorerScreen implements ApplicationScreen {
     public void tick(int desktopLeft, int desktopTop, int desktopWidth, int desktopHeight) {
         ApplicationScreen.super.tick(desktopLeft, desktopTop, desktopWidth, desktopHeight);
         if (application.openDriveLetter != null) {
-            screen.getMenu().setWorkingDir(Path.of(application.openDriveLetter + ":/"));
+            screen.getMenu().setWorkingDir(LexicalPath.fromDriveLetter(application.openDriveLetter));
             buildRegularListings(false);
 
             application.openDriveLetter = null;
