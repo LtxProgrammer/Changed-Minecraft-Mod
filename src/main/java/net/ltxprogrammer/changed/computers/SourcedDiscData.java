@@ -13,20 +13,23 @@ public interface SourcedDiscData {
     void writeBack();
     boolean matchesOrigin(Object origin);
 
+    boolean canEject();
+    void eject();
+
     default String getName() {
         return getDiscData().getName();
     }
 
-    static SourcedDiscData fromItem(ItemStack itemStack, Runnable modifiedListener) {
-        return new ItemStackSource(itemStack, modifiedListener);
+    static SourcedDiscData fromItem(ItemStack itemStack, Runnable modifiedListener, Consumer<ItemStack> onEject) {
+        return new ItemStackSource(itemStack, modifiedListener, onEject);
     }
 
-    static SourcedDiscData wrap(DiscData data) {
-        return wrap(data, $ -> {}, true);
+    static SourcedDiscData wrap(DiscData data, boolean ejectable) {
+        return wrap(data, ejectable, $ -> {}, true);
     }
 
-    static SourcedDiscData wrap(DiscData data, Consumer<DiscData> writer, boolean onlyWriteWhenModified) {
-        return new WrappedDiscDataSource(data, writer, onlyWriteWhenModified);
+    static SourcedDiscData wrap(DiscData data, boolean ejectable, Consumer<DiscData> writer, boolean onlyWriteWhenModified) {
+        return new WrappedDiscDataSource(data, ejectable, writer, onlyWriteWhenModified);
     }
 
     static SourcedDiscData fromRemote(int logicalAddress, String name, @Nullable FileSystemShareProtocol share) {
@@ -35,11 +38,13 @@ public interface SourcedDiscData {
 
     class WrappedDiscDataSource implements SourcedDiscData {
         final DiscData discData;
+        final boolean ejectable;
         final Consumer<DiscData> writer;
         final boolean onlyWriteWhenModified;
 
-        public WrappedDiscDataSource(DiscData discData, Consumer<DiscData> writer, boolean onlyWriteWhenModified) {
+        public WrappedDiscDataSource(DiscData discData, boolean ejectable, Consumer<DiscData> writer, boolean onlyWriteWhenModified) {
             this.discData = discData;
+            this.ejectable = ejectable;
             this.writer = writer;
             this.onlyWriteWhenModified = onlyWriteWhenModified;
         }
@@ -60,6 +65,16 @@ public interface SourcedDiscData {
         @Override
         public boolean matchesOrigin(Object origin) {
             return discData.equals(origin);
+        }
+
+        @Override
+        public boolean canEject() {
+            return ejectable;
+        }
+
+        @Override
+        public void eject() {
+
         }
 
         @Override
@@ -85,10 +100,12 @@ public interface SourcedDiscData {
         DiscData cachedDiscData = null;
         final ItemStack originItem;
         final Runnable modifiedListener;
+        final Consumer<ItemStack> onEject;
 
-        public ItemStackSource(ItemStack originItem, Runnable modifiedListener) {
+        public ItemStackSource(ItemStack originItem, Runnable modifiedListener, Consumer<ItemStack> onEject) {
             this.originItem = originItem;
             this.modifiedListener = modifiedListener;
+            this.onEject = onEject;
         }
 
         @Override
@@ -116,6 +133,17 @@ public interface SourcedDiscData {
         @Override
         public boolean matchesOrigin(Object origin) {
             return originItem.equals(origin);
+        }
+
+        @Override
+        public boolean canEject() {
+            return true;
+        }
+
+        @Override
+        public void eject() {
+            writeBack();
+            onEject.accept(originItem);
         }
 
         @Override
@@ -170,6 +198,27 @@ public interface SourcedDiscData {
         @Override
         public boolean matchesOrigin(Object origin) {
             return origin.equals(logicalAddress);
+        }
+
+        @Override
+        public boolean canEject() {
+            return false;
+        }
+
+        @Override
+        public void eject() {
+
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            if (!(object instanceof RemoteSource that)) return false;
+            return Objects.equals(logicalAddress, that.logicalAddress);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(logicalAddress);
         }
 
         @Override

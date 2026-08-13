@@ -5,8 +5,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.nbt.CompoundTag;
 
 import javax.annotation.Nullable;
-import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Folder {
@@ -48,11 +46,11 @@ public class Folder {
         return tag;
     }
 
-    public Either<File, File.Error> getFile(Path path) {
+    public Either<File, File.Error> getFile(LexicalPath path) {
         var it = path.iterator();
         if (!it.hasNext())
             return Either.right(File.Error.INVALID_PATH);
-        Path p = it.next();
+        LexicalPath p = it.next();
         String rep = p.toString();
         if (rep.isEmpty())
             return Either.right(File.Error.NO_READ_PERMISSION);
@@ -63,11 +61,11 @@ public class Folder {
         return Either.right(File.Error.FILE_NOT_FOUND);
     }
 
-    public Either<File, File.Error> createFile(Path path, File.Type type) {
+    public Either<File, File.Error> createFile(LexicalPath path, File.Type type) {
         var it = path.iterator();
         if (!it.hasNext())
             return Either.right(File.Error.INVALID_PATH);
-        Path p = it.next();
+        LexicalPath p = it.next();
         String rep = p.toString();
         if (rep.isEmpty())
             return Either.right(File.Error.NO_WRITE_PERMISSION);
@@ -83,11 +81,11 @@ public class Folder {
         return Either.right(File.Error.FILE_NOT_FOUND);
     }
 
-    public @Nullable Folder getFolder(Path path) {
+    public @Nullable Folder getFolder(LexicalPath path) {
         var it = path.iterator();
         if (!it.hasNext())
             return this;
-        Path p = it.next();
+        LexicalPath p = it.next();
         String rep = p.toString();
         if (rep.isEmpty())
             return this;

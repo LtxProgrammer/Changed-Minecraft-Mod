@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.DiscData;
 import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.Folder;
+import net.ltxprogrammer.changed.computers.LexicalPath;
 import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
 import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.computers.protocol.*;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
-import java.nio.file.Path;
 import java.util.*;
 
 public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterface {
@@ -35,9 +35,9 @@ public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterfa
     protected final Queue<Pair<Integer, Packet>> unprocessedPackets = new ArrayDeque<>();
     protected final Queue<Pair<NetworkInterface.Address, Frame>> outboundFrames = new ArrayDeque<>();
 
-    public Path currentWorkingDirectory;
-    public Path homeDirectory;
-    public Path binariesDirectory;
+    public LexicalPath currentWorkingDirectory;
+    public LexicalPath homeDirectory;
+    public LexicalPath binariesDirectory;
     public DiscData localFileSystem = Util.make(new DiscData(this::setChanged), data -> {
         var generator = ConfiguredFileSystemGenerators.getGenerator(Changed.modResource("default_pc"));
         if (generator == null)
@@ -133,11 +133,11 @@ public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterfa
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public DiscData getFileSystem(Path drive) {
+    public DiscData getFileSystem(LexicalPath drive) {
         return localFileSystem;
     }
 
-    public Either<File, File.Error> getFile(Path path) {
+    public Either<File, File.Error> getFile(LexicalPath path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
@@ -145,7 +145,7 @@ public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterfa
         return Either.right(File.Error.FILESYSTEM_NOT_FOUND);
     }
 
-    public @Nullable Folder getFolder(Path path) {
+    public @Nullable Folder getFolder(LexicalPath path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
@@ -153,7 +153,7 @@ public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterfa
         return null;
     }
 
-    public Optional<Folder> getFolderSafe(Path path) {
+    public Optional<Folder> getFolderSafe(LexicalPath path) {
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
