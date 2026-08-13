@@ -210,7 +210,7 @@ public class LexicalPath implements Iterable<LexicalPath> {
                 System.arraycopy(other.elements, matchesUntil,
                         nextElements, this.elements.length - matchesUntil,
                         other.elements.length - matchesUntil);
-                return new LexicalPath(matchesUntil == 0, nextElements);
+                return of(nextElements);
             }
         }
 
@@ -321,6 +321,8 @@ public class LexicalPath implements Iterable<LexicalPath> {
 
         @Override
         public Absolute resolve(LexicalPath other) {
+            if (other.isAbsolute())
+                return other.assertAbsolute();
             if (other.isDriveRelative())
                 return new Absolute(driveLetter, other.elements);
 
@@ -356,7 +358,7 @@ public class LexicalPath implements Iterable<LexicalPath> {
                 System.arraycopy(other.elements, matchesUntil,
                         nextElements, this.elements.length - matchesUntil,
                         other.elements.length - matchesUntil);
-                return new LexicalPath(matchesUntil == 0, nextElements);
+                return of(nextElements);
             }
 
             return super.relativize(other);

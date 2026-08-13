@@ -10,12 +10,16 @@ import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 
 public class FileGenerator implements WeightedEntry {
-    public static final Codec<FileGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            File.Type.CODEC.fieldOf("type").forGetter(generator -> generator.type),
+    public static final Codec<FileGenerator> CODEC_REGULAR = RecordCodecBuilder.create(instance -> instance.group(
+            File.Type.CODEC.fieldOf("type").forGetter(FileGenerator::getType),
             StringGenerator.CODEC.fieldOf("name").forGetter(generator -> generator.nameGenerator),
             StringGenerator.CODEC.fieldOf("content").forGetter(generator -> generator.contentGenerator),
             Weight.CODEC.fieldOf("weight").orElse(Weight.of(10)).forGetter(generator -> generator.weight)
     ).apply(instance, FileGenerator::new));
+
+    public static final Codec<FileGenerator> CODEC = File.Type.CODEC.dispatch("type", FileGenerator::getType, fileType -> {
+        return fileType == File.Type.FOLDER ? FolderInFolderGenerator.CODEC : FileGenerator.CODEC_REGULAR;
+    });
 
     protected final File.Type type;
     protected final StringGenerator nameGenerator;
@@ -31,6 +35,10 @@ public class FileGenerator implements WeightedEntry {
 
     public void generate(RandomSource random, DiscData data, Folder folder) {
         folder.addFile(nameGenerator.generate(random), new File(type, contentGenerator.generate(random), data::markModified));
+    }
+
+    public File.Type getType() {
+        return type;
     }
 
     @Override

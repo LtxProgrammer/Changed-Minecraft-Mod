@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.gui.computer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.ComputerScreen;
+import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.LexicalPath;
 import net.ltxprogrammer.changed.computers.UITheme;
 import net.ltxprogrammer.changed.computers.application.FileExplorerApplication;
@@ -122,7 +123,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                             menu.setWorkingDir(subDir);
                             buildRegularListings(isLocal);
                         }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
-                        .build(explorerListItemButton(screen::getTheme, 0, 0)));
+                        .build(explorerListItemButton(screen::getTheme, File.Type.FOLDER.xTexture, File.Type.FOLDER.yTexture)));
             });
             cwd.files.forEach((name, file) -> {
                 int iconX = file.type.xTexture;
@@ -193,7 +194,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                         menu.setWorkingDir(subDir);
                         buildRegularListings(true);
                     }).bounds(x, y + yOffset.getAndAdd(23), buttonWidth, 20)
-                    .build(explorerListItemButton(screen::getTheme, 0, 0)));
+                    .build(explorerListItemButton(screen::getTheme, File.Type.FOLDER.xTexture, File.Type.FOLDER.yTexture)));
         });
 
         application.listingsDirty = false;
@@ -228,7 +229,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                         self.active = false;
                         self.setMessage(Component.literal("Reading..."));
                     }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 8, 20)
-                    .build(explorerListItemButton(screen::getTheme, 0, 0)));
+                    .build(explorerListItemButton(screen::getTheme, File.Type.FOLDER.xTexture, File.Type.FOLDER.yTexture)));
         });
 
         if (application.reachableDevices.isEmpty()) {
