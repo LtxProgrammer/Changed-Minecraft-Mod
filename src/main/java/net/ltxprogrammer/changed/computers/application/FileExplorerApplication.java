@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.computers.application;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.Folder;
+import net.ltxprogrammer.changed.computers.LexicalPath;
 import net.ltxprogrammer.changed.computers.SourcedDiscData;
 import net.ltxprogrammer.changed.computers.protocol.DeviceInfoProtocol;
 import net.ltxprogrammer.changed.computers.protocol.FileSystemShareProtocol;
@@ -83,6 +84,36 @@ public class FileExplorerApplication extends NetworkDeviceControllerApplication 
             } else if ("eject".equals(control)) {
                 char driveLetter = payload.getString("letter").charAt(0);
                 if (menu.computer.eject(driveLetter)) {
+                    menu.syncBlockEntity();
+                    this.refreshRemoteListings();
+                }
+            } else if ("makeFolder".equals(control)) {
+                LexicalPath.Absolute path = LexicalPath.of(payload.getString("path")).assertAbsolute();
+                Folder folder = menu.computer.getFolder(path);
+                if (folder != null) {
+                    folder.createFolder(payload.getString("name")).ifLeft(newFolder -> {
+                        menu.syncBlockEntity();
+                        this.refreshRemoteListings();
+                    });
+                }
+            } else if ("copy".equals(control)) {
+                if (menu.computer.copyFileOrFolder(
+                        LexicalPath.of(payload.getString("from")).assertAbsolute(),
+                        LexicalPath.of(payload.getString("to")).assertAbsolute()
+                ).isEmpty()) {
+                    menu.syncBlockEntity();
+                    this.refreshRemoteListings();
+                }
+            } else if ("move".equals(control)) {
+                if (menu.computer.moveFileOrFolder(
+                        LexicalPath.of(payload.getString("from")).assertAbsolute(),
+                        LexicalPath.of(payload.getString("to")).assertAbsolute()
+                ).isEmpty()) {
+                    menu.syncBlockEntity();
+                    this.refreshRemoteListings();
+                }
+            } else if ("remove".equals(control)) {
+                if (menu.computer.removeFileOrFolder(LexicalPath.of(payload.getString("path")).assertAbsolute()).isEmpty()) {
                     menu.syncBlockEntity();
                     this.refreshRemoteListings();
                 }

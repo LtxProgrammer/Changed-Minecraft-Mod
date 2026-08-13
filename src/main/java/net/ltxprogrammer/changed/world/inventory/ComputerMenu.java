@@ -99,7 +99,7 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
         }
     }
 
-    public CompoundTag requestRecipe(LexicalPath fullPath) {
+    public CompoundTag requestRecipe(LexicalPath.Absolute fullPath) {
         var tag = new CompoundTag();
         tag.putString("op", Operation.GET_RECIPE.name());
         tag.putString("path", fullPath.toString());

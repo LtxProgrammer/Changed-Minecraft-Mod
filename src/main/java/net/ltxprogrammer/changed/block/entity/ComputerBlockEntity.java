@@ -436,6 +436,107 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         return Optional.empty();
     }
 
+    public Optional<File.Error> copyFileOrFolder(LexicalPath.Absolute from, LexicalPath.Absolute to) {
+        var oldParentPath = from.getParent();
+        var newParentPath = to.getParent();
+        if (oldParentPath == null || newParentPath == null)
+            return Optional.of(File.Error.INVALID_PATH);
+
+        Folder oldParent = this.getFolder(oldParentPath);
+        Folder newParent = this.getFolder(newParentPath);
+        if (oldParent == null || newParent == null)
+            return Optional.of(File.Error.INVALID_PATH);
+        Permissions oldPerms = getFilePermissions(oldParentPath);
+        Permissions newPerms = getFilePermissions(newParentPath);
+        if (!oldPerms.canRead())
+            return Optional.of(File.Error.NO_READ_PERMISSION);
+        if (!newPerms.canWrite())
+            return Optional.of(File.Error.NO_WRITE_PERMISSION);
+
+        String oldName = from.getFileName().toString();
+        String newName = to.getFileName().toString();
+
+        if (oldParent.files.containsKey(oldName)) { // Copy file
+            File oldFile = oldParent.files.get(oldName);
+            return newParent.createFile(newName, oldFile.type).ifLeft(newFile -> {
+                newFile.setContent(oldFile.getContent());
+            }).right();
+        } else if (oldParent.folders.containsKey(oldName)) { // Copy folder
+            Folder oldFolder = oldParent.folders.get(oldName);
+            return newParent.createFolder(newName).ifLeft(newFolder -> {
+                newFolder.deserialize(oldFolder.serialize());
+            }).right();
+        } else {
+            return Optional.of(File.Error.INVALID_PATH);
+        }
+    }
+
+    public Optional<File.Error> moveFileOrFolder(LexicalPath.Absolute from, LexicalPath.Absolute to) {
+        var oldParentPath = from.getParent();
+        var newParentPath = to.getParent();
+        if (oldParentPath == null || newParentPath == null)
+            return Optional.of(File.Error.INVALID_PATH);
+
+        Folder oldParent = this.getFolder(oldParentPath);
+        Folder newParent = this.getFolder(newParentPath);
+        if (oldParent == null || newParent == null)
+            return Optional.of(File.Error.INVALID_PATH);
+        Permissions oldPerms = getFilePermissions(oldParentPath);
+        Permissions newPerms = getFilePermissions(newParentPath);
+        if (!oldPerms.canRead())
+            return Optional.of(File.Error.NO_READ_PERMISSION);
+        if (!newPerms.canWrite() || !oldPerms.canWrite())
+            return Optional.of(File.Error.NO_WRITE_PERMISSION);
+
+        String oldName = from.getFileName().toString();
+        String newName = to.getFileName().toString();
+
+        if (oldParent.files.containsKey(oldName)) { // Copy file
+            File oldFile = oldParent.files.get(oldName);
+            return newParent.createFile(newName, oldFile.type).ifLeft(newFile -> {
+                newFile.setContent(oldFile.getContent());
+                oldParent.files.remove(oldName);
+                oldParent.markModified();
+            }).right();
+        } else if (oldParent.folders.containsKey(oldName)) { // Copy folder
+            Folder oldFolder = oldParent.folders.get(oldName);
+            return newParent.createFolder(newName).ifLeft(newFolder -> {
+                newFolder.deserialize(oldFolder.serialize());
+                oldParent.folders.remove(oldName);
+                oldParent.markModified();
+            }).right();
+        } else {
+            return Optional.of(File.Error.INVALID_PATH);
+        }
+    }
+
+    public Optional<File.Error> removeFileOrFolder(LexicalPath.Absolute path) {
+        var parentPath = path.getParent();
+        if (parentPath == null)
+            return Optional.of(File.Error.INVALID_PATH);
+
+        Folder parent = this.getFolder(parentPath);
+        if (parent == null)
+            return Optional.of(File.Error.INVALID_PATH);
+        Permissions perms = getFilePermissions(parentPath);
+        if (!perms.canWrite())
+            return Optional.of(File.Error.NO_WRITE_PERMISSION);
+
+        String name = path.getFileName().toString();
+
+        if (parent.files.containsKey(name)) { // Remove file
+            parent.files.remove(name);
+            parent.markModified();
+            return Optional.empty();
+        } else if (parent.folders.containsKey(name)) { // Remove folder
+            parent.folders.remove(name);
+            parent.markModified();
+            return Optional.empty();
+        } else {
+            return Optional.of(File.Error.INVALID_PATH);
+        }
+    }
+
     protected FileSystemGenerator.DirectoryConsumer configureDirectory(char driveLetter) {
         var driveRoot = LexicalPath.fromDriveLetter(driveLetter);
         return (dir, path) -> {

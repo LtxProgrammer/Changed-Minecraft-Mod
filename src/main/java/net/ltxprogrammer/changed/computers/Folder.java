@@ -23,6 +23,18 @@ public class Folder {
     }
 
     public Folder(CompoundTag tag, Runnable markModified) {
+        this.markModified = markModified;
+        this.deserialize(tag);
+    }
+
+    public void markModified() {
+        this.markModified.run();
+    }
+
+    public void deserialize(CompoundTag tag) {
+        this.folders.clear();
+        this.files.clear();
+
         tag.getAllKeys().forEach(key -> {
             var instance = tag.getCompound(key);
             if (instance.contains("//folders"))
@@ -30,7 +42,6 @@ public class Folder {
             else
                 files.put(key, new File(instance, markModified));
         });
-        this.markModified = markModified;
     }
 
     public CompoundTag serialize() {
@@ -61,6 +72,10 @@ public class Folder {
         return Either.right(File.Error.FILE_NOT_FOUND);
     }
 
+    public Either<File, File.Error> createFile(String path, File.Type type) {
+        return createFile(LexicalPath.of(path), type);
+    }
+
     public Either<File, File.Error> createFile(LexicalPath path, File.Type type) {
         var it = path.iterator();
         if (!it.hasNext())
@@ -74,6 +89,7 @@ public class Folder {
         if (!it.hasNext()) {
             var f = new File(type, "", this.markModified);
             files.put(rep, f);
+            markModified.run();
             return Either.left(f);
         }
         if (folders.containsKey(rep))
@@ -92,6 +108,31 @@ public class Folder {
         if (folders.containsKey(rep))
             return folders.get(rep).getFolder(p.relativize(path));
         return null;
+    }
+
+    public Either<Folder, File.Error> createFolder(String path) {
+        return createFolder(LexicalPath.of(path));
+    }
+
+    public Either<Folder, File.Error> createFolder(LexicalPath path) {
+        var it = path.iterator();
+        if (!it.hasNext())
+            return Either.right(File.Error.INVALID_PATH);
+        LexicalPath p = it.next();
+        String rep = p.toString();
+        if (rep.isEmpty())
+            return Either.right(File.Error.NO_WRITE_PERMISSION);
+        if (!it.hasNext() && folders.containsKey(rep))
+            return Either.right(File.Error.FILE_ALREADY_EXISTS);
+        if (!it.hasNext()) {
+            var f = new Folder(this.markModified);
+            folders.put(rep, f);
+            markModified.run();
+            return Either.left(f);
+        }
+        if (folders.containsKey(rep))
+            return folders.get(rep).createFolder(p.relativize(path));
+        return Either.right(File.Error.FILE_NOT_FOUND);
     }
 
     public Folder addFile(String fileName, File file) {

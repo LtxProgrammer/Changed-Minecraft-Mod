@@ -158,6 +158,15 @@ public class LexicalPath implements Iterable<LexicalPath> {
         return new LexicalPath(false, singleton);
     }
 
+    public LexicalPath getFileName() {
+        if (elements.length == 0)
+            return null;
+
+        String[] singleton = new String[1];
+        singleton[0] = elements[elements.length - 1];
+        return new LexicalPath(false, singleton);
+    }
+
     public @Nullable LexicalPath getParent() {
         if (elements.length == 0)
             return null;

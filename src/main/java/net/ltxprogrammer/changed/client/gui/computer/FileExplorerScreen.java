@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.ComputerScreen;
 import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.LexicalPath;
+import net.ltxprogrammer.changed.computers.Permissions;
 import net.ltxprogrammer.changed.computers.UITheme;
 import net.ltxprogrammer.changed.computers.application.FileExplorerApplication;
 import net.ltxprogrammer.changed.network.packet.ComputerAppClosePacket;
@@ -45,6 +46,9 @@ public class FileExplorerScreen implements ApplicationScreen {
     protected ScrollBarVerticalStepped scrollBar;
     protected StringWidget bottomText;
 
+    protected LexicalPath.Absolute copySource = null;
+    protected LexicalPath.Absolute cutSource = null;
+
     protected boolean listenForDeviceUpdates = false;
     protected Runnable refreshListings = () -> buildRegularListings(true);
 
@@ -56,6 +60,29 @@ public class FileExplorerScreen implements ApplicationScreen {
             Changed.PACKET_HANDLER.sendToServer(
                     ComputerAppClosePacket.closeApplication(application.getType()));
         });
+    }
+
+    protected void copyFileOrFolder(LexicalPath.Absolute from, LexicalPath.Absolute to) {
+        CompoundTag payload = new CompoundTag();
+        payload.putString("control", "copy");
+        payload.putString("from", from.toString());
+        payload.putString("to", to.toString());
+        Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
+    }
+
+    protected void moveFileOrFolder(LexicalPath.Absolute from, LexicalPath.Absolute to) {
+        CompoundTag payload = new CompoundTag();
+        payload.putString("control", "move");
+        payload.putString("from", from.toString());
+        payload.putString("to", to.toString());
+        Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
+    }
+
+    protected void removeFileOrFolder(LexicalPath.Absolute path) {
+        CompoundTag payload = new CompoundTag();
+        payload.putString("control", "remove");
+        payload.putString("path", path.toString());
+        Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
     }
 
     protected int buildBasicWidgets() {
@@ -88,6 +115,39 @@ public class FileExplorerScreen implements ApplicationScreen {
         return yOffset.getAcquire();
     }
 
+    protected int addOperationWidgets(int x, int y, int remainingWidth, LexicalPath.Absolute path, Permissions permissions) {
+        if (permissions.canWrite()) {
+            screen.addApplicationWidget(Button.builder(Component.literal("Remove"), (self) -> {
+                        this.removeFileOrFolder(path);
+                    }).bounds(x + remainingWidth - 20, y, 20, 20)
+                    .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.remove")))
+                    .build(ApplicationScreen.iconButton(screen::getTheme, 200, 0)));
+            remainingWidth -= 23;
+        }
+
+        if (permissions.canRead() && permissions.canWrite()) {
+            screen.addApplicationWidget(Button.builder(Component.literal("Cut"), (self) -> {
+                        this.cutSource = path;
+                        this.copySource = null;
+                    }).bounds(x + remainingWidth - 20, y, 20, 20)
+                    .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.cut")))
+                    .build(ApplicationScreen.iconButton2(screen::getTheme, 80, 0)));
+            remainingWidth -= 23;
+        }
+
+        if (permissions.canRead()) {
+            screen.addApplicationWidget(Button.builder(Component.literal("Copy"), (self) -> {
+                        this.copySource = path;
+                        this.cutSource = null;
+                    }).bounds(x + remainingWidth - 20, y, 20, 20)
+                    .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.copy")))
+                    .build(ApplicationScreen.iconButton2(screen::getTheme, 100, 0)));
+            remainingWidth -= 23;
+        }
+
+        return remainingWidth;
+    }
+
     protected void buildRegularListings(boolean isLocal) {
         screen.clearApplicationWidgets();
 
@@ -118,6 +178,8 @@ public class FileExplorerScreen implements ApplicationScreen {
         AtomicInteger elementCount = new AtomicInteger(0);
         var workingFolder = menu.computer.getFolderSafe(menu.getWorkingDir());
         workingFolder.ifPresent(cwd -> {
+            Permissions dirPerms = menu.computer.getFilePermissions(menu.getWorkingDir());
+
             if (menu.getWorkingDir().getParent() != null) {
                 var parentDir = menu.getWorkingDir().getParent();
                 screen.addApplicationWidget(Button.builder(Component.literal(".."), (self) -> {
@@ -134,29 +196,59 @@ public class FileExplorerScreen implements ApplicationScreen {
                         .build(ApplicationScreen.iconButton(screen::getTheme, 220, 0)));
             }
             cwd.folders.forEach((name, folder) -> {
+                LexicalPath.Absolute folderPath = menu.getWorkingDir().resolve(name);
+                Permissions folderPerms = menu.computer.getFilePermissions(folderPath);
+
+                int remainingWidth = desktopWidth - 14;
                 int elementIndex = elementCount.getAndIncrement();
                 if (elementIndex < scrollBar.getScroll() || elementIndex >= scrollBar.getScrollNext())
                     return;
-                var subDir = menu.getWorkingDir().resolve(LexicalPath.of(name + "/"));
+
+                remainingWidth = this.addOperationWidgets(x, y + yOffset.get(), remainingWidth, folderPath, folderPerms);
+
                 screen.addApplicationWidget(Button.builder(Component.literal(name + "/"), (self) -> {
-                            menu.setWorkingDir(subDir);
+                            menu.setWorkingDir(folderPath);
                             buildRegularListings(isLocal);
-                        }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 14, 20)
+                        }).bounds(x, y + yOffset.getAndAdd(23), remainingWidth, 20)
                         .build(explorerListItemButton(screen::getTheme, File.Type.FOLDER.xTexture, File.Type.FOLDER.yTexture)));
             });
             cwd.files.forEach((name, file) -> {
+                LexicalPath.Absolute filePath = menu.getWorkingDir().resolve(name);
+                Permissions filePerms = menu.computer.getFilePermissions(filePath);
+
+                int remainingWidth = desktopWidth - 14;
                 int elementIndex = elementCount.getAndIncrement();
                 if (elementIndex < scrollBar.getScroll() || elementIndex >= scrollBar.getScrollNext())
                     return;
+
+                remainingWidth = this.addOperationWidgets(x, y + yOffset.get(), remainingWidth, filePath, filePerms);
+
                 int iconX = file.type.xTexture;
                 int iconY = file.type.yTexture;
                 screen.addApplicationWidget(Button.builder(Component.literal(name), (self) -> {
-                            screen.openFile(menu.getWorkingDir().resolve(LexicalPath.of(name)));
-                        }).bounds(x, y + yOffset.getAndAdd(23), desktopWidth - 14, 20)
+                            screen.openFile(filePath);
+                        }).bounds(x, y + yOffset.getAndAdd(23), remainingWidth, 20)
                         .build(explorerListItemButton(screen::getTheme, iconX, iconY)));
             });
 
-            if (elementCount.getAcquire() <= 0) {
+            int filesAndFolderCount = elementCount.getAcquire();
+
+            if (dirPerms.canWrite()) {
+                int elementIndex = elementCount.getAndIncrement();
+                if (elementIndex < scrollBar.getScroll() || elementIndex >= scrollBar.getScrollNext())
+                    return;
+
+                screen.addApplicationWidget(Button.builder(Component.translatable("application.changed.file_explorer.new_folder"), (self) -> {
+                            CompoundTag payload = new CompoundTag();
+                            payload.putString("control", "makeFolder");
+                            payload.putString("path", menu.getWorkingDir().toString());
+                            payload.putString("name", "New Folder");
+                            Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
+                        }).bounds(x, y + yOffset.getAndAdd(23), (desktopWidth - 14) / 2, 20)
+                        .build(explorerListItemButton(screen::getTheme, File.Type.FOLDER.xTexture, File.Type.FOLDER.yTexture)));
+            }
+
+            if (filesAndFolderCount <= 0) {
                 screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth, 20,
                                 Component.translatable("application.changed.file_explorer.empty_folder"), screen.getMinecraft().font)
                         .alignCenter().setColor(0x404040));
