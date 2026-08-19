@@ -46,14 +46,15 @@ public class LabCoatItem extends ClothingItem {
             slotContext.wearer().playSound(changeSound, 1F, 1F);
     }
 
-    @Nullable
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+    protected @Nullable ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type) {
         ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
-        if (this.getClothingState(stack).getValue(CLOSED))
-            return String.format("%s:textures/models/%s_closed.png", itemId.getNamespace(), itemId.getPath());
+        if (clothingState.getValue(CLOSED))
+            return ResourceLocation.fromNamespaceAndPath(itemId.getNamespace(),
+                    String.format("textures/models/%s_closed.png", itemId.getPath()));
         else
-            return String.format("%s:textures/models/%s.png", itemId.getNamespace(), itemId.getPath());
+            return ResourceLocation.fromNamespaceAndPath(itemId.getNamespace(),
+                    String.format("textures/models/%s.png", itemId.getPath()));
     }
 
     @Override

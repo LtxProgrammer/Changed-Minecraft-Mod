@@ -115,12 +115,34 @@ public class ClothingItem extends Item implements Clothing, ExtendedItemProperti
         return false;
     }
 
-    @Nullable
+    /// Clothing items should override {@link ClothingItem#getClothingTexture}
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+    public final String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+        var texture = getClothingTexture(
+                stack,
+                this.getClothingState(stack),
+                entity,
+                slot,
+                type
+        );
+
+        return texture == null ? null : texture.toString();
+    }
+
+    @Override
+    public final @Nullable ResourceLocation getTexture(ItemStack stack, Entity entity, EquipmentSlot renderSlot, @Nullable String type) {
+        return getClothingTexture(stack, this.getClothingState(stack), entity, renderSlot, type);
+    }
+
+    @Nullable
+    protected ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type) {
         ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
-        //return String.format("%s:textures/models/%s_%s.png", itemId.getNamespace(), itemId.getPath(), Mth.clamp(stack.getDamageValue() - 1, 0, 4));
-        return String.format("%s:textures/models/%s.png", itemId.getNamespace(), itemId.getPath());
+        return ResourceLocation.fromNamespaceAndPath(
+                itemId.getNamespace(),
+                type == null ?
+                        String.format("textures/models/%s.png", itemId.getPath()) :
+                        String.format("textures/models/%s_%s.png", itemId.getPath(), type)
+        );
     }
 
     @Override
