@@ -1341,6 +1341,7 @@
   "application.changed.file_explorer.eject_drive": "Eject Drive",
   "application.changed.file_explorer.item_count": "%s item(s)",
   "application.changed.file_explorer.remove": "Remove",
+  "application.changed.file_explorer.rename": "Rename",
   "application.changed.file_explorer.cut": "Cut",
   "application.changed.file_explorer.copy": "Copy",
   "application.changed.file_explorer.paste": "Paste",
