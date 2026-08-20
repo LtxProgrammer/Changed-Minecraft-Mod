@@ -75,6 +75,7 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
         public float waveSpeedX = 0.0f;
         public float waveOffsetY = 0.0f;
         public float waveSpeedY = 0.0f;
+        protected int levels = 0;
 
         public NodeRenderState renderState = NodeRenderState.DISTANT;
 
@@ -142,6 +143,9 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
         }
 
         protected NodeRenderState determineRenderState() {
+            if (levels != accountedTree.getLevels(AbilityTreeScreen.this.entity.getSelfVariant()))
+                this.tooltip.clear();
+
             if (accountedTree.hasAllNodes(AbilityTreeScreen.this.entity.getSelfVariant()))
                 return NodeRenderState.UNLOCKED;
             return NodeRenderState.PRE_REQ_MET;
@@ -162,6 +166,9 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
                 tree.getFlavorCompletedText().ifPresent(tooltipBuilder::add);
             } else {
                 tooltipBuilder.add(tree.getTitle());
+                levels = accountedTree.getLevels(AbilityTreeScreen.this.entity.getSelfVariant());
+                tooltipBuilder.add(Component.translatable("text.changed.ability_tree.price.levels", levels)
+                        .withStyle(ChatFormatting.GRAY));
                 tree.getFlavorText().ifPresent(tooltipBuilder::add);
             }
             return tooltipBuilder.build();
@@ -638,5 +645,10 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
             return true;
         }
         return super.mouseDragged(x, y, button, dx, dy);
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
     }
 }

@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.data.codec.OptionalKeyFieldCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -25,6 +26,14 @@ public class PartialNode {
             public static final Codec<TreeReference> CODEC = RecordCodecBuilder.create(builder -> builder.group(
                     ResourceLocation.CODEC.fieldOf("tree").forGetter(node -> node.treeName)
             ).apply(builder, TreeReference::new));
+
+            public static TreeReference fromBuffer(FriendlyByteBuf buffer) {
+                return new TreeReference(buffer.readResourceLocation());
+            }
+
+            public void writeToBuffer(FriendlyByteBuf buffer) {
+                buffer.writeResourceLocation(treeName);
+            }
     }
 
     public static final Codec<PartialNode> CODEC = RecordCodecBuilder.create(builder -> builder.group(

@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.network.packet.AbilityTreeSyncPointStorePacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.process.TransfurEvents;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -22,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -134,9 +136,9 @@ public class AbilityTreeInstance {
             setPoints(this.points + points);
         }
 
-        public void addPointsAndConvert(int points, int conversionThreshold) {
+        public int addPointsAndConvert(int points, int conversionThreshold) {
             addPoints(points);
-            convertPointsToLevels(conversionThreshold);
+            return convertPointsToLevels(conversionThreshold);
         }
 
         public int getLevels() {
@@ -159,7 +161,9 @@ public class AbilityTreeInstance {
             return this.getLevels() >= levelCost;
         }
 
-        public void convertPointsToLevels(int conversionThreshold) {
+        public int convertPointsToLevels(int conversionThreshold) {
+            int lastLevels = getLevels();
+
             while (points < 0) {
                 points += conversionThreshold;
                 if (getLevels() > 0)
@@ -171,13 +175,15 @@ public class AbilityTreeInstance {
             }
 
             if (points < conversionThreshold)
-                return;
+                return getLevels() - lastLevels;
 
             addLevels(points / conversionThreshold);
             setPoints(points % conversionThreshold);
+
+            return getLevels() - lastLevels;
         }
 
-        public @Nullable CompoundTag save() {
+        public @Nullable CompoundTag saveDisk() {
             if (this.points <= 0 && this.levels <= 0)
                 return null; // Save on memory
 
@@ -186,6 +192,12 @@ public class AbilityTreeInstance {
                 tag.putInt("p", this.points);
             if (this.levels > 0)
                 tag.putInt("l", this.levels);
+            return tag;
+        }
+
+        public @NotNull CompoundTag saveNetwork() {
+            var tag = new CompoundTag();
+            tag.putInt("l", this.levels);
             return tag;
         }
 
@@ -223,6 +235,10 @@ public class AbilityTreeInstance {
 
         public Player getPlayer() {
             return player;
+        }
+
+        public int getLevels(TransfurVariant<?> variant) {
+            return pointStores.getOrDefault(variant, PointStore.IMMUTABLE_ZERO).getLevels();
         }
 
         public boolean canAfford(Player player, TransfurVariant<?> variant, ResourceLocation nodeName) {
@@ -461,7 +477,17 @@ public class AbilityTreeInstance {
             if (points == 0)
                 return;
 
-            pointStores.computeIfAbsent(variantInstance.getParent(), PointStore::new).addPointsAndConvert(points, tree.getPointsPerLevel());
+            int dl = pointStores.computeIfAbsent(variantInstance.getParent(), PointStore::new).addPointsAndConvert(points, tree.getPointsPerLevel());
+
+            if (dl != 0) {
+                CompoundTag pointStoreTag = new CompoundTag();
+                var savedPointStore = pointStores.get(variantInstance.getParent()).saveNetwork();
+                pointStoreTag.put(ChangedRegistry.TRANSFUR_VARIANT.getKey(variantInstance.getParent()).toString(), savedPointStore);
+                Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) variantInstance.getHost()),
+                        new AbilityTreeSyncPointStorePacket(tree.getTreeReference(), pointStoreTag, true));
+
+                // TODO: level up notification?
+            }
         }
 
         public boolean appliesTo(TransfurVariant<?> variant) {
@@ -498,7 +524,7 @@ public class AbilityTreeInstance {
             {
                 CompoundTag pointStoreTag = new CompoundTag();
                 pointStores.forEach((variant, pointStore) -> {
-                    var savedPointStore = pointStore.save();
+                    var savedPointStore = pointStore.saveDisk();
                     if (savedPointStore == null)
                         return;
                     pointStoreTag.put(ChangedRegistry.TRANSFUR_VARIANT.getKey(variant).toString(), savedPointStore);
@@ -531,37 +557,44 @@ public class AbilityTreeInstance {
             return tag;
         }
 
-        public void read(CompoundTag tag) {
-            purchasedNodes.clear();
-            pointStores.clear();
-
-            tag.getList("purchases", 10).forEach(purchaseTag -> {
+        public void readPurchases(ListTag purchases, boolean incomplete) {
+            if (!incomplete)
+                purchasedNodes.clear();
+            purchases.forEach(purchaseTag -> {
                 var compound = ((CompoundTag)purchaseTag);
                 purchasedNodes.add(AccountedPurchase.of(compound));
             });
+        }
 
-            var pointStoreTag = tag.getCompound("pointStore");
+        public void readPointStore(CompoundTag pointStoreTag, boolean incomplete) {
+            if (!incomplete)
+                pointStores.clear();
             pointStoreTag.getAllKeys().forEach(key -> {
                 var variant = ChangedRegistry.TRANSFUR_VARIANT.getValue(ResourceLocation.parse(key));
                 pointStores.computeIfAbsent(variant, PointStore::new).read(pointStoreTag.getCompound(key));
             });
+        }
 
-            if (tag.contains("requirements")) {
-                var nodeRequirementProgresses = tag.getCompound("requirements");
+        public void readRequirements(CompoundTag nodeRequirementProgresses, boolean incomplete) {
+            nodeRequirementProgresses.getAllKeys().forEach(key -> {
+                ResourceLocation id = ResourceLocation.parse(key);
+                ListTag list = (ListTag)nodeRequirementProgresses.get(key);
 
-                nodeRequirementProgresses.getAllKeys().forEach(key -> {
-                    ResourceLocation id = ResourceLocation.parse(key);
-                    ListTag list = (ListTag)nodeRequirementProgresses.get(key);
-
-                    var node = tree.getNamedNode(id);
-                    var progressList = node.getRequirementProgress();
+                var node = tree.getNamedNode(id);
+                var progressList = node.getRequirementProgress();
+                if (!incomplete)
                     progressList.clear();
 
-                    for (int i = 0; i < node.requirements.size() && i < list.size(); ++i) {
-                        progressList.add(node.requirements.get(i).deserializeProgress(list.get(i)));
-                    }
-                });
-            }
+                for (int i = 0; i < node.requirements.size() && i < list.size(); ++i) {
+                    progressList.add(node.requirements.get(i).deserializeProgress(list.get(i)));
+                }
+            });
+        }
+
+        public void read(CompoundTag tag) {
+            this.readPurchases(tag.getList("purchases", 10), false);
+            this.readPointStore(tag.getCompound("pointStore"), false);
+            this.readRequirements(tag.getCompound("requirements"), false);
         }
     }
 
