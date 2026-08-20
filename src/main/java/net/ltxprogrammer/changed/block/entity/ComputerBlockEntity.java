@@ -240,8 +240,9 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        if (slot == 0)
-            return stack.is(ChangedItems.COMPACT_DISC.get());
+        if (slot == 0) {
+            return stack.is(ChangedItems.COMPACT_DISC.get()) && getItem(slot).isEmpty();
+        }
         else
             return false;
     }

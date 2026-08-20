@@ -1,34 +1,44 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.block.entity.CDStackBlockEntity;
+import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class CDStack extends Block implements SimpleWaterloggedBlock {
+public class CDStack extends Block implements EntityBlock, SimpleWaterloggedBlock {
     public static final IntegerProperty DISKS = IntegerProperty.create("disks", 1, 16);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final VoxelShape ONE_AABB = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 1.0D, 13.0D);
@@ -51,11 +61,6 @@ public class CDStack extends Block implements SimpleWaterloggedBlock {
     public CDStack(Properties properties) {
         super(properties.offsetType(OffsetType.XZ).dynamicShape());
         this.registerDefaultState(this.stateDefinition.any().setValue(DISKS, 1).setValue(WATERLOGGED, false));
-    }
-
-    @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        return List.of(new ItemStack(ChangedItems.COMPACT_DISC.get(), state.getValue(DISKS)));
     }
 
     @Override
@@ -118,19 +123,10 @@ public class CDStack extends Block implements SimpleWaterloggedBlock {
         return Block.canSupportCenter(level, pos.below(), Direction.UP);
     }
 
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
-        return !context.isSecondaryUseActive() && context.getItemInHand().getItem() == this.asItem() && state.getValue(DISKS) < 16 || super.canBeReplaced(state, context);
-    }
-
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
-        if (blockstate.is(this)) {
-            return blockstate.cycle(DISKS);
-        } else {
-            FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-            boolean flag = fluidstate.getType() == Fluids.WATER;
-            return super.getStateForPlacement(context).setValue(WATERLOGGED, Boolean.valueOf(flag));
-        }
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        boolean flag = fluidstate.getType() == Fluids.WATER;
+        return super.getStateForPlacement(context).setValue(WATERLOGGED, Boolean.valueOf(flag));
     }
 
     @Override
@@ -145,5 +141,82 @@ public class CDStack extends Block implements SimpleWaterloggedBlock {
         }
 
         return super.updateShape(state, direction, otherState, level, pos, otherPos);
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new CDStackBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        AtomicReference<InteractionResult> result = new AtomicReference<>(InteractionResult.PASS);
+        ItemStack itemInHand = player.getItemInHand(hand);
+
+        if (itemInHand.is(ChangedItems.COMPACT_DISC.get()) && blockState.getValue(DISKS) == 16)
+            return super.use(blockState, level, blockPos, player, hand, blockHitResult);
+
+        if (level.isClientSide) {
+            if (itemInHand.is(ChangedItems.COMPACT_DISC.get()) && blockState.getValue(DISKS) < 16) {
+                BlockState nextState = blockState.cycle(DISKS);
+
+                CollisionContext collisioncontext = CollisionContext.of(player);
+                if (!level.isUnobstructed(nextState, blockPos, collisioncontext)) {
+                    return InteractionResult.FAIL;
+                }
+
+                SoundType soundtype = nextState.getSoundType(level, blockPos, player);
+                level.playSound(player, blockPos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+                level.gameEvent(GameEvent.BLOCK_PLACE, blockPos, GameEvent.Context.of(player, nextState));
+            }
+
+            return InteractionResult.sidedSuccess(true);
+        } else {
+            level.getBlockEntity(blockPos, ChangedBlockEntities.CD_STACK.get()).ifPresent(blockEntity -> {
+                if (blockEntity.push(itemInHand)) {
+                    BlockState nextState = blockState.setValue(CDStack.DISKS, blockEntity.size());
+
+                    CollisionContext collisioncontext = CollisionContext.of(player);
+                    if (!level.isUnobstructed(nextState, blockPos, collisioncontext)) {
+                        blockEntity.pop();
+                        result.set(InteractionResult.FAIL);
+                        return;
+                    }
+
+                    level.setBlock(blockPos, nextState, 11);
+
+                    SoundType soundtype = nextState.getSoundType(level, blockPos, player);
+                    level.playSound(player, blockPos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+                    level.gameEvent(GameEvent.BLOCK_PLACE, blockPos, GameEvent.Context.of(player, nextState));
+
+                    if (!player.getAbilities().instabuild) {
+                        itemInHand.shrink(1);
+                    }
+
+                    result.set(InteractionResult.sidedSuccess(false));
+                    return;
+                }
+
+                ItemStack itemStack = blockEntity.pop();
+                if (itemStack != null) {
+                    int count = blockEntity.size();
+                    BlockState nextState = count <= 0 ? Blocks.AIR.defaultBlockState() : blockState.setValue(CDStack.DISKS, count);
+
+                    level.setBlock(blockPos, nextState, 11);
+
+                    if (!player.addItem(itemStack))
+                        Block.popResource(level, blockPos, itemStack);
+
+                    result.set(InteractionResult.sidedSuccess(false));
+                }
+            });
+        }
+
+        return result.getAcquire() == InteractionResult.PASS ? super.use(blockState, level, blockPos, player, hand, blockHitResult) : result.getAcquire();
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder lootParams) {
+        return ((CDStackBlockEntity) lootParams.getParameter(LootContextParams.BLOCK_ENTITY)).getDrops();
     }
 }

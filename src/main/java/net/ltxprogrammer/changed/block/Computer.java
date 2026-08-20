@@ -26,6 +26,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -33,6 +35,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class Computer extends AbstractCustomShapeEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -44,6 +47,16 @@ public class Computer extends AbstractCustomShapeEntityBlock {
     public Computer(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder lootsParams) {
+        var drops = super.getDrops(blockState, lootsParams);
+        var blockEntity = (ComputerBlockEntity) lootsParams.getParameter(LootContextParams.BLOCK_ENTITY);
+
+        drops.addAll(blockEntity.items);
+
+        return drops;
     }
 
     public RenderShape getRenderShape(BlockState blockState) {
