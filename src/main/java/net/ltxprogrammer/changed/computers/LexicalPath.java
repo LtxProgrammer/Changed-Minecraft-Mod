@@ -15,6 +15,35 @@ public class LexicalPath implements Iterable<LexicalPath> {
     private final boolean driveRelative;
     protected final String[] elements;
 
+    public static boolean isPathValid(String fullPath) {
+        try {
+            of(fullPath);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean isFileNameValid(String fileName) {
+        if (".".equals(fileName))
+            return false;
+        if ("..".equals(fileName))
+            return false;
+
+        String[] singleton = new String[1];
+        singleton[0] = fileName;
+        try {
+            validateElements(singleton);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean isFileNameValidOrIsEmpty(String fileName) {
+        return fileName.isEmpty() || isFileNameValid(fileName);
+    }
+
     LexicalPath(boolean driveRelative, String[] elements) {
         this.driveRelative = driveRelative;
         this.elements = elements;

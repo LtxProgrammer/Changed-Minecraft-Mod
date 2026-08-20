@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.gui.computer;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.ComputerScreen;
 import net.ltxprogrammer.changed.computers.File;
@@ -12,15 +13,17 @@ import net.ltxprogrammer.changed.network.packet.ComputerAppSyncPacket;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.StringWidget;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.*;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -48,6 +51,8 @@ public class FileExplorerScreen implements ApplicationScreen {
 
     protected LexicalPath.Absolute copySource = null;
     protected LexicalPath.Absolute cutSource = null;
+    protected boolean renaming = false;
+    protected GuiEventListener nextFocus = null;
 
     protected boolean listenForDeviceUpdates = false;
     protected Runnable refreshListings = () -> buildRegularListings(true);
@@ -115,33 +120,78 @@ public class FileExplorerScreen implements ApplicationScreen {
         return yOffset.getAcquire();
     }
 
-    protected int addOperationWidgets(int x, int y, int remainingWidth, LexicalPath.Absolute path, Permissions permissions) {
+    protected int addOperationWidgets(int x, int y, int remainingWidth, LexicalPath.Absolute path, Permissions permissions, List<AbstractWidget> lineWidgets) {
+        int startingWidth = remainingWidth;
+
         if (permissions.canWrite()) {
-            screen.addApplicationWidget(Button.builder(Component.literal("Remove"), (self) -> {
+            lineWidgets.add(screen.addApplicationWidget(Button.builder(Component.literal("Remove"), (self) -> {
                         this.removeFileOrFolder(path);
                     }).bounds(x + remainingWidth - 20, y, 20, 20)
                     .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.remove")))
-                    .build(ApplicationScreen.iconButton(screen::getTheme, 200, 0)));
+                    .build(ApplicationScreen.iconButton(screen::getTheme, 200, 0))));
             remainingWidth -= 23;
         }
 
         if (permissions.canRead() && permissions.canWrite()) {
-            screen.addApplicationWidget(Button.builder(Component.literal("Cut"), (self) -> {
+            lineWidgets.add(screen.addApplicationWidget(Button.builder(Component.literal("Cut"), (self) -> {
                         this.cutSource = path;
                         this.copySource = null;
                     }).bounds(x + remainingWidth - 20, y, 20, 20)
                     .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.cut")))
-                    .build(ApplicationScreen.iconButton2(screen::getTheme, 80, 0)));
+                    .build(ApplicationScreen.iconButton2(screen::getTheme, 80, 0))));
             remainingWidth -= 23;
         }
 
         if (permissions.canRead()) {
-            screen.addApplicationWidget(Button.builder(Component.literal("Copy"), (self) -> {
+            lineWidgets.add(screen.addApplicationWidget(Button.builder(Component.literal("Copy"), (self) -> {
                         this.copySource = path;
                         this.cutSource = null;
                     }).bounds(x + remainingWidth - 20, y, 20, 20)
                     .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.copy")))
-                    .build(ApplicationScreen.iconButton2(screen::getTheme, 100, 0)));
+                    .build(ApplicationScreen.iconButton2(screen::getTheme, 100, 0))));
+            remainingWidth -= 23;
+        }
+
+        if (permissions.canWrite()) {
+            var renameWidget = screen.addApplicationWidget(new EditBox(screen.getMinecraft().font, x, y, startingWidth, 20, Component.empty()) {
+                @Override
+                public boolean keyPressed(int keyCode, int scanCode, int mods) {
+                    if (!this.canConsumeInput()) {
+                        return false;
+                    } else {
+                        if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
+                            this.setFocused(false); // Trigger rename
+                            return true;
+                        }
+                    }
+                    return super.keyPressed(keyCode, scanCode, mods);
+                }
+
+                @Override
+                public void setFocused(boolean focused) {
+                    if (this.isFocused() && !focused) {
+                        lineWidgets.forEach(widget -> widget.visible = true);
+                        this.visible = false;
+                        if (LexicalPath.isFileNameValid(this.getValue()))
+                            FileExplorerScreen.this.moveFileOrFolder(path, path.getParent().resolve(this.getValue()));
+                        renaming = false;
+                    }
+
+                    super.setFocused(focused);
+                }
+            });
+            renameWidget.visible = false;
+            renameWidget.setFilter(LexicalPath::isFileNameValidOrIsEmpty);
+
+            lineWidgets.add(screen.addApplicationWidget(Button.builder(Component.literal("Rename"), (self) -> {
+                        renameWidget.setValue(path.getFileName().toString());
+                        lineWidgets.forEach(widget -> widget.visible = false);
+                        renameWidget.visible = true;
+                        nextFocus = renameWidget;
+                        renaming = true;
+                    }).bounds(x + remainingWidth - 20, y, 20, 20)
+                    .tooltip(Tooltip.create(Component.translatable("application.changed.file_explorer.rename")))
+                    .build(ApplicationScreen.iconButton2(screen::getTheme, 140, 0))));
             remainingWidth -= 23;
         }
 
@@ -204,13 +254,14 @@ public class FileExplorerScreen implements ApplicationScreen {
                 if (elementIndex < scrollBar.getScroll() || elementIndex >= scrollBar.getScrollNext())
                     return;
 
-                remainingWidth = this.addOperationWidgets(x, y + yOffset.get(), remainingWidth, folderPath, folderPerms);
+                var lineWidgets = new ObjectArrayList<AbstractWidget>();
+                remainingWidth = this.addOperationWidgets(x, y + yOffset.get(), remainingWidth, folderPath, folderPerms, lineWidgets);
 
-                screen.addApplicationWidget(Button.builder(Component.literal(name + "/"), (self) -> {
+                lineWidgets.add(screen.addApplicationWidget(Button.builder(Component.literal(name + "/"), (self) -> {
                             menu.setWorkingDir(folderPath);
                             buildRegularListings(isLocal);
                         }).bounds(x, y + yOffset.getAndAdd(23), remainingWidth, 20)
-                        .build(explorerListItemButton(screen::getTheme, File.Type.FOLDER.xTexture, File.Type.FOLDER.yTexture)));
+                        .build(explorerListItemButton(screen::getTheme, File.Type.FOLDER.xTexture, File.Type.FOLDER.yTexture))));
             });
             cwd.files.forEach((name, file) -> {
                 LexicalPath.Absolute filePath = menu.getWorkingDir().resolve(name);
@@ -221,14 +272,15 @@ public class FileExplorerScreen implements ApplicationScreen {
                 if (elementIndex < scrollBar.getScroll() || elementIndex >= scrollBar.getScrollNext())
                     return;
 
-                remainingWidth = this.addOperationWidgets(x, y + yOffset.get(), remainingWidth, filePath, filePerms);
+                var lineWidgets = new ObjectArrayList<AbstractWidget>();
+                remainingWidth = this.addOperationWidgets(x, y + yOffset.get(), remainingWidth, filePath, filePerms, lineWidgets);
 
                 int iconX = file.type.xTexture;
                 int iconY = file.type.yTexture;
-                screen.addApplicationWidget(Button.builder(Component.literal(name), (self) -> {
+                lineWidgets.add(screen.addApplicationWidget(Button.builder(Component.literal(name), (self) -> {
                             screen.openFile(filePath);
                         }).bounds(x, y + yOffset.getAndAdd(23), remainingWidth, 20)
-                        .build(explorerListItemButton(screen::getTheme, iconX, iconY)));
+                        .build(explorerListItemButton(screen::getTheme, iconX, iconY))));
             });
 
             int filesAndFolderCount = elementCount.getAcquire();
@@ -280,6 +332,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         application.listingsDirty = false;
         listenForDeviceUpdates = false;
         refreshListings = () -> buildRegularListings(isLocal);
+        renaming = false;
     }
 
     protected void buildDriveListings() {
@@ -334,6 +387,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         application.listingsDirty = false;
         listenForDeviceUpdates = false;
         refreshListings = this::buildDriveListings;
+        renaming = false;
     }
 
     protected void buildNetworkListings(boolean returnToDrives) {
@@ -389,6 +443,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         application.listingsDirty = false;
         listenForDeviceUpdates = true;
         refreshListings = () -> buildNetworkListings(returnToDrives);
+        renaming = false;
     }
 
     @Override
@@ -404,6 +459,11 @@ public class FileExplorerScreen implements ApplicationScreen {
     @Override
     public void tick(int desktopLeft, int desktopTop, int desktopWidth, int desktopHeight) {
         ApplicationScreen.super.tick(desktopLeft, desktopTop, desktopWidth, desktopHeight);
+        if (nextFocus != null) {
+            screen.setFocused(nextFocus);
+            nextFocus = null;
+        }
+
         if (application.openDriveLetter != null) {
             screen.getMenu().setWorkingDir(LexicalPath.fromDriveLetter(application.openDriveLetter));
             buildRegularListings(false);
@@ -411,7 +471,7 @@ public class FileExplorerScreen implements ApplicationScreen {
             application.openDriveLetter = null;
         }
 
-        if (application.listingsDirty) {
+        if (application.listingsDirty && !renaming) {
             refreshListings.run();
 
             application.listingsDirty = false;

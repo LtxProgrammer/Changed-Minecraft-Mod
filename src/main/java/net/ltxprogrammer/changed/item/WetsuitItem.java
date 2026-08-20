@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.ltxprogrammer.changed.client.animations.LimbExtensions;
+import net.ltxprogrammer.changed.client.animations.ModelPartIdentifier;
 import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
@@ -9,6 +11,7 @@ import net.ltxprogrammer.changed.init.ChangedAccessorySlots;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -18,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeMod;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class WetsuitItem extends ClothingItem {
     protected static final UUID WETSUIT_SWIM_SPEED_UUID = UUID.fromString("6799bab3-9457-4a0c-a7e2-743b4134b9b0");
@@ -52,6 +56,14 @@ public class WetsuitItem extends ClothingItem {
     @Override
     public boolean shouldDisableSlot(AccessorySlotContext<?> slotContext, AccessorySlotType otherSlot) {
         return super.shouldDisableSlot(slotContext, otherSlot) || otherSlot == ChangedAccessorySlots.LEGS.get();
+    }
+
+    @Override
+    public void hideModelParts(ItemStack stack, Entity entity, EquipmentSlot renderSlot, Consumer<ModelPartIdentifier> partsToHide) {
+        super.hideModelParts(stack, entity, renderSlot, partsToHide);
+        partsToHide.accept(ModelPartIdentifier.forExtension(LimbExtensions.TAIL));
+        partsToHide.accept(ModelPartIdentifier.forExtension(LimbExtensions.LEFT_LEG_PARTS, "foot"));
+        partsToHide.accept(ModelPartIdentifier.forExtension(LimbExtensions.RIGHT_LEG_PARTS, "foot"));
     }
 
     @Override

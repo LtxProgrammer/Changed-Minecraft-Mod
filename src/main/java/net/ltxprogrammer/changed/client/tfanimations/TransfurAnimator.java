@@ -45,6 +45,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.DyeableLeatherItem;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -689,6 +690,8 @@ public abstract class TransfurAnimator {
                         var slotContextPlayer = new AccessorySlotContext<>(player, slotType, itemStack);
                         var slotContextVariant = new AccessorySlotContext<>(variant.getChangedEntity(), slotType, itemStack);
 
+                        Color3 color = (itemStack.getItem() instanceof DyeableLeatherItem dyeable ? Color3.fromInt(dyeable.getColor(itemStack)) : Color3.WHITE);
+
                         AccessoryLayer.getRenderer(itemStack.getItem()).ifPresent(renderer -> {
                             if (renderer instanceof TransitionalAccessory transitionalAccessory) {
                                 final var texture = transitionalAccessory.getModelTexture(slotContextVariant);
@@ -701,7 +704,7 @@ public abstract class TransfurAnimator {
                                         renderMorphedEntity(player,
                                                 before.get(),
                                                 after,
-                                                partialTick, morphProgress, Color3.WHITE, 1f, stack, buffer, coverLight,
+                                                partialTick, morphProgress, color, 1f, stack, buffer, coverLight,
                                                 texture.get(), true);
                                     } catch (Exception e) {
                                         CrashReport report = CrashReport.forThrowable(e, "Rendering transfurring entity's accessories");

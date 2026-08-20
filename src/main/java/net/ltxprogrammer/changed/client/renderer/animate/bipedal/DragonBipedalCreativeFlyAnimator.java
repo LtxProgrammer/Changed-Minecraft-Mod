@@ -10,22 +10,13 @@ import org.jetbrains.annotations.NotNull;
 import static net.ltxprogrammer.changed.client.renderer.animate.wing.DragonWingCreativeFlyAnimator.BODY_FLY_SCALE;
 import static net.ltxprogrammer.changed.client.renderer.animate.wing.DragonWingCreativeFlyAnimator.WING_FLAP_RATE;
 
-public class DragonBipedalCreativeFlyAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractBipedalAnimator<T, M> {
+public class DragonBipedalCreativeFlyAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractBipedalUnifiedAnimator<T, M> {
     public static final float LEG_SWAY_RATE = 0.6662f * 0.5f;
     public static final float LEG_SWAY_AMOUNT = 1.4f * 0.25f;
 
-    public final ModelPart leftLegLower, leftFoot, leftPad;
-    public final ModelPart rightLegLower, rightFoot, rightPad;
-
     public DragonBipedalCreativeFlyAnimator(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                             ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
-        super(leftLeg, rightLeg);
-        this.leftLegLower = leftLegLower;
-        this.leftFoot = leftFoot;
-        this.leftPad = leftPad;
-        this.rightLegLower = rightLegLower;
-        this.rightFoot = rightFoot;
-        this.rightPad = rightPad;
+        super(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad);
     }
 
     @Override

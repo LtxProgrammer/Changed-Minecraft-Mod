@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.bipedal.AbstractBipedalAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.bipedal.AbstractBipedalUnifiedAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.legless.AbstractLeglessAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.tail.AbstractTailAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.wing.AbstractWingAnimatorV2;
@@ -65,6 +67,50 @@ public class LimbExtensions {
             LimbExtension.simple(Set.of(Limb.HEAD, Limb.HEAD2, Limb.HEAD3), "LeftEar"));
     public static final LimbExtension RIGHT_EAR = register("right_ear",
             LimbExtension.simple(Set.of(Limb.HEAD, Limb.HEAD2, Limb.HEAD3), "RightEar"));
+    public static final LimbExtension LEFT_LEG_PARTS = register("left_leg_parts",
+            LimbExtension.<AbstractBipedalUnifiedAnimator<?,?>>forAnimator(Set.of(Limb.LEFT_LEG), AbstractBipedalUnifiedAnimator.class,
+                    (animator, limb, limbRoot, param) -> {
+                        try {
+                            int index = Integer.parseInt(param);
+                            return switch (index) {
+                                case 0 -> animator.leftLeg;
+                                case 1 -> animator.leftLegLower;
+                                case 2 -> animator.leftFoot;
+                                case 3 -> animator.leftPad;
+                                default -> null;
+                            };
+                        } catch (Exception ignored) {}
+
+                        return switch (param) {
+                            case "root" -> animator.leftLeg;
+                            case "lower" -> animator.leftLegLower;
+                            case "foot" -> animator.leftFoot;
+                            case "pad" -> animator.leftPad;
+                            default -> null;
+                        };
+                    }));
+    public static final LimbExtension RIGHT_LEG_PARTS = register("right_leg_parts",
+            LimbExtension.<AbstractBipedalUnifiedAnimator<?,?>>forAnimator(Set.of(Limb.LEFT_LEG), AbstractBipedalUnifiedAnimator.class,
+                    (animator, limb, limbRoot, param) -> {
+                        try {
+                            int index = Integer.parseInt(param);
+                            return switch (index) {
+                                case 0 -> animator.rightLeg;
+                                case 1 -> animator.rightLegLower;
+                                case 2 -> animator.rightFoot;
+                                case 3 -> animator.rightPad;
+                                default -> null;
+                            };
+                        } catch (Exception ignored) {}
+
+                        return switch (param) {
+                            case "root" -> animator.rightLeg;
+                            case "lower" -> animator.rightLegLower;
+                            case "foot" -> animator.rightFoot;
+                            case "pad" -> animator.rightPad;
+                            default -> null;
+                        };
+                    }));
     public static final LimbExtension TAIL = register("tail",
             LimbExtension.<AbstractTailAnimator<?,?>>forAnimator(Set.of(Limb.TORSO, Limb.LOWER_TORSO), AbstractTailAnimator.class,
                     (animator, limb, limbRoot, param) -> {
