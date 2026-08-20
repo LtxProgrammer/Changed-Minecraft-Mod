@@ -19,7 +19,7 @@ import net.minecraft.world.item.*;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-public class PinkShorts extends ClothingItem implements Shorts, LatexFusingItem {
+public class PinkShorts extends ShortsItem implements LatexFusingItem {
     @Override
     protected @Nullable ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type) {
         ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());

@@ -17,7 +17,7 @@ import net.minecraft.world.item.*;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-public class BenignShorts extends ClothingItem implements Shorts, LaserReactiveItem {
+public class BenignShorts extends ShortsItem implements LaserReactiveItem {
     @Override
     protected ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type) {
         ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());

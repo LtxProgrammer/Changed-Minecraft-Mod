@@ -4,22 +4,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 
-public class DyeableClothingItem extends ClothingItem implements DyeableLeatherItem {
-    public DyeableClothingItem() {
-        super();
-    }
-
-    public DyeableClothingItem(Properties properties) {
-        super(properties);
-    }
-
+public interface DyeableClothingItem extends DyeableLeatherItem {
     @Override
-    public int getColor(ItemStack itemStack) {
-        CompoundTag compoundtag = itemStack.getTagElement("display");
-        return compoundtag != null && compoundtag.contains("color", 99) ? compoundtag.getInt("color") : this.getDefaultColor();
+    default int getColor(ItemStack itemStack) {
+        CompoundTag compoundtag = itemStack.getTagElement(TAG_DISPLAY);
+        return compoundtag != null && compoundtag.contains(TAG_COLOR, 99) ? compoundtag.getInt(TAG_COLOR) : this.getDefaultColor();
     }
 
-    protected int getDefaultColor() {
-        return DyeableLeatherItem.DEFAULT_LEATHER_COLOR;
+    default int getDefaultColor() {
+        return DEFAULT_LEATHER_COLOR;
     }
 }

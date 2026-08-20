@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.animations.ModelPartIdentifier;
 import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 public interface Clothing extends AccessoryItem {
     ArmorMaterial MATERIAL = new ArmorMaterial() {
@@ -64,6 +66,10 @@ public interface Clothing extends AccessoryItem {
     @Nullable
     default ResourceLocation getTexture(ItemStack stack, Entity entity, EquipmentSlot renderSlot, @Nullable String type) {
         return ResourceLocation.tryParse(stack.getItem().getArmorTexture(stack, entity, renderSlot, type));
+    }
+
+    default void hideModelParts(ItemStack stack, Entity entity, EquipmentSlot renderSlot, Consumer<ModelPartIdentifier> partsToHide) {
+
     }
 
     @Override

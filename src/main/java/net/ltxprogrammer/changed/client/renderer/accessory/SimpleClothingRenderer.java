@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexHumanoidArmorLayer;
@@ -16,6 +17,7 @@ import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -29,6 +31,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -87,6 +90,15 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                     model.getAnimator(changedEntity).copyProperties(advancedHumanoidRenderer.getModel(changedEntity).getAnimator(changedEntity));
                     model.prepareMobModel(changedEntity, limbSwing, limbSwingAmount, partialTicks);
                     model.setupAnim(changedEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
+                    List<ModelPart> hiddenParts = new ObjectArrayList<>();
+                    clothing.hideModelParts(stack, entity, component.renderAs, partIdentifier -> {
+                        var part = partIdentifier.getModelPart(model, changedEntity);
+                        if (part != null)
+                            hiddenParts.add(part);
+                    });
+                    hiddenParts.forEach(part -> part.visible = false);
+
                     model.prepareVisibility(component.renderAs, stack);
                     if (stack.getItem() instanceof DyeableLeatherItem dyeable) {
                         Color3 color = Color3.fromInt(dyeable.getColor(stack));
@@ -107,11 +119,22 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                                     ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                                     light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
                     }
+
+                    hiddenParts.forEach(part -> part.visible = true);
                 }
             } else if (renderLayerParent.getModel() instanceof HumanoidModel<?> baseModel) {
                 // TODO: Multiple humanoid layers
                 EquipmentSlot equipmentSlot = (humanoid == ArmorModel.CLOTHING_OUTER || humanoid == ArmorModel.ARMOR_OUTER) ? EquipmentSlot.CHEST : EquipmentSlot.LEGS;
                 baseModel.copyPropertiesTo(clothingModel);
+
+                List<ModelPart> hiddenParts = new ObjectArrayList<>();
+                clothing.hideModelParts(stack, entity, equipmentSlot, partIdentifier -> {
+                    var part = partIdentifier.getModelPart(baseModel);
+                    if (part != null)
+                        hiddenParts.add(part);
+                });
+                hiddenParts.forEach(part -> part.visible = false);
+
                 if (stack.getItem() instanceof DyeableLeatherItem dyeable) {
                     Color3 color = Color3.fromInt(dyeable.getColor(stack));
                     final ResourceLocation texture = clothing.getTexture(stack, entity, equipmentSlot, null);
@@ -131,6 +154,8 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                                 ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                                 light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
                 }
+
+                hiddenParts.forEach(part -> part.visible = true);
             }
         }
     }
@@ -153,6 +178,15 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                     /*model.setupAnim(changedEntity, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
                     model.setupHand(changedEntity);*/
                     model.prepareVisibility(component.renderAs, stack);
+
+                    List<ModelPart> hiddenParts = new ObjectArrayList<>();
+                    clothing.hideModelParts(stack, entity, component.renderAs, partIdentifier -> {
+                        var part = partIdentifier.getModelPart(model, changedEntity);
+                        if (part != null)
+                            hiddenParts.add(part);
+                    });
+                    hiddenParts.forEach(part -> part.visible = false);
+
                     var armPart = model.getArm(arm);
                     armPart.loadPose(armPose);
                     if (stack.getItem() instanceof DyeableLeatherItem dyeable) {
@@ -174,10 +208,21 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                                     matrixStack, ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                                     light, 1F, 1F, 1F, 1F);
                     }
+
+                    hiddenParts.forEach(part -> part.visible = true);
                 }
             } else if (renderLayerParent.getModel() instanceof HumanoidModel<?> baseModel) {
                 // TODO: Multiple humanoid layers
                 baseModel.copyPropertiesTo(clothingModel);
+
+                List<ModelPart> hiddenParts = new ObjectArrayList<>();
+                clothing.hideModelParts(stack, entity, EquipmentSlot.CHEST, partIdentifier -> {
+                    var part = partIdentifier.getModelPart(baseModel);
+                    if (part != null)
+                        hiddenParts.add(part);
+                });
+                hiddenParts.forEach(part -> part.visible = false);
+
                 var armPart = arm == HumanoidArm.RIGHT ? clothingModel.rightArm : clothingModel.leftArm;
                 armPart.loadPose(armPose);
                 if (stack.getItem() instanceof DyeableLeatherItem dyeable) {
@@ -199,6 +244,8 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                                 matrixStack, ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                                 light, 1F, 1F, 1F, 1F);
                 }
+
+                hiddenParts.forEach(part -> part.visible = true);
             }
         }
     }

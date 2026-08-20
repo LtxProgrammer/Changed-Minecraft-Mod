@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
+import net.ltxprogrammer.changed.client.animations.LimbExtensions;
+import net.ltxprogrammer.changed.client.animations.ModelPartIdentifier;
 import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.client.Minecraft;
@@ -16,6 +18,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class LabCoatItem extends ClothingItem {
     public LabCoatItem() {
@@ -55,6 +58,14 @@ public class LabCoatItem extends ClothingItem {
         else
             return ResourceLocation.fromNamespaceAndPath(itemId.getNamespace(),
                     String.format("textures/models/%s.png", itemId.getPath()));
+    }
+
+    @Override
+    public void hideModelParts(ItemStack stack, Entity entity, EquipmentSlot renderSlot, Consumer<ModelPartIdentifier> partsToHide) {
+        super.hideModelParts(stack, entity, renderSlot, partsToHide);
+        partsToHide.accept(ModelPartIdentifier.forExtension(LimbExtensions.TAIL));
+        partsToHide.accept(ModelPartIdentifier.forExtension(LimbExtensions.LEFT_LEG_PARTS, "foot"));
+        partsToHide.accept(ModelPartIdentifier.forExtension(LimbExtensions.RIGHT_LEG_PARTS, "foot"));
     }
 
     @Override

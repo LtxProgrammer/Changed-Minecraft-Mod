@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
+import net.ltxprogrammer.changed.client.animations.ModelPartIdentifier;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
@@ -34,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ClothingItem extends Item implements Clothing, ExtendedItemProperties {
