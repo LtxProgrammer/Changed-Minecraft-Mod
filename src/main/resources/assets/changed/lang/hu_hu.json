@@ -1341,6 +1341,7 @@
   "application.changed.file_explorer.eject_drive": "Meghajtó kiadása",
   "application.changed.file_explorer.item_count": "%s elem",
   "application.changed.file_explorer.remove": "Törlés",
+  "application.changed.file_explorer.rename": "Átnevezés",
   "application.changed.file_explorer.cut": "Kivágás",
   "application.changed.file_explorer.copy": "Másolás",
   "application.changed.file_explorer.paste": "Beillesztés",
