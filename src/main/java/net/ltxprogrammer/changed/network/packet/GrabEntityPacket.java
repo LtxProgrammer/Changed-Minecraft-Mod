@@ -2,8 +2,8 @@ package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.ability.KeyReference;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
@@ -17,7 +17,6 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -350,10 +349,10 @@ public class GrabEntityPacket implements ChangedPacket {
 
                     var ability = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
                     if (ability != null) {
-                        ability.escapeKeys.queueKeyState(AbstractAbilityInstance.KeyReference.MOVE_FORWARD, this.keyForward);
-                        ability.escapeKeys.queueKeyState(AbstractAbilityInstance.KeyReference.MOVE_BACKWARD, this.keyBackward);
-                        ability.escapeKeys.queueKeyState(AbstractAbilityInstance.KeyReference.MOVE_LEFT, this.keyLeft);
-                        ability.escapeKeys.queueKeyState(AbstractAbilityInstance.KeyReference.MOVE_RIGHT, this.keyRight);
+                        ability.escapeKeys.queueKeyState(KeyReference.MOVE_FORWARD, this.keyForward);
+                        ability.escapeKeys.queueKeyState(KeyReference.MOVE_BACKWARD, this.keyBackward);
+                        ability.escapeKeys.queueKeyState(KeyReference.MOVE_LEFT, this.keyLeft);
+                        ability.escapeKeys.queueKeyState(KeyReference.MOVE_RIGHT, this.keyRight);
                     }
 
                     else
@@ -370,10 +369,10 @@ public class GrabEntityPacket implements ChangedPacket {
 
                     var ability = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
                     if (ability != null) {
-                        ability.escapeKeys.queueKeyState(AbstractAbilityInstance.KeyReference.MOVE_FORWARD, this.keyForward);
-                        ability.escapeKeys.queueKeyState(AbstractAbilityInstance.KeyReference.MOVE_BACKWARD, this.keyBackward);
-                        ability.escapeKeys.queueKeyState(AbstractAbilityInstance.KeyReference.MOVE_LEFT, this.keyLeft);
-                        ability.escapeKeys.queueKeyState(AbstractAbilityInstance.KeyReference.MOVE_RIGHT, this.keyRight);
+                        ability.escapeKeys.queueKeyState(KeyReference.MOVE_FORWARD, this.keyForward);
+                        ability.escapeKeys.queueKeyState(KeyReference.MOVE_BACKWARD, this.keyBackward);
+                        ability.escapeKeys.queueKeyState(KeyReference.MOVE_LEFT, this.keyLeft);
+                        ability.escapeKeys.queueKeyState(KeyReference.MOVE_RIGHT, this.keyRight);
                         Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity),
                                 new EscapeKeyState(entity, keyForward, keyBackward, keyLeft, keyRight));
                     }

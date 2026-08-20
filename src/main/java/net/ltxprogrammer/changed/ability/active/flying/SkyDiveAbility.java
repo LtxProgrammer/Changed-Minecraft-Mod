@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +20,7 @@ import java.util.Collections;
 public class SkyDiveAbility extends SimpleAbility {
     @Override
     public UseType getUseType(IAbstractChangedEntity entity) {
-        return UseType.CHARGE_TIME;
+        return entity.getEntity().isFallFlying() ? UseType.INSTANT : UseType.CHARGE_TIME;
     }
 
     @Override
@@ -29,12 +30,12 @@ public class SkyDiveAbility extends SimpleAbility {
 
     @Override
     public int getCoolDown(IAbstractChangedEntity entity) {
-        return entity.getEntity().isFallFlying() ? ChangedAbilities.WING_FLAP.get().getCoolDown(entity) : 20;
+        return ChangedAbilities.WING_FLAP.get().getCoolDown(entity);
     }
 
     @Override
     public boolean canUse(IAbstractChangedEntity entity) {
-        var wingFlapCharges = entity.getAbilityInstanceSafe(ChangedAbilities.WING_FLAP.get()).map(WingFlapAbilityInstance::getChargesRemaining).orElse(0);
+        var wingFlapCharges = entity.getAbilityInstanceSafe(ChangedAbilities.WING_FLAP.get()).map(WingFlapAbilityInstance::getCharges).orElse(0);
         var variant = entity.getTransfurVariantInstance();
 
         return entity.getEntity() instanceof Player player
@@ -70,46 +71,49 @@ public class SkyDiveAbility extends SimpleAbility {
 
         var self = entity.getEntity();
         int level = this.getAbilityLevel(entity);
-        var variant = entity.getTransfurVariantInstance();
 
-        if (self instanceof Player player && self.level().isClientSide) {
-            player.getAbilities().flying = false;
-            player.onUpdateAbilities();
-        }
-
-        Vec3 lookAngle = self.getLookAngle();
-        Vec3 boostAngle;
-
-        if (!self.isFallFlying() && lookAngle.y > 0.0) {
-            boostAngle = new Vec3(lookAngle.x, lookAngle.y * 0.25f, lookAngle.z);
-        } else {
-            boostAngle = lookAngle;
-        }
-
-        double boostSpeed;
-        if (self.isFallFlying()) {
-            var horiz = entity.getFeatureLevel(ChangedVariantFeatures.WING_FLAP_BONUS_HORIZONTAL.get());
-            this.playWingFlapSound(entity, horiz >= 0.35d);
-            boostSpeed = 0.175d * (1.0 + horiz);
-        } else {
-            this.playWingFlapSound(entity, level > 0);
-            boostSpeed = 0.2d * (level + 1);
-        }
-
-        AbilityTreeInstance.offerPointEvent(entity, ChangedAbilityPointEvents.ON_WING_FLAP.get(), NullCriteria.INSTANCE);
-        if (self instanceof Player player && !player.isFallFlying()) {
-            player.startFallFlying();
-        } else {
-            if (variant != null) {
-                variant.chargeFlightStamina(2.0d);
-                entity.getAbilityInstanceSafe(ChangedAbilities.WING_FLAP.get()).ifPresent(WingFlapAbilityInstance::consumeCharge);
+        if (!self.isFallFlying()) {
+            if (self instanceof Player player && self.level().isClientSide) {
+                player.getAbilities().flying = false;
+                player.onUpdateAbilities();
             }
-        }
 
-        self.setDeltaMovement(self.getDeltaMovement().add(
-                boostAngle.x * boostSpeed,
-                boostAngle.y * boostSpeed,
-                boostAngle.z * boostSpeed
-        ));
+            Vec3 lookAngle = self.getLookAngle();
+            Vec3 boostAngle;
+
+            if (lookAngle.y > 0.0) {
+                boostAngle = new Vec3(lookAngle.x, lookAngle.y * 0.25f, lookAngle.z);
+            } else {
+                boostAngle = lookAngle;
+            }
+
+            double boostSpeed = 0.2d * (level + 1);
+            this.playWingFlapSound(entity, level > 0);
+
+            AbilityTreeInstance.offerPointEvent(entity, ChangedAbilityPointEvents.ON_WING_FLAP.get(), NullCriteria.INSTANCE);
+            if (self instanceof Player player && !player.isFallFlying()) {
+                player.startFallFlying();
+            }
+
+            self.setDeltaMovement(self.getDeltaMovement().add(
+                    boostAngle.x * boostSpeed,
+                    boostAngle.y * boostSpeed,
+                    boostAngle.z * boostSpeed
+            ));
+
+            entity.getAbilityInstanceSafe(ChangedAbilities.WING_FLAP.get()).ifPresent(ability -> ability.getController().applyCoolDown());
+        } else { // Forward further ability activations to wing flap ability
+            var wingFlap = entity.getAbilityInstance(ChangedAbilities.WING_FLAP.get());
+            if (wingFlap != null)
+                wingFlap.fallFlyWingBoost();
+        }
+    }
+
+    @Override
+    public @Nullable Integer getCharges(IAbstractChangedEntity entity) {
+        var wingFlap = entity.getAbilityInstance(ChangedAbilities.WING_FLAP.get());
+        if (!entity.getEntity().isFallFlying() || wingFlap == null)
+            return null;
+        return wingFlap.getCharges();
     }
 }

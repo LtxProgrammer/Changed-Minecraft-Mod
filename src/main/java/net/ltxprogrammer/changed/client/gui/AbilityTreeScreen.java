@@ -148,6 +148,10 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             return true;
         }
 
+        protected boolean canBeSkipped() {
+            return false;
+        }
+
         public List<Component> createTooltip() {
             var tooltipBuilder = ImmutableList.<Component>builder();
             if (this.renderState == NodeRenderState.UNLOCKED) {
@@ -241,7 +245,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         protected NodeRenderState determineRenderState() {
             if (isUnlocked())
                 return NodeRenderState.UNLOCKED;
-            if (parent != null && !parent.isUnlocked())
+            if (parent != null && !parent.isUnlocked() && !parent.canBeSkipped())
                 return NodeRenderState.DISTANT;
             if (!accountedTree.hasPrerequisites(AbilityTreeScreen.this.entity, nodeName))
                 return NodeRenderState.PRE_REQ_LOCKED;
@@ -279,6 +283,11 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         @Override
         protected boolean isUnlocked() {
             return accountedTree.getNodeState(AbilityTreeScreen.this.entity.getSelfVariant(), node).map(AbilityTreeInstance.NodeState::unlocked).orElse(false);
+        }
+
+        @Override
+        protected boolean canBeSkipped() {
+            return accountedTree.getNodeState(AbilityTreeScreen.this.entity.getSelfVariant(), node).map(nodeState -> nodeState.node().skipIfRequirementsNotMet(accountedTree, true)).orElse(false);
         }
 
         @Override

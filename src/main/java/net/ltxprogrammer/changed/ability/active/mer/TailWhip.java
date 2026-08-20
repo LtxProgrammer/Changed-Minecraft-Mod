@@ -60,6 +60,9 @@ public class TailWhip extends SimpleAbility {
 
         this.playTailWhipSound(entity, false);
 
+        if (entity.getLevel().isClientSide())
+            return;
+
         DamageSource source = ChangedDamageSources.MER_TAIL_WHIP.source(entity.getLevel().registryAccess(), entity.getEntity());
         float damage = (float) entity.getEntity().getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
 

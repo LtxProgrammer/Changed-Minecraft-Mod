@@ -3,16 +3,13 @@ package net.ltxprogrammer.changed.computers;
 import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
 import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
-import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.ltxprogrammer.changed.util.TagUtil;
-import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.nio.file.Path;
 import java.util.Optional;
 
 public class DiscData {
@@ -23,12 +20,29 @@ public class DiscData {
     protected final Folder rootFolder;
     protected final Runnable modifiedListener;
 
+    protected Permissions permissions = Permissions.READ_WRITE;
+
     public DiscData(Runnable modifiedListener) {
         this.modifiedListener = modifiedListener;
 
         name = "New Disk";
         generatorId = null;
         rootFolder = createFolder();
+    }
+
+    public static DiscData copyOf(Folder folder, Runnable modifiedListener) {
+        return new DiscData(
+                new Folder(folder.serialize(), modifiedListener),
+                modifiedListener
+        );
+    }
+
+    private DiscData(Folder rootFolder, Runnable modifiedListener) {
+        this.modifiedListener = modifiedListener;
+
+        name = "New Disk";
+        generatorId = null;
+        this.rootFolder = rootFolder;
     }
 
     public DiscData(CompoundTag tag, Runnable modifiedListener) {
@@ -40,6 +54,8 @@ public class DiscData {
         } else {
             rootFolder = createFolder();
         }
+
+        permissions = tag.contains("p") ? Permissions.fromByte(tag.getByte("p")) : Permissions.READ_WRITE;
     }
 
     protected boolean tryLoadGenerator(CompoundTag tag) {
@@ -61,6 +77,7 @@ public class DiscData {
             tag.putString("n", name);
             tag.put("r", rootFolder.serialize());
         }
+        tag.putByte("p", permissions.toByte());
         return tag;
     }
 
@@ -71,6 +88,8 @@ public class DiscData {
 
             if (generator != null)
                 generator.generate(RandomSource.create(generatorSeed), this, consumer);
+
+            this.markModified();
         }
 
         return this;
@@ -92,19 +111,27 @@ public class DiscData {
         this.name = name;
     }
 
-    public Either<File, File.Error> getFile(Path path) {
+    public Permissions getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Permissions permissions) {
+        this.permissions = permissions;
+    }
+
+    public Either<File, File.Error> getFile(LexicalPath path) {
         return rootFolder.getFile(path);
     }
 
-    public Either<File, File.Error> createFile(Path path, File.Type type) {
+    public Either<File, File.Error> createFile(LexicalPath path, File.Type type) {
         return rootFolder.createFile(path, type);
     }
 
-    public @Nullable Folder getFolder(Path path) {
+    public @Nullable Folder getFolder(LexicalPath path) {
         return rootFolder.getFolder(path);
     }
 
-    public Optional<Folder> getFolderSafe(Path path) {
+    public Optional<Folder> getFolderSafe(LexicalPath path) {
         return Optional.ofNullable(rootFolder.getFolder(path));
     }
 

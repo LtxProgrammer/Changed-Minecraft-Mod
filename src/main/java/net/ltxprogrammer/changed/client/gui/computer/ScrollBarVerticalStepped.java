@@ -81,6 +81,10 @@ public class ScrollBarVerticalStepped extends AbstractWidget {
         return scroll;
     }
 
+    public int getScrollNext() {
+        return scroll + viewportSize;
+    }
+
     public int getMaxScroll() {
         return this.canvasSize - this.viewportSize;
     }

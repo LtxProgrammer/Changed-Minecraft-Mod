@@ -90,7 +90,7 @@ public class ChangedTabs {
                         output.accept(ChangedBlocks.PETRI_DISH.get());
                         output.accept(ChangedBlocks.RETINAL_SCANNER.get());
                         output.accept(ChangedBlocks.ROOMBA_CHARGER.get());
-                        output.accept(ChangedBlocks.ROUTER.get());
+                        output.accept(ChangedBlocks.SERVER_STACK.get());
                         output.accept(ChangedBlocks.SHIPPING_CONTAINER_BLUE.get());
                         output.accept(ChangedBlocks.SHIPPING_CONTAINER_ORANGE.get());
                         output.accept(ChangedBlocks.SPEAKER.get());
@@ -158,6 +158,7 @@ public class ChangedTabs {
                         output.accept(ChangedBlocks.WALL_WHITE_SLAB.get());
                         output.accept(ChangedBlocks.WALL_WHITE_STAIRS.get());
                         output.accept(ChangedBlocks.WHITE_LAB_TABLE.get());
+                        output.accept(ChangedBlocks.WLAN_ROUTER.get());
 
                         output.accept(ChangedBlocks.BEEHIVE_BED.get());
                         output.accept(ChangedBlocks.BEEHIVE_WALL.get());

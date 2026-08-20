@@ -112,7 +112,7 @@ public class ChangedBlocks {
     public static final RegistryObject<PetriDishBlock> PETRI_DISH = register("petri_dish", () -> new PetriDishBlock(BlockBehaviour.Properties.of().sound(SoundType.GLASS).instabreak().dynamicShape()));
     public static final RegistryObject<RetinalScanner> RETINAL_SCANNER = register("retinal_scanner", () -> new RetinalScanner(BlockBehaviour.Properties.copy(COMPUTER.get()).lightLevel((state) -> 0)));
     public static final RegistryObject<RoombaCharger> ROOMBA_CHARGER = register("roomba_charger", () -> new RoombaCharger(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3.0f, 3.0f)));
-    public static final RegistryObject<Router> ROUTER = register("router", () -> new Router(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3.0F, 3.0F).lightLevel((state) -> 4)));
+    public static final RegistryObject<ServerStack> SERVER_STACK = register("server_stack", () -> new ServerStack(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3.0F, 3.0F).lightLevel((state) -> 4)));
     public static final RegistryObject<ShippingContainer> SHIPPING_CONTAINER_BLUE = register("shipping_container_blue", ShippingContainer::new);
     public static final RegistryObject<ShippingContainer> SHIPPING_CONTAINER_ORANGE = register("shipping_container_orange", ShippingContainer::new);
     public static final RegistryObject<SpeakerBlock> SPEAKER = register("speaker", () -> new SpeakerBlock(BlockBehaviour.Properties.copy(RETINAL_SCANNER.get())));
@@ -179,6 +179,7 @@ public class ChangedBlocks {
     public static final RegistryObject<LabSlabBlock> WALL_WHITE_SLAB = register("wall_white_slab", () -> new LabSlabBlock(WALL_WHITE.get()::defaultBlockState, BlockBehaviour.Properties.copy(WALL_WHITE.get())));
     public static final RegistryObject<LabStairBlock> WALL_WHITE_STAIRS = register("wall_white_stairs", () -> new LabStairBlock(WALL_WHITE.get()::defaultBlockState, BlockBehaviour.Properties.copy(WALL_WHITE.get())));
     public static final RegistryObject<LabTable> WHITE_LAB_TABLE = register("white_lab_table", () -> new LabTable(BlockBehaviour.Properties.of().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 5.0F)));
+    public static final RegistryObject<WLANRouter> WLAN_ROUTER = register("wlan_router", () -> new WLANRouter(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3.0F, 3.0F).lightLevel((state) -> 4)));
 
     public static final RegistryObject<WhiteLatexFluidBlock> WHITE_LATEX_FLUID = registerNoItem("white_latex_fluid", WhiteLatexFluidBlock::new);
     public static final RegistryObject<WhiteLatexPillar> WHITE_LATEX_PILLAR = register("white_latex_pillar", () -> new WhiteLatexPillar(BlockBehaviour.Properties.of().sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F).noOcclusion()));

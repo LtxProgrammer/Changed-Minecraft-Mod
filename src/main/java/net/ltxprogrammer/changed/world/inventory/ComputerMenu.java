@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.world.inventory;
 
-import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.block.entity.ComputerBlockEntity;
 import net.ltxprogrammer.changed.computers.File;
+import net.ltxprogrammer.changed.computers.LexicalPath;
 import net.ltxprogrammer.changed.computers.application.Application;
 import net.ltxprogrammer.changed.computers.application.ApplicationType;
 import net.ltxprogrammer.changed.init.*;
@@ -18,7 +18,6 @@ import net.minecraftforge.fml.LogicalSide;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -88,7 +87,7 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
             Operation requestedOp = Operation.valueOf(payload.getString("op"));
             switch (requestedOp) {
                 case GET_RECIPE -> {
-                    Path fullPath = Path.of(payload.getString("path"));
+                    var fullPath = LexicalPath.of(payload.getString("path")).assertAbsolute();
                     computer.getFileOfType(fullPath, File.Type.RECIPE).left().flatMap(file -> {
                         var recipeLoc = ResourceLocation.parse(file.getContent());
                         return origin.serverLevel().getRecipeManager().byKey(recipeLoc);
@@ -100,30 +99,30 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
         }
     }
 
-    public CompoundTag requestRecipe(Path fullPath) {
+    public CompoundTag requestRecipe(LexicalPath.Absolute fullPath) {
         var tag = new CompoundTag();
         tag.putString("op", Operation.GET_RECIPE.name());
         tag.putString("path", fullPath.toString());
         return tag;
     }
 
-    public Path getWorkingDir() {
+    public LexicalPath.Absolute getWorkingDir() {
         return computer.currentWorkingDirectory;
     }
 
-    public void setWorkingDir(Path workingDir) {
+    public void setWorkingDir(LexicalPath.Absolute workingDir) {
         computer.currentWorkingDirectory = workingDir;
     }
 
-    public Path getHomeDir() {
+    public LexicalPath.Absolute getHomeDir() {
         return computer.homeDirectory;
     }
 
-    public Path getDesktopDir() {
-        return computer.homeDirectory.resolve(Path.of("Desktop/"));
+    public LexicalPath.Absolute getDesktopDir() {
+        return computer.homeDirectory.resolve("Desktop");
     }
 
-    public Path getBinariesDir() {
+    public LexicalPath.Absolute getBinariesDir() {
         return computer.binariesDirectory;
     }
 
@@ -153,6 +152,12 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
         return applications.peek();
     }
 
+    public void syncBlockEntity() {
+        if (player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.connection.send(computer.getUpdatePacket());
+        }
+    }
+
     /// INTERNAL
     public Application launchApplication(ApplicationType<?> applicationType, List<String> args) {
         var app = applicationType.createApplication(this, args);
@@ -165,6 +170,6 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
     public void closeApplication(ApplicationType<?> applicationType) {
         if (applications.peek().getType() != applicationType)
             throw new IllegalArgumentException("Application type mismatch");
-        applications.pop();
+        applications.pop().onClose();
     }
 }

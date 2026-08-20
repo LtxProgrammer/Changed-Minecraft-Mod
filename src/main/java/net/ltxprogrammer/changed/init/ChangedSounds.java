@@ -33,6 +33,8 @@ public class ChangedSounds {
     public static final RegistryObject<SoundEvent> CARDBOARD_BOX_CLOSE = register("block.cardboard_box.close");
     public static final RegistryObject<SoundEvent> CARDBOARD_BOX_OPEN = register("block.cardboard_box.open");
     public static final RegistryObject<SoundEvent> CONTAINER_BREAK = register("block.container.break");
+    public static final RegistryObject<SoundEvent> COMPUTER_DISC_INSERT = register("block.computer.disc_insert");
+    public static final RegistryObject<SoundEvent> COMPUTER_DISC_EJECT = register("block.computer.disc_eject");
     public static final RegistryObject<SoundEvent> CRYSTAL_EXTEND = register("block.crystal.extend");
     public static final RegistryObject<SoundEvent> GAS_HISS = register("block.gas.ambient");
     public static final RegistryObject<SoundEvent> KEYPAD_CLICK = register("block.keypad.click");
@@ -81,6 +83,7 @@ public class ChangedSounds {
 
     public static final RegistryObject<SoundEvent> UNDERWATER_BOOST = register("ability.underwater_dash.boost");
     public static final RegistryObject<SoundEvent> MER_TAIL_WHIP = register("ability.mer.tail_whip");
+    public static final RegistryObject<SoundEvent> TAUR_BACK_KICK = register("ability.taur.back_kick");
     public static final RegistryObject<SoundEvent> WING_FLAP = register("ability.wing_flap");
     public static final RegistryObject<SoundEvent> INK_SMOKE_SCREEN = register("ability.ink_smoke_screen");
 

@@ -30,6 +30,20 @@ public interface StringGenerator {
     String generate(RandomSource random);
     Either<List<String>, List<WeightedEntry.Wrapper<String>>> unwrap();
 
+    static StringGenerator empty() {
+        return new StringGenerator() {
+            @Override
+            public String generate(RandomSource random) {
+                return "";
+            }
+
+            @Override
+            public Either<List<String>, List<WeightedEntry.Wrapper<String>>> unwrap() {
+                return Either.left(List.of());
+            }
+        };
+    }
+
     static StringGenerator fixed(String name) {
         return new StringGenerator() {
             @Override

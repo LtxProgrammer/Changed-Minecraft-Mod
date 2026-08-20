@@ -2,9 +2,12 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.block.entity.ComputerBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
+import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -94,6 +97,7 @@ public class Computer extends AbstractCustomShapeEntityBlock {
             if (blockEntity.canPlaceItem(0, item)) {
                 blockEntity.setItem(0, item.copyWithCount(1));
                 item.shrink(1);
+                level.playSound(null, blockPos, ChangedSounds.COMPUTER_DISC_INSERT.get(), SoundSource.BLOCKS, 1.0f, 0.9F + level.random.nextFloat() * 0.2F);
                 return true;
             }
 
@@ -103,13 +107,18 @@ public class Computer extends AbstractCustomShapeEntityBlock {
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (player instanceof ServerPlayer serverPlayer) {
-            boolean canUse = level.getBlockEntity(pos, ChangedBlockEntities.COMPUTER.get()).map(blockEntity -> {
-                if (blockEntity.activeUser == null)
-                    blockEntity.activeUser = serverPlayer;
-                return blockEntity.activeUser == serverPlayer;
-            }).orElse(false);
-            if (!canUse)
+            var blockEntity = level.getBlockEntity(pos, ChangedBlockEntities.COMPUTER.get()).orElse(null);
+            if (blockEntity == null)
                 return InteractionResult.FAIL;
+
+            ItemStack heldItem = serverPlayer.getItemInHand(hand);
+            if (heldItem.is(ChangedItems.COMPACT_DISC.get()) && tryUseDisk(player, level, pos, state, heldItem)) {
+                return InteractionResult.CONSUME;
+            }
+
+            if (blockEntity.activeUser != null && blockEntity.activeUser != player)
+                return InteractionResult.FAIL;
+            blockEntity.activeUser = serverPlayer;
 
             NetworkHooks.openScreen(serverPlayer, getMenuProvider(state, level, pos), extra -> {
                 extra.writeBlockPos(pos);

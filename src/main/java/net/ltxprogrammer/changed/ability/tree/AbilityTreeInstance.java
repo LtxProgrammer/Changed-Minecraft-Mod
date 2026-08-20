@@ -22,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -67,6 +68,42 @@ public class AbilityTreeInstance {
     }
 
     public record NodeState(ResourceLocation nodeName, AbilityNode node, boolean unlocked) {}
+
+    public static class NodeChain implements Iterable<NodeState> {
+        protected final TransfurVariant<?> variant;
+        protected final AccountedTree tree;
+        protected final ResourceLocation topNode;
+
+        public NodeChain(TransfurVariant<?> variant, AccountedTree tree, ResourceLocation topNode) {
+            this.variant = variant;
+            this.tree = tree;
+            this.topNode = topNode;
+        }
+
+        @Override
+        public @NotNull Iterator<NodeState> iterator() {
+            return new Iterator<>() {
+                NodeState nextNode = tree.getNodeState(variant, topNode).orElse(null);
+
+                @Override
+                public boolean hasNext() {
+                    return nextNode != null;
+                }
+
+                @Override
+                public NodeState next() {
+                    var ret = nextNode;
+
+                    nextNode = nextNode.node.parent.map(
+                            parentNodeName -> tree.getNodeState(variant, parentNodeName).orElse(null),
+                            treeReference -> null
+                    );
+
+                    return ret;
+                }
+            };
+        }
+    }
 
     public static class PointStore {
         private int points;
@@ -287,29 +324,36 @@ public class AbilityTreeInstance {
             return purchasedNodes.stream().filter(purchase -> purchase.nodeName.equals(nodeName));
         }
 
+        public boolean isParentNodeUnlocked(IAbstractChangedEntity entity, ResourceLocation nodeName) {
+            final var node = tree.getNamedNode(nodeName);
+            if (node == null)
+                return false;
+
+            return node.parent.map(
+                    parentNodeName -> {
+                        for (var parentState : getNodeAndParents(entity.getSelfVariant(), parentNodeName)) {
+                            if (parentState.unlocked())
+                                return true;
+                            if (parentState.node().skipIfRequirementsNotMet(this, entity.getLevel().isClientSide()))
+                                continue;
+                            return false;
+                        }
+
+                        return true;
+                    },
+                    treeReference -> true
+            );
+        }
+
         public boolean hasPrerequisites(IAbstractChangedEntity entity, ResourceLocation nodeName) {
             final var node = tree.getNamedNode(nodeName);
             if (node == null)
                 return false;
 
-            if (!node.getRequirementProgress().isEmpty()) { // Requirements are likely being evaluated on the client, use progress
-                for (var requirement : node.getRequirementProgress()) {
-                    if (!requirement.requirementMet())
-                        return false;
-                }
-            } else {
-                for (var requirement : node.requirements) {
-                    if (!requirement.requirementMet(this, node))
-                        return false;
-                }
-            }
+            if (!node.areRequirementsMet(this, entity.getLevel().isClientSide()))
+                return false;
 
-            return node.parent.map(
-                    parentName -> getNodeStates(entity.getSelfVariant(), pair -> {
-                        return pair.getFirst().equals(parentName);
-                    }).allMatch(NodeState::unlocked),
-                    treeReference -> true
-            );
+            return isParentNodeUnlocked(entity, nodeName);
         }
 
         public Stream<NodeState> getNodeStates(TransfurVariant<?> forVariant) {
@@ -349,6 +393,10 @@ public class AbilityTreeInstance {
         public Optional<NodeState> getNodeState(TransfurVariant<?> forVariant, ResourceLocation nodeName) {
             return tree.getTreeNodes().filter(pair -> pair.getFirst().equals(nodeName)).findAny()
                     .map(namedNode -> this.computeNodeState(forVariant, namedNode));
+        }
+
+        public NodeChain getNodeAndParents(TransfurVariant<?> forVariant, ResourceLocation nodeName) {
+            return new NodeChain(forVariant, this, nodeName);
         }
 
         public boolean hasAllNodes(TransfurVariant<?> variant) {

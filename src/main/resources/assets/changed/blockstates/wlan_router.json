@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,hanging=false": {
+      "model": "changed:block/wlan_router_floor"
+    },
+    "facing=east,hanging=false": {
+      "model": "changed:block/wlan_router_floor",
+      "y": 90
+    },
+    "facing=south,hanging=false": {
+      "model": "changed:block/wlan_router_floor",
+      "y": 180
+    },
+    "facing=west,hanging=false": {
+      "model": "changed:block/wlan_router_floor",
+      "y": 270
+    },
+    "facing=north,hanging=true": {
+      "model": "changed:block/wlan_router_ceiling"
+    },
+    "facing=east,hanging=true": {
+      "model": "changed:block/wlan_router_ceiling",
+      "y": 90
+    },
+    "facing=south,hanging=true": {
+      "model": "changed:block/wlan_router_ceiling",
+      "y": 180
+    },
+    "facing=west,hanging=true": {
+      "model": "changed:block/wlan_router_ceiling",
+      "y": 270
+    }
+  }
+}

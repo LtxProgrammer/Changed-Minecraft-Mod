@@ -2,11 +2,11 @@ package net.ltxprogrammer.changed.computers.generator;
 
 import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.computers.DiscData;
+import net.ltxprogrammer.changed.computers.LexicalPath;
 import net.ltxprogrammer.changed.computers.RecognizedDirectory;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.util.RandomSource;
 
-import java.nio.file.Path;
 import java.util.function.Function;
 
 public interface FileSystemGenerator {
@@ -14,7 +14,7 @@ public interface FileSystemGenerator {
             FileSystemGenerator::getCodec, Function.identity());
 
     interface DirectoryConsumer {
-        void accept(RecognizedDirectory label, Path path);
+        void accept(RecognizedDirectory label, LexicalPath path);
     }
 
     void generate(RandomSource random, DiscData data, DirectoryConsumer consumer);

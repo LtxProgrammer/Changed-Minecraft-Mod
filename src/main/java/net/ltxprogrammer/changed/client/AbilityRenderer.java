@@ -6,11 +6,8 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
-import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -20,7 +17,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -28,37 +24,26 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HalfTransparentBlock;
-import net.minecraft.world.level.block.StainedGlassPaneBlock;
 import net.minecraftforge.client.event.ModelEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 
 public class AbilityRenderer implements ResourceManagerReloadListener {
     public static final ResourceLocation ENCHANT_GLINT_LOCATION = ResourceLocation.parse("textures/misc/enchanted_item_glint.png");
-    public static final Set<ResourceLocation> IGNORED = Sets.newHashSet(
-            ChangedAbilities.SELECT_HAIRSTYLE.getId()
-    );
+    public static final Set<ResourceLocation> IGNORED = Sets.newHashSet();
     public float blitOffset;
     private final AbilityModelShaper abilityModelShaper;
     private final TextureManager textureManager;
@@ -239,47 +224,47 @@ public class AbilityRenderer implements ResourceManagerReloadListener {
         RenderSystem.applyModelViewMatrix();
     }
 
-    public void renderAndDecorateAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y) {
+    public void renderAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y) {
         this.tryRenderGuiAbility(graphics, Minecraft.getInstance().player, abilityInstance, x, y, 16, 1.0f, false, 0);
     }
 
-    public void renderAndDecorateAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale) {
+    public void renderAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale) {
         this.tryRenderGuiAbility(graphics, Minecraft.getInstance().player, abilityInstance, x, y, scale, 1.0f, false, 0);
     }
 
-    public void renderAndDecorateAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha) {
+    public void renderAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha) {
         this.tryRenderGuiAbility(graphics, Minecraft.getInstance().player, abilityInstance, x, y, scale, 1.0f, false, 0);
     }
 
-    public void renderAndDecorateAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha, boolean shadow) {
+    public void renderAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha, boolean shadow) {
         this.tryRenderGuiAbility(graphics, Minecraft.getInstance().player, abilityInstance, x, y, scale, alpha, shadow, 0);
     }
 
-    public void renderAndDecorateAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha, boolean shadow, int id) {
+    public void renderAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha, boolean shadow, int id) {
         this.tryRenderGuiAbility(graphics, Minecraft.getInstance().player, abilityInstance, x, y, scale, alpha, shadow, id);
     }
 
-    public void renderAndDecorateAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha, boolean shadow, int id, int zOffset) {
+    public void renderAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha, boolean shadow, int id, int zOffset) {
         this.tryRenderGuiAbility(graphics, Minecraft.getInstance().player, abilityInstance, x, y, scale, alpha, shadow, id, zOffset);
     }
 
-    public void renderAndDecorateFakeAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y) {
+    public void renderFakeAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y) {
         this.tryRenderGuiAbility(graphics, null, abilityInstance, x, y, 16, 1.0f, false, 0);
     }
 
-    public void renderAndDecorateFakeAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale) {
+    public void renderFakeAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale) {
         this.tryRenderGuiAbility(graphics, null, abilityInstance, x, y, scale, 1.0f, false, 0);
     }
 
-    public void renderAndDecorateFakeAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha) {
+    public void renderFakeAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha) {
         this.tryRenderGuiAbility(graphics, null, abilityInstance, x, y, scale, alpha, false, 0);
     }
 
-    public void renderAndDecorateFakeAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha, boolean shadow) {
+    public void renderFakeAbility(GuiGraphics graphics, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha, boolean shadow) {
         this.tryRenderGuiAbility(graphics, null, abilityInstance, x, y, scale, alpha, shadow, 0);
     }
 
-    public void renderAndDecorateAbility(GuiGraphics graphics, LivingEntity entity, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha, boolean shadow, int id) {
+    public void renderAbility(GuiGraphics graphics, LivingEntity entity, AbstractAbilityInstance abilityInstance, int x, int y, int scale, float alpha, boolean shadow, int id) {
         this.tryRenderGuiAbility(graphics, entity, abilityInstance, x, y, scale, alpha, shadow, id);
     }
 
@@ -314,17 +299,21 @@ public class AbilityRenderer implements ResourceManagerReloadListener {
         this.blitOffset = model.isGui3d() ? this.blitOffset - 50.0F - (float)zOffset : this.blitOffset - 50.0F;
     }
 
-    public void renderGuiAbilityDecorations(GuiGraphics graphics, Font font, AbstractAbilityInstance abilityInstance, int x, int y) {
-        this.renderGuiAbilityDecorations(graphics, font, abilityInstance, x, y, null);
+    public void renderGuiAbilityDecorations(GuiGraphics graphics, Font font, AbstractAbilityInstance abilityInstance, int x, int y, int scale) {
+        this.renderGuiAbilityDecorations(graphics, font, abilityInstance, x, y, scale, null);
     }
 
-    public void renderGuiAbilityDecorations(GuiGraphics graphics, Font font, AbstractAbilityInstance abilityInstance, int x, int y, @Nullable String text) {
-        PoseStack posestack = new PoseStack();
-        if (text != null) {
-            posestack.translate(0.0D, 0.0D, (double)(this.blitOffset + 200.0F));
-            MultiBufferSource.BufferSource multibuffersource$buffersource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-            graphics.drawString(font, text, x + 19 - 2 - font.width(text), y + 6 + 3, 16777215, true);
-            multibuffersource$buffersource.endBatch();
+    public void renderGuiAbilityDecorations(GuiGraphics graphics, Font font, AbstractAbilityInstance abilityInstance, int x, int y, int scale, @Nullable String text) {
+        Integer charges = abilityInstance.getCharges();
+        if (charges != null || text != null) {
+            String s = text == null ? String.valueOf(charges) : text;
+            graphics.pose().pushPose();
+            graphics.pose().translate(
+                    scale - 16.0F,
+                    scale - 16.0F,
+                    200.0F);
+            graphics.drawString(font, s, x + 19 - 2 - font.width(s), y + 6 + 3, 0xFFFFFF, true);
+            graphics.pose().popPose();
         }
     }
 

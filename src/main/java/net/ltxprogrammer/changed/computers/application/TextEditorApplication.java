@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.computers.application;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.File;
+import net.ltxprogrammer.changed.computers.LexicalPath;
 import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.ltxprogrammer.changed.network.ChangedPackets;
 import net.ltxprogrammer.changed.network.packet.ComputerAppSyncPacket;
@@ -11,24 +12,23 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.LogicalSide;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.file.Path;
 import java.util.List;
 
 public class TextEditorApplication implements Application {
     protected final ComputerMenu menu;
-    protected @Nullable Path activeFile;
+    protected @Nullable LexicalPath.Absolute activeFile;
     protected String fileContent = "";
 
     public TextEditorApplication(ComputerMenu menu, List<String> args) {
         this.menu = menu;
 
         if (!args.isEmpty()) {
-            this.openFile(Path.of(args.get(0)));
+            this.openFile(LexicalPath.of(args.get(0)));
         } else
             this.activeFile = null;
     }
 
-    public void openFile(Path relativePath) {
+    public void openFile(LexicalPath relativePath) {
         this.activeFile = menu.getWorkingDir().resolve(relativePath);
         var f = menu.computer.getFileOfType(this.activeFile, File.Type.TEXT);
 
@@ -39,7 +39,7 @@ public class TextEditorApplication implements Application {
         });
     }
 
-    public void saveAs(Path relativePath) {
+    public void saveAs(LexicalPath relativePath) {
         this.activeFile = menu.getWorkingDir().resolve(relativePath);
         this.save();
     }
@@ -78,7 +78,7 @@ public class TextEditorApplication implements Application {
         this.fileContent = content;
     }
 
-    public @Nullable Path getActiveFile() {
+    public @Nullable LexicalPath.Absolute getActiveFile() {
         return activeFile;
     }
 
@@ -92,7 +92,7 @@ public class TextEditorApplication implements Application {
         String op = payload.getString("op");
 
         if ("save".equals(op)) {
-            this.activeFile = Path.of(payload.getString("path"));
+            this.activeFile = LexicalPath.of(payload.getString("path")).assertAbsolute();
             this.fileContent = payload.getString("content");
 
             if (receiver.isServer()) {

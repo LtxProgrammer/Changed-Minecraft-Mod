@@ -136,6 +136,17 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         original.call(instance, flagIndex, fallFlying || (isFallFlying() && variant.tickGliding()));
     }
 
+    @WrapMethod(method = "updateFallFlying")
+    private void changed$updateFallFlyingClient(Operation<Void> original) {
+        original.call();
+        var variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(this));
+        if (variant == null)
+            return;
+
+        if (level().isClientSide() && isFallFlying())
+            variant.tickGliding();
+    }
+
     @WrapMethod(method = "getJumpPower")
     public float changed$getJumpPower(Operation<Float> original) {
         var attributes = this.getAttributes();
@@ -369,6 +380,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Shadow public abstract boolean isFallFlying();
 
     @Shadow protected abstract float getJumpPower();
+
+    @Shadow public abstract void remove(RemovalReason p_276115_);
 
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;

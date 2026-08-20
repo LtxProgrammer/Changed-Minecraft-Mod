@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.computers.application;
 
+import net.ltxprogrammer.changed.computers.protocol.Packet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,7 +20,7 @@ public interface Application {
     }
 
     /// Called to handle a packet from an in-game device
-    default void handlePacket(ServerLevel level, int logicalSource, Object packet) {
+    default void handlePacket(ServerLevel level, int logicalSource, Packet packet) {
 
     }
 
@@ -29,6 +30,10 @@ public interface Application {
 
     /// Called to handle a payload of data from the opposite
     default void update(CompoundTag payload, LogicalSide receiver, @Nullable ServerPlayer origin) {
+
+    }
+
+    default void onClose() {
 
     }
 }

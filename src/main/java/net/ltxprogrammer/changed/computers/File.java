@@ -6,11 +6,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.ltxprogrammer.changed.ability.tree.NodeDisplayInfo;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.StringRepresentable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
 public class File {
     public enum Type implements StringRepresentable {
+        FOLDER("folder", "", 0, 0),
         APP("app", "app", 16, 0),
         DATA("data", "dat", 32, 0),
         TEXT("text", "txt", 48, 0),
@@ -34,8 +36,18 @@ public class File {
         }
 
         @Override
-        public String getSerializedName() {
+        public @NotNull String getSerializedName() {
             return serialName;
+        }
+
+        public boolean isValidForFile() {
+            return this != FOLDER;
+        }
+
+        public Type validateForFile() {
+            if (!isValidForFile())
+                throw new IllegalArgumentException(this + " cannot be used as a file type");
+            return this;
         }
 
         public final int xTexture;
@@ -63,7 +75,7 @@ public class File {
     }
 
     public File(CompoundTag tag, Runnable markModified) {
-        this.type = Type.valueOf(tag.getString("t"));
+        this.type = Type.fromSerial(tag.getString("t")).result().orElseThrow().validateForFile();
         this.content = tag.getString("c");
         this.markModified = markModified;
     }
@@ -73,7 +85,7 @@ public class File {
     }
 
     public void saveTo(CompoundTag tag) {
-        tag.putString("t", type.name());
+        tag.putString("t", type.getSerializedName());
         tag.putString("c", content);
     }
 

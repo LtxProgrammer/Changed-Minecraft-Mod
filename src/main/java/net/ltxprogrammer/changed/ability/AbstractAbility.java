@@ -35,6 +35,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             return holdTicks;
         }
 
+        public boolean isStartedUsing() {
+            return startedUsing;
+        }
+
         public void resetHoldTicks() {
             this.holdTicks = 0;
         }
@@ -59,6 +63,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
 
             else
                 startedUsing = false;
+        }
+
+        public boolean canUse() {
+            return abilityInstance.canUse();
         }
 
         public boolean canKeepUsing() {
@@ -145,17 +153,17 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
          * Indicates the ability should activate upon keypress
          */
         INSTANT((keyState, oldState, uniqueTick, controller) -> {
-            if (!oldState && keyState) {
+            if (controller.canUse() && !oldState && keyState) {
                 controller.applyCoolDown();
                 controller.activateAbility();
                 controller.deactivateAbility();
             }
-        }, (keyState, controller) -> keyState ? 1.0F : 0.0F),
+        }, (keyState, controller) -> controller.canUse() && keyState ? 1.0F : 0.0F),
         /**
          * Indicates the ability needs to charge while key is pressed for some time, then activates
          */
         CHARGE_TIME((keyState, oldState, uniqueTick, controller) -> {
-            if (keyState) {
+            if (controller.canUse() && keyState) {
                 if (!controller.chargeAbility(uniqueTick))
                     return;
 
@@ -174,6 +182,9 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
          * Indicates the ability activates when the key is released
          */
         CHARGE_RELEASE((keyState, oldState, uniqueTick, controller) -> {
+            if (!controller.canUse())
+                return;
+
             if (keyState) {
                 controller.tickCharge();
             }
@@ -183,11 +194,16 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
                 controller.activateAbility();
                 controller.deactivateAbility();
             }
-        }, (keyState, controller) -> keyState ? 1.0F : 0.0F),
+        }, (keyState, controller) -> controller.canUse() && keyState ? 1.0F : 0.0F),
         /**
          * Indicates the ability activates when the key is released only after fully charging
          */
         CHARGE_RELEASE_MINIMUM((keyState, oldState, uniqueTick, controller) -> {
+            if (!controller.canUse()) {
+                controller.resetCharge();
+                return;
+            }
+
             if (keyState && !controller.chargeAbility(uniqueTick))
                 controller.tickCharge();
 
@@ -203,15 +219,23 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
          * Indicates the ability activates upon keypress, and continues to fire per tick while key is down
          */
         HOLD((keyState, oldState, uniqueTick, controller) -> {
+            if (!controller.canUse()) {
+                if (controller.isStartedUsing()) {
+                    controller.applyCoolDown();
+                    controller.deactivateAbility();
+                }
+                return;
+            }
+
             if (keyState && !oldState)
                 controller.activateAbility();
             else if (keyState && controller.canKeepUsing())
                 controller.tickAbility(uniqueTick);
             else if (oldState) {
-                controller.deactivateAbility();
                 controller.applyCoolDown();
+                controller.deactivateAbility();
             }
-        }, (keyState, controller) -> keyState ? 1.0F : 0.0F),
+        }, (keyState, controller) -> controller.canUse() && keyState ? 1.0F : 0.0F),
         /**
          * Indicates the ability should activate upon selecting in the ability menu, and does not overwrite selected ability
          */
@@ -296,6 +320,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(this, data));
         else
             Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(this, data, entity.getId()));
+    }
+
+    public @Nullable Integer getCharges(IAbstractChangedEntity entity) {
+        return null;
     }
 
     @Nullable

@@ -1,11 +1,9 @@
 package net.ltxprogrammer.changed.client.gui;
 
-import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.computer.*;
-import net.ltxprogrammer.changed.computers.File;
+import net.ltxprogrammer.changed.computers.LexicalPath;
 import net.ltxprogrammer.changed.computers.UITheme;
-import net.ltxprogrammer.changed.computers.application.ApplicationType;
 import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.ComputerAppLaunchPacket;
@@ -20,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -203,7 +200,7 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
         super.removed();
     }
 
-    public void openFile(Path fullPath) {
+    public void openFile(LexicalPath.Absolute fullPath) {
         this.menu.computer.getFile(fullPath).ifLeft(file -> {
             switch (file.type) {
                 case APP -> {

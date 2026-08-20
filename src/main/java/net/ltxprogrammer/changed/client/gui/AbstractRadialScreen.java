@@ -33,10 +33,15 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
     private int viewOffsetO = 0;
     private int viewOffset = 0;
     private int viewTransitionTicksLeft = 0;
+    private Integer sectionUnderMouse = null;
     private static final int VIEW_TRANSITION_LENGTH = 8;
 
     private float getViewOffset() {
         return Mth.lerp((float)viewTransitionTicksLeft / (float)VIEW_TRANSITION_LENGTH, (float)viewOffset, (float)viewOffsetO);
+    }
+
+    protected @Nullable Integer getSectionUnderMouse() {
+        return sectionUnderMouse;
     }
 
     private final Color3 primaryColor;
@@ -49,12 +54,20 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
 
     public AbstractRadialScreen(T menu, Inventory inventory, Component text, Color3 primary, Color3 secondary, LivingEntity centerEntity) {
         super(menu, inventory, text);
-        this.imageWidth = 0;
-        this.imageHeight = 0;
         this.menu = menu;
         this.primaryColor = primary;
         this.secondaryColor = secondary;
         this.centerEntity = centerEntity;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+
+        this.imageWidth = this.width;
+        this.imageHeight = this.height;
+        this.leftPos = (this.width) / 2;
+        this.topPos = (this.height) / 2;
     }
 
     public abstract int getCount();
@@ -209,6 +222,12 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
             viewOffset--;
             viewTransitionTicksLeft = VIEW_TRANSITION_LENGTH;
         }
+    }
+
+    @Override
+    public void mouseMoved(double mx, double my) {
+        super.mouseMoved(mx, my);
+        sectionUnderMouse = getSectionAt((int)mx, (int)my).orElse(null);
     }
 
     @Override

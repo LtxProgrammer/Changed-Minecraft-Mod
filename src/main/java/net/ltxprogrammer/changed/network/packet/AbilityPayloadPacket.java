@@ -75,8 +75,6 @@ public class AbilityPayloadPacket implements ChangedPacket {
             context.setPacketHandled(true);
             return levelFuture.thenAccept(level -> {
                 var entity = level.getEntity(entityId);
-                if (entity != sender)
-                    throw new IllegalArgumentException();
 
                 AbstractAbilityInstance abilityInstance = null;
                 if (entity instanceof Player player) {
@@ -88,8 +86,12 @@ public class AbilityPayloadPacket implements ChangedPacket {
                 if (abilityInstance == null)
                     throw new IllegalStateException("Ability instance not present on entity: " + entity);
 
-                abilityInstance.acceptPayload(tag);
-                Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(context::getSender), this);
+                if (entity != sender)
+                    abilityInstance.acceptPayloadFromNonHost(tag, sender);
+                else {
+                    abilityInstance.acceptPayload(tag);
+                    Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(context::getSender), this);
+                }
             });
         }
     }

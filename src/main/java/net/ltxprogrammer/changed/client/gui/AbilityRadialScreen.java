@@ -3,22 +3,23 @@ package net.ltxprogrammer.changed.client.gui;
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.ability.KeyReference;
 import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
-import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.network.VariantAbilityActivate;
+import net.ltxprogrammer.changed.network.packet.AbilitySelectPacket;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> {
     public final AbilityRadialMenu menu;
@@ -27,13 +28,9 @@ public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> 
 
     public AbilityRadialScreen(AbilityRadialMenu menu, Inventory inventory, Component text) {
         super(menu, inventory, text, menu.variant);
-        this.imageWidth = 0;
-        this.imageHeight = 0;
         this.menu = menu;
         this.variant = menu.variant;
-        this.abilities = menu.variant.abilityInstances.keySet().stream().filter(ability ->
-                ability != ChangedAbilities.SELECT_HAIRSTYLE.get() || ability.canUse(IAbstractChangedEntity.forPlayer(menu.player)))
-                .collect(Collectors.toList());
+        this.abilities = new ArrayList<>(menu.variant.abilityInstances.keySet());
     }
 
     @Override
@@ -73,46 +70,51 @@ public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> 
             }
         }
 
-        var ability = abilities.get(section);
-        if (ability == ChangedAbilities.SELECT_HAIRSTYLE.get()) {
-            x = x * 0.9;
-            y = (y * 0.9) - 16;
-
-            HairStyleRadialScreen.renderEntityHeadWithHair(graphics, (int)x + this.leftPos, (int)y + 32 + this.topPos, 40,
-                    (float)(this.leftPos) - mouseX + (int)x,
-                    (float)(this.topPos) - mouseY + (int)y,
-                    variant.getChangedEntity(), alpha);
-        }
-
-        else {
-            ChangedClient.abilityRenderer.getOrThrow().renderAndDecorateAbility(
-                    graphics,
-                    menu.player,
-                    menu.variant.getAbilityInstance(abilities.get(section)),
-                    (int) (x - 24 + this.leftPos),
-                    (int) (y - 24 + this.topPos),
-                    48,
-                    (enabled ? 1 : 0.5f),
-                    enabled,
-                    0);
-
-            /*RenderSystem.setShaderTexture(0, abilities.get(section).getTexture(IAbstractChangedEntity.forPlayer(menu.player)));
-            if (enabled) {
-                RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
-                GuiComponent.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
-            }
-            RenderSystem.setShaderColor(red, green, blue, (enabled ? 1 : 0.5f) * alpha);
-            GuiComponent.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos, 0, 0, 48, 48, 48, 48);*/
-        }
+        ChangedClient.abilityRenderer.getOrThrow().renderAbility(
+                graphics,
+                menu.player,
+                menu.variant.getAbilityInstance(abilities.get(section)),
+                (int) (x - 24 + this.leftPos),
+                (int) (y - 24 + this.topPos),
+                48,
+                (enabled ? 1 : 0.5f),
+                enabled,
+                0);
     }
 
     @Override
     public boolean handleClicked(int section, SingleRunnable close) {
         close.run();
         var ability = abilities.get(section);
-        variant.setSelectedAbility(ability);
-        Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(this.menu.player, variant.abilityKey.isEffectivelyDown(), ability));
+        variant.setSelectedAbility(KeyReference.ABILITY, ability);
+        Changed.PACKET_HANDLER.sendToServer(new AbilitySelectPacket(this.menu.player, KeyReference.ABILITY, ability));
         return false;
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        var section = getSectionUnderMouse();
+        if (section == null)
+            return super.keyPressed(keyCode, scanCode, modifiers);
+
+        AtomicBoolean handled = new AtomicBoolean(false);
+        variant.abilityHandler.visitSelected((index, totalCount, key, ability, abilityInstance) -> {
+            if (key.getKeycode(Minecraft.getInstance().level) != keyCode)
+                return;
+
+            if (abilities.size() > section && menu.variant.abilityInstances.containsKey(abilities.get(section))) {
+                var hoveredAbility = menu.variant.abilityInstances.get(abilities.get(section));
+                if (hoveredAbility != null) {
+                    if (handled.getAndSet(true))
+                        return;
+
+                    variant.setSelectedAbility(key, abilities.get(section));
+                    Changed.PACKET_HANDLER.sendToServer(new AbilitySelectPacket(this.menu.player, key, abilities.get(section)));
+                }
+            }
+        });
+
+        return handled.getAcquire() || super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
@@ -120,7 +122,7 @@ public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> 
         if (abilities.size() > section && menu.variant.abilityInstances.containsKey(abilities.get(section))) {
             var ability = menu.variant.abilityInstances.get(abilities.get(section));
             if (ability != null) {
-                return menu.variant.selectedAbility == ability.ability;
+                return menu.variant.isAbilitySelected(ability.ability);
             }
         }
 
