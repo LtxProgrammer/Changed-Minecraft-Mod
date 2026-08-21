@@ -14,7 +14,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.util.LogicalSidedProvider;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
@@ -92,6 +91,7 @@ public class ChangedPackets {
         addNetworkMessage(AbilityTreeMenuPacket.class, AbilityTreeMenuPacket::new);
         addNetworkMessage(AbilityTrees.SyncPacket.class, AbilityTrees.SyncPacket::new);
         addNetworkMessage(AbilityTreeSyncInstancePacket.class, AbilityTreeSyncInstancePacket::new);
+        addNetworkMessage(AbilityTreeSyncPointStorePacket.class, AbilityTreeSyncPointStorePacket::new);
         addNetworkMessage(SyncActiveNodeEffectsPacket.class, SyncActiveNodeEffectsPacket::new);
         addNetworkMessage(ComputerAppLaunchPacket.class, ComputerAppLaunchPacket::new);
         addNetworkMessage(ComputerAppClosePacket.class, ComputerAppClosePacket::new);

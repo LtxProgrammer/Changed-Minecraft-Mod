@@ -103,6 +103,10 @@ public class AbilityTree {
         return treeLocation;
     }
 
+    public PartialNode.TreeReference getTreeReference() {
+        return new PartialNode.TreeReference(treeLocation);
+    }
+
     public boolean matchLocation(AbilityTree other) {
         return this.treeLocation.equals(other.treeLocation);
     }

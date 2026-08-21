@@ -23,8 +23,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -41,7 +44,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> {
+public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeMenu> {
     protected static void drawLine(BufferBuilder bufferBuilder, Matrix4f matrix4f, float x0, float x1, float y0, float y1, float width, float red, float green, float blue, float alpha) {
         float dx = x0 - x1;
         float dy = y0 - y1;
@@ -72,6 +75,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         public float waveSpeedX = 0.0f;
         public float waveOffsetY = 0.0f;
         public float waveSpeedY = 0.0f;
+        protected int levels = 0;
 
         public NodeRenderState renderState = NodeRenderState.DISTANT;
 
@@ -139,6 +143,9 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         }
 
         protected NodeRenderState determineRenderState() {
+            if (levels != accountedTree.getLevels(AbilityTreeScreen.this.entity.getSelfVariant()))
+                this.tooltip.clear();
+
             if (accountedTree.hasAllNodes(AbilityTreeScreen.this.entity.getSelfVariant()))
                 return NodeRenderState.UNLOCKED;
             return NodeRenderState.PRE_REQ_MET;
@@ -159,6 +166,9 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
                 tree.getFlavorCompletedText().ifPresent(tooltipBuilder::add);
             } else {
                 tooltipBuilder.add(tree.getTitle());
+                levels = accountedTree.getLevels(AbilityTreeScreen.this.entity.getSelfVariant());
+                tooltipBuilder.add(Component.translatable("text.changed.ability_tree.price.levels", levels)
+                        .withStyle(ChatFormatting.GRAY));
                 tree.getFlavorText().ifPresent(tooltipBuilder::add);
             }
             return tooltipBuilder.build();
@@ -535,29 +545,49 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         return nodeButtons;
     }
 
+    protected AbilityTreeMenu menu;
+
     private final IAbstractChangedEntity entity;
-    private final GraphLayout graphLayout;
-    private final Map<Either<AbilityTree, AbilityNode>, TreeButton> nodeGraph;
-    private final int layerCount;
+    private GraphLayout graphLayout;
+    private Map<Either<AbilityTree, AbilityNode>, TreeButton> nodeGraph = Map.of();
+    private int layerCount = 0;
     private double panX = 0d, panY = 0d;
     private float zoom = 1.0f;
     private int tickCount = 0;
 
     public AbilityTreeScreen(AbilityTreeMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
+        super(title);
+        this.menu = menu;
         this.entity = IAbstractChangedEntity.forPlayerWithVariant(inventory.player, menu.variant);
-        this.graphLayout = GraphLayout.RADIAL;
-        AtomicInteger layerCount = new AtomicInteger(0);
-        this.nodeGraph = buildNodeGraph(menu.variant.getParent(), graphLayout, layerCount, inventory.player.getRandom());
-        this.nodeGraph.values().forEach(this::addRenderableWidget);
-        this.layerCount = layerCount.getAcquire();
-        this.imageWidth = this.width;
-        this.imageHeight = this.height;
     }
 
     @Override
+    public AbilityTreeMenu getMenu() {
+        return menu;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+
+        this.graphLayout = GraphLayout.RADIAL;
+        AtomicInteger layerCount = new AtomicInteger(0);
+        this.nodeGraph = buildNodeGraph(menu.variant.getParent(), graphLayout, layerCount, RandomSource.create());
+        this.nodeGraph.values().forEach(this::addRenderableWidget);
+        this.layerCount = layerCount.getAcquire();
+    }
+
+    public final void tick() {
+        super.tick();
+        if (this.minecraft.player.isAlive() && !this.minecraft.player.isRemoved()) {
+            this.containerTick();
+        } else {
+            this.minecraft.player.closeContainer();
+        }
+
+    }
+
     protected void containerTick() {
-        super.containerTick();
         tickCount++;
     }
 
@@ -575,9 +605,7 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             button.checkRenderState();
         });
 
-        Changed.postModEvent(new ContainerScreenEvent.Render.Background(this, graphics, mouseX, mouseY));
         this.renderBackground(graphics);
-        Changed.postModEvent(new ContainerScreenEvent.Render.Foreground(this, graphics, mouseX, mouseY));
         this.renderBg(graphics, partialTicks, mouseX, mouseY);
 
         for (Renderable renderable : this.renderables) {
@@ -591,7 +619,6 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
         graphics.setColor(1, 1, 1, 1);
     }
 
-    @Override
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mx, int my) {
         int centerX = this.width / 2;
         int centerY = this.height / 2;
@@ -618,5 +645,10 @@ public class AbilityTreeScreen extends AbstractContainerScreen<AbilityTreeMenu> 
             return true;
         }
         return super.mouseDragged(x, y, button, dx, dy);
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
     }
 }

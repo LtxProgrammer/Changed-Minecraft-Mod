@@ -49,4 +49,5 @@ public class ChangedBlockEntities {
     public static final RegistryObject<BlockEntityType<WLANRouterBlockEntity>> WLAN_ROUTER = REGISTRY.register("wlan_router", deferredProvider(WLANRouterBlockEntity::new, ChangedBlocks.WLAN_ROUTER));
     public static final RegistryObject<BlockEntityType<ServerStackBlockEntity>> SERVER_STACK = REGISTRY.register("server_stack", deferredProvider(ServerStackBlockEntity::new, ChangedBlocks.SERVER_STACK));
     public static final RegistryObject<BlockEntityType<InkCloudBlockEntity>> INK_CLOUD = REGISTRY.register("ink_cloud", deferredProvider(InkCloudBlockEntity::new, ChangedBlocks.INK_CLOUD));
+    public static final RegistryObject<BlockEntityType<CDStackBlockEntity>> CD_STACK = REGISTRY.register("cd_stack", deferredProvider(CDStackBlockEntity::new, ChangedBlocks.CD_STACK));
 }
