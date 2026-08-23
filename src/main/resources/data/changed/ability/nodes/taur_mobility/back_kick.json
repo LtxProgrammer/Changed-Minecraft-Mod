@@ -2,6 +2,10 @@
   "parent": "changed:taur_mobility/practice2",
   "titleId": "changed.ability_tree.taur_mobility.back_kick",
   "flavorId": "changed.ability_tree.taur_mobility.back_kick.flavor",
+  "display": {
+	"icon": "changed:textures/gui/nodes/back_kick.png",
+	"frame": "strong"
+  },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1

@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:abilities/friendly_transfur",
+    "layer1": "changed:abilities/friendly_transfur_heart"
+  }
+}
