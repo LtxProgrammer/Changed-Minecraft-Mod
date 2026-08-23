@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.entity.animation;
 
 import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.block.StasisChamber;
+import net.ltxprogrammer.changed.datagen.animations.AnimationCriteriaBuilder;
+import net.ltxprogrammer.changed.datagen.animations.EmptyCriteriaBuilder;
 import net.ltxprogrammer.changed.init.ChangedEffects;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -25,5 +27,9 @@ public class StasisAnimationParameters implements AnimationParameters {
     @Override
     public boolean shouldLoop(LivingEntity livingEntity, float totalTime) {
         return true;
+    }
+
+    public static AnimationCriteriaBuilder criteriaBuilder() {
+        return EmptyCriteriaBuilder.INSTANCE;
     }
 }
