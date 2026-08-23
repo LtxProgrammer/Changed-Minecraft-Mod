@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.datagen.animations.AnimationCriteriaBuilder;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Set;
 
@@ -58,6 +59,11 @@ public class TransfurAnimationParameters implements AnimationParameters {
 
         public CriteriaBuilder addVariant(TransfurVariant<?> variant) {
             variants.add(variant.getFormId());
+            return this;
+        }
+
+        public CriteriaBuilder addVariant(RegistryObject<? extends TransfurVariant<?>> variant) {
+            variants.add(variant.getId());
             return this;
         }
 

@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.datagen;
 
 import net.ltxprogrammer.changed.datagen.ability.AbilityNodeProvider;
 import net.ltxprogrammer.changed.datagen.ability.AbilityTreeProvider;
+import net.ltxprogrammer.changed.datagen.animations.AnimationAssociationsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -32,6 +33,8 @@ public class GatherData {
         generator.addProvider(event.includeServer(), new DamageTypeTagProvider(packOutput, lookup0, helper));
         generator.addProvider(event.includeServer(), new AbilityNodeProvider(packOutput));
         generator.addProvider(event.includeServer(), new AbilityTreeProvider(packOutput));
+
+        generator.addProvider(event.includeClient(), new AnimationAssociationsProvider(packOutput));
 
 //        BlockTagsProvider blocks = new BlockTagsProvider(packOutput, lookupProvider, helper);
 //        generator.addProvider(true, blocks);
