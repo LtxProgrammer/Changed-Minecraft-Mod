@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:abilities/camouflage",
+    "layer1": "changed:abilities/camouflage_eyes"
+  }
+}

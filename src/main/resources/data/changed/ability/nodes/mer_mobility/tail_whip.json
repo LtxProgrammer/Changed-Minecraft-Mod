@@ -2,6 +2,7 @@
   "parent": "changed:mer_mobility/practice3",
   "titleId": "changed.ability_tree.movement.tail_whip",
   "flavorId": "changed.ability_tree.mer_mobility.tail_whip.flavor",
+  "display": { "icon": "changed:textures/gui/nodes/tail_whip.png", "frame:": "strong" },
   "price": {
     "levels": 2,
     "groupDiscountLevels": -1
