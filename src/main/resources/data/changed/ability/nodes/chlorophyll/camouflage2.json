@@ -3,6 +3,11 @@
   "occludes": "changed:chlorophyll/camouflage1",
   "titleId": "changed.ability_tree.chlorophyll.camouflage2",
   "flavorId": "changed.ability_tree.chlorophyll.camouflage2.flavor",
+  "display": { 
+	  "icon": "changed:textures/gui/nodes/camouflage.png",
+	  "numeral": 2,
+	  "frame": "strong"
+  },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1
