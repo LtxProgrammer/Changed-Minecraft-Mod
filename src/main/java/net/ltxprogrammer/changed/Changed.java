@@ -163,7 +163,7 @@ public class Changed {
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        ChangedClient.registerEventListeners();
+        ChangedClient.registerEventListeners(event);
     }
 
     private void dataListeners(final AddReloadListenerEvent event) {

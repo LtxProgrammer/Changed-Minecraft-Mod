@@ -42,6 +42,7 @@ import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.joml.Vector3f;
@@ -82,9 +83,10 @@ public class ChangedClient {
         return next;
     }
 
-    public static void registerEventListeners() {
+    public static void registerEventListeners(final FMLClientSetupEvent event) {
         Changed.addEventListener(ChangedClient::afterRenderStage);
         Changed.addEventListener(ChangedClient::onClientTick);
+        event.enqueueWork(RendererOverride::gatherOverrides);
     }
 
     public static void onClientFinishSetup(FMLLoadCompleteEvent event) {

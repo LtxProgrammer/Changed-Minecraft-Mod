@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import net.ltxprogrammer.changed.client.RendererOverride;
 import net.ltxprogrammer.changed.init.ChangedEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -17,5 +18,6 @@ public abstract class EntityRenderersMixin {
     @Inject(method = "createEntityRenderers", at = @At("RETURN"))
     private static void createChangedEntityRenderers(EntityRendererProvider.Context context, CallbackInfoReturnable<Map<EntityType<?>, EntityRenderer<?>>> callback) {
         ChangedEntityRenderers.registerComplexRenderers(context);
+        RendererOverride.createEntityRenderers(context);
     }
 }

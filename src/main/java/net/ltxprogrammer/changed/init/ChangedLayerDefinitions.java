@@ -23,7 +23,7 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(GasMaskModel.LAYER_LOCATION, GasMaskModel::createMask);
         event.registerLayerDefinition(GasMaskModel.LAYER_LOCATION_SNOUTED, GasMaskModel::createMaskSnouted);
         event.registerLayerDefinition(GasMaskModel.LAYER_LOCATION_LARGE_SNOUTED, GasMaskModel::createMaskLargeSnouted);
-        event.registerLayerDefinition(DuctPlayerModel.LAYER_LOCATION, DuctPlayerModel::createRoot);
+        event.registerLayerDefinition(EntityInDuctModel.LAYER_LOCATION, EntityInDuctModel::createRoot);
         event.registerLayerDefinition(TaurChestPackModel.LAYER_LOCATION, TaurChestPackModel::createPack);
 
         event.registerLayerDefinition(TransfurHelper.TRANSFUR_HELPER, TransfurHelper::createBodyLayer);
