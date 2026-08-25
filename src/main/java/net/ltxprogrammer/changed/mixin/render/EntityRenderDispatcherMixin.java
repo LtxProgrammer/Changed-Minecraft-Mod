@@ -9,6 +9,7 @@ import com.mojang.math.Axis;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.client.RendererOverride;
 import net.ltxprogrammer.changed.client.animations.AnimationContainer;
 import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
@@ -35,7 +36,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
@@ -120,9 +120,11 @@ public abstract class EntityRenderDispatcherMixin {
         });
     }
 
-    @Inject(method = "getRenderer", at = @At("HEAD"), cancellable = true)
-    public <E extends Entity> void getRendererOrOverridden(E entity, CallbackInfoReturnable<EntityRenderer<? super E>> callback) {
-        ChangedEntityRenderers.getComplexRenderer(entity).ifPresent(callback::setReturnValue);
+    @WrapMethod(method = "getRenderer")
+    public <T extends Entity> EntityRenderer<? super T> getRendererOrOverridden(T entity, Operation<EntityRenderer<? super T>> original) {
+        return RendererOverride.getRenderer(entity)
+                .or(() -> ChangedEntityRenderers.getComplexRenderer(entity))
+                .orElseGet(() -> original.call(entity));
     }
 
     @Inject(method = "onResourceManagerReload", at = @At("RETURN"))

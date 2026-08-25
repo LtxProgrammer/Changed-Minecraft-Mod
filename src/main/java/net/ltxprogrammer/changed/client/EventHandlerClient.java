@@ -91,15 +91,9 @@ public class EventHandlerClient {
             return;
         }
 
-        if (player instanceof PlayerDataExtension ext && ext.isPlayerMover(PlayerMover.LATEX_SWIM.get())) {
-            event.setCanceled(true);
-            return;
-        }
-
+        // Maybe turn rendering transfurred players into a renderer override?
         if (!player.isRemoved() && !player.isSpectator() && !TransfurAnimator.shouldRenderHuman()) {
-            if (RenderOverride.renderOverrides(player, null, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick()))
-                event.setCanceled(true);
-            else if (ProcessTransfur.isPlayerTransfurred(player)) {
+            if (ProcessTransfur.isPlayerTransfurred(player)) {
                 event.setCanceled(true);
                 FormRenderHandler.renderForm(player, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick());
             }

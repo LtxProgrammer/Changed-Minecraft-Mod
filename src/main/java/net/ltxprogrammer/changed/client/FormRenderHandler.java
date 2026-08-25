@@ -96,8 +96,7 @@ public abstract class FormRenderHandler {
                 EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(changedEntity);
                 int variantLight = maxPackedLight(light, renderer.getPackedLightCoords(changedEntity, partialTick));
 
-                if (!RenderOverride.renderOverrides(player, variant, stack, buffer, variantLight, partialTick))
-                    renderLiving(changedEntity, stack, buffer, variantLight, partialTick);
+                renderLiving(changedEntity, stack, buffer, variantLight, partialTick);
             }
 
             ChangedCompatibility.thawIsFirstPersonRendering();
