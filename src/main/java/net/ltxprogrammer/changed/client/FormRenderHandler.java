@@ -63,7 +63,8 @@ public abstract class FormRenderHandler {
         );
     }
 
-    public static void renderForm(Player player, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+    @Deprecated
+    public static void renderForm(AbstractClientPlayer player, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             ChangedCompatibility.freezeIsFirstPersonRendering();
             variant.sync(player);
@@ -103,14 +104,14 @@ public abstract class FormRenderHandler {
         });
     }
 
+    @Deprecated
     public static void renderLiving(LivingEntity living, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         if (living == null) return;
         EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(living);
         renderer.render(living, living.getYRot(), partialTick, stack, buffer, light);
     }
 
-    public static float lastPartialTick;
-
+    @Deprecated
     public static void renderHand(LivingEntity living, HumanoidArm arm, PartPose armPose, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         renderHand(living, arm, armPose, stack, buffer, light, partialTick, true);
     }
@@ -120,26 +121,13 @@ public abstract class FormRenderHandler {
         return renderingHand;
     }
 
-    public static void renderHand(LivingEntity living, HumanoidArm arm, PartPose armPose, PoseStack stack, MultiBufferSource buffer, int light, float partialTick, boolean layers) {
-        EntityRenderer<? super LivingEntity> entRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(living);
-        if (!(entRenderer instanceof LivingEntityRenderer<?,?> livingRenderer)) return;
-
-        if (livingRenderer instanceof PlayerRenderer playerRenderer && living instanceof AbstractClientPlayer clientPlayer) {
-            renderingHand = true;
-            switch (arm) {
-                case RIGHT -> playerRenderer.renderRightHand(stack, buffer, light, clientPlayer);
-                case LEFT -> playerRenderer.renderLeftHand(stack, buffer, light, clientPlayer);
-            }
-            renderingHand = false;
-            return;
-        }
-
-        if (livingRenderer instanceof AdvancedHumanoidRenderer<?,?> advRenderer && living instanceof ChangedEntity changedEntity) {
+    public static void renderHand(EntityRenderer<? super ChangedEntity> renderer, ChangedEntity entity, HumanoidArm arm, PartPose armPose, PoseStack stack, MultiBufferSource buffer, int light, float partialTick, boolean layers) {
+        if (renderer instanceof AdvancedHumanoidRenderer<?,?> advRenderer) {
             renderingHand = true;
 
-            AdvancedHumanoidModel entModel = advRenderer.getModel(changedEntity);
+            AdvancedHumanoidModel entModel = advRenderer.getModel(entity);
 
-            var controller = entModel.getAnimator(changedEntity);
+            var controller = entModel.getAnimator(entity);
 
             controller.resetVariables();
             ModelPart handPart = entModel.getArm(arm);
@@ -159,14 +147,14 @@ public abstract class FormRenderHandler {
 
             handPart.loadPose(armPose);
 
-            ResourceLocation texture = entRenderer.getTextureLocation(changedEntity);
+            ResourceLocation texture = renderer.getTextureLocation(entity);
 
             renderModelPartWithTexture(handPart, stack, buffer.getBuffer(RenderType.entityCutout(texture)), light, 1F);
 
             if (layers) {
                 for (var layer : advRenderer.layers)  {
                     if (layer instanceof FirstPersonLayer firstPersonLayer)
-                        firstPersonLayer.renderFirstPersonOnArms(stack, buffer, light, changedEntity, arm, armPose, partialTick);
+                        firstPersonLayer.renderFirstPersonOnArms(stack, buffer, light, entity, arm, armPose, partialTick);
                 }
             }
 
@@ -174,19 +162,37 @@ public abstract class FormRenderHandler {
         }
     }
 
-    public static boolean maybeRenderHand(PlayerRenderer playerRenderer, PoseStack stack, MultiBufferSource buffer, int light, AbstractClientPlayer player, ModelPart arm, ModelPart sleeve) {
+    @Deprecated
+    public static void renderHand(LivingEntity living, HumanoidArm arm, PartPose armPose, PoseStack stack, MultiBufferSource buffer, int light, float partialTick, boolean layers) {
+        EntityRenderer<? super LivingEntity> entRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(living);
+        if (!(entRenderer instanceof LivingEntityRenderer<?,?> livingRenderer)) return;
+
+        if (livingRenderer instanceof PlayerRenderer playerRenderer && living instanceof AbstractClientPlayer clientPlayer) {
+            renderingHand = true;
+            switch (arm) {
+                case RIGHT -> playerRenderer.renderRightHand(stack, buffer, light, clientPlayer);
+                case LEFT -> playerRenderer.renderLeftHand(stack, buffer, light, clientPlayer);
+            }
+            renderingHand = false;
+            return;
+        }
+
+        if (livingRenderer instanceof AdvancedHumanoidRenderer advRenderer && living instanceof ChangedEntity changedEntity) {
+            renderHand(advRenderer, changedEntity, arm, armPose, stack, buffer, light, partialTick, layers);
+        }
+    }
+
+    @Deprecated
+    public static boolean maybeRenderHand(PoseStack stack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm handSide, PartPose armPose) {
         if (renderingHand) return false;
 
         return ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             if (player == Minecraft.getInstance().getCameraEntity()) {
                 float partialTick = Minecraft.getInstance().getPartialTick();
-                HumanoidArm handSide = playerRenderer.getModel().rightArm != arm ? HumanoidArm.LEFT : HumanoidArm.RIGHT;
 
                 ChangedCompatibility.freezeIsFirstPersonRendering();
                 variant.sync(player);
                 variant.getChangedEntity().setCustomNameVisible(true);
-
-                var armPose = arm.storePose();
 
                 if (variant.getTransfurProgression(partialTick) < 1f && !variant.isTemporaryFromSuit()) {
                     TransfurAnimator.startCapture();
@@ -214,6 +220,13 @@ public abstract class FormRenderHandler {
 
             return false;
         }, () -> false);
+    }
+
+    @Deprecated
+    public static boolean maybeRenderHand(PlayerRenderer playerRenderer, PoseStack stack, MultiBufferSource buffer, int light, AbstractClientPlayer player, ModelPart arm, ModelPart sleeve) {
+        HumanoidArm handSide = playerRenderer.getModel().rightArm != arm ? HumanoidArm.LEFT : HumanoidArm.RIGHT;
+        var armPose = arm.storePose();
+        return maybeRenderHand(stack, buffer, light, player, handSide, armPose);
     }
 
     public static void renderModelPartWithTexture(ModelPart part, PoseStack stack, VertexConsumer buffer, int light, float alpha) {

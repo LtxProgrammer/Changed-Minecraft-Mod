@@ -66,13 +66,21 @@ public final class RendererOverride {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Entity> Optional<EntityRenderer<? super T>> getRenderer(T entity) {
-        var foundOverride = getOverridesForClass(entity.getClass())
+    public static <T extends Entity> Optional<EntityRenderer<? super T>> getRenderer(T entity, EntityRenderer<? super T> baseRenderer) {
+        var foundOverrides = getOverridesForClass(entity.getClass())
                 .sorted(Comparator.comparingInt(ConditionalOverride::priority))
                 .filter(override -> ((ConditionalOverride) override).shouldOverride().test(entity))
-                .findFirst();
+                .toList();
 
-        return foundOverride.map(override -> (EntityRenderer<? super T>) ((ConditionalOverride) override).getRenderer(entity));
+        for (int i = 0; i < foundOverrides.size(); ++i) {
+            var override = foundOverrides.get(i);
+            if (override.entityRenderer instanceof StackAwareRenderer stackAwareRenderer)
+                stackAwareRenderer.setShadowedRenderer(
+                        i + 1 >= foundOverrides.size() ? baseRenderer : foundOverrides.get(i + 1).entityRenderer
+                );
+        }
+
+        return foundOverrides.isEmpty() ? Optional.empty() : Optional.of(((ConditionalOverride) foundOverrides.get(0)).getRenderer(entity));
     }
 
     @ApiStatus.Internal
@@ -128,6 +136,7 @@ public final class RendererOverride {
     }
 
     private static void addChangedRendererOverrides(RegisterEvent event) {
+        event.registerOverride(AbstractClientPlayer.class, TransfurredPlayerRenderer::new, TransfurredPlayerRenderer::wantsToOverride, 10000);
         event.registerOverride(AbstractClientPlayer.class, EntityInDuctRenderer::new, EntityInDuctRenderer::wantsToOverride);
         event.registerOverride(AbstractClientPlayer.class, EntitySwimmingInLatexRenderer::new, EntitySwimmingInLatexRenderer::wantsToOverride);
     }

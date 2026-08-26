@@ -79,37 +79,6 @@ public class EventHandlerClient {
             event.setCanceled(true);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
-        Player player = event.getEntity();
-
-        if (event.isCanceled())
-            return;
-        if (!this.shouldEntityBeRendered(event.getEntity())) {
-            event.setCanceled(true);
-            return;
-        }
-
-        // Maybe turn rendering transfurred players into a renderer override?
-        if (!player.isRemoved() && !player.isSpectator() && !TransfurAnimator.shouldRenderHuman()) {
-            if (ProcessTransfur.isPlayerTransfurred(player)) {
-                event.setCanceled(true);
-                FormRenderHandler.renderForm(player, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick());
-            }
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onRenderHand(RenderHandEvent event) {
-        Minecraft mc = Minecraft.getInstance();
-        if(!mc.player.isRemoved()) //we need to cache this as the hand may be rendered even in the death screen.
-        {
-            FormRenderHandler.lastPartialTick = event.getPartialTick();
-        }
-    }
-
     @SubscribeEvent
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ChangedParticles.DRIPPING_LATEX.get(), LatexDripParticle.Provider::new);

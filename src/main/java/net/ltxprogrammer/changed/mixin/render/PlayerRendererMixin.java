@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.layers.AccessoryLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.FirstPersonLayer;
 import net.minecraft.client.Minecraft;
@@ -30,13 +29,6 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
     @Inject(method = "<init>", at = @At("TAIL"))
     public void addChangedLayers(EntityRendererProvider.Context context, boolean slim, CallbackInfo ci) {
         this.addLayer(new AccessoryLayer<>(this));
-    }
-
-    @Inject(method = "renderHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/ModelPart;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;II)V"), cancellable = true)
-    private void renderHand(PoseStack stack, MultiBufferSource buffer, int light, AbstractClientPlayer player, ModelPart arm, ModelPart sleeve, CallbackInfo ci) {
-        if (FormRenderHandler.maybeRenderHand(((PlayerRenderer)(Object)this), stack, buffer, light, player, arm, sleeve)) {
-            ci.cancel(); //cancel the call
-        }
     }
 
     @Inject(method = "renderHand", at = @At("TAIL"), cancellable = true)
