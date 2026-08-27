@@ -145,7 +145,7 @@ def modIndex = [
     "oculus": [ artifact: "curse.maven:oculus-581495:6020952", compile: false, clientOnly: true ], // Forge 1.20.1 v1.8.0
     "spark": [ artifact: "curse.maven:spark-361579:4738952", compile: false, clientOnly: false ], // Forge 1.20.1 v1.10.53
     "modernfix": [ artifact: "curse.maven:modernfix-790626:6609555", compile: false, clientOnly: false ], // Forge 1.20.1 v5.23.1
-    "vivecraft": [ artifact: "curse.maven:vivecraft-667903:6208688", compile: true, clientOnly: true ], // Forge 1.20.1 v1.2.5
+    "vivecraft": [ artifact: "curse.maven:vivecraft-667903:8447973", compile: true, clientOnly: true ], // Forge 1.20.1 v1.3.15
     "ferritecore": [ artifact: "curse.maven:ferritecore-429235:4810975", compile: false, clientOnly: false ], // Forge 1.20.1 v6.0.1
     "selene": [ artifact: "curse.maven:selene-499980:6693288", compile: true, clientOnly: false ], // Forge 1.20.1 v2.14.11
     "supplementaries": [ artifact: "curse.maven:supplementaries-412082:6615104", compile: false, clientOnly: false ], // Forge 1.20.1 v3.1.31

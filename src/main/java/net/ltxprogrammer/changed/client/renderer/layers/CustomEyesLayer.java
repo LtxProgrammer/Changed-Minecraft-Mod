@@ -245,6 +245,8 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
             return;
         if (ChangedCompatibility.isFirstPersonRendering())
             return;
+        if (!this.getParentModel().getHead().visible)
+            return;
 
         BasicPlayerInfo info = new BasicPlayerInfo();
         info.copyFrom(entity.getBasicPlayerInfo());

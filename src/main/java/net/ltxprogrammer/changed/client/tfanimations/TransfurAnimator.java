@@ -475,7 +475,7 @@ public abstract class TransfurAnimator {
         if (applyAnimation) {
             AnimationContainer.getForEntity(entity).ifPresent(container -> {
                 container.getOrderedAnimations().forEach(instance -> {
-                    transitionPart.loadPose(instance.animatePartAs(limb, transitionPart.storePose(), partialTicks));
+                    transitionPart.loadPose(instance.animatePartAs(limb, entity, transitionPart.storePose(), partialTicks));
                 });
             });
         }
@@ -543,7 +543,7 @@ public abstract class TransfurAnimator {
             default -> LimbCoverTransition.INSTANT;
         };
 
-        if (progress <= 0f)
+        if (progress <= 0f || !part.visible)
             return;
 
         final float shrink = (coverAlpha - 1.0f) * 0.5f;
@@ -566,7 +566,7 @@ public abstract class TransfurAnimator {
         if (applyAnimation) {
             AnimationContainer.getForEntity(entity).ifPresent(container -> {
                 container.getOrderedAnimations().forEach(instance -> {
-                    copiedPart.loadPose(instance.animatePartAs(limb, copiedPart.storePose(), partialTicks));
+                    copiedPart.loadPose(instance.animatePartAs(limb, entity, copiedPart.storePose(), partialTicks));
                 });
             });
         }

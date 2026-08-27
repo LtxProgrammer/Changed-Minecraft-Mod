@@ -10,4 +10,6 @@ public interface StackAwareRenderer<T extends Entity> {
      * @param renderer The renderer this renderer is overriding. It may be the base renderer or another override
      */
     void setShadowedRenderer(EntityRenderer<? super T> renderer);
+
+    EntityRenderer<? super T> getShadowedRenderer();
 }

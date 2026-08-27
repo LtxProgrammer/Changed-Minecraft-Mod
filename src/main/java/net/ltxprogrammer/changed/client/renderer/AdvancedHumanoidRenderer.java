@@ -144,7 +144,7 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
             super.setupRotations(entity, poseStack, bob, bodyYRot, partialTicks);
         }
 
-        poseStack.translate(0, 0, model.getAnimator(entity).forwardOffset / 16.0D);
+        poseStack.translate(0, 0, getModel(entity).getAnimator(entity).forwardOffset / 16.0D);
     }
 
     public static HumanoidModel.ArmPose getArmPose(ChangedEntity p_117795_, InteractionHand p_117796_) {

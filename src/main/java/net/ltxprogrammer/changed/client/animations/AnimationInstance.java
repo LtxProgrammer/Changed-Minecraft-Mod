@@ -6,6 +6,8 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
 import net.ltxprogrammer.changed.entity.animation.AnimationParameters;
 import net.ltxprogrammer.changed.entity.animation.NoParameters;
+import net.ltxprogrammer.changed.extension.vivecraft.VivecraftHelper;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -14,6 +16,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -142,11 +145,25 @@ public class AnimationInstance {
         return parentEntity;
     }
 
-    protected void animate(HumanoidModel<?> model, Map<ModelPartIdentifier, PartPose> baseline, float partialTicks) {
+    protected boolean shouldAnimateLimb(ModelPartIdentifier identifier, LivingEntity entity) {
+        if (EntityUtil.maybeGetUnderlying(entity) instanceof Player player && VivecraftHelper.isPlayerVR(player)) {
+            return identifier.limb() != Limb.HEAD &&
+                    //identifier.limb() != Limb.TORSO &&
+                    identifier.limb() != Limb.LEFT_ARM &&
+                    identifier.limb() != Limb.RIGHT_ARM;
+        }
+
+        return true;
+    }
+
+    protected void animate(HumanoidModel<?> model, LivingEntity entity, Map<ModelPartIdentifier, PartPose> baseline, float partialTicks) {
         final float time = computeTime(partialTicks);
         final float transition = computeTransition(partialTicks);
 
         animation.channels.keySet().stream().filter(ModelPartIdentifier::isVanillaPart).forEach(limb -> {
+            if (!shouldAnimateLimb(limb, entity))
+                return;
+
             animateLimb(animation.channels.get(limb), limb.getModelPart(model), baseline.get(limb), time, transition);
         });
     }
@@ -156,6 +173,9 @@ public class AnimationInstance {
         final float transition = computeTransition(partialTicks);
 
         animation.channels.forEach((limb, either) -> {
+            if (!shouldAnimateLimb(limb, entity))
+                return;
+
             animateLimb(animation.channels.get(limb), limb.getModelPart(model, entity), baseline.get(limb), time, transition);
         });
     }
@@ -164,25 +184,21 @@ public class AnimationInstance {
         if (model instanceof AdvancedHumanoidModel<?> advancedHumanoid && renderEntity instanceof ChangedEntity changedEntity)
             this.animate(advancedHumanoid, changedEntity, baseline, partialTicks);
         else if (model instanceof HumanoidModel<?> humanoid)
-            this.animate(humanoid, baseline, partialTicks);
+            this.animate(humanoid, renderEntity, baseline, partialTicks);
     }
 
-    public PartPose animatePartAs(Limb limb, PartPose modelPart, float partialTicks) {
+    public PartPose animatePartAs(Limb limb, LivingEntity entity, PartPose modelPart, float partialTicks) {
+        return animatePartAs(ModelPartIdentifier.forLimb(limb), entity, modelPart, partialTicks);
+    }
+
+    public PartPose animatePartAs(ModelPartIdentifier identifier, LivingEntity entity, PartPose modelPart, float partialTicks) {
         final float time = computeTime(partialTicks);
         final float transition = computeTransition(partialTicks);
 
-        var channels = animation.channels.get(ModelPartIdentifier.forLimb(limb));
-        if (channels == null)
+        if (!shouldAnimateLimb(identifier, entity))
             return modelPart;
 
-        return animateLimb(channels, modelPart, modelPart, time, transition);
-    }
-
-    public PartPose animatePartAs(ModelPartIdentifier limb, PartPose modelPart, float partialTicks) {
-        final float time = computeTime(partialTicks);
-        final float transition = computeTransition(partialTicks);
-
-        var channels = animation.channels.get(limb);
+        var channels = animation.channels.get(identifier);
         if (channels == null)
             return modelPart;
 

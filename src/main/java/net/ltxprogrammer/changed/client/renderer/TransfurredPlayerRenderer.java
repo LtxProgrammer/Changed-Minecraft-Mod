@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class TransfurredPlayerRenderer extends PlayerRenderer implements StackAwareRenderer<AbstractClientPlayer>, HandRenderer<AbstractClientPlayer> {
@@ -43,11 +44,30 @@ public class TransfurredPlayerRenderer extends PlayerRenderer implements StackAw
     }
 
     @Override
+    public Vec3 getRenderOffset(AbstractClientPlayer player, float partialTick) {
+        TransfurVariantInstance<?> variant = ProcessTransfur.getPlayerTransfurVariant(player);
+        return ((EntityRenderer) entityRenderDispatcher.getRenderer(variant.getChangedEntity())).getRenderOffset(variant.getChangedEntity(), partialTick);
+    }
+
+    @Override
     public void setShadowedRenderer(EntityRenderer<? super AbstractClientPlayer> renderer) {
         if (renderer instanceof PlayerRenderer playerRenderer)
             this.shadowedPlayerRenderer = playerRenderer;
         else
             this.shadowedPlayerRenderer = null;
+    }
+
+    @Override
+    public void setModelProperties(AbstractClientPlayer player) {
+        if (this.shadowedPlayerRenderer != null)
+            this.shadowedPlayerRenderer.setModelProperties(player);
+        else
+            super.setModelProperties(player);
+    }
+
+    @Override
+    public EntityRenderer<? super AbstractClientPlayer> getShadowedRenderer() {
+        return shadowedPlayerRenderer;
     }
 
     @Override
@@ -88,6 +108,7 @@ public class TransfurredPlayerRenderer extends PlayerRenderer implements StackAw
                 throw new ReportedException(report);
             }
         } else {
+            this.setModelProperties(player);
             changedRenderer.render(entity, yRot, partialTick, pose, buffer, variantLight);
         }
 

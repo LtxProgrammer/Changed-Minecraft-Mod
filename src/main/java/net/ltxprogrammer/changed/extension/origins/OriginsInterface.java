@@ -31,12 +31,12 @@ import java.util.function.Consumer;
 /**
  * This class should not be loaded if origins is not present.
  */
-public class OriginsInterface extends SimplePreparableReloadListener<Multimap<TagKey<Origin>, ResourceLocation>> {
-    public static final OriginsInterface INSTANCE = new OriginsInterface();
+class OriginsInterface extends SimplePreparableReloadListener<Multimap<TagKey<Origin>, ResourceLocation>> {
+    static final OriginsInterface INSTANCE = new OriginsInterface();
 
     private OriginsInterface() {}
 
-    public static TagKey<Origin> TRANSFURABLE = OriginRegisters.ORIGINS.createTagKey(Changed.modResource("transfurable"));
+    static TagKey<Origin> TRANSFURABLE = OriginRegisters.ORIGINS.createTagKey(Changed.modResource("transfurable"));
 
     private static final Multimap<TagKey<Origin>, ResourceLocation> namedTags = HashMultimap.create();
     private static final Multimap<TagKey<Origin>, ResourceKey<Origin>> localTags = HashMultimap.create();
@@ -51,7 +51,7 @@ public class OriginsInterface extends SimplePreparableReloadListener<Multimap<Ta
         return localTags.get(tagKey).contains(origin);
     }
 
-    public static boolean doesPlayerHaveAnyOrigins(ServerPlayer player) {
+    static boolean doesPlayerHaveAnyOrigins(ServerPlayer player) {
         final MinecraftServer server = player.getServer();
         if (server == null)
             return false;
@@ -61,7 +61,7 @@ public class OriginsInterface extends SimplePreparableReloadListener<Multimap<Ta
                 .map(container -> !container.getOrigins().isEmpty()).orElse(false);
     }
 
-    public static boolean isPlayerOrigin(ServerPlayer player, TagKey<Origin> tag) {
+    static boolean isPlayerOrigin(ServerPlayer player, TagKey<Origin> tag) {
         final MinecraftServer server = player.getServer();
         if (server == null)
             return false;
@@ -73,7 +73,7 @@ public class OriginsInterface extends SimplePreparableReloadListener<Multimap<Ta
                 ).orElse(false);
     }
 
-    public static boolean isPlayerOrigin(ServerPlayer player, ResourceLocation originName) {
+    static boolean isPlayerOrigin(ServerPlayer player, ResourceLocation originName) {
         final MinecraftServer server = player.getServer();
         if (server == null)
             return false;
