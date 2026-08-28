@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.RequiredMods;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -49,14 +50,15 @@ public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M e
         if (entity.getUnderlyingPlayer() instanceof AbstractClientPlayer player &&
                 ClientVRPlayers.getInstance().isVRPlayer(player) &&
                 VREffectsHelper.isFirstPersonPlayer(player) &&
-                ClientDataHolderVR.getInstance().currentPass != RenderPass.GUI)
-            poseStack.translate(0, 0, -getModel(entity).getAnimator(entity).forwardOffset / 16.0D);
+                ClientDataHolderVR.getInstance().currentPass != RenderPass.GUI) {
+            poseStack.translate(0, 0,
+                    ProcessTransfur.getPlayerTransfurVariant(player).getParent().cameraZOffset);
+        }
     }
 
     @Override
     public Vec3 getRenderOffset(T entity, float partialTick) {
         // TODO adjust render offset to line up with GUI
-        // TODO pup forward render offset to 4px behind head
 
         if (entity.getUnderlyingPlayer() instanceof AbstractClientPlayer player && ClientVRPlayers.getInstance().isVRPlayer(player)) {
             if (VREffectsHelper.isFirstPersonPlayer(player)) {
