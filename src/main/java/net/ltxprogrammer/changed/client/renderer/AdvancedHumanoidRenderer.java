@@ -96,6 +96,12 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
         return true;
     }
 
+    @Override
+    public @NotNull Vec3 getRenderOffset(@NotNull T entity, float partialTick) {
+        // Hook for mixins
+        return super.getRenderOffset(entity, partialTick);
+    }
+
     @Deprecated
     protected void scaleForBPI(@NotNull T entity, BasicPlayerInfo bpi, PoseStack poseStack) {}
 
@@ -107,6 +113,7 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
             poseStack.scale(renderScale, renderScale, renderScale);
     }
 
+    @Override
     protected void setupRotations(@NotNull T entity, PoseStack poseStack, float bob, float bodyYRot, float partialTicks) {
         this.setModelResetPoseStack(entity, null);
         this.scaleForBPI(entity, entity.getBasicPlayerInfo(), poseStack);

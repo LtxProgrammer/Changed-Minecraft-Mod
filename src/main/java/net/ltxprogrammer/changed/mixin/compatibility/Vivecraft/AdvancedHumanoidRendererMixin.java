@@ -7,9 +7,11 @@ import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.RequiredMods;
+import net.ltxprogrammer.changed.extension.vivecraft.RendererScaleAccessor;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.world.phys.Vec3;
@@ -18,16 +20,52 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.vivecraft.api.client.data.RenderPass;
 import org.vivecraft.client.ClientVRPlayers;
+import org.vivecraft.client.utils.ScaleHelper;
 import org.vivecraft.client_vr.ClientDataHolderVR;
+import org.vivecraft.client_vr.VRState;
 import org.vivecraft.client_vr.render.helpers.VREffectsHelper;
 
 @Mixin(value = AdvancedHumanoidRenderer.class, remap = false)
 @RequiredMods("vivecraft")
-public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends MobRenderer<T, M> {
+public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends MobRenderer<T, M> implements RendererScaleAccessor<T> {
     @Shadow public abstract AdvancedHumanoidModel<T> getModel(ChangedEntity entity);
+
+    @Shadow protected abstract void scale(T entity, PoseStack poseStack, float partialTicks);
 
     public AdvancedHumanoidRendererMixin(EntityRendererProvider.Context p_174304_, M p_174305_, float p_174306_) {
         super(p_174304_, p_174305_, p_174306_);
+    }
+
+    @Override
+    public void vivecraft$scale(T entity, PoseStack poseStack, float partialTick) {
+        this.scale(entity, poseStack, partialTick);
+    }
+
+    @WrapMethod(method = "render(Lnet/ltxprogrammer/changed/entity/ChangedEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
+    private void vivecraft$setupScale(T entity, float yRot, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Operation<Void> original) {
+        if (entity.getUnderlyingPlayer() instanceof AbstractClientPlayer player && ClientVRPlayers.getInstance().isVRPlayer(player)) {
+            poseStack.pushPose();
+            ClientVRPlayers.RotInfo rotInfo = ClientVRPlayers.getInstance().getRotationsForPlayer(player.getUUID());
+            if (rotInfo != null) {
+                float scale = rotInfo.heightScale;
+                if (VRState.VR_RUNNING && player == Minecraft.getInstance().player || ClientDataHolderVR.getInstance().vrSettings.applyPlayerWorldscale) {
+                    scale *= rotInfo.worldScale / ScaleHelper.getEntityEyeHeightScale(player, partialTicks);
+                }
+
+                if (player.isAutoSpinAttack()) {
+                    float offset = player.getViewXRot(partialTicks) / 90.0F * 0.2F;
+                    poseStack.translate(0.0F, rotInfo.headPos.y() + offset, 0.0F);
+                }
+
+                poseStack.scale(scale, scale, scale);
+            }
+
+            original.call(entity, yRot, partialTicks, poseStack, bufferSource, packedLight);
+
+            poseStack.popPose();
+        } else {
+            original.call(entity, yRot, partialTicks, poseStack, bufferSource, packedLight);
+        }
     }
 
     // Copied From VRPlayerRenderer$setupRotations
@@ -56,8 +94,9 @@ public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M e
         }
     }
 
-    @Override
-    public Vec3 getRenderOffset(T entity, float partialTick) {
+    // Copied From VRPlayerRenderer$getRenderOffset
+    @WrapMethod(method = "getRenderOffset(Lnet/ltxprogrammer/changed/entity/ChangedEntity;F)Lnet/minecraft/world/phys/Vec3;")
+    public Vec3 vivecraft$getRenderOffset(T entity, float partialTick, Operation<Vec3> original) {
         // TODO adjust render offset to line up with GUI
 
         if (entity.getUnderlyingPlayer() instanceof AbstractClientPlayer player && ClientVRPlayers.getInstance().isVRPlayer(player)) {
@@ -68,6 +107,6 @@ public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M e
             }
         }
 
-        return super.getRenderOffset(entity, partialTick);
+        return original.call(entity, partialTick);
     }
 }

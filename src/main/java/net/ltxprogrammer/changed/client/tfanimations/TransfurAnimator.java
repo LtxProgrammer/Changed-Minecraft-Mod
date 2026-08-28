@@ -347,6 +347,9 @@ public abstract class TransfurAnimator {
         lerped.xRot = Mth.lerp(lerp, a.xRot, b.xRot);
         lerped.yRot = Mth.lerp(lerp, a.yRot, b.yRot);
         lerped.zRot = Mth.lerp(lerp, a.zRot, b.zRot);
+        lerped.xScale = Mth.lerp(lerp, a.xScale, b.xScale);
+        lerped.yScale = Mth.lerp(lerp, a.yScale, b.yScale);
+        lerped.zScale = Mth.lerp(lerp, a.zScale, b.zScale);
         lerped.visible = a.visible && b.visible;
         return lerped;
     }
@@ -563,6 +566,7 @@ public abstract class TransfurAnimator {
         final Color3 color = variant.getTransfurColor();
 
         copiedPart.loadPose(pose.pose);
+        copiedPart.setScale(part.xScale, part.yScale, part.zScale);
         if (applyAnimation) {
             AnimationContainer.getForEntity(entity).ifPresent(container -> {
                 container.getOrderedAnimations().forEach(instance -> {

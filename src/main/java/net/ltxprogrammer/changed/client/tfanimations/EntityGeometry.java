@@ -95,6 +95,9 @@ public class EntityGeometry {
     public float xRot;
     public float yRot;
     public float zRot;
+    public float xScale;
+    public float yScale;
+    public float zScale;
     public boolean visible = true;
     public final ObjectArrayList<Cube> cubes = new ObjectArrayList<>();
     public final Object2ObjectArrayMap<String, EntityGeometry> children = new Object2ObjectArrayMap<>();
@@ -117,6 +120,9 @@ public class EntityGeometry {
         this.xRot = copyFrom.xRot;
         this.yRot = copyFrom.yRot;
         this.zRot = copyFrom.zRot;
+        this.xScale = copyFrom.xScale;
+        this.yScale = copyFrom.yScale;
+        this.zScale = copyFrom.zScale;
         this.visible = copyFrom.visible;
 
         copyFrom.cubes.forEach(cube -> this.cubes.add(new Cube(cube)));
@@ -143,6 +149,9 @@ public class EntityGeometry {
         this.xRot = copyFrom.xRot;
         this.yRot = copyFrom.yRot;
         this.zRot = copyFrom.zRot;
+        this.xScale = copyFrom.xScale;
+        this.yScale = copyFrom.yScale;
+        this.zScale = copyFrom.zScale;
 
         copyFrom.cubes.forEach(cube -> this.cubes.add(new Cube(cube)));
         copyFrom.children.forEach((name, modelPart) -> {
@@ -176,6 +185,9 @@ public class EntityGeometry {
         this.x = part.x;
         this.y = part.y;
         this.z = part.z;
+        this.xScale = part.xScale;
+        this.yScale = part.yScale;
+        this.zScale = part.zScale;
     }
 
     public void copyPoseTreeFrom(EntityGeometry part) {
@@ -195,6 +207,9 @@ public class EntityGeometry {
         this.x = part.x;
         this.y = part.y;
         this.z = part.z;
+        this.xScale = part.xScale;
+        this.yScale = part.yScale;
+        this.zScale = part.zScale;
     }
 
     public boolean hasChild(String name) {
@@ -222,6 +237,12 @@ public class EntityGeometry {
         this.zRot = zRot;
     }
 
+    public void setScale(float xScale, float yScale, float zScale) {
+        this.xScale = xScale;
+        this.yScale = yScale;
+        this.zScale = zScale;
+    }
+
     public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int overlay, int lightCoords) {
         this.render(poseStack, vertexConsumer, overlay, lightCoords, 1.0F, 1.0F, 1.0F, 1.0F);
     }
@@ -246,6 +267,10 @@ public class EntityGeometry {
         poseStack.translate(this.x / 16.0F, this.y / 16.0F, this.z / 16.0F);
         if (this.xRot != 0.0F || this.yRot != 0.0F || this.zRot != 0.0F) {
             poseStack.mulPose((new Quaternionf()).rotationZYX(this.zRot, this.yRot, this.xRot));
+        }
+
+        if (this.xScale != 1.0F || this.yScale != 1.0F || this.zScale != 1.0F) {
+            poseStack.scale(this.xScale, this.yScale, this.zScale);
         }
     }
 

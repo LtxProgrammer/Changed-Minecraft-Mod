@@ -38,8 +38,8 @@ public class PureWhiteLatexWolfPup extends PureWhiteLatexWolf {
     }
 
     @Override
-    protected float getEyeHeightMul() {
-        if (this.isCrouching())
+    protected float getEyeHeightMul(Pose pose) {
+        if (pose == Pose.CROUCHING)
             return 0.65F;
         else
             return 0.8F;

@@ -9,7 +9,6 @@ import net.ltxprogrammer.changed.entity.ai.AssimilationBehavior;
 import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.ai.LookAtPlayerButNotHostGoal;
 import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
-import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -52,7 +51,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -60,7 +58,6 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -441,8 +438,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         return getLatexType().isHostileTo(LatexType.getEntityLatexType(player));
     }
 
-    protected float getEyeHeightMul() {
-        if (this.isCrouching())
+    protected float getEyeHeightMul(Pose pose) {
+        if (pose == Pose.CROUCHING)
             return 0.83F;
         else
             return 0.93F;
@@ -1187,7 +1184,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
     @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-        return dimensions.height * this.getEyeHeightMul();
+        return dimensions.height * this.getEyeHeightMul(pose);
     }
 
     @Override

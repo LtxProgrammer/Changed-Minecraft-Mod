@@ -22,4 +22,7 @@ public abstract class VivecraftHelper {
             return VivecraftInterface.isPlayerServerVR(serverPlayer);
         return VivecraftInterface.isPlayerClientVR(player);
     }
+
+    public static float vivecraft$offsetAdd = 0.0f;
+    public static float vivecraft$offsetMul = 1.0f;
 }

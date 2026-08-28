@@ -129,8 +129,8 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     }
 
     @Override
-    protected float getEyeHeightMul() {
-        if (this.isCrouching())
+    protected float getEyeHeightMul(Pose pose) {
+        if (pose == Pose.CROUCHING)
             return 0.65F;
         if (this.isPuddle())
             return 0.9F;
