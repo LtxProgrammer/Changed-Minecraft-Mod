@@ -42,7 +42,9 @@ public class SharkModel<T extends ChangedEntity> extends AdvancedFeralModel<T> i
         this.Tail = this.LowerAbdomen.getChild("Tail");
         this.TailPrimary = this.Tail.getChild("TailPrimary");
 
-        this.animator = new HumanoidAnimator<>(this);
+        this.animator = new HumanoidAnimator<>(this)
+                .legLength(4.0f)
+                .torsoLength(0.0f);
     }
 
     @Override

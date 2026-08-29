@@ -46,7 +46,7 @@ public class DarkLatexWolfPartialRenderer extends AdvancedHumanoidRenderer<DarkL
 	}
 
 	@Override
-	public void scale(DarkLatexWolfPartial entity, PoseStack pose, float partialTick) {
+	protected void scale(DarkLatexWolfPartial entity, PoseStack pose, float partialTick) {
 		float f = 0.9375F;
 		pose.scale(0.9375F, 0.9375F, 0.9375F);
 	}

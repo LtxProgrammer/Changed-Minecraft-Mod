@@ -46,7 +46,7 @@ public class LatexHumanRenderer extends AdvancedHumanoidRenderer<LatexHuman, Lat
 	}
 
 	@Override
-	public void scale(LatexHuman entity, PoseStack pose, float partialTick) {
+	protected void scale(LatexHuman entity, PoseStack pose, float partialTick) {
 		float f = 0.9375F;
 		pose.scale(0.9375F, 0.9375F, 0.9375F);
 	}
