@@ -24,35 +24,6 @@ import org.vivecraft.client_vr.render.XRCamera;
 @Mixin(XRCamera.class)
 public abstract class XRCameraMixin {
     @Unique
-    private static float changed$getModelRenderScale(ChangedEntity entity, float partialTick) {
-        float renderScale = 0.9375F;
-
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.getEntityRenderDispatcher().getRenderer(entity) instanceof RendererScaleAccessor scaleAccessor) {
-            PoseStack poseStack = new PoseStack();
-            Vector4f result = new Vector4f();
-            scaleAccessor.vivecraft$scale(entity, poseStack, partialTick);
-            poseStack.last().pose().transform(0.0f, 1.0f, 0.0f, 0.0f, result);
-            return result.y();
-        }
-
-        return renderScale;
-    }
-
-    @Unique
-    private static float changed$getModelNeckPos(ChangedEntity entity, float partialTick) {
-        float neckPos = 1.501F;
-
-        float torsoPositionY = 0.0F;
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.getEntityRenderDispatcher().getRenderer(entity) instanceof AdvancedHumanoidRenderer advancedRenderer) {
-            torsoPositionY = advancedRenderer.getModel(entity).getAnimator(entity).calculateTorsoPositionY();
-        }
-
-        return ((24.0F - torsoPositionY) / 16.0F + 0.001F);
-    }
-
-    @Unique
     public Vec3 changed$getDeltaNeckPos(Entity entity, float partialTick) {
         float neckPos = 1.501F;
         float renderScale = 1.0F;
@@ -69,7 +40,7 @@ public abstract class XRCameraMixin {
         return new Vec3(0.0, (neckPos - 1.501F) * renderScale, 0.0);
     }
 
-    @WrapOperation(method = "setup", at = @At(value = "INVOKE", target = "Lorg/vivecraft/client_vr/VRData$VRDevicePose;getPosition()Lnet/minecraft/world/phys/Vec3;"))
+    @WrapOperation(method = "setup", at = @At(value = "INVOKE", target = "Lorg/vivecraft/client_vr/VRData$VRDevicePose;getPosition()Lnet/minecraft/world/phys/Vec3;", remap = false))
     public Vec3 changed$offsetViewToModel(VRData.VRDevicePose instance, Operation<Vec3> original,
                                           @Local(argsOnly = true) Entity entity,
                                           @Local(argsOnly = true) float partialTick,
