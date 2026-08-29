@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.mixin.compatibility.Vivecraft;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.client.animations.Limb;
+import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.StackAwareRenderer;
 import net.ltxprogrammer.changed.client.renderer.WrappedPlayerRenderer;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
@@ -32,6 +34,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.vivecraft.client.ClientVRPlayers;
 import org.vivecraft.client.render.VRPlayerModel;
 import org.vivecraft.client.render.VRPlayerRenderer;
+import org.vivecraft.client_vr.ClientDataHolderVR;
+import org.vivecraft.client_vr.render.helpers.VREffectsHelper;
+
+import javax.annotation.Nullable;
 
 @Mixin(value = AdvancedHumanoidModel.class, remap = false)
 @RequiredMods("vivecraft")
@@ -41,50 +47,29 @@ public abstract class AdvancedHumanoidModelMixin<T extends ChangedEntity> extend
 
     @Shadow public abstract ModelPart getLeg(HumanoidArm leg);
 
+    @Shadow @Nullable public abstract ModelPart getLimb(Limb limb);
+
     public AdvancedHumanoidModelMixin(ModelPart pRoot, boolean pSlim) {
         super(pRoot, pSlim);
     }
 
     @Unique
-    private float vivecraft$getModelRenderScale(T entity, float partialTick) {
-        float renderScale = 0.9375F;
-
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.getEntityRenderDispatcher().getRenderer(entity) instanceof RendererScaleAccessor scaleAccessor) {
-            PoseStack poseStack = new PoseStack();
-            Vector4f result = new Vector4f();
-            scaleAccessor.vivecraft$scale(entity, poseStack, partialTick);
-            poseStack.last().pose().transform(0.0f, 1.0f, 0.0f, 0.0f, result);
-            return result.y();
-        }
-
-        return renderScale;
-    }
-
-    @Unique
-    private float vivecraft$getModelNeckPos(T entity, HumanoidAnimator<T,?> animator, float torsoContribution, float partialTick) {
+    private float vivecraft$getModelNeckPos(HumanoidAnimator<T,?> animator, float partialTick) {
         float neckPos = 1.501F;
 
         float torsoPositionY = animator.calculateTorsoPositionY();
-        float neckPosY = torsoPositionY - (12.0f - animator.legLength) * (1.0f - torsoContribution);
-
-        return ((24.0F - neckPosY) / 16.0F + 0.001F);
+        return ((24.0F - torsoPositionY) / 16.0F + 0.001F);
     }
 
     @Unique
-    private float vivecraft$computeModelYOffset(T entity, HumanoidAnimator<T,?> animator, float torsoContribution, float partialTick) {
-        //float renderScale = vivecraft$getModelRenderScale(entity, partialTick);
-        float neckPos = vivecraft$getModelNeckPos(entity, animator, torsoContribution, partialTick);
-
-        float deltaNeckPos = -(neckPos - 1.501F) * 16.0F;
-        return deltaNeckPos * VivecraftHelper.vivecraft$offsetMul + VivecraftHelper.vivecraft$offsetAdd;// * (renderScale / 0.9375F);
+    private float vivecraft$getDeltaNeckPos(HumanoidAnimator<T,?> animator, float partialTick) {
+        return 1.501F - vivecraft$getModelNeckPos(animator, partialTick);
     }
 
     @Unique
     private void vivecraft$applyLimbLengths(T entity, HumanoidAnimator<T,?> animator, PlayerModel<?> playerModel, float partialTick) {
         float torsoYScale = Mth.cos(playerModel.body.xRot);
         float torsoZScale = -Mth.sin(playerModel.body.xRot);
-        float modelYOffset = vivecraft$computeModelYOffset(entity, animator, torsoYScale, partialTick);
 
         float deltaTorsoLength = 12.0F - animator.torsoLength;
         if (deltaTorsoLength != 0.0F) {
@@ -95,7 +80,7 @@ public abstract class AdvancedHumanoidModelMixin<T extends ChangedEntity> extend
         }
 
         float deltaTorsoWidth = 5.0F - animator.torsoWidth;
-        if (deltaTorsoWidth != 0.0F) {
+        if (deltaTorsoWidth != 0.0F && !VREffectsHelper.isFirstPersonEntityPass()) { // Arms will offset the GUI in FP
             playerModel.leftArm.x -= deltaTorsoWidth;
             playerModel.rightArm.x += deltaTorsoWidth;
         }
@@ -116,6 +101,16 @@ public abstract class AdvancedHumanoidModelMixin<T extends ChangedEntity> extend
             playerModel.rightLeg.zRot = rightLeg.zRot;
         }
 
+        var abdomen = getLimb(Limb.ABDOMEN);
+        if (abdomen != null) {
+            playerModel.leftLeg.xRot = abdomen.xRot;
+            playerModel.leftLeg.yRot = abdomen.yRot;
+            playerModel.leftLeg.zRot = abdomen.zRot;
+            playerModel.rightLeg.xRot = abdomen.xRot;
+            playerModel.rightLeg.yRot = abdomen.yRot;
+            playerModel.rightLeg.zRot = abdomen.zRot;
+        }
+
         if (entity.getType().is(ChangedTags.EntityTypes.BENIGN_LATEXES) && !(entity instanceof LatexBenignOrca)) {
             playerModel.rightArm.xRot = playerModel.body.xRot;
             playerModel.rightArm.yRot = playerModel.body.yRot;
@@ -125,12 +120,13 @@ public abstract class AdvancedHumanoidModelMixin<T extends ChangedEntity> extend
             playerModel.leftArm.zRot = playerModel.body.zRot;
         }
 
-        playerModel.head.y += modelYOffset;
-        playerModel.body.y += modelYOffset;
-        playerModel.rightArm.y += modelYOffset;
-        playerModel.leftArm.y += modelYOffset;
-        playerModel.rightLeg.y += modelYOffset;
-        playerModel.leftLeg.y += modelYOffset;
+        float deltaNeckPos = vivecraft$getDeltaNeckPos(animator, partialTick) * 16.0F;
+        playerModel.head.y += deltaNeckPos;
+        playerModel.body.y += deltaNeckPos;
+        playerModel.leftArm.y += deltaNeckPos;
+        playerModel.rightArm.y += deltaNeckPos;
+        playerModel.leftLeg.y += deltaNeckPos;
+        playerModel.rightLeg.y += deltaNeckPos;
     }
 
      @Inject(method = "setupAnim(Lnet/ltxprogrammer/changed/entity/ChangedEntity;FFFFF)V", at = @At("TAIL"))

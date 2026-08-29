@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.RequiredMods;
@@ -16,8 +17,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.vivecraft.api.client.data.RenderPass;
 import org.vivecraft.client.ClientVRPlayers;
 import org.vivecraft.client.utils.ScaleHelper;
@@ -42,7 +45,7 @@ public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M e
     }
 
     @WrapMethod(method = "render(Lnet/ltxprogrammer/changed/entity/ChangedEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
-    private void vivecraft$setupScale(T entity, float yRot, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Operation<Void> original) {
+    private void vivecraft$render(T entity, float yRot, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Operation<Void> original) {
         if (entity.getUnderlyingPlayer() instanceof AbstractClientPlayer player && ClientVRPlayers.getInstance().isVRPlayer(player)) {
             poseStack.pushPose();
             ClientVRPlayers.RotInfo rotInfo = ClientVRPlayers.getInstance().getRotationsForPlayer(player.getUUID());
@@ -97,7 +100,8 @@ public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M e
     // Copied From VRPlayerRenderer$getRenderOffset
     @WrapMethod(method = "getRenderOffset(Lnet/ltxprogrammer/changed/entity/ChangedEntity;F)Lnet/minecraft/world/phys/Vec3;")
     public Vec3 vivecraft$getRenderOffset(T entity, float partialTick, Operation<Vec3> original) {
-        // TODO adjust render offset to line up with GUI
+        // TODO adjust render offset when swimming
+        // TODO adjust controller offset for models with significant neck pos deltas
 
         if (entity.getUnderlyingPlayer() instanceof AbstractClientPlayer player && ClientVRPlayers.getInstance().isVRPlayer(player)) {
             if (VREffectsHelper.isFirstPersonPlayer(player)) {

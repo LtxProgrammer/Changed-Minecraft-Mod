@@ -47,6 +47,8 @@ public class GasWolfPupModel extends AdvancedHumanoidModel<GasWolfPup> {
         var tailTertiary = tailSecondary.getChild("TailTertiary");
 
         animator = HumanoidAnimator.of(this)
+                .legLength(7.0F)
+                .torsoLength(0.0F)
                 .addPreset(AnimatorPresets.wolfTail(Tail, List.of(tailPrimary, tailSecondary, tailTertiary)));
     }
 

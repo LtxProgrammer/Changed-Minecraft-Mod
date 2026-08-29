@@ -66,6 +66,7 @@
     "Vivecraft.LatexItemInHandLayerMixin",
     "Vivecraft.ScaleHelperMixin",
     "Vivecraft.VRArmRendererMixin",
+    "Vivecraft.XRCameraMixin",
     "WATUT.HumanoidAnimatorMixin",
     "WATUT.PlayerStatusManagerClientMixin"
   ],
