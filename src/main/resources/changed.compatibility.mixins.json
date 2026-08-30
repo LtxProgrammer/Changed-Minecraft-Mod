@@ -60,7 +60,13 @@
     "Sodium.ModelCuboidMixin",
     "Sodium.WorldSliceMixin",
     "TaCZ.HumanoidAnimatorMixin",
+    "Vivecraft.AdvancedHumanoidModelMixin",
+    "Vivecraft.AdvancedHumanoidRendererMixin",
+    "Vivecraft.LatexElytraLayerMixin",
+    "Vivecraft.LatexItemInHandLayerMixin",
+    "Vivecraft.ScaleHelperMixin",
     "Vivecraft.VRArmRendererMixin",
+    "Vivecraft.XRCameraMixin",
     "WATUT.HumanoidAnimatorMixin",
     "WATUT.PlayerStatusManagerClientMixin"
   ],

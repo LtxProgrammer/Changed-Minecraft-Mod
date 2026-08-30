@@ -6,7 +6,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.FormRenderHandler;
+import net.ltxprogrammer.changed.client.renderer.HandRenderer;
 import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
@@ -14,6 +14,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.world.entity.HumanoidArm;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -25,6 +26,7 @@ import ttv.migami.jeg.client.render.gun.animated.AnimatedGunRenderer;
 public abstract class AnimatedGunRendererMixin {
     @Shadow private MultiBufferSource bufferSource;
 
+    @Shadow private static AnimatedGunRenderer instance;
     @Unique
     private boolean changed$skipSleeve = false;
 
@@ -42,8 +44,9 @@ public abstract class AnimatedGunRendererMixin {
         if (playerModel.rightArm == instance ||
                 playerModel.leftArm == instance) {
             Minecraft client = Minecraft.getInstance();
-            if (FormRenderHandler.maybeRenderHand(playerEntityRenderer, poseStack, this.bufferSource, packedLight, client.player, instance,
-                    playerModel.rightArm == instance ? playerModel.rightSleeve : playerModel.leftSleeve)) {
+            if (playerEntityRenderer instanceof HandRenderer handRenderer) {
+                handRenderer.renderHand(poseStack, this.bufferSource, packedLight, client.player,
+                        playerModel.rightArm == instance ? HumanoidArm.RIGHT : HumanoidArm.LEFT, instance.storePose());
                 changed$skipSleeve = true;
                 return;
             }

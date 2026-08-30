@@ -15,6 +15,7 @@ import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.AccessoryEntities;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LimbCoverTransition;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
@@ -31,12 +32,15 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -343,6 +347,9 @@ public abstract class TransfurAnimator {
         lerped.xRot = Mth.lerp(lerp, a.xRot, b.xRot);
         lerped.yRot = Mth.lerp(lerp, a.yRot, b.yRot);
         lerped.zRot = Mth.lerp(lerp, a.zRot, b.zRot);
+        lerped.xScale = Mth.lerp(lerp, a.xScale, b.xScale);
+        lerped.yScale = Mth.lerp(lerp, a.yScale, b.yScale);
+        lerped.zScale = Mth.lerp(lerp, a.zScale, b.zScale);
         lerped.visible = a.visible && b.visible;
         return lerped;
     }
@@ -471,7 +478,7 @@ public abstract class TransfurAnimator {
         if (applyAnimation) {
             AnimationContainer.getForEntity(entity).ifPresent(container -> {
                 container.getOrderedAnimations().forEach(instance -> {
-                    transitionPart.loadPose(instance.animatePartAs(limb, transitionPart.storePose(), partialTicks));
+                    transitionPart.loadPose(instance.animatePartAs(limb, entity, transitionPart.storePose(), partialTicks));
                 });
             });
         }
@@ -539,7 +546,7 @@ public abstract class TransfurAnimator {
             default -> LimbCoverTransition.INSTANT;
         };
 
-        if (progress <= 0f)
+        if (progress <= 0f || !part.visible)
             return;
 
         final float shrink = (coverAlpha - 1.0f) * 0.5f;
@@ -559,10 +566,11 @@ public abstract class TransfurAnimator {
         final Color3 color = variant.getTransfurColor();
 
         copiedPart.loadPose(pose.pose);
+        copiedPart.setScale(part.xScale, part.yScale, part.zScale);
         if (applyAnimation) {
             AnimationContainer.getForEntity(entity).ifPresent(container -> {
                 container.getOrderedAnimations().forEach(instance -> {
-                    copiedPart.loadPose(instance.animatePartAs(limb, copiedPart.storePose(), partialTicks));
+                    copiedPart.loadPose(instance.animatePartAs(limb, entity, copiedPart.storePose(), partialTicks));
                 });
             });
         }
@@ -585,18 +593,17 @@ public abstract class TransfurAnimator {
         return Optional.empty();
     }
 
-    public static void renderTransfurringPlayer(Player player, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
-        final Minecraft minecraft = Minecraft.getInstance();
-        final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
-        final var playerRenderer = dispatcher.getRenderer(player);
-        final var latexRenderer = dispatcher.getRenderer(variant.getChangedEntity());
+    public static void renderTransfurringPlayer(
+            PlayerRenderer playerRenderer,
+            EntityRenderer<? super ChangedEntity> variantRenderer,
+            float yRot,
+            int playerLight,
+            int variantLight,
+            AbstractClientPlayer player, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, float partialTick) {
 
-        if (!(playerRenderer instanceof LivingEntityRenderer<?,?> livingPlayerRenderer)) return;
-        if (!(livingPlayerRenderer.getModel() instanceof HumanoidModel<?> playerHumanoidModel)) return;
+        var playerHumanoidModel = playerRenderer.getModel();
 
-        if (!(latexRenderer instanceof AdvancedHumanoidRenderer latexHumanoidRenderer)) return;
-
-        int variantLight = FormRenderHandler.maxPackedLight(light, latexHumanoidRenderer.getPackedLightCoords(variant.getChangedEntity(), partialTick));
+        if (!(variantRenderer instanceof AdvancedHumanoidRenderer latexHumanoidRenderer)) return;
 
         final float transfurProgression = variant.getTransfurProgression(partialTick);
         final float coverProgress = getCoverProgression(transfurProgression);
@@ -606,12 +613,10 @@ public abstract class TransfurAnimator {
 
         if (morphAlpha < 1f) { // Render normal living entity, when they are still seen
             if (coverProgress < 1f) { // Render player, being covered
-                forceRenderPlayer = true;
-                FormRenderHandler.renderLiving(player, stack, buffer, light, partialTick);
+                playerRenderer.render(player, yRot, partialTick, stack, buffer, playerLight);
                 ChangedCompatibility.forceIsFirstPersonRenderingToFrozen();
-                forceRenderPlayer = false;
             } else if (morphProgress > 0.5f) // Render latex at the end
-                FormRenderHandler.renderLiving(variant.getChangedEntity(), stack, buffer, variantLight, partialTick);
+                variantRenderer.render(variant.getChangedEntity(), yRot, partialTick, stack, buffer, playerLight);
         }
 
         if (coverAlpha > 0f) {
@@ -625,17 +630,16 @@ public abstract class TransfurAnimator {
             renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerHumanoidModel.rightArm, Limb.RIGHT_ARM, stack, buffer, variantLight, true);
             renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerHumanoidModel.leftLeg, Limb.LEFT_LEG, stack, buffer, variantLight, true);
             renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerHumanoidModel.rightLeg, Limb.RIGHT_LEG, stack, buffer, variantLight, true);
-            if (playerHumanoidModel instanceof PlayerModel<?> playerModel) {
-                if (!(ChangedCompatibility.isFirstPersonRendering() && player.isSwimming()))
-                    renderCoveringLimb(player, variant, partialTick, coverProgress, coverAlpha, playerModel.jacket, Limb.TORSO, stack, buffer, variantLight, true);
-                renderCoveringLimb(player, variant, partialTick, coverProgress, coverAlpha, playerModel.leftSleeve, Limb.LEFT_ARM, stack, buffer, variantLight, true);
-                renderCoveringLimb(player, variant, partialTick, coverProgress, coverAlpha, playerModel.rightSleeve, Limb.RIGHT_ARM, stack, buffer, variantLight, true);
-                renderCoveringLimb(player, variant, partialTick, coverProgress, coverAlpha, playerModel.leftPants, Limb.LEFT_LEG, stack, buffer, variantLight, true);
-                renderCoveringLimb(player, variant, partialTick, coverProgress, coverAlpha, playerModel.rightPants, Limb.RIGHT_LEG, stack, buffer, variantLight, true);
-            }
+
+            if (!(ChangedCompatibility.isFirstPersonRendering() && player.isSwimming()))
+                renderCoveringLimb(player, variant, partialTick, coverProgress, coverAlpha, playerHumanoidModel.jacket, Limb.TORSO, stack, buffer, variantLight, true);
+            renderCoveringLimb(player, variant, partialTick, coverProgress, coverAlpha, playerHumanoidModel.leftSleeve, Limb.LEFT_ARM, stack, buffer, variantLight, true);
+            renderCoveringLimb(player, variant, partialTick, coverProgress, coverAlpha, playerHumanoidModel.rightSleeve, Limb.RIGHT_ARM, stack, buffer, variantLight, true);
+            renderCoveringLimb(player, variant, partialTick, coverProgress, coverAlpha, playerHumanoidModel.leftPants, Limb.LEFT_LEG, stack, buffer, variantLight, true);
+            renderCoveringLimb(player, variant, partialTick, coverProgress, coverAlpha, playerHumanoidModel.rightPants, Limb.RIGHT_LEG, stack, buffer, variantLight, true);
         }
 
-        int coverLight = FormRenderHandler.lerpPackedLight(light, variantLight, coverProgress);
+        int coverLight = FormRenderHandler.lerpPackedLight(playerLight, variantLight, coverProgress);
 
         if (morphAlpha > 0f) {
             final var colors = variant.getTransfurColor();
@@ -649,7 +653,7 @@ public abstract class TransfurAnimator {
         }
 
         if (coverProgress >= 1f) {
-            findArmorLayer(livingPlayerRenderer).ifPresent(armorLayer -> {
+            findArmorLayer(playerRenderer).ifPresent(armorLayer -> {
                 Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).forEach(armorSlot -> {
                     var item = player.getItemBySlot(armorSlot);
                     ResourceLocation texture = null;
@@ -680,7 +684,7 @@ public abstract class TransfurAnimator {
             });
 
             final var slotTypePredicate = AccessoryEntities.INSTANCE.canEntityTypeUseSlot(AccessoryEntities.getApparentEntityType(variant.getChangedEntity()));
-            findAccessoryLayer(livingPlayerRenderer).flatMap(accessoryLayer -> AccessorySlots.getForEntity(player))
+            findAccessoryLayer(playerRenderer).flatMap(accessoryLayer -> AccessorySlots.getForEntity(player))
                     .ifPresent(slots -> slots.forEachSlot((slotType, itemStack) -> {
                         if (itemStack.isEmpty())
                             return;
@@ -695,7 +699,7 @@ public abstract class TransfurAnimator {
                         AccessoryLayer.getRenderer(itemStack.getItem()).ifPresent(renderer -> {
                             if (renderer instanceof TransitionalAccessory transitionalAccessory) {
                                 final var texture = transitionalAccessory.getModelTexture(slotContextVariant);
-                                final var before = transitionalAccessory.getBeforeModel(slotContextPlayer, livingPlayerRenderer);
+                                final var before = transitionalAccessory.getBeforeModel(slotContextPlayer, playerRenderer);
                                 if (texture.isEmpty() || before.isEmpty())
                                     return;
 
@@ -716,22 +720,32 @@ public abstract class TransfurAnimator {
                                 });
                             }
                         });
-            }));
+                    }));
         }
     }
 
-    public static void renderTransfurringArm(Player player, HumanoidArm arm, PartPose armPose, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick, @Nullable ResourceLocation texture) {
+    @Deprecated
+    public static void renderTransfurringPlayer(AbstractClientPlayer player, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         final Minecraft minecraft = Minecraft.getInstance();
         final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
-        final var playerRenderer = dispatcher.getRenderer(player);
-        final var latexRenderer = dispatcher.getRenderer(variant.getChangedEntity());
+        final var playerRenderer = (PlayerRenderer) dispatcher.getRenderer(player);
+        final var latexRenderer = (EntityRenderer<? super ChangedEntity>) dispatcher.getRenderer(variant.getChangedEntity());
 
-        if (!(playerRenderer instanceof LivingEntityRenderer<?,?> livingPlayerRenderer)) return;
-        if (!(livingPlayerRenderer.getModel() instanceof HumanoidModel<?> playerHumanoidModel)) return;
+        int variantLight = FormRenderHandler.maxPackedLight(light, latexRenderer.getPackedLightCoords(variant.getChangedEntity(), partialTick));
 
-        if (!(latexRenderer instanceof AdvancedHumanoidRenderer<?,?> latexHumanoidRenderer)) return;
+        renderTransfurringPlayer(playerRenderer, latexRenderer, player.getYRot(), light, variantLight, player, variant, stack, buffer, partialTick);
+    }
 
-        int variantLight = FormRenderHandler.maxPackedLight(light, ((AdvancedHumanoidRenderer)latexHumanoidRenderer).getPackedLightCoords(variant.getChangedEntity(), partialTick));
+    public static void renderTransfurringArm(
+            PlayerRenderer playerRenderer,
+            EntityRenderer<? super ChangedEntity> variantRenderer,
+            int playerLight,
+            int variantLight,
+            AbstractClientPlayer player, HumanoidArm arm, PartPose armPose, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, float partialTick, @Nullable ResourceLocation texture) {
+
+        var playerHumanoidModel = playerRenderer.getModel();
+
+        if (!(variantRenderer instanceof AdvancedHumanoidRenderer<?,?> latexHumanoidRenderer)) return;
 
         final float transfurProgression = variant.getTransfurProgression(partialTick);
         final float coverProgress = getCoverProgression(transfurProgression);
@@ -742,25 +756,27 @@ public abstract class TransfurAnimator {
         if (morphAlpha < 1f) { // Render normal living entity, when they are still seen
             if (coverProgress < 1f) { // Render player, being covered
                 forceRenderPlayer = true;
-                FormRenderHandler.renderHand(player, arm, armPose, stack, buffer, light, partialTick);
+                if (arm == HumanoidArm.LEFT)
+                    playerRenderer.renderLeftHand(stack, buffer, playerLight, player);
+                else
+                    playerRenderer.renderRightHand(stack, buffer, playerLight, player);
                 ChangedCompatibility.forceIsFirstPersonRenderingToFrozen();
                 forceRenderPlayer = false;
             } else if (morphProgress > 0.5f) // Render latex at the end
-                FormRenderHandler.renderHand(variant.getChangedEntity(), arm, armPose, stack, buffer, variantLight, partialTick);
+                FormRenderHandler.renderHand(variantRenderer, variant.getChangedEntity(), arm, armPose, stack, buffer, variantLight, partialTick, true);
         }
 
         Limb limb = arm == HumanoidArm.LEFT ? Limb.LEFT_ARM : Limb.RIGHT_ARM;
 
         if (coverAlpha > 0f) {
             switch (arm) {
-                case RIGHT -> renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerHumanoidModel.rightArm, Limb.RIGHT_ARM, stack, buffer, variantLight, false);
-                case LEFT -> renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerHumanoidModel.leftArm, Limb.LEFT_ARM, stack, buffer, variantLight, false);
-            }
-
-            if (playerHumanoidModel instanceof PlayerModel<?> playerModel) {
-                switch (arm) {
-                    case RIGHT -> renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerModel.rightSleeve, Limb.RIGHT_ARM, stack, buffer, variantLight, false);
-                    case LEFT -> renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerModel.leftSleeve, Limb.LEFT_ARM, stack, buffer, variantLight, false);
+                case RIGHT -> {
+                    renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerHumanoidModel.rightArm, Limb.RIGHT_ARM, stack, buffer, variantLight, false);
+                    renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerHumanoidModel.rightSleeve, Limb.RIGHT_ARM, stack, buffer, variantLight, false);
+                }
+                case LEFT -> {
+                    renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerHumanoidModel.leftArm, Limb.LEFT_ARM, stack, buffer, variantLight, false);
+                    renderCoveringLimb(player, variant, partialTick, coverProgress, 1.0f, playerHumanoidModel.leftSleeve, Limb.LEFT_ARM, stack, buffer, variantLight, false);
                 }
             }
         }
@@ -771,13 +787,24 @@ public abstract class TransfurAnimator {
         final var color = variant.getTransfurColor();
         try {
             renderMorphedLimb(player, limb, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
-                    partialTick, morphProgress, color, morphAlpha, stack, buffer, light, texture, false, false);
+                    partialTick, morphProgress, color, morphAlpha, stack, buffer, variantLight, texture, false, false);
         } catch (Exception e) {
             CrashReport report = CrashReport.forThrowable(e, "Rendering transfurring entity's arm");
             CrashReportCategory category = report.addCategory("Limb being rendered");
             category.setDetail("Limb Name", limb.getSerializedName());
             throw new ReportedException(report);
         }
+    }
+
+    public static void renderTransfurringArm(AbstractClientPlayer player, HumanoidArm arm, PartPose armPose, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick, @Nullable ResourceLocation texture) {
+        final Minecraft minecraft = Minecraft.getInstance();
+        final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
+        final var playerRenderer = (PlayerRenderer) dispatcher.getRenderer(player);
+        final var latexRenderer = (EntityRenderer<? super ChangedEntity>) dispatcher.getRenderer(variant.getChangedEntity());
+
+        int variantLight = FormRenderHandler.maxPackedLight(light, latexRenderer.getPackedLightCoords(variant.getChangedEntity(), partialTick));
+
+        renderTransfurringArm(playerRenderer, latexRenderer, light, variantLight, player, arm, armPose, variant, stack, buffer, partialTick, texture);
     }
 
     private static boolean capturingPose = false;

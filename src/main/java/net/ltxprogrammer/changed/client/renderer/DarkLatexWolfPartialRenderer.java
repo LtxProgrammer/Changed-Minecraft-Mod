@@ -50,9 +50,4 @@ public class DarkLatexWolfPartialRenderer extends AdvancedHumanoidRenderer<DarkL
 		float f = 0.9375F;
 		pose.scale(0.9375F, 0.9375F, 0.9375F);
 	}
-
-	@Override
-	protected void scaleForBPI(@NotNull DarkLatexWolfPartial entity, BasicPlayerInfo bpi, PoseStack poseStack) {
-
-	}
 }

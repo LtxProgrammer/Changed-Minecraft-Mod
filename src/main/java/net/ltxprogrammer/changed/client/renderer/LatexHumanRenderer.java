@@ -50,9 +50,4 @@ public class LatexHumanRenderer extends AdvancedHumanoidRenderer<LatexHuman, Lat
 		float f = 0.9375F;
 		pose.scale(0.9375F, 0.9375F, 0.9375F);
 	}
-
-	@Override
-	protected void scaleForBPI(@NotNull LatexHuman entity, BasicPlayerInfo bpi, PoseStack poseStack) {
-
-	}
 }

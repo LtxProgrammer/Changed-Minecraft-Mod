@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -55,8 +56,8 @@ public class GasWolfPup extends GasWolfMale {
     }
 
     @Override
-    protected float getEyeHeightMul() {
-        if (this.isCrouching())
+    protected float getEyeHeightMul(Pose pose) {
+        if (pose == Pose.CROUCHING)
             return 0.65F;
         else
             return 0.8F;

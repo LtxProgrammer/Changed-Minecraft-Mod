@@ -122,7 +122,9 @@ public abstract class EntityRenderDispatcherMixin {
 
     @WrapMethod(method = "getRenderer")
     public <T extends Entity> EntityRenderer<? super T> getRendererOrOverridden(T entity, Operation<EntityRenderer<? super T>> original) {
-        return RendererOverride.getRenderer(entity)
+        var baseRenderer = ChangedEntityRenderers.getComplexRenderer(entity).orElseGet(() -> original.call(entity));
+
+        return RendererOverride.getRenderer(entity, baseRenderer)
                 .or(() -> ChangedEntityRenderers.getComplexRenderer(entity))
                 .orElseGet(() -> original.call(entity));
     }
