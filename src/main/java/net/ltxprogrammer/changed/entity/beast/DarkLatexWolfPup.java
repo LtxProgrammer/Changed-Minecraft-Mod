@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.entity.ai.DarkLatexFavor;
+import net.ltxprogrammer.changed.entity.ai.TamedEntityFavor;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
@@ -14,8 +14,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -169,47 +167,20 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     }
 
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        if (this.level().isClientSide) {
-            boolean flag = this.isOwnedBy(player) || this.isTame() || this.isTameItem(itemstack) && !this.isTame();
-            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
-        } else {
-            if (!this.isTame() && this.isTameItem(itemstack)) {
-                if (!player.getAbilities().instabuild) {
-                    itemstack.shrink(1);
-                }
+    protected boolean isTameableBy(Player player) {
+        return true;
+    }
 
-                ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-                    if (ChangedLatexTypes.DARK_LATEX.get().isFriendlyTo(variant.getLatexType()) && this.random.nextInt(3) == 0) { // One in 3 chance
-                        this.tame(player);
-                        this.navigation.stop();
-                        this.setTarget(null);
-                        this.level().broadcastEntityEvent(this, (byte)7);
-                    } else if (!ChangedLatexTypes.DARK_LATEX.get().isHostileTo(variant.getLatexType()) && this.random.nextInt(10) == 0) {
-                        this.tame(player);
-                        this.navigation.stop();
-                        this.setTarget(null);
-                        this.level().broadcastEntityEvent(this, (byte)7);
-                    } else {
-                        this.level().broadcastEntityEvent(this, (byte)6);
-                    }
-                }, () -> {
-                    if (this.random.nextInt(10) == 0) { // One in 10 chance
-                        this.tame(player);
-                        this.navigation.stop();
-                        this.setTarget(null);
-                        this.level().broadcastEntityEvent(this, (byte)7);
-                    } else {
-                        this.level().broadcastEntityEvent(this, (byte)6);
-                    }
-                });
-
-                return InteractionResult.SUCCESS;
-            }
-
-            return super.mobInteract(player, hand);
-        }
+    @Override
+    protected float getTameChance(Player player, ItemStack itemStack) {
+        var variant = ProcessTransfur.getPlayerTransfurVariant(player);
+        if (variant == null)
+            return 0.1f; // 10%
+        if (ChangedLatexTypes.DARK_LATEX.get().isFriendlyTo(variant.getLatexType()))
+            return 0.3333f; // 33%
+        if (!ChangedLatexTypes.DARK_LATEX.get().isHostileTo(variant.getLatexType()))
+            return 0.1f; // 10%
+        return 0.0f; // No chance
     }
 
     /*@Override
@@ -225,8 +196,8 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     }*/
 
     @Override
-    public boolean canDoFavor(DarkLatexFavor favor) {
-        return favor == DarkLatexFavor.NONE;
+    public boolean canDoFavor(TamedEntityFavor favor) {
+        return favor == TamedEntityFavor.NONE;
     }
 
     @Override

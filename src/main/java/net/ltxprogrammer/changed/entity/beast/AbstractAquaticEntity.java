@@ -114,7 +114,7 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
     }
 
     @Override
-    public ItemStack getItemBySlot(EquipmentSlot p_21127_) {
+    public @NotNull ItemStack getItemBySlot(EquipmentSlot p_21127_) {
         return super.getItemBySlot(p_21127_);
     }
 

@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.client.gui;
 
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.ai.DarkLatexFavor;
+import net.ltxprogrammer.changed.entity.ai.TamedEntityFavor;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.TamedDarkLatexMenu;
@@ -18,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class TamedDarkLatexScreen extends AbstractRadialScreen<TamedDarkLatexMenu> {
@@ -63,23 +62,23 @@ public class TamedDarkLatexScreen extends AbstractRadialScreen<TamedDarkLatexMen
                         menu.tamedDarkLatex.getAttackCondition().getDisplayText()),
                 () -> false
         ));
-        if (menu.tamedDarkLatex.canDoFavor(DarkLatexFavor.FISHING))
+        if (menu.tamedDarkLatex.canDoFavor(TamedEntityFavor.FISHING))
             interactionsBuilder.add(new Interaction("favor_fishing",
                     () -> List.of(Component.translatable("changed.tamed_dark_latex.title.favor_fishing"),
-                            menu.tamedDarkLatex.getCurrentFavor() == DarkLatexFavor.FISHING ? ACTIVE : INACTIVE),
-                    () -> menu.tamedDarkLatex.getCurrentFavor() == DarkLatexFavor.FISHING
+                            menu.tamedDarkLatex.getCurrentFavor() == TamedEntityFavor.FISHING ? ACTIVE : INACTIVE),
+                    () -> menu.tamedDarkLatex.getCurrentFavor() == TamedEntityFavor.FISHING
             ));
-        if (menu.tamedDarkLatex.canDoFavor(DarkLatexFavor.CAVING))
+        if (menu.tamedDarkLatex.canDoFavor(TamedEntityFavor.CAVING))
             interactionsBuilder.add(new Interaction("favor_caving",
                     () -> List.of(Component.translatable("changed.tamed_dark_latex.title.favor_caving"),
-                            menu.tamedDarkLatex.getCurrentFavor() == DarkLatexFavor.CAVING ? ACTIVE : INACTIVE),
-                    () -> menu.tamedDarkLatex.getCurrentFavor() == DarkLatexFavor.CAVING
+                            menu.tamedDarkLatex.getCurrentFavor() == TamedEntityFavor.CAVING ? ACTIVE : INACTIVE),
+                    () -> menu.tamedDarkLatex.getCurrentFavor() == TamedEntityFavor.CAVING
             ));
-        if (menu.tamedDarkLatex.canDoFavor(DarkLatexFavor.SUIT_OWNER))
+        if (menu.tamedDarkLatex.canDoFavor(TamedEntityFavor.SUIT_OWNER))
             interactionsBuilder.add(new Interaction("favor_suit_owner",
                     () -> List.of(Component.translatable("changed.tamed_dark_latex.title.favor_suit_owner"),
-                            menu.tamedDarkLatex.getCurrentFavor() == DarkLatexFavor.SUIT_OWNER ? ACTIVE : INACTIVE),
-                    () -> menu.tamedDarkLatex.getCurrentFavor() == DarkLatexFavor.SUIT_OWNER
+                            menu.tamedDarkLatex.getCurrentFavor() == TamedEntityFavor.SUIT_OWNER ? ACTIVE : INACTIVE),
+                    () -> menu.tamedDarkLatex.getCurrentFavor() == TamedEntityFavor.SUIT_OWNER
             ));
         availableInteractions = interactionsBuilder.build();
     }

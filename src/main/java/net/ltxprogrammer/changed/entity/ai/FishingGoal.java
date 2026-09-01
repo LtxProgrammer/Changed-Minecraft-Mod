@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.ai;
 
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
 import net.ltxprogrammer.changed.util.LevelUtil;
 import net.minecraft.core.BlockPos;
@@ -8,42 +9,35 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
-public class DarkLatexFishingGoal extends MoveToBlockGoal {
+public class FishingGoal extends MoveToBlockGoal {
     private static final int WATER_CHECK_SEARCH_HORIZONTAL = 8;
     private static final int WATER_CHECK_SEARCH_VERTICAL = 4;
     private static final int TIME_LIMIT_TO_PATHFIND = 5 * 20;
 
-    public final AbstractDarkLatexEntity entity;
+    public final ChangedEntity entity;
     public final Level level;
     private BlockPos targetWaterSurface = BlockPos.ZERO;
 
-    public DarkLatexFishingGoal(AbstractDarkLatexEntity entity, double speedModifier, int searchRange, int verticalSearchRange) {
+    public FishingGoal(ChangedEntity entity, double speedModifier, int searchRange, int verticalSearchRange) {
         super(entity, speedModifier, searchRange, verticalSearchRange);
         this.entity = entity;
         this.level = entity.level();
@@ -65,7 +59,7 @@ public class DarkLatexFishingGoal extends MoveToBlockGoal {
         var inventory = entity.getInventory();
         if (inventory == null)
             return false;
-        if (entity.getCurrentFavor() != DarkLatexFavor.FISHING)
+        if (entity.getCurrentFavor() != TamedEntityFavor.FISHING)
             return false;
         if (!entity.getMainHandItem().is(Tags.Items.TOOLS_FISHING_RODS))
             return false;
@@ -77,7 +71,7 @@ public class DarkLatexFishingGoal extends MoveToBlockGoal {
     public boolean canContinueToUse() {
         if (entity.getTarget() != null)
             return false;
-        if (entity.getCurrentFavor() != DarkLatexFavor.FISHING)
+        if (entity.getCurrentFavor() != TamedEntityFavor.FISHING)
             return false;
         if (!entity.getMainHandItem().is(Tags.Items.TOOLS_FISHING_RODS))
             return false;
@@ -217,10 +211,6 @@ public class DarkLatexFishingGoal extends MoveToBlockGoal {
 
     protected void cancelCast() {
         entity.swing(InteractionHand.MAIN_HAND);
-        ItemStack itemstack = entity.getItemInHand(InteractionHand.MAIN_HAND);
         level.playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1.0F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-        itemstack.hurtAndBreak(1, entity, (handlerEntity) -> {
-            handlerEntity.broadcastBreakEvent(InteractionHand.MAIN_HAND);
-        });
     }
 }

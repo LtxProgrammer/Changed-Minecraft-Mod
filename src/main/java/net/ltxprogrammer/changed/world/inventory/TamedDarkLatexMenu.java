@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.world.inventory;
 
-import net.ltxprogrammer.changed.entity.ai.DarkLatexFavor;
+import net.ltxprogrammer.changed.entity.ai.TamedEntityFavor;
 import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.minecraft.nbt.CompoundTag;
@@ -84,23 +84,22 @@ public class TamedDarkLatexMenu extends AbstractContainerMenu implements Updatea
                 }
                 case "cycle_attack_type" -> {
                     this.tamedDarkLatex.setAttackType(this.tamedDarkLatex.getAttackType().cycle());
-                    this.tamedDarkLatex.updateHeldItemChoice();
                 }
                 case "cycle_attack_condition" -> {
                     this.tamedDarkLatex.setAttackCondition(this.tamedDarkLatex.getAttackCondition().cycle());
                     this.tamedDarkLatex.setTarget(null);
                 }
                 case "favor_fishing" -> {
-                    this.tamedDarkLatex.setFavor(this.tamedDarkLatex.getCurrentFavor() != DarkLatexFavor.FISHING ?
-                            DarkLatexFavor.FISHING : DarkLatexFavor.NONE);
+                    this.tamedDarkLatex.setFavor(this.tamedDarkLatex.getCurrentFavor() != TamedEntityFavor.FISHING ?
+                            TamedEntityFavor.FISHING : TamedEntityFavor.NONE);
                 }
                 case "favor_caving" -> {
-                    this.tamedDarkLatex.setFavor(this.tamedDarkLatex.getCurrentFavor() != DarkLatexFavor.CAVING ?
-                            DarkLatexFavor.CAVING : DarkLatexFavor.NONE);
+                    this.tamedDarkLatex.setFavor(this.tamedDarkLatex.getCurrentFavor() != TamedEntityFavor.CAVING ?
+                            TamedEntityFavor.CAVING : TamedEntityFavor.NONE);
                 }
                 case "favor_suit_owner" -> {
-                    this.tamedDarkLatex.setFavor(this.tamedDarkLatex.getCurrentFavor() != DarkLatexFavor.SUIT_OWNER ?
-                            DarkLatexFavor.SUIT_OWNER : DarkLatexFavor.NONE);
+                    this.tamedDarkLatex.setFavor(this.tamedDarkLatex.getCurrentFavor() != TamedEntityFavor.SUIT_OWNER ?
+                            TamedEntityFavor.SUIT_OWNER : TamedEntityFavor.NONE);
                 }
             }
         }

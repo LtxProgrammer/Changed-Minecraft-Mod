@@ -1,14 +1,14 @@
 package net.ltxprogrammer.changed.entity;
 
+import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.ability.active.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
-import net.ltxprogrammer.changed.entity.ai.AssimilationBehavior;
-import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
-import net.ltxprogrammer.changed.entity.ai.LookAtPlayerButNotHostGoal;
-import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
+import net.ltxprogrammer.changed.entity.ai.*;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -19,19 +19,30 @@ import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.*;
+import net.ltxprogrammer.changed.world.inventory.TamedDarkLatexInventoryMenu;
+import net.ltxprogrammer.changed.world.inventory.TamedDarkLatexMenu;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -46,6 +57,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -54,7 +66,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.scores.Team;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.NetworkHooks;
@@ -67,7 +81,9 @@ import java.util.function.Predicate;
 
 import static net.ltxprogrammer.changed.entity.variant.TransfurVariant.findEntityTransfurVariant;
 
-public abstract class ChangedEntity extends Monster implements EntityShape.Provider {
+public abstract class ChangedEntity extends Monster implements EntityShape.Provider, TamableLatexEntity {
+    public static final int OWNER_HOSTILE_DURATION_TICKS = 600;
+
     protected static final UUID DEPTH_COMPRESSION_SCALE_UUID = UUID.fromString("cecab49a-6858-4bae-afe9-ccbb887aea82");
     protected static final UUID DEPTH_COMPRESSION_ARMOR_UUID = UUID.fromString("7efb9a42-11ab-4b64-ab63-19658a9103c7");
     protected static final UUID BPI_SCALE_UUID = UUID.fromString("874df50a-d533-4ddf-a1a9-9f97ec3aa616");
@@ -76,6 +92,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     private HairStyle hairStyle;
     private EyeStyle eyeStyle;
     private final Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>> abilities = new HashMap<>();
+    protected @Nullable TamedEntityInventory inventory = null; // Inventory doesn't exist until this entity is tamed
+    private final List<Goal> favorGoals = new ObjectArrayList<>();
 
     public double xCloakO;
     public double yCloakO;
@@ -199,12 +217,43 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         }
 
         this.bob += (f - this.bob) * 0.4F;
+
+        if (inventory != null && !this.isInteractingWith(this.getOwner())) {
+            if (!level().isClientSide) {
+                List<Pair<EquipmentSlot, ItemStack>> list = null;
+                var mainHandItem = this.getItemInHand(InteractionHand.MAIN_HAND);
+                var offHandItem = this.getItemInHand(InteractionHand.OFF_HAND);
+
+                if (mainHandItem != super.getItemBySlot(EquipmentSlot.MAINHAND)) {
+                    super.setItemSlot(EquipmentSlot.MAINHAND, mainHandItem);
+                    if (list == null)
+                        list = Lists.newArrayListWithCapacity(2);
+                    list.add(Pair.of(EquipmentSlot.MAINHAND, mainHandItem));
+                }
+                if (offHandItem != super.getItemBySlot(EquipmentSlot.OFFHAND)) {
+                    super.setItemSlot(EquipmentSlot.OFFHAND, offHandItem);
+                    if (list == null)
+                        list = Lists.newArrayListWithCapacity(2);
+                    list.add(Pair.of(EquipmentSlot.OFFHAND, offHandItem));
+                }
+
+                if (list != null && !list.isEmpty())
+                    ((ServerLevel)this.level()).getChunkSource().broadcast(this, new ClientboundSetEquipmentPacket(this.getId(), list));
+            }
+        }
     }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(ChangedEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
     protected static final EntityDataAccessor<BasicPlayerInfo> DATA_LOCAL_VARIANT_INFO = SynchedEntityData.defineId(ChangedEntity.class, ChangedEntityDataSerializers.BASIC_PLAYER_INFO.get());
     protected static final EntityDataAccessor<Byte> DATA_CHANGED_ENTITY_FLAGS = SynchedEntityData.defineId(ChangedEntity.class, EntityDataSerializers.BYTE);
+    protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(ChangedEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    protected static final EntityDataAccessor<TamedEntityTargetType> DATA_TARGET_TYPE_ID = SynchedEntityData.defineId(ChangedEntity.class, ChangedEntityDataSerializers.TAMED_ENTITY_TARGET_TYPE.get());
+    protected static final EntityDataAccessor<TamedEntityAttackType> DATA_ATTACK_TYPE_ID = SynchedEntityData.defineId(ChangedEntity.class, ChangedEntityDataSerializers.TAMED_ENTITY_ATTACK_TYPE.get());
+    protected static final EntityDataAccessor<TamedEntityAttackCondition> DATA_ATTACK_CONDITION_ID = SynchedEntityData.defineId(ChangedEntity.class, ChangedEntityDataSerializers.TAMED_ENTITY_ATTACK_CONDITION.get());
+    protected static final EntityDataAccessor<TamedEntityFavor> DATA_FAVOR_ID = SynchedEntityData.defineId(ChangedEntity.class, ChangedEntityDataSerializers.TAMED_ENTITY_FAVOR.get());
     public static final int FLAG_IS_FLYING = 0;
+    public static final int FLAG_IS_TAMED = 1;
+    public static final int FLAG_IS_FOLLOWING_OWNER = 2;
 
     @Override
     protected void defineSynchedData() {
@@ -212,6 +261,11 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         this.entityData.define(DATA_TARGET_ID, OptionalInt.empty());
         this.entityData.define(DATA_LOCAL_VARIANT_INFO, new BasicPlayerInfo());
         this.entityData.define(DATA_CHANGED_ENTITY_FLAGS, (byte)0);
+        this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
+        this.entityData.define(DATA_TARGET_TYPE_ID, TamedEntityTargetType.TRANSFURABLE_ENTITIES);
+        this.entityData.define(DATA_ATTACK_TYPE_ID, TamedEntityAttackType.TRY_TRANSFUR);
+        this.entityData.define(DATA_ATTACK_CONDITION_ID, TamedEntityAttackCondition.ALWAYS);
+        this.entityData.define(DATA_FAVOR_ID, TamedEntityFavor.NONE);
     }
 
     protected void initializeBPI(BasicPlayerInfo info, RandomSource random) {
@@ -435,6 +489,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     public abstract TransfurMode getTransfurMode();
 
     public boolean isPreventingPlayerRest(Player player) {
+        if (isTame() && player.getUUID().equals(getOwnerUUID()))
+            return false;
         return getLatexType().isHostileTo(LatexType.getEntityLatexType(player));
     }
 
@@ -534,6 +590,18 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         } else {
             simulatedSprings = Map.of();
         }
+
+        var grab = makeGrabAbility();
+        if (grab != null)
+            registerAbility(this::wantsToGrab, grab);
+    }
+
+    protected @Nullable GrabEntityAbilityInstance makeGrabAbility() {
+        return new GrabEntityAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), IAbstractChangedEntity.forEntity(this));
+    }
+
+    protected boolean wantsToGrab(GrabEntityAbilityInstance abilityInstance) {
+        return false;
     }
 
     protected static double computeStepHeightOffset(double intendedStepHeight) {
@@ -582,6 +650,22 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     }
 
     protected boolean targetSelectorTest(LivingEntity livingEntity) {
+        final var owner = this.getOwner();
+        final var attackCondition = this.getAttackCondition();
+        if (livingEntity == owner)
+            return false;
+        if (owner != null && livingEntity instanceof TamableLatexEntity tamableLatexEntity && tamableLatexEntity.getOwner() == owner)
+            return false;
+
+        if (owner != null) { // TODO
+            Predicate<LivingEntity> superPredicate = switch (getAttackCondition()) {
+                case NEVER -> target -> false;
+                case ALWAYS -> getTargetType().forEntity(this);
+                case OWNER_IS_HOSTILE -> getTargetType().forEntity(this)
+                        .and(target -> owner.tickCount - owner.getLastHurtMobTimestamp() < OWNER_HOSTILE_DURATION_TICKS);
+            };
+        }
+
         if (livingEntity instanceof Player player && ChangedCompatibility.isPlayerUsedByOtherMod(player))
             return false;
 
@@ -726,6 +810,10 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
             this.goalSelector.addGoal(5, floatGoal);
         if (this instanceof PowderSnowWalkable)
             this.goalSelector.addGoal(5, new ChangedClimbOnTopOfPowderSnowGoal(this, this.level()));
+
+        this.goalSelector.addGoal(6, new LatexFollowOwnerGoal<>(this, 0.35D, 10.0F, 2.0F, false));
+        this.targetSelector.addGoal(1, new LatexOwnerHurtByTargetGoal<>(this));
+        this.targetSelector.addGoal(2, new LatexOwnerHurtTargetGoal<>(this));
     }
 
     @Override
@@ -738,6 +826,14 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         if (player != null) { // ticking whilst hosting a player, mirror players inputs
             mirrorLiving(player);
         }
+
+        if (!this.level().isClientSide && this.inventory != null) {
+            updateHeldItemChoice(this.inventory);
+            updateOffhandItemChoice(this.inventory);
+        }
+
+        for (var pair : abilities.values())
+            pair.getSecond().tickIdle();
     }
     
     public void mirrorLiving(LivingEntity player) {
@@ -1096,6 +1192,39 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         }
         if (tag.contains("ChangedEntityFlags"))
             this.entityData.set(DATA_CHANGED_ENTITY_FLAGS, tag.getByte("ChangedEntityFlags"));
+
+        UUID uuid;
+        if (tag.hasUUID("Owner")) {
+            uuid = tag.getUUID("Owner");
+        } else {
+            String s = tag.getString("Owner");
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+        }
+
+        if (tag.contains("FollowOwner"))
+            this.setFollowOwner(tag.getBoolean("FollowOwner"));
+
+        if (uuid != null) {
+            try {
+                this.setOwnerUUID(uuid);
+                this.setTame(true);
+            } catch (Throwable throwable) {
+                this.setTame(false);
+            }
+        }
+
+        if (tag.contains("Inventory")) {
+            ListTag listtag = tag.getList("Inventory", 10);
+            this.inventory = this.createInventory();
+            this.inventory.load(listtag);
+            this.inventory.selected = tag.getInt("SelectedItemSlot");
+
+            /*DarkLatexTargetType.fromSerial(tag.getString("TargetType")).result().ifPresent(this::setTargetType);
+            DarkLatexAttackType.fromSerial(tag.getString("AttackType")).result().ifPresent(this::setAttackType);
+            DarkLatexAttackCondition.fromSerial(tag.getString("AttackCondition")).result().ifPresent(this::setAttackCondition);*/
+            var favorKey = TagUtil.getResourceLocation(tag, "FavorToOwner");
+            setFavor(favorKey == null ? TamedEntityFavor.NONE : ChangedRegistry.TAMED_LATEX_FAVORS.getValue(favorKey));
+        }
     }
 
     @Override
@@ -1108,6 +1237,21 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
             tag.put("LocalVariantInfo", bpi);
         }
         tag.putByte("ChangedEntityFlags", this.entityData.get(DATA_CHANGED_ENTITY_FLAGS));
+
+        if (this.getOwnerUUID() != null) {
+            tag.putUUID("Owner", this.getOwnerUUID());
+            tag.putBoolean("FollowOwner", this.isFollowingOwner());
+        }
+
+        if (this.inventory != null) {
+            tag.put("Inventory", this.inventory.save(new ListTag()));
+            tag.putInt("SelectedItemSlot", this.inventory.selected);
+
+            /*tag.putString("TargetType", getTargetType().getSerializedName());
+            tag.putString("AttackType", getAttackType().getSerializedName());
+            tag.putString("AttackCondition", getAttackCondition().getSerializedName());*/
+            TagUtil.putResourceLocation(tag, "FavorToOwner", ChangedRegistry.TAMED_LATEX_FAVORS.getKey(getCurrentFavor()));
+        }
     }
 
     public boolean getChangedEntityFlag(int id) {
@@ -1194,5 +1338,435 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         } else {
             return this.isSprinting() ? 0.025999999F : 0.02F;
         }
+    }
+
+
+    @Override
+    public boolean isFollowingOwner() {
+        return getChangedEntityFlag(FLAG_IS_FOLLOWING_OWNER);
+    }
+
+    @Override
+    public void setFollowOwner(boolean value) {
+        setChangedEntityFlag(FLAG_IS_FOLLOWING_OWNER, value);
+    }
+
+    @Nullable
+    @Override
+    public UUID getOwnerUUID() {
+        return this.entityData.get(DATA_OWNERUUID_ID).orElse(null);
+    }
+
+    public void setOwnerUUID(@Nullable UUID uuid) {
+        this.entityData.set(DATA_OWNERUUID_ID, Optional.ofNullable(uuid));
+    }
+
+    // Prevents the DL from switching items while the player is interacting with them
+    public boolean isInteractingWith(LivingEntity entity) {
+        if (entity instanceof Player player) {
+            if (player.containerMenu instanceof TamedDarkLatexMenu menu)
+                return menu.tamedDarkLatex == this;
+            if (player.containerMenu instanceof TamedDarkLatexInventoryMenu menu)
+                return menu.tamedDarkLatex == this;
+        }
+
+        return false;
+    }
+
+    protected boolean canDoFavor(TamedEntityFavor entityFavor) {
+        return entityFavor == TamedEntityFavor.NONE;
+    }
+
+    public TamedEntityFavor getCurrentFavor() {
+        TamedEntityFavor favor = this.entityData.get(DATA_FAVOR_ID);
+        if (!this.canDoFavor(favor))
+            favor = TamedEntityFavor.NONE;
+        return favor;
+    }
+
+    public void setFavor(TamedEntityFavor next) {
+        if (!this.canDoFavor(next))
+            next = TamedEntityFavor.NONE;
+        var previous = this.entityData.get(DATA_FAVOR_ID);
+        if (previous == next)
+            return;
+
+        this.entityData.set(DATA_FAVOR_ID, next);
+
+        var owner = this.getOwner();
+        previous.favorDeselected(this, owner);
+        next.favorSelected(this, owner);
+    }
+
+    public TamedEntityTargetType getTargetType() {
+        return this.entityData.get(DATA_TARGET_TYPE_ID);
+    }
+
+    public TamedEntityAttackType getAttackType() {
+        return this.entityData.get(DATA_ATTACK_TYPE_ID);
+    }
+
+    public TamedEntityAttackCondition getAttackCondition() {
+        return this.entityData.get(DATA_ATTACK_CONDITION_ID);
+    }
+
+    public void setTargetType(TamedEntityTargetType value) {
+        this.entityData.set(DATA_TARGET_TYPE_ID, value);
+    }
+
+    public void setAttackType(TamedEntityAttackType value) {
+        this.entityData.set(DATA_ATTACK_TYPE_ID, value);
+    }
+
+    public void setAttackCondition(TamedEntityAttackCondition value) {
+        this.entityData.set(DATA_ATTACK_CONDITION_ID, value);
+    }
+
+    protected void spawnTamingParticles(boolean success) {
+        ParticleOptions particleoptions = ParticleTypes.HEART;
+        if (!success) {
+            particleoptions = ParticleTypes.SMOKE;
+        }
+
+        for(int i = 0; i < 7; ++i) {
+            double d0 = this.random.nextGaussian() * 0.02D;
+            double d1 = this.random.nextGaussian() * 0.02D;
+            double d2 = this.random.nextGaussian() * 0.02D;
+            this.level().addParticle(particleoptions, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+        }
+    }
+
+    protected void spawnHeartParticles() {
+        this.spawnTamingParticles(true);
+    }
+
+    public void handleEntityEvent(byte event) {
+        if (event == 7) {
+            this.spawnTamingParticles(true);
+        } else if (event == 6) {
+            this.spawnTamingParticles(false);
+        } else if (event == 18) {
+            this.spawnHeartParticles();
+        } else {
+            super.handleEntityEvent(event);
+        }
+
+    }
+
+    @Override
+    public void checkDespawn() {
+        if (isTame())
+            return;
+        super.checkDespawn();
+    }
+
+    public boolean isTame() {
+        return getChangedEntityFlag(FLAG_IS_TAMED);
+    }
+
+    protected void setTame(boolean tame) {
+        setChangedEntityFlag(FLAG_IS_TAMED, tame);
+        this.reassessTameGoals();
+    }
+
+    protected void reassessTameGoals() {
+    }
+
+    public boolean isOwnedBy(LivingEntity entity) {
+        return entity == this.getOwner();
+    }
+
+    public Team getTeam() {
+        if (this.isTame()) {
+            LivingEntity livingentity = this.getOwner();
+            if (livingentity != null) {
+                return livingentity.getTeam();
+            }
+        }
+
+        return super.getTeam();
+    }
+
+    public boolean isAlliedTo(Entity entity) {
+        if (this.isTame()) {
+            LivingEntity livingentity = this.getOwner();
+            if (entity == livingentity) {
+                return true;
+            }
+
+            if (livingentity != null) {
+                return livingentity.isAlliedTo(entity);
+            }
+        }
+
+        return super.isAlliedTo(entity);
+    }
+
+    public boolean canAttack(LivingEntity entity) {
+        return !this.isOwnedBy(entity) && super.canAttack(entity);
+    }
+
+    public void die(DamageSource source) {
+        // FORGE: Super moved to top so that death message would be cancelled properly
+        net.minecraft.network.chat.Component deathMessage = this.getCombatTracker().getDeathMessage();
+        super.die(source);
+
+        if (this.dead)
+            if (!this.level().isClientSide && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof ServerPlayer) {
+                this.getOwner().sendSystemMessage(deathMessage);
+            }
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+        super.onSyncedDataUpdated(accessor);
+        if (DATA_OWNERUUID_ID.equals(accessor)) {
+            if (this.inventory == null)
+                this.inventory = createInventory();
+        } if (DATA_FAVOR_ID.equals(accessor) && !this.level().isClientSide) {
+            favorGoals.forEach(this.goalSelector::removeGoal);
+            getCurrentFavor().createFavorGoals(this, this.getOwner(), this.goalSelector::addGoal);
+        }
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (this.level().isClientSide) {
+            boolean flag = this.isOwnedBy(player) || this.isTame() || this.isTameItem(itemstack) && !this.isTame();
+            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
+        } else {
+            if (!this.isTame() && this.isTameItem(itemstack) && this.isTameableBy(player)) {
+                float chance = this.getTameChance(player, itemstack);
+
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+
+                if (this.random.nextFloat() <= chance) {
+                    this.tame(player);
+                    this.navigation.stop();
+                    this.setTarget(null);
+                    this.level().broadcastEntityEvent(this, (byte)7);
+                } else {
+                    this.level().broadcastEntityEvent(this, (byte)6);
+                }
+
+                return InteractionResult.SUCCESS;
+            }
+
+            if (this.isTame()) {
+                if (this.isHealItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
+                    float healAmount = this.getItemHealAmount(player, itemstack);
+                    itemstack.shrink(1);
+                    this.heal(healAmount);
+                    this.level().broadcastEntityEvent(this, (byte)7); // Spawn hearts
+                    return InteractionResult.SUCCESS;
+                } else {
+                    InteractionResult interactionresult = super.mobInteract(player, hand);
+                    if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
+                        return this.tamedInteract(player, hand);
+                    }
+
+                    return interactionresult;
+                }
+            }
+
+            return super.mobInteract(player, hand);
+        }
+    }
+
+    @Override
+    public void tame(Player player) {
+        this.setTame(true);
+        this.setFollowOwner(true);
+        this.setOwnerUUID(player.getUUID());
+        if (player instanceof ServerPlayer serverPlayer) {
+            ChangedCriteriaTriggers.TAME_LATEX.trigger(serverPlayer, this);
+        }
+
+    }
+
+    protected InteractionResult tamedInteract(Player player, InteractionHand hand) {
+        return InteractionResult.PASS;
+    }
+
+    /// Is the player allowed to tame this entity?
+    protected boolean isTameableBy(Player player) {
+        return false;
+    }
+
+    /// Gets the chance for a player to tame this entity with an item
+    protected float getTameChance(Player player, ItemStack itemStack) {
+        return 0.0f;
+    }
+
+    /// Is itemStack used to tame this entity?
+    protected boolean isTameItem(ItemStack itemStack) {
+        return false;
+    }
+
+    /// Is itemStack used to heal this entity?
+    protected boolean isHealItem(ItemStack itemStack) {
+        return false;
+    }
+
+    /// Gets the level of HP the provided item will heal this entity
+    protected float getItemHealAmount(Player player, ItemStack itemStack) {
+        return 0.0f;
+    }
+
+    public TamedEntityInventory createInventory() {
+        return new TamedEntityInventory(this);
+    }
+
+    public @Nullable TamedEntityInventory getInventory() {
+        return inventory;
+    }
+
+    @Override
+    public @NotNull ItemStack getItemInHand(@NotNull InteractionHand hand) {
+        if (inventory == null)
+            return super.getItemInHand(hand);
+        if (hand == InteractionHand.OFF_HAND)
+            return inventory.getItem(TamedEntityInventory.SLOT_OFFHAND);
+        else {
+            return inventory.getSelected();
+        }
+    }
+
+    @Override
+    public @NotNull ItemStack getItemBySlot(@NotNull EquipmentSlot slot) {
+        if (inventory == null)
+            return super.getItemBySlot(slot);
+        switch (slot.getType()) {
+            case HAND:
+                return switch (slot) {
+                    case MAINHAND -> inventory.getSelected();
+                    case OFFHAND -> inventory.getItem(TamedEntityInventory.SLOT_OFFHAND);
+                    default -> ItemStack.EMPTY;
+                };
+            default:
+                return super.getItemBySlot(slot);
+        }
+    }
+
+    @Override
+    public SlotAccess getSlot(int slotIndex) {
+        if (this.inventory == null)
+            return super.getSlot(slotIndex);
+        else {
+            if (slotIndex >= 0 && slotIndex < this.inventory.items.size()) {
+                return SlotAccess.forContainer(this.inventory, slotIndex);
+            } else {
+                return super.getSlot(slotIndex);
+            }
+        }
+    }
+
+    protected int findSlotForTransfur(TamedEntityInventory inventory) {
+        return inventory.getFreeSlot();
+    }
+
+    protected int findSlotForCombat(TamedEntityInventory inventory) {
+        // Maybe add bow AI?
+        double bestScore = 0;
+        int bestSlot = inventory.selected;
+
+        for (int i = 0; i < inventory.getContainerSize(); ++i) {
+            var itemStack = inventory.getItem(i);
+            if (itemStack.isEmpty())
+                continue;
+            double score = 0;
+            var modifiers = inventory.getItem(i).getAttributeModifiers(EquipmentSlot.MAINHAND);
+            if (modifiers.containsKey(Attributes.ATTACK_DAMAGE))
+                score += modifiers.get(Attributes.ATTACK_DAMAGE).stream().mapToDouble(AttributeModifier::getAmount).sum();
+            if (modifiers.containsKey(Attributes.ATTACK_SPEED))
+                score += modifiers.get(Attributes.ATTACK_SPEED).stream().mapToDouble(AttributeModifier::getAmount).sum();
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestSlot = i;
+            }
+        }
+
+        return bestSlot;
+    }
+
+    protected int findDefaultSlotForNonCombat(TamedEntityInventory inventory) {
+        // TODO find a book, food, fishing rod, etc.
+        return inventory.selected;
+    }
+
+    protected int findSlotForNonCombat(TamedEntityInventory inventory) {
+        return getCurrentFavor().findMainHandSlot(inventory, this::findDefaultSlotForNonCombat);
+    }
+
+    public void updateHeldItemChoice(TamedEntityInventory inventory) {
+        if (this.isInteractingWith(this.getOwner()))
+            return;
+
+        LivingEntity target = this.getTarget();
+        boolean inCombat = target != null && target != this.getOwner();
+        boolean wantTransfur = inCombat && getAttackType().test(this, target); // Find empty slot, or else a strong weapon
+
+        if (inCombat) {
+            if (wantTransfur) {
+                inventory.selected = this.findSlotForTransfur(inventory);
+            }
+
+            if (!wantTransfur || inventory.selected == -1) { // No Free slot,
+                inventory.selected = this.findSlotForCombat(inventory);
+            }
+        } else {
+            if (getAttackCondition() == TamedEntityAttackCondition.ALWAYS && getCurrentFavor() == TamedEntityFavor.NONE) {
+                inventory.selected = this.findSlotForCombat(inventory);
+            }
+
+            if (getAttackCondition() != TamedEntityAttackCondition.ALWAYS || inventory.selected == -1 || getCurrentFavor() != TamedEntityFavor.NONE) {
+                inventory.selected = this.findSlotForNonCombat(inventory);
+            }
+        }
+
+        if (inventory.selected == -1) {
+            inventory.selected = this.findSlotForNonCombat(inventory);
+        }
+
+        if (inventory.selected == -1) {
+            inventory.selected = 0; // Fail :(
+        }
+    }
+
+    protected void swapSlotWithOffhand(TamedEntityInventory inventory, int swapWith) {
+        if (this.inventory == null)
+            return;
+        if (swapWith == TamedEntityInventory.SLOT_OFFHAND)
+            return;
+
+        var slot = inventory.getItem(swapWith);
+        this.inventory.setItem(swapWith, this.inventory.getItem(TamedEntityInventory.SLOT_OFFHAND));
+        this.inventory.setItem(TamedEntityInventory.SLOT_OFFHAND, slot);
+    }
+
+    protected int findDefaultOffhandItem(TamedEntityInventory inventory) {
+        for (int slotIndex = 0; slotIndex < inventory.getContainerSize(); ++slotIndex) {
+            var slot = inventory.getItem(slotIndex);
+            if (slot.isEmpty())
+                continue;
+
+            if (slot.is(Tags.Items.TOOLS_SHIELDS)) {
+                return slotIndex;
+            }
+        }
+
+        return TamedEntityInventory.SLOT_OFFHAND;
+    }
+
+    public void updateOffhandItemChoice(TamedEntityInventory inventory) {
+        if (this.isInteractingWith(this.getOwner()))
+            return;
+
+        int nextOffhand = getCurrentFavor().findOffhandSlot(inventory, this::findDefaultOffhandItem);
+        swapSlotWithOffhand(inventory, nextOffhand);
     }
 }
