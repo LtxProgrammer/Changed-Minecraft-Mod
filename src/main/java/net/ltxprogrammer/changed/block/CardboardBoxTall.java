@@ -58,6 +58,11 @@ public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock impleme
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxTallBlockEntity blockEntity) {
+            if (blockEntity.getSeatedEntity() != null) {
+                blockEntity.ejectEntity();
+                return InteractionResult.sidedSuccess(level.isClientSide);
+            }
+
             return blockEntity.hideEntity(player) ?
                     InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.FAIL;
         }

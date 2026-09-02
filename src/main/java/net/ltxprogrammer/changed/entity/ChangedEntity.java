@@ -38,6 +38,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -771,6 +772,13 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         return new FloatGoal(this);
     }
 
+    @Nullable
+    protected Goal makeHideInBoxGoal() {
+        if (this.getType().is(ChangedTags.EntityTypes.HIDES_IN_BOXES))
+            return new HideInABoxGoal(this, 0.25f, UniformInt.of(1200, 2400), UniformInt.of(600, 1200));
+        return null;
+    }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -804,6 +812,9 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         var floatGoal = this.makeFloatGoal();
         if (floatGoal != null)
             this.goalSelector.addGoal(5, floatGoal);
+        var hideGoal = this.makeHideInBoxGoal();
+        if (hideGoal != null)
+            this.goalSelector.addGoal(8, hideGoal);
         if (this instanceof PowderSnowWalkable)
             this.goalSelector.addGoal(5, new ChangedClimbOnTopOfPowderSnowGoal(this, this.level()));
 

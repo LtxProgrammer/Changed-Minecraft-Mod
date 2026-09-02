@@ -29,6 +29,7 @@ public class ChangedTags {
         public static final TagKey<EntityType<?>> BENIGN_LATEXES = create("benign_latexes");
         public static final TagKey<EntityType<?>> DARK_LATEXES = create("dark_latexes");
         public static final TagKey<EntityType<?>> RETARGETABLE_SHARKS = create("retargetable_sharks");
+        public static final TagKey<EntityType<?>> HIDES_IN_BOXES = create("hides_in_boxes");
 
         private static TagKey<EntityType<?>> create(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, Changed.modResource(name));
