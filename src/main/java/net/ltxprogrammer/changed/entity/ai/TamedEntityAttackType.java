@@ -56,6 +56,6 @@ public enum TamedEntityAttackType implements BiPredicate<ChangedEntity, LivingEn
     }
 
     public Component getDisplayText() {
-        return Component.translatable("changed.tamed_dark_latex.attacking." + serializedName);
+        return Component.translatable("changed.tamed_entity.attacking." + serializedName);
     }
 }

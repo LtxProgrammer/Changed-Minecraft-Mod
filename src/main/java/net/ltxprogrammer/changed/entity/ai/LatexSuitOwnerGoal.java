@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.init.ChangedTamedEntityFavors;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -25,7 +26,7 @@ public class LatexSuitOwnerGoal extends MeleeAttackGoal {
         var ability = entity.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
         if (ability == null) {
             entity.setTarget(null);
-            entity.setFavor(TamedEntityFavor.NONE);
+            entity.setFavor(ChangedTamedEntityFavors.NONE.get());
             return;
         }
 
@@ -49,21 +50,8 @@ public class LatexSuitOwnerGoal extends MeleeAttackGoal {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        var grabAbility = entity.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-        if (grabAbility != null) {
-            if (grabAbility.grabbedEntity == entity.getOwner() && grabAbility.grabbedEntity != null) {
-                grabAbility.grabbedHasControl = true;
-                grabAbility.suited = true;
-            }
-        }
-    }
-
-    @Override
     public boolean canUse() {
-        if (this.entity.getCurrentFavor() != TamedEntityFavor.SUIT_OWNER)
+        if (this.entity.getCurrentFavor() != ChangedTamedEntityFavors.SUIT_OWNER.get())
             return false;
         var owner = this.entity.getOwner();
         if (owner == null)
@@ -82,7 +70,7 @@ public class LatexSuitOwnerGoal extends MeleeAttackGoal {
 
     @Override
     public boolean canContinueToUse() {
-        if (this.entity.getCurrentFavor() != TamedEntityFavor.SUIT_OWNER)
+        if (this.entity.getCurrentFavor() != ChangedTamedEntityFavors.SUIT_OWNER.get())
             return false;
         var owner = this.entity.getOwner();
         if (owner == null)

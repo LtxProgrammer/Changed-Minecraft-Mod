@@ -69,8 +69,6 @@ public class CaveHarvestGoal extends MoveToBlockGoal {
         if (inventory == null)
             return false;
         this.inventory = inventory;
-        if (entity.getCurrentFavor() != TamedEntityFavor.CAVING)
-            return false;
         if (!entity.getMainHandItem().is(ItemTags.PICKAXES))
             return false;
 
@@ -80,8 +78,6 @@ public class CaveHarvestGoal extends MoveToBlockGoal {
     @Override
     public boolean canContinueToUse() {
         if (entity.getTarget() != null)
-            return false;
-        if (entity.getCurrentFavor() != TamedEntityFavor.CAVING)
             return false;
         if (!entity.getMainHandItem().is(ItemTags.PICKAXES))
             return false;

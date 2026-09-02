@@ -14,13 +14,12 @@ import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.entity.variant.VariantFeature;
-import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.*;
-import net.ltxprogrammer.changed.world.inventory.TamedDarkLatexInventoryMenu;
-import net.ltxprogrammer.changed.world.inventory.TamedDarkLatexMenu;
+import net.ltxprogrammer.changed.world.inventory.TamedEntityInventoryMenu;
+import net.ltxprogrammer.changed.world.inventory.TamedEntityMenu;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,6 +41,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -53,6 +53,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.util.GoalUtils;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -241,6 +242,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
                     ((ServerLevel)this.level()).getChunkSource().broadcast(this, new ClientboundSetEquipmentPacket(this.getId(), list));
             }
         }
+
+        getCurrentFavor().tickSelectedFavor(this, getOwner());
     }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(ChangedEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
@@ -265,7 +268,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         this.entityData.define(DATA_TARGET_TYPE_ID, TamedEntityTargetType.TRANSFURABLE_ENTITIES);
         this.entityData.define(DATA_ATTACK_TYPE_ID, TamedEntityAttackType.TRY_TRANSFUR);
         this.entityData.define(DATA_ATTACK_CONDITION_ID, TamedEntityAttackCondition.ALWAYS);
-        this.entityData.define(DATA_FAVOR_ID, TamedEntityFavor.NONE);
+        this.entityData.define(DATA_FAVOR_ID, ChangedTamedEntityFavors.NONE.get());
     }
 
     protected void initializeBPI(BasicPlayerInfo info, RandomSource random) {
@@ -652,25 +655,19 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     protected boolean targetSelectorTest(LivingEntity livingEntity) {
         final var owner = this.getOwner();
         final var attackCondition = this.getAttackCondition();
+        final var targetType = this.getTargetType();
         if (livingEntity == owner)
             return false;
         if (owner != null && livingEntity instanceof TamableLatexEntity tamableLatexEntity && tamableLatexEntity.getOwner() == owner)
             return false;
-
-        if (owner != null) { // TODO
-            Predicate<LivingEntity> superPredicate = switch (getAttackCondition()) {
-                case NEVER -> target -> false;
-                case ALWAYS -> getTargetType().forEntity(this);
-                case OWNER_IS_HOSTILE -> getTargetType().forEntity(this)
-                        .and(target -> owner.tickCount - owner.getLastHurtMobTimestamp() < OWNER_HOSTILE_DURATION_TICKS);
-            };
-        }
-
-        if (livingEntity instanceof Player player && ChangedCompatibility.isPlayerUsedByOtherMod(player))
-            return false;
-
         if (livingEntity.getVehicle() instanceof SeatEntity seat && seat.shouldSeatedBeInvisible())
             return false;
+
+        if (attackCondition == TamedEntityAttackCondition.NEVER)
+            return false;
+        if (attackCondition == TamedEntityAttackCondition.OWNER_IS_HOSTILE && owner != null)
+            if (owner.tickCount - owner.getLastHurtMobTimestamp() >= OWNER_HOSTILE_DURATION_TICKS)
+                return false;
 
         if (livingEntity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
             var ability = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
@@ -678,13 +675,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
                 return false;
         }
 
-        LatexAssimilationDecision<?> decision = switch (this.getTransfurMode()) {
-            case REPLICATION -> this.makeLatexAssimilationDecision(TransfurCause.GRAB_REPLICATE, livingEntity);
-            case ABSORPTION -> this.makeLatexAssimilationDecision(TransfurCause.GRAB_ABSORB, livingEntity);
-            default -> null;
-        };
-        AssimilationBehavior behavior = ProcessTransfur.computeAssimilationBehavior(livingEntity, decision);
-        if (behavior != null)
+        if (targetType.test(this, livingEntity))
             return true;
 
         var targetLatexType = LatexType.getEntityLatexType(livingEntity);
@@ -713,6 +704,11 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     }
 
     public boolean tryTransfurTarget(Entity entity) {
+        if (entity instanceof LivingEntity livingEntity && this.getUnderlyingPlayer() == null) {
+            if (!getAttackType().test(this, livingEntity))
+                return false; // Cancel attempt to transfur
+        }
+
         if (!this.getType().is(ChangedTags.EntityTypes.LATEX))
             return false;
         if (!(entity instanceof LivingEntity target))
@@ -1219,11 +1215,11 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
             this.inventory.load(listtag);
             this.inventory.selected = tag.getInt("SelectedItemSlot");
 
-            /*DarkLatexTargetType.fromSerial(tag.getString("TargetType")).result().ifPresent(this::setTargetType);
-            DarkLatexAttackType.fromSerial(tag.getString("AttackType")).result().ifPresent(this::setAttackType);
-            DarkLatexAttackCondition.fromSerial(tag.getString("AttackCondition")).result().ifPresent(this::setAttackCondition);*/
+            TamedEntityTargetType.fromSerial(tag.getString("TargetType")).result().ifPresent(this::setTargetType);
+            TamedEntityAttackType.fromSerial(tag.getString("AttackType")).result().ifPresent(this::setAttackType);
+            TamedEntityAttackCondition.fromSerial(tag.getString("AttackCondition")).result().ifPresent(this::setAttackCondition);
             var favorKey = TagUtil.getResourceLocation(tag, "FavorToOwner");
-            setFavor(favorKey == null ? TamedEntityFavor.NONE : ChangedRegistry.TAMED_LATEX_FAVORS.getValue(favorKey));
+            setFavor(favorKey == null ? ChangedTamedEntityFavors.NONE.get() : ChangedRegistry.TAMED_ENTITY_FAVORS.getValue(favorKey));
         }
     }
 
@@ -1247,10 +1243,10 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
             tag.put("Inventory", this.inventory.save(new ListTag()));
             tag.putInt("SelectedItemSlot", this.inventory.selected);
 
-            /*tag.putString("TargetType", getTargetType().getSerializedName());
+            tag.putString("TargetType", getTargetType().getSerializedName());
             tag.putString("AttackType", getAttackType().getSerializedName());
-            tag.putString("AttackCondition", getAttackCondition().getSerializedName());*/
-            TagUtil.putResourceLocation(tag, "FavorToOwner", ChangedRegistry.TAMED_LATEX_FAVORS.getKey(getCurrentFavor()));
+            tag.putString("AttackCondition", getAttackCondition().getSerializedName());
+            TagUtil.putResourceLocation(tag, "FavorToOwner", ChangedRegistry.TAMED_ENTITY_FAVORS.getKey(getCurrentFavor()));
         }
     }
 
@@ -1286,6 +1282,21 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
     public void copyTraitsFrom(IAbstractChangedEntity entity) {
         getBasicPlayerInfo().copyFrom(entity.getChangedEntity().getBasicPlayerInfo());
+
+        var otherEntity = entity.getChangedEntity();
+        this.setTame(otherEntity.isTame());
+        this.setOwnerUUID(otherEntity.getOwnerUUID());
+        this.setFollowOwner(otherEntity.isFollowingOwner());
+        this.setCustomName(otherEntity.getCustomName());
+        this.setUnderlyingPlayer(otherEntity.getUnderlyingPlayer());
+        if (otherEntity.inventory != null) {
+            this.inventory = this.createInventory();
+
+            var items = new ListTag();
+            otherEntity.inventory.save(items);
+            this.inventory.load(items);
+            otherEntity.inventory.clearContent();
+        }
     }
 
     public CompoundTag savePlayerVariantData() {
@@ -1364,29 +1375,29 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     // Prevents the DL from switching items while the player is interacting with them
     public boolean isInteractingWith(LivingEntity entity) {
         if (entity instanceof Player player) {
-            if (player.containerMenu instanceof TamedDarkLatexMenu menu)
-                return menu.tamedDarkLatex == this;
-            if (player.containerMenu instanceof TamedDarkLatexInventoryMenu menu)
+            if (player.containerMenu instanceof TamedEntityMenu menu)
+                return menu.tamedEntity == this;
+            if (player.containerMenu instanceof TamedEntityInventoryMenu menu)
                 return menu.tamedDarkLatex == this;
         }
 
         return false;
     }
 
-    protected boolean canDoFavor(TamedEntityFavor entityFavor) {
-        return entityFavor == TamedEntityFavor.NONE;
+    public boolean canDoFavor(TamedEntityFavor entityFavor) {
+        return entityFavor == ChangedTamedEntityFavors.NONE.get();
     }
 
     public TamedEntityFavor getCurrentFavor() {
         TamedEntityFavor favor = this.entityData.get(DATA_FAVOR_ID);
         if (!this.canDoFavor(favor))
-            favor = TamedEntityFavor.NONE;
+            favor = ChangedTamedEntityFavors.NONE.get();
         return favor;
     }
 
     public void setFavor(TamedEntityFavor next) {
         if (!this.canDoFavor(next))
-            next = TamedEntityFavor.NONE;
+            next = ChangedTamedEntityFavors.NONE.get();
         var previous = this.entityData.get(DATA_FAVOR_ID);
         if (previous == next)
             return;
@@ -1536,7 +1547,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
             boolean flag = this.isOwnedBy(player) || this.isTame() || this.isTameItem(itemstack) && !this.isTame();
             return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else {
-            if (!this.isTame() && this.isTameItem(itemstack) && this.isTameableBy(player)) {
+            if (!this.isTame() && this.isTameItem(itemstack) && this.isTamableBy(player)) {
                 float chance = this.getTameChance(player, itemstack);
 
                 if (!player.getAbilities().instabuild) {
@@ -1584,15 +1595,41 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         if (player instanceof ServerPlayer serverPlayer) {
             ChangedCriteriaTriggers.TAME_LATEX.trigger(serverPlayer, this);
         }
+    }
 
+    @Override
+    public void untame() {
+        this.setTame(false);
+        this.setFollowOwner(false);
+        this.setOwnerUUID(null);
     }
 
     protected InteractionResult tamedInteract(Player player, InteractionHand hand) {
-        return InteractionResult.PASS;
+        if (player instanceof ServerPlayer serverPlayer)
+            openFavorWheel(this, serverPlayer);
+        return InteractionResult.sidedSuccess(player.level().isClientSide);
+    }
+
+    public static void openFavorWheel(ChangedEntity entity, ServerPlayer player) {
+        NetworkHooks.openScreen(player, new SimpleMenuProvider(
+                (id, inv, viewer) -> new TamedEntityMenu(id, inv, entity),
+                entity.getDisplayName()
+        ), extraData -> {
+            extraData.writeInt(entity.getId());
+        });
+    }
+
+    @Override
+    public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
+        if (getAttackCondition() == TamedEntityAttackCondition.NEVER) {
+            return false;
+        }
+
+        return TamableLatexEntity.super.wantsToAttack(target, owner);
     }
 
     /// Is the player allowed to tame this entity?
-    protected boolean isTameableBy(Player player) {
+    protected boolean isTamableBy(Player player) {
         return false;
     }
 
@@ -1719,11 +1756,11 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
                 inventory.selected = this.findSlotForCombat(inventory);
             }
         } else {
-            if (getAttackCondition() == TamedEntityAttackCondition.ALWAYS && getCurrentFavor() == TamedEntityFavor.NONE) {
+            if (getAttackCondition() == TamedEntityAttackCondition.ALWAYS && getCurrentFavor() == ChangedTamedEntityFavors.NONE.get()) {
                 inventory.selected = this.findSlotForCombat(inventory);
             }
 
-            if (getAttackCondition() != TamedEntityAttackCondition.ALWAYS || inventory.selected == -1 || getCurrentFavor() != TamedEntityFavor.NONE) {
+            if (getAttackCondition() != TamedEntityAttackCondition.ALWAYS || inventory.selected == -1 || getCurrentFavor() != ChangedTamedEntityFavors.NONE.get()) {
                 inventory.selected = this.findSlotForNonCombat(inventory);
             }
         }
@@ -1768,5 +1805,70 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
         int nextOffhand = getCurrentFavor().findOffhandSlot(inventory, this::findDefaultOffhandItem);
         swapSlotWithOffhand(inventory, nextOffhand);
+    }
+
+    protected void dropEquipment() {
+        super.dropEquipment();
+        if (this.inventory != null)
+            this.inventory.dropAll();
+    }
+
+    @Override
+    public boolean canPickUpLoot() {
+        return inventory != null;
+    }
+
+    @Override
+    public void setItemSlot(EquipmentSlot equipmentSlot, ItemStack itemStack) {
+        if (inventory == null || equipmentSlot.isArmor())
+            super.setItemSlot(equipmentSlot, itemStack);
+        else {
+            if (equipmentSlot == EquipmentSlot.MAINHAND)
+                this.inventory.setItem(this.inventory.selected, itemStack);
+            else
+                this.inventory.setItem(TamedEntityInventory.SLOT_OFFHAND, itemStack);
+        }
+    }
+
+    @Override
+    protected void pickUpItem(ItemEntity itemEntity) {
+        if (inventory == null)
+            super.pickUpItem(itemEntity);
+        else {
+            ItemStack itemStack = itemEntity.getItem();
+            ItemStack copy = itemStack.copy();
+
+            EquipmentSlot equipmentSlot = itemStack.getEquipmentSlot();
+            if (equipmentSlot != null && equipmentSlot.isArmor()) {
+                ItemStack currentArmor = this.getItemBySlot(equipmentSlot);
+                if (this.canReplaceCurrentItem(itemStack, currentArmor)) {
+                    this.setItemSlot(equipmentSlot, itemStack.split(1));
+                    this.inventory.placeItemBackInInventory(currentArmor);
+
+                    int delta = copy.getCount() - itemStack.getCount();
+                    copy.setCount(delta);
+                    this.take(itemEntity, delta);
+                    if (itemStack.isEmpty()) {
+                        itemEntity.discard();
+                        itemStack.setCount(delta);
+                    }
+
+                    this.onItemPickup(itemEntity);
+                    return;
+                }
+            }
+
+            if (this.inventory.add(itemStack)) {
+                int tookAmount = copy.getCount() - itemStack.getCount();
+                copy.setCount(tookAmount);
+                this.take(itemEntity, tookAmount);
+                if (itemStack.isEmpty()) {
+                    itemEntity.discard();
+                    itemStack.setCount(tookAmount);
+                }
+
+                this.onItemPickup(itemEntity);
+            }
+        }
     }
 }

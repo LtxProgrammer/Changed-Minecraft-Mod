@@ -4,10 +4,7 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.ai.TamedEntityFavor;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
-import net.ltxprogrammer.changed.init.ChangedAttributes;
-import net.ltxprogrammer.changed.init.ChangedLatexTypes;
-import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.nbt.CompoundTag;
@@ -167,7 +164,7 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     }
 
     @Override
-    protected boolean isTameableBy(Player player) {
+    protected boolean isTamableBy(Player player) {
         return true;
     }
 
@@ -197,7 +194,7 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
 
     @Override
     public boolean canDoFavor(TamedEntityFavor favor) {
-        return favor == TamedEntityFavor.NONE;
+        return favor == ChangedTamedEntityFavors.NONE.get();
     }
 
     @Override

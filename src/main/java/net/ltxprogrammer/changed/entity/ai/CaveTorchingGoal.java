@@ -44,8 +44,6 @@ public class CaveTorchingGoal extends MoveToBlockGoal {
         var inventory = entity.getInventory();
         if (inventory == null)
             return false;
-        if (entity.getCurrentFavor() != TamedEntityFavor.CAVING)
-            return false;
         if (!entity.getOffhandItem().is(Items.TORCH))
             return false;
 
@@ -55,8 +53,6 @@ public class CaveTorchingGoal extends MoveToBlockGoal {
     @Override
     public boolean canContinueToUse() {
         if (entity.getTarget() != null)
-            return false;
-        if (entity.getCurrentFavor() != TamedEntityFavor.CAVING)
             return false;
         if (!entity.getOffhandItem().is(Items.TORCH))
             return false;

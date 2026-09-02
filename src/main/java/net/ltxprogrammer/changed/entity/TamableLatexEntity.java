@@ -14,6 +14,7 @@ public interface TamableLatexEntity extends OwnableEntity {
     void setFollowOwner(boolean value);
 
     default void tame(Player owner) {}
+    default void untame() {}
 
     default boolean isTame() {
         return this.getOwner() != null;

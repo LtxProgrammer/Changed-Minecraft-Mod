@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 
 public enum TamedEntityTargetType implements BiPredicate<ChangedEntity, LivingEntity>, StringRepresentable {
     TRANSFURABLE_ENTITIES("transfurable_entities", (self, target) -> {
-        if (target == self.getOwner() || self.getOwner() == null)
+        if (target == self.getOwner())
             return false;
 
         var targetLatexType = LatexType.getEntityLatexType(target);
@@ -36,7 +36,7 @@ public enum TamedEntityTargetType implements BiPredicate<ChangedEntity, LivingEn
         return behavior != null;
     }),
     MONSTERS("monsters", (self, target) -> {
-        if (target == self.getOwner() || self.getOwner() == null)
+        if (target == self.getOwner())
             return false;
         var targetLatexType = LatexType.getEntityLatexType(target);
         if (targetLatexType != null && self.getLatexType().isHostileTo(LatexType.getEntityLatexType(target)))
@@ -81,7 +81,7 @@ public enum TamedEntityTargetType implements BiPredicate<ChangedEntity, LivingEn
     }
 
     public Component getDisplayText() {
-        return Component.translatable("changed.tamed_dark_latex.targeting." + serializedName);
+        return Component.translatable("changed.tamed_entity.targeting." + serializedName);
     }
 
     public TamedEntityTargetType cycle() {

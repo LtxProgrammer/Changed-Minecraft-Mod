@@ -59,8 +59,6 @@ public class FishingGoal extends MoveToBlockGoal {
         var inventory = entity.getInventory();
         if (inventory == null)
             return false;
-        if (entity.getCurrentFavor() != TamedEntityFavor.FISHING)
-            return false;
         if (!entity.getMainHandItem().is(Tags.Items.TOOLS_FISHING_RODS))
             return false;
 
@@ -70,8 +68,6 @@ public class FishingGoal extends MoveToBlockGoal {
     @Override
     public boolean canContinueToUse() {
         if (entity.getTarget() != null)
-            return false;
-        if (entity.getCurrentFavor() != TamedEntityFavor.FISHING)
             return false;
         if (!entity.getMainHandItem().is(Tags.Items.TOOLS_FISHING_RODS))
             return false;

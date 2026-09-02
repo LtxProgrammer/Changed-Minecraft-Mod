@@ -37,6 +37,6 @@ public enum TamedEntityAttackCondition implements StringRepresentable {
     }
 
     public Component getDisplayText() {
-        return Component.translatable("changed.tamed_dark_latex.attack_condition." + serializedName);
+        return Component.translatable("changed.tamed_entity.attack_condition." + serializedName);
     }
 }

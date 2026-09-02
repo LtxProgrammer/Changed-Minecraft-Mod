@@ -42,5 +42,5 @@ public class ChangedEntityDataSerializers {
     public static final RegistryObject<EntityDataSerializer<TamedEntityTargetType>> TAMED_ENTITY_TARGET_TYPE = REGISTRY.register("tamed_entity_target_type", () -> EntityDataSerializer.simpleEnum(TamedEntityTargetType.class));
     public static final RegistryObject<EntityDataSerializer<TamedEntityAttackType>> TAMED_ENTITY_ATTACK_TYPE = REGISTRY.register("tamed_entity_attack_type", () -> EntityDataSerializer.simpleEnum(TamedEntityAttackType.class));
     public static final RegistryObject<EntityDataSerializer<TamedEntityAttackCondition>> TAMED_ENTITY_ATTACK_CONDITION = REGISTRY.register("tamed_entity_attack_condition", () -> EntityDataSerializer.simpleEnum(TamedEntityAttackCondition.class));
-    public static final RegistryObject<EntityDataSerializer<TamedEntityFavor>> TAMED_ENTITY_FAVOR = REGISTRY.register("tamed_entity_favor", () -> EntityDataSerializer.simpleId(ChangedRegistry.TAMED_LATEX_FAVORS.asIdMap()));
+    public static final RegistryObject<EntityDataSerializer<TamedEntityFavor>> TAMED_ENTITY_FAVOR = REGISTRY.register("tamed_entity_favor", () -> EntityDataSerializer.simpleId(ChangedRegistry.TAMED_ENTITY_FAVORS.asIdMap()));
 }

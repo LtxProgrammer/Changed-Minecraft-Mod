@@ -123,6 +123,7 @@ public class Changed {
         ChangedAbilityTreeCodecs.EFFECT_CONDITION_REGISTRY.register(modEventBus);
         ChangedAbilityTreeCodecs.PURCHASE_REQUIREMENT_REGISTRY.register(modEventBus);
         ChangedAbilityPointEvents.REGISTRY.register(modEventBus);
+        ChangedTamedEntityFavors.REGISTRY.register(modEventBus);
         ChangedVariantFeatures.REGISTRY.register(modEventBus);
         ChangedApplications.REGISTRY.register(modEventBus);
         ChangedFileSystemGenerators.REGISTRY.register(modEventBus);

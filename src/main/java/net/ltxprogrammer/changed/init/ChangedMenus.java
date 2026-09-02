@@ -23,8 +23,8 @@ public class ChangedMenus {
     public static final RegistryObject<MenuType<NoteMenu>> NOTE = register("note", NoteMenu::new);
     public static final RegistryObject<MenuType<StasisChamberMenu>> STASIS_CHAMBER = register("stasis_chamber", StasisChamberMenu::new);
     public static final RegistryObject<MenuType<AccessoryAccessMenu>> ACCESSORY_ACCESS = register("accessory_access", AccessoryAccessMenu::new);
-    public static final RegistryObject<MenuType<TamedDarkLatexMenu>> TAMED_DARK_LATEX = register("tamed_dark_latex", TamedDarkLatexMenu::new);
-    public static final RegistryObject<MenuType<TamedDarkLatexInventoryMenu>> TAMED_DARK_LATEX_INVENTORY = register("tamed_dark_latex_inventory", TamedDarkLatexInventoryMenu::new);
+    public static final RegistryObject<MenuType<TamedEntityMenu>> TAMED_ENTITY = register("tamed_entity", TamedEntityMenu::new);
+    public static final RegistryObject<MenuType<TamedEntityInventoryMenu>> TAMED_ENTITY_INVENTORY = register("tamed_entity_inventory", TamedEntityInventoryMenu::new);
     public static final RegistryObject<MenuType<AbilityTreeMenu>> ABILITY_TREE = register("ability_tree", AbilityTreeMenu::new);
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> register(String name, IContainerFactory<T> containerFactory) {
