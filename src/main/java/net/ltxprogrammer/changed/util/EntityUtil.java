@@ -1,8 +1,12 @@
 package net.ltxprogrammer.changed.util;
 
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.active.GrabEntityAbility;
+import net.ltxprogrammer.changed.ability.active.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.entity.SeatEntity;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
@@ -16,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -99,5 +102,28 @@ public class EntityUtil {
 
     public static BoundingBox roundAABB(AABB box) {
         return new BoundingBox(Mth.floor(box.minX), Mth.floor(box.minY), Mth.floor(box.minZ), Mth.floor(box.maxX), Mth.floor(box.maxY), Mth.floor(box.maxZ));
+    }
+
+    private static boolean isEntityHiddenBySuit(LivingEntity target) {
+        GrabEntityAbilityInstance grabAbility;
+        var grabber = GrabEntityAbility.getGrabber(target);
+        if (grabber != null)
+            grabAbility = grabber.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        else
+            grabAbility = AbstractAbility.getAbilityInstance(target, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+
+        if (grabAbility == null || !grabAbility.suited)
+            return false;
+
+        return grabAbility.grabbedHasControl == (target != grabAbility.grabbedEntity);
+    }
+
+    private static boolean isEntityHiddenInSeat(LivingEntity target) {
+        return (target.getVehicle() instanceof SeatEntity seatEntity) && seatEntity.shouldSeatedBeInvisible();
+    }
+
+    public static boolean isEntityInvisibleAndInvulnerable(LivingEntity entity) {
+        return isEntityHiddenBySuit(entity) ||
+                isEntityHiddenInSeat(entity);
     }
 }
