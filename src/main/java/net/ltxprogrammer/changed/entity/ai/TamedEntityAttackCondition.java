@@ -6,14 +6,14 @@ import net.minecraft.util.StringRepresentable;
 
 import java.util.Arrays;
 
-public enum DarkLatexAttackCondition implements StringRepresentable {
+public enum TamedEntityAttackCondition implements StringRepresentable {
     NEVER("never"),
     ALWAYS("always"),
     OWNER_IS_HOSTILE("owner_is_hostile");
 
     private final String serializedName;
 
-    DarkLatexAttackCondition(String serializedName) {
+    TamedEntityAttackCondition(String serializedName) {
         this.serializedName = serializedName;
     }
 
@@ -22,14 +22,14 @@ public enum DarkLatexAttackCondition implements StringRepresentable {
         return serializedName;
     }
 
-    public static DataResult<DarkLatexAttackCondition> fromSerial(String serializedName) {
+    public static DataResult<TamedEntityAttackCondition> fromSerial(String serializedName) {
         return Arrays.stream(values()).filter(value -> value.serializedName.equals(serializedName))
                 .findAny().map(DataResult::success).orElse(DataResult.error(
                         () -> "Invalid attack condition " + serializedName
                 ));
     }
 
-    public DarkLatexAttackCondition cycle() {
+    public TamedEntityAttackCondition cycle() {
         if (this.ordinal() + 1 == values().length)
             return values()[0];
         else
@@ -37,6 +37,6 @@ public enum DarkLatexAttackCondition implements StringRepresentable {
     }
 
     public Component getDisplayText() {
-        return Component.translatable("changed.tamed_dark_latex.attack_condition." + serializedName);
+        return Component.translatable("changed.tamed_entity.attack_condition." + serializedName);
     }
 }

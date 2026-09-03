@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.world.inventory.TamedDarkLatexInventoryMenu;
+import net.ltxprogrammer.changed.world.inventory.TamedEntityInventoryMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -10,19 +10,19 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class TamedDarkLatexInventoryScreen extends AbstractContainerScreen<TamedDarkLatexInventoryMenu> {
-    private final TamedDarkLatexInventoryMenu menu;
+public class TamedEntityInventoryScreen extends AbstractContainerScreen<TamedEntityInventoryMenu> {
+    private final TamedEntityInventoryMenu menu;
     private float xMouse;
     private float yMouse;
 
-    public TamedDarkLatexInventoryScreen(TamedDarkLatexInventoryMenu menu, Inventory inventory, Component text) {
+    public TamedEntityInventoryScreen(TamedEntityInventoryMenu menu, Inventory inventory, Component text) {
         super(menu, inventory, text);
         this.menu = menu;
         this.imageWidth = 212;
         this.imageHeight = 166;
     }
 
-    private static final ResourceLocation texture = Changed.modResource("textures/gui/tamed_dl_inventory.png");
+    private static final ResourceLocation texture = Changed.modResource("textures/gui/tamed_inventory.png");
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {

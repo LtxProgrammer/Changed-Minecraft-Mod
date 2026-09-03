@@ -1,22 +1,15 @@
 package net.ltxprogrammer.changed.world.inventory;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
-import net.ltxprogrammer.changed.entity.ai.DarkLatexInventory;
-import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.ai.TamedEntityInventory;
 import net.ltxprogrammer.changed.entity.variant.ClothingShape;
 import net.ltxprogrammer.changed.init.ChangedMenus;
-import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.item.ExtendedItemProperties;
-import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.world.enchantments.FormFittingEnchantment;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,14 +19,10 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-public class TamedDarkLatexInventoryMenu extends AbstractContainerMenu {
+public class TamedEntityInventoryMenu extends AbstractContainerMenu {
     static final ResourceLocation[] TEXTURE_EMPTY_SLOTS = new ResourceLocation[]{
             InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS,
             InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS,
@@ -42,15 +31,15 @@ public class TamedDarkLatexInventoryMenu extends AbstractContainerMenu {
     private static final EquipmentSlot[] SLOT_IDS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
     public final Player owner;
-    public final AbstractDarkLatexEntity tamedDarkLatex;
+    public final ChangedEntity tamedDarkLatex;
     public final Inventory inventory;
-    public final DarkLatexInventory dlInventory;
+    public final TamedEntityInventory dlInventory;
     public final AccessorySlots accessorySlots;
 
     private final Map<Integer, Slot> customSlots = new HashMap<>();
 
-    public TamedDarkLatexInventoryMenu(int id, Player owner, AbstractDarkLatexEntity tamedDarkLatex) {
-        super(ChangedMenus.TAMED_DARK_LATEX_INVENTORY.get(), id);
+    public TamedEntityInventoryMenu(int id, Player owner, ChangedEntity tamedDarkLatex) {
+        super(ChangedMenus.TAMED_ENTITY_INVENTORY.get(), id);
         this.owner = owner;
         this.tamedDarkLatex = tamedDarkLatex;
         this.inventory = owner.getInventory();
@@ -59,8 +48,8 @@ public class TamedDarkLatexInventoryMenu extends AbstractContainerMenu {
         this.createSlots(inventory, tamedDarkLatex.getInventory());
     }
 
-    public TamedDarkLatexInventoryMenu(int id, Inventory inventory, FriendlyByteBuf extra) {
-        this(id, inventory.player, (AbstractDarkLatexEntity) inventory.player.level().getEntity(extra.readInt()));
+    public TamedEntityInventoryMenu(int id, Inventory inventory, FriendlyByteBuf extra) {
+        this(id, inventory.player, (ChangedEntity) inventory.player.level().getEntity(extra.readInt()));
     }
 
     public boolean canWear(ItemStack itemStack, EquipmentSlot slot) {
@@ -96,10 +85,10 @@ public class TamedDarkLatexInventoryMenu extends AbstractContainerMenu {
     }
 
     // 0-3 -> DL armor, 4-30 -> hotbar, 31->39 -> inventory, 40 -> DL offhand, 41+ -> DL inventory
-    protected void createSlots(Inventory inv, DarkLatexInventory dlInventory) {
+    protected void createSlots(Inventory inv, TamedEntityInventory dlInventory) {
         for (int si = 0; si < 4; ++si) {
             final EquipmentSlot equipmentSlot = SLOT_IDS[si];
-            this.addSlot(new Slot(dlInventory, (DarkLatexInventory.INVENTORY_SIZE + 3) - si, 8, 8 + (si * 18)) {
+            this.addSlot(new Slot(dlInventory, (TamedEntityInventory.INVENTORY_SIZE + 3) - si, 8, 8 + (si * 18)) {
                 public int getMaxStackSize() {
                     return 1;
                 }
@@ -125,7 +114,7 @@ public class TamedDarkLatexInventoryMenu extends AbstractContainerMenu {
         for (int si = 0; si < 9; ++si)
             this.addSlot(new Slot(inv, si, 26 + si * 18, 142));
 
-        this.addSlot(new Slot(dlInventory, DarkLatexInventory.SLOT_OFFHAND, 77, 8 + (3 * 18)));
+        this.addSlot(new Slot(dlInventory, TamedEntityInventory.SLOT_OFFHAND, 77, 8 + (3 * 18)));
 
         for (int si = 0; si < 4; ++si)
             for (int sj = 0; sj < 6; ++sj)

@@ -170,6 +170,8 @@ public class ProcessTransfur {
     public static @Nullable AssimilationBehavior computeAssimilationBehavior(LivingEntity assimilationVictim, @Nullable LatexAssimilationDecision<?> decision) {
         if (decision == null)
             return null;
+        if (assimilationVictim instanceof Player player && ChangedCompatibility.isPlayerUsedByOtherMod(player))
+            return null;
         var fusionBehavior = ChangedFusions.INSTANCE.getFusionBehavior(assimilationVictim, decision.context());
         if (fusionBehavior != null)
             return fusionBehavior;

@@ -48,6 +48,18 @@ public class CardboardBoxTallBlockEntity extends BlockEntity implements Seatable
         return false;
     }
 
+    public boolean ejectEntity() {
+        if (entityHolder == null || entityHolder.isRemoved())
+            return false;
+        var seated = this.getSeatedEntity();
+        if (seated == null)
+            return false;
+
+        ticksSinceChange = 0;
+        seated.stopRiding();
+        return true;
+    }
+
     public static void tick(Level level, BlockPos pos, BlockState state, CardboardBoxTallBlockEntity blockEntity) {
         blockEntity.ticksSinceChange++;
 

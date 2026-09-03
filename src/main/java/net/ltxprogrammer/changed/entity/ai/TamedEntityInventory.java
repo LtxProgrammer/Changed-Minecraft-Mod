@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -27,7 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class DarkLatexInventory implements Container, Nameable {
+public class TamedEntityInventory implements Container, Nameable {
     public static final int POP_TIME_DURATION = 5;
     public static final int INVENTORY_SIZE = 24;
     private static final int SELECTION_SIZE = INVENTORY_SIZE;
@@ -40,11 +41,15 @@ public class DarkLatexInventory implements Container, Nameable {
     public final NonNullList<ItemStack> offhand = NonNullList.withSize(1, ItemStack.EMPTY);
     private final List<NonNullList<ItemStack>> compartments;
     public int selected;
-    public final AbstractDarkLatexEntity entity;
+    public final ChangedEntity entity;
     public final IAbstractChangedEntity entityWrapper;
     private int timesChanged;
 
-    public DarkLatexInventory(AbstractDarkLatexEntity entity) {
+    public interface SlotFinder {
+        int findSlot(TamedEntityInventory inventory);
+    }
+
+    public TamedEntityInventory(ChangedEntity entity) {
         this.entity = entity;
         this.entityWrapper = IAbstractChangedEntity.forEntity(entity);
         if (entity.getArmorSlots() instanceof NonNullList<ItemStack> armorSlots)
@@ -549,7 +554,7 @@ public class DarkLatexInventory implements Container, Nameable {
         return false;
     }
 
-    public void replaceWith(DarkLatexInventory otherInventory) {
+    public void replaceWith(TamedEntityInventory otherInventory) {
         for(int i = 0; i < this.getContainerSize(); ++i) {
             this.setItem(i, otherInventory.getItem(i));
         }

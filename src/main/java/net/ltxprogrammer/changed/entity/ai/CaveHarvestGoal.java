@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.entity.ai;
 
-import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,17 +26,17 @@ import net.minecraftforge.common.Tags;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 
-public class DarkLatexCaveHarvestGoal extends MoveToBlockGoal {
+public class CaveHarvestGoal extends MoveToBlockGoal {
     private static final int TIME_LIMIT_TO_PATHFIND = 5 * 20;
     private static final int ORE_CHECK_SEARCH_HORIZONTAL = 6;
     private static final int ORE_CHECK_SEARCH_VERTICAL = 4;
 
-    public final AbstractDarkLatexEntity entity;
+    public final ChangedEntity entity;
     public final Level level;
-    private DarkLatexInventory inventory = null;
+    private TamedEntityInventory inventory = null;
     private BlockPos targetOrePosition = BlockPos.ZERO;
 
-    public DarkLatexCaveHarvestGoal(AbstractDarkLatexEntity entity, double speedModifier, int searchRange, int verticalSearchRange) {
+    public CaveHarvestGoal(ChangedEntity entity, double speedModifier, int searchRange, int verticalSearchRange) {
         super(entity, speedModifier, searchRange, verticalSearchRange);
         this.entity = entity;
         this.level = entity.level();
@@ -69,8 +69,6 @@ public class DarkLatexCaveHarvestGoal extends MoveToBlockGoal {
         if (inventory == null)
             return false;
         this.inventory = inventory;
-        if (entity.getCurrentFavor() != DarkLatexFavor.CAVING)
-            return false;
         if (!entity.getMainHandItem().is(ItemTags.PICKAXES))
             return false;
 
@@ -80,8 +78,6 @@ public class DarkLatexCaveHarvestGoal extends MoveToBlockGoal {
     @Override
     public boolean canContinueToUse() {
         if (entity.getTarget() != null)
-            return false;
-        if (entity.getCurrentFavor() != DarkLatexFavor.CAVING)
             return false;
         if (!entity.getMainHandItem().is(ItemTags.PICKAXES))
             return false;

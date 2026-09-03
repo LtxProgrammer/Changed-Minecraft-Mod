@@ -3,7 +3,8 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.ComplexRenderer;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.ai.DarkLatexFavor;
+import net.ltxprogrammer.changed.entity.ai.TamedEntityFavor;
+import net.ltxprogrammer.changed.init.ChangedTamedEntityFavors;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
@@ -63,7 +64,7 @@ public class DarkLatexWolfPartial extends AbstractDarkLatexEntity implements Com
     }
 
     @Override
-    public boolean canDoFavor(DarkLatexFavor favor) {
-        return super.canDoFavor(favor) && favor != DarkLatexFavor.SUIT_OWNER;
+    public boolean canDoFavor(TamedEntityFavor favor) {
+        return super.canDoFavor(favor) && favor != ChangedTamedEntityFavors.SUIT_OWNER.get();
     }
 }

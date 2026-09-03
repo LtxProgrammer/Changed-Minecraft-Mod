@@ -26,9 +26,4 @@ public abstract class AbstractLatexWolf extends ChangedEntity {
 
     @Override
     public TransfurMode getTransfurMode() { return TransfurMode.REPLICATION; }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag p_20139_) {
-        super.addAdditionalSaveData(p_20139_);
-    }
 }

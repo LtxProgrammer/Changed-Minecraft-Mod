@@ -12,26 +12,26 @@ import java.util.Arrays;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-public enum DarkLatexAttackType implements BiPredicate<AbstractDarkLatexEntity, LivingEntity>, StringRepresentable {
+public enum TamedEntityAttackType implements BiPredicate<ChangedEntity, LivingEntity>, StringRepresentable {
     ALWAYS_KILL("always_kill", (self, target) -> false),
     TRY_TRANSFUR("try_transfur", (self, target) -> {
         return target.getType().is(ChangedTags.EntityTypes.HUMANOIDS) || target instanceof ChangedEntity;
     });
 
     private final String serializedName;
-    private final BiPredicate<AbstractDarkLatexEntity, LivingEntity> predicate;
+    private final BiPredicate<ChangedEntity, LivingEntity> predicate;
 
-    DarkLatexAttackType(String serializedName, BiPredicate<AbstractDarkLatexEntity, LivingEntity> predicate) {
+    TamedEntityAttackType(String serializedName, BiPredicate<ChangedEntity, LivingEntity> predicate) {
         this.serializedName = serializedName;
         this.predicate = predicate;
     }
 
     @Override
-    public boolean test(AbstractDarkLatexEntity self, LivingEntity possibleTarget) {
+    public boolean test(ChangedEntity self, LivingEntity possibleTarget) {
         return predicate.test(self, possibleTarget);
     }
 
-    public Predicate<LivingEntity> forEntity(AbstractDarkLatexEntity self) {
+    public Predicate<LivingEntity> forEntity(ChangedEntity self) {
         return target -> this.test(self, target);
     }
 
@@ -40,7 +40,7 @@ public enum DarkLatexAttackType implements BiPredicate<AbstractDarkLatexEntity, 
         return serializedName;
     }
 
-    public static DataResult<DarkLatexAttackType> fromSerial(String serializedName) {
+    public static DataResult<TamedEntityAttackType> fromSerial(String serializedName) {
         return Arrays.stream(values()).filter(value -> value.serializedName.equals(serializedName))
                 .findAny().map(DataResult::success).orElse(DataResult.error(
                         () -> "Invalid attack type " + serializedName
@@ -48,7 +48,7 @@ public enum DarkLatexAttackType implements BiPredicate<AbstractDarkLatexEntity, 
     }
 
 
-    public DarkLatexAttackType cycle() {
+    public TamedEntityAttackType cycle() {
         if (this.ordinal() + 1 == values().length)
             return values()[0];
         else
@@ -56,6 +56,6 @@ public enum DarkLatexAttackType implements BiPredicate<AbstractDarkLatexEntity, 
     }
 
     public Component getDisplayText() {
-        return Component.translatable("changed.tamed_dark_latex.attacking." + serializedName);
+        return Component.translatable("changed.tamed_entity.attacking." + serializedName);
     }
 }

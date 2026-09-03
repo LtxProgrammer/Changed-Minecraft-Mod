@@ -1,9 +1,10 @@
 package net.ltxprogrammer.changed.entity.ai;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.beast.AbstractDarkLatexEntity;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.init.ChangedTamedEntityFavors;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -11,10 +12,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraftforge.network.PacketDistributor;
 
-public class DarkLatexSuitOwnerGoal extends MeleeAttackGoal {
-    protected final AbstractDarkLatexEntity entity;
+public class LatexSuitOwnerGoal extends MeleeAttackGoal {
+    protected final ChangedEntity entity;
 
-    public DarkLatexSuitOwnerGoal(AbstractDarkLatexEntity entity, double speedModifier, boolean visualPersistence) {
+    public LatexSuitOwnerGoal(ChangedEntity entity, double speedModifier, boolean visualPersistence) {
         super(entity, speedModifier, visualPersistence);
 
         this.entity = entity;
@@ -22,10 +23,10 @@ public class DarkLatexSuitOwnerGoal extends MeleeAttackGoal {
 
     @Override
     protected void checkAndPerformAttack(LivingEntity target, double distanceSquared) {
-        var ability = entity.getGrabAbility();
+        var ability = entity.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
         if (ability == null) {
             entity.setTarget(null);
-            entity.setFavor(DarkLatexFavor.NONE);
+            entity.setFavor(ChangedTamedEntityFavors.NONE.get());
             return;
         }
 
@@ -50,13 +51,13 @@ public class DarkLatexSuitOwnerGoal extends MeleeAttackGoal {
 
     @Override
     public boolean canUse() {
-        if (this.entity.getCurrentFavor() != DarkLatexFavor.SUIT_OWNER)
+        if (this.entity.getCurrentFavor() != ChangedTamedEntityFavors.SUIT_OWNER.get())
             return false;
         var owner = this.entity.getOwner();
         if (owner == null)
             return false;
 
-        var ability = entity.getGrabAbility();
+        var ability = entity.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
         if (ability == null || ability.grabbedEntity == owner)
             return false;
 
@@ -69,14 +70,14 @@ public class DarkLatexSuitOwnerGoal extends MeleeAttackGoal {
 
     @Override
     public boolean canContinueToUse() {
-        if (this.entity.getCurrentFavor() != DarkLatexFavor.SUIT_OWNER)
+        if (this.entity.getCurrentFavor() != ChangedTamedEntityFavors.SUIT_OWNER.get())
             return false;
         var owner = this.entity.getOwner();
         if (owner == null)
             return false;
 
-        var ability = entity.getGrabAbility();
-        if (ability == null || ability.grabbedEntity == owner)
+        var ability = entity.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        if (ability == null || ability.grabbedEntity != owner)
             return false;
 
         if (ProcessTransfur.isPlayerTransfurred(EntityUtil.playerOrNull(owner)))
