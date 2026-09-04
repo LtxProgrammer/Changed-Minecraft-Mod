@@ -17,10 +17,12 @@ import net.ltxprogrammer.changed.util.ResourceUtil;
 import net.ltxprogrammer.changed.util.StreamUtil;
 import net.ltxprogrammer.changed.world.features.structures.facility.*;
 import net.ltxprogrammer.changed.world.features.structures.facility.types.PieceType;
+import net.minecraft.CrashReport;
+import net.minecraft.CrashReportCategory;
+import net.minecraft.ReportedException;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.Mth;
@@ -30,6 +32,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -80,12 +83,25 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
                     .forEach(zonesWithDefinedPieces::add);
         }
     }
+
+    public static class TreePlacementException extends ReportedException {
+        private final CrashReportCategory pieceStack;
+
+        public TreePlacementException(CrashReport report, CrashReportCategory pieceStack) {
+            super(report);
+            this.pieceStack = pieceStack;
+        }
+
+        public CrashReportCategory getPieceStack() {
+            return pieceStack;
+        }
+    }
     
     public static class PlacedFacilityPiece {
         private final Zone zone;
         private final ConfiguredFacilityPiece definition;
         private final FacilityPieceInstance instance;
-        PlacedFacilityPiece parent;
+        private PlacedFacilityPiece parent;
 
         public PlacedFacilityPiece(Zone zone, ConfiguredFacilityPiece definition, FacilityPieceInstance instance) {
             this.zone = zone;
@@ -109,7 +125,13 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
             this.parent = placed;
         }
 
-        public PlacedFacilityPiece getParent() {
+        public @Nullable PlacedFacilityPiece getParent() {
+            return parent;
+        }
+
+        public PlacedFacilityPiece getParentOrThrow() {
+            if (parent == null)
+                throw new NullPointerException(String.format("Parent of placed %s is null", definition.toDebugString()));
             return parent;
         }
     }
@@ -368,10 +390,25 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
                             .anyMatch(box -> box.isInside(connectorPos)))
                         continue;
 
-                    var childRoom = treeGenerate(facilityContext, stack, nextStructure, next,
-                            firstStart ? nextSpan : nextSpan - 5,
-                            allowedRegion,
-                            firstStart ? Math.max(zoneProtection - 1, 0) : 5);
+                    Optional<PlacedFacilityPiece> childRoom;
+                    try {
+                        childRoom = treeGenerate(facilityContext, stack, nextStructure, next,
+                                firstStart ? nextSpan : nextSpan - 5,
+                                allowedRegion,
+                                firstStart ? Math.max(zoneProtection - 1, 0) : 5);
+                    } catch (Exception e) {
+                        CrashReport report = CrashReport.forThrowable(e, "Generating Facility Pieces");
+                        CrashReportCategory category;
+                        if (e instanceof TreePlacementException treePlacementException) {
+                            category = treePlacementException.getPieceStack();
+                            category.setDetail("Next", nextConfiguredPiece.toDebugString());
+                        } else {
+                            category = report.addCategory("Piece Sequence");
+                            category.setDetail("Failing Piece", nextConfiguredPiece.toDebugString());
+                        }
+                        throw new TreePlacementException(report, category);
+                    }
+
                     if (childRoom.isPresent()) {
                         firstStart = false;
                     }
@@ -408,11 +445,11 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
             return facilityContext.pieceDependents.get(placedPiece).isEmpty() &&
                 facilityContext.configuredPieceCounts.get(placedPiece.definition) > placedPiece.definition.minimum;
         }).filter(placedPiece -> {
-            return meetsPiecePositionRequirements(facilityContext, placedPiece.parent.instance.getBoundingBox()).test(requiredPiece);
+            return meetsPiecePositionRequirements(facilityContext, placedPiece.getParentOrThrow().instance.getBoundingBox()).test(requiredPiece);
         }).toList(); // Collect so that the next stage can modify piecesByZone
 
         Stream<PlacedFacilityPiece> replacedRoomStream = replaceableRooms.stream().map(replacingPiece -> {
-            var parent = replacingPiece.getParent();
+            var parent = replacingPiece.getParentOrThrow();
 
             List<GenStep> starts = new ArrayList<>();
             parent.instance.addSteps(null, starts);
@@ -512,8 +549,21 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
         Set<PlacedFacilityPiece> directDependents = new HashSet<>();
         if (genDepth > 0) {
             starts.forEach(start -> {
-                treeGenerate(facilityGenerationContext, stack, entrance.instance, start, genDepth - 1, allowedRegion, 0)
-                        .ifPresent(directDependents::add);
+                try {
+                    treeGenerate(facilityGenerationContext, stack, entrance.instance, start, genDepth - 1, allowedRegion, 0)
+                            .ifPresent(directDependents::add);
+                } catch (Exception e) {
+                    CrashReport report = CrashReport.forThrowable(e, "Generating Facility Pieces");
+                    CrashReportCategory category;
+                    if (e instanceof TreePlacementException treePlacementException) {
+                        category = treePlacementException.getPieceStack();
+                        category.setDetail("Start", entrance.definition.toDebugString());
+                    } else {
+                        category = report.addCategory("Piece Sequence");
+                        category.setDetail("Failing Start", entrance.definition.toDebugString());
+                    }
+                    throw new TreePlacementException(report, category);
+                }
             });
         }
 
@@ -535,7 +585,17 @@ public class FacilityPieces extends SimplePreparableReloadListener<Set<Configure
             int count = pair.getSecond();
             LOGGER.debug("Attempting to put {} count of {} in generating facility", count, requiredPiece.getName());
             while (count-- > 0) {
-                var forcedRoom = tryReplaceRoom(facilityGenerationContext, requiredPiece, allowedRegion);
+                Optional<PlacedFacilityPiece> forcedRoom;
+                try {
+                    forcedRoom = tryReplaceRoom(facilityGenerationContext, requiredPiece, allowedRegion);
+                } catch (Exception e) {
+                    CrashReport report = CrashReport.forThrowable(e, "Replacing Room in Generated Facility");
+                    CrashReportCategory category = report.addCategory("Piece Information");
+                    category.setDetail("Piece Name", requiredPiece.getName());
+                    category.setDetail("Allowed Region", allowedRegion);
+                    throw new ReportedException(report);
+                }
+
                 if (forcedRoom.isPresent())
                     LOGGER.debug("Successfully inserted {} into facility", requiredPiece.getName());
                 else {

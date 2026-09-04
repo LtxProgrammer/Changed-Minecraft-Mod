@@ -98,4 +98,8 @@ public class ConfiguredFacilityPiece implements WeightedEntry {
     public String toString() {
         return name.toString();
     }
+
+    public String toDebugString() {
+        return String.format("%s{%s}", facilityPiece.type.toString(), name.toString());
+    }
 }

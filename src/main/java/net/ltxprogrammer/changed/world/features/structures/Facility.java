@@ -6,6 +6,9 @@ import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedStructureTypes;
 import net.ltxprogrammer.changed.world.features.structures.facility.FacilityKeystone;
+import net.minecraft.CrashReport;
+import net.minecraft.CrashReportCategory;
+import net.minecraft.ReportedException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Rotation;
@@ -60,7 +63,17 @@ public class Facility extends Structure {
         for (int reroll = 0; reroll < rerollForSizeCount; reroll++) {
             builder.clear();
 
-            Optional<FacilityKeystone> keystoneOpt = FacilityPieces.generateFacility(builder, context, genDepth, generationRegion);
+            Optional<FacilityKeystone> keystoneOpt;
+            try {
+                keystoneOpt = FacilityPieces.generateFacility(builder, context, genDepth, generationRegion);
+            } catch (Exception e) {
+                CrashReport report = CrashReport.forThrowable(e, "Generating Facility");
+                CrashReportCategory category = report.addCategory("Facility Placement");
+                category.setDetail("Generation Center Chunk Position", center);
+                category.setDetail("Generation Region", generationRegion);
+                category.setDetail("Generate Depth", genDepth);
+                throw new ReportedException(report);
+            }
             if (keystoneOpt.isEmpty()) continue;
             FacilityKeystone keystone = keystoneOpt.get();
 
