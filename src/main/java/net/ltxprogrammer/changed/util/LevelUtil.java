@@ -138,7 +138,7 @@ public class LevelUtil {
                 return true;
         }
 
-        if (entity.horizontalCollision) {
+        if (entity.horizontalCollision || !entity.level().isClientSide) {
             VoxelShape positionedShapeN = shape.move((double)blockPos.getX(), (double)blockPos.getY(), (double)blockPos.getZ() + 0.025);
             if (Shapes.joinIsNotEmpty(positionedShapeN, Shapes.create(entity.getBoundingBox()), BooleanOp.AND))
                 return true;
