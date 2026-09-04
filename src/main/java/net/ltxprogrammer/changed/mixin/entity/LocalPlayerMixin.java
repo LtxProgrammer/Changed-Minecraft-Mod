@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.client.LocalPlayerAccessor;
 import net.ltxprogrammer.changed.client.NullInput;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -223,5 +224,11 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
             if (variant.isTransfurring())
                 this.flashOnSetHealth = false;
         });
+    }
+
+    @Inject(method = "rideTick", at = @At("TAIL"))
+    public void changed$seatTick(CallbackInfo ci) {
+        if (vehicle instanceof SeatEntity seatEntity)
+            this.handsBusy |= seatEntity.shouldSeatedBeInvisible();
     }
 }

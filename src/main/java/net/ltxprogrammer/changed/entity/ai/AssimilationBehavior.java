@@ -26,6 +26,9 @@ public interface AssimilationBehavior {
         return new AssimilationBehavior() {
             @Override
             public void stepAssimilate() {
+                if (player.level().isClientSide)
+                    return;
+
                 boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
                 if (player.isSpectator() || player.isCreative())

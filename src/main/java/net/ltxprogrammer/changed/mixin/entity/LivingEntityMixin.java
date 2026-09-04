@@ -34,7 +34,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -602,5 +601,26 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         this.hasImpulse = true;
 
         net.minecraftforge.common.ForgeHooks.onLivingJump((LivingEntity)(Object)this);
+    }
+
+    @WrapMethod(method = "isPickable")
+    private boolean changed$denyPickable(Operation<Boolean> original) {
+        if (EntityUtil.isEntityInvisibleAndInvulnerable((LivingEntity)(Object)this))
+            return false;
+        return original.call();
+    }
+
+    @WrapMethod(method = "isPushable")
+    private boolean changed$denyPushable(Operation<Boolean> original) {
+        if (EntityUtil.isEntityInvisibleAndInvulnerable((LivingEntity)(Object)this))
+            return false;
+        return original.call();
+    }
+
+    @WrapMethod(method = "pushEntities")
+    private void changed$denyPushing(Operation<Void> original) {
+        if (EntityUtil.isEntityInvisibleAndInvulnerable((LivingEntity)(Object)this))
+            return;
+        original.call();
     }
 }

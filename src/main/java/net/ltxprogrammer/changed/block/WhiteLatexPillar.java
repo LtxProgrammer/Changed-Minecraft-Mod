@@ -108,7 +108,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
     }
 
     protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
-        return LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.LATEX_PUDDLE), 4.8f);
+        return LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX), 4.8f);
     }
 
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
