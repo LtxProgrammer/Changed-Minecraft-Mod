@@ -5,9 +5,9 @@ issueTrackerURL="https://github.com/LtxProgrammer/Changed-Minecraft-Mod/issues" 
 
 [[mods]]
 modId="changed"
-version="0.16.0"
+version="snapshot-9.5.2026"
 displayName="Changed: Minecraft Mod"
-updateJSONURL="https://ltxprogrammer.github.io/changed-minecraft-mod.json"
+#updateJSONURL="https://ltxprogrammer.github.io/changed-minecraft-mod.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/changed-minecraft-mod"
 logoFile="icon@400.png"
 credits='''DragonSnow, bijimio, Valurio9683, KoBOLTA, poptartiguess, N1CO785, BaiTian6641, Foxyas, Kedr2806, xxXMinionXxx, Sel7D4, Candnhen, ABTOR, Twix#5803, dahotdogdesant, gootraxian'''
