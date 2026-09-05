@@ -38,9 +38,9 @@
   "ability.changed.toggle_night_vision.desc": "Szemei a gyér fényviszonyokhoz igazodik.",
   "ability.changed.toggle_wave_vision": "Hullámlátás kapcsolása",
   "ability.changed.toggle_wave_vision.desc": "Változtassa meg a világról alkotott képét. A kristályos és ismerős anyagok rezonálnak a hullámaiból.",
-  "ability.changed.underwater_dash": "Vízalatti iramodás",
+  "ability.changed.underwater_dash": "Vízalatti előrelövelés",
   "ability.changed.underwater_dash.alt": "Merülés",
-  "ability.changed.underwater_dash.desc": "Nagy sebességgel iramodjon előre. Törd át a felszínt, hogy nagy sebességnövekedést érj el a visszatéréskor.",
+  "ability.changed.underwater_dash.desc": "Nagy sebességgel löveljen előre. Törd át a felszínt, hogy nagy sebességnövekedést érj el a visszatéréskor.",
   "ability.changed.underwater_dash.desc_alt": "Készülj fel a vízbe merülésre, és szerezzen jelentős sebességnövekedést a belépéskor.",
   "ability.changed.wing_flap": "Szárnycsapkodás",
   "ability.changed.wing_flap.desc": "Csapkodj a szárnyaiddal, hogy lendületet adj magadnak.",
@@ -171,7 +171,7 @@
   "subtitles.changed.entity.latex.ungrab_entity": "Entitás elengedve megragadástól",
   "subtitles.changed.entity.latex.unsuit_entity": "Entitás elengedve beburkolástól",
 
-  "subtitles.changed.ability.underwater_dash.boost": "Entitás víz alatt iramodik",
+  "subtitles.changed.ability.underwater_dash.boost": "Entitás víz alatt előrelövell",
   "subtitles.changed.ability.wing_flap": "Szárnyak csapkodása",
 
   "subtitles.changed.item.bra.break": "Melltartó szakad",
@@ -1150,8 +1150,8 @@
   "changed.ability_tree.aquatic.no_sinking.flavor": "Rájöttél, hogyan tarthatod fenn a semleges felhajtóerőt. A vízen taposás a múlté!",
   "changed.ability_tree.aquatic.oxygen_symbiosis": "Oxigén szimbiózis",
   "changed.ability_tree.aquatic.oxygen_symbiosis.flavor": "Rájöttél, hogyan oszd meg az oxigént azzal, akit (vagy bármit) is veszel körül. Ők lélegznek helyetted, és te is lélegzel helyettük. Mindkettőtöknek jó! ...ugye?",
-  "changed.ability_tree.aquatic.underwater_dash": "Víz alatti iramodás",
-  "changed.ability_tree.aquatic.underwater_dash.flavor": "Erős farkad és kecses alakod lehetővé teszi, hogy rövid idő alatt iramodj a víz alatt.",
+  "changed.ability_tree.aquatic.underwater_dash": "Víz alatti előrelövelés",
+  "changed.ability_tree.aquatic.underwater_dash.flavor": "Erős farkad és kecses alakod lehetővé teszi, hogy rövid idő alatt löveljél előre a víz alatt.",
 
   "changed.ability_tree.arachnidae.adapted_vision": "Hozzáillesztett látás",
   "changed.ability_tree.arachnidae.adapted_vision.flavor": "Hozzászoktál a többszeműséghez. Egyre tisztábban látod a dolgokat.",
