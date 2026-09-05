@@ -57,8 +57,8 @@ public class FlightStaminaOverlay {
 
         graphics.setColor(1.0f, 1.0f, 1.0f, alpha);
         if (pixelsOfStamina < 14)
-            graphics.blit(design.background, x, y, 0, 0, 64, 14 - pixelsOfStamina, 64, 14);
+            graphics.blit(design.backgroundTexture(), x, y, 0, 0, 64, 14 - pixelsOfStamina, 64, 14);
         if (pixelsOfStamina > 0)
-            graphics.blit(design.foreground, x, y + (14 - pixelsOfStamina), 0, (14 - pixelsOfStamina), 64, pixelsOfStamina, 64, 14);
+            graphics.blit(design.foregroundTexture(), x, y + (14 - pixelsOfStamina), 0, (14 - pixelsOfStamina), 64, pixelsOfStamina, 64, 14);
     }
 }
