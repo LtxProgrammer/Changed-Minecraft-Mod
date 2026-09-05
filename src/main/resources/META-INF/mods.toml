@@ -5,7 +5,7 @@ issueTrackerURL="https://github.com/LtxProgrammer/Changed-Minecraft-Mod/issues" 
 
 [[mods]]
 modId="changed"
-version="snapshot-9.5.2026"
+version="9.5.2026"
 displayName="Changed: Minecraft Mod"
 #updateJSONURL="https://ltxprogrammer.github.io/changed-minecraft-mod.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/changed-minecraft-mod"
