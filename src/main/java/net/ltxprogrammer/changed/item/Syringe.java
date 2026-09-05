@@ -134,7 +134,8 @@ public class Syringe extends Item implements SpecializedAnimations {
         CompoundTag tag = new CompoundTag();
         tag.putUUID("owner", player.getUUID());
 
-        ProcessTransfur.ifPlayerTransfurred(player, variant -> {
+        var variant = ProcessTransfur.getPlayerTransfurVariant(player);
+        if (variant != null && !variant.isTemporaryFromSuit() && variant.shouldApplyAbilities()) {
             ResourceLocation form = variant.getFormId();
             if (TransfurVariant.getPublicTransfurVariants().noneMatch(variant.getParent()::equals))
                 form = TransfurVariant.SPECIAL_LATEX;
@@ -145,13 +146,14 @@ public class Syringe extends Item implements SpecializedAnimations {
 
             if (!player.addItem(nStack))
                 player.drop(nStack, false);
-        }, () -> {
+        } else {
             ItemStack nStack = new ItemStack(ChangedItems.BLOOD_SYRINGE.get());
             nStack.setTag(tag);
 
             if (!player.addItem(nStack))
                 player.drop(nStack, false);
-        });
+        }
+
         return stack;
     }
 
