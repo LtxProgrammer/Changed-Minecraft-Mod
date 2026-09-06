@@ -243,6 +243,9 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
     protected void tickBreathing(LivingBreatheEvent event) {
         super.tickBreathing(event);
 
+        if (isTemporaryFromSuit())
+            return;
+
         FluidType submergedFluid = host.getEyeInFluidType();
         ForgeRegistries.FLUID_TYPES.get().getValues().forEach(fluidType -> {
             boolean submerged = submergedFluid == fluidType;
