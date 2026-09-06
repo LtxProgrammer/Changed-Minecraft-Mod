@@ -17,7 +17,7 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 import java.util.EnumSet;
 
-public class LatexFollowOwnerGoal<T extends ChangedEntity & TamableLatexEntity> extends Goal {
+public class AquaticFollowOwnerGoal<T extends ChangedEntity & TamableLatexEntity> extends Goal {
     public static final int TELEPORT_WHEN_DISTANCE_IS = 12;
     private static final int MIN_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING = 2;
     private static final int MAX_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING = 3;
@@ -26,25 +26,19 @@ public class LatexFollowOwnerGoal<T extends ChangedEntity & TamableLatexEntity> 
     private LivingEntity owner;
     private final LevelReader level;
     private final double speedModifier;
-    private final PathNavigation navigation;
     private int timeToRecalcPath;
     private final float stopDistance;
     private final float startDistance;
-    private float oldWaterCost;
     private final boolean canFly;
 
-    public LatexFollowOwnerGoal(T entity, double speed, float startDistance, float stopDistance, boolean canFly) {
+    public AquaticFollowOwnerGoal(T entity, double speed, float startDistance, float stopDistance, boolean canFly) {
         this.tamable = entity;
         this.level = entity.level();
         this.speedModifier = speed;
-        this.navigation = entity.getNavigation();
         this.startDistance = startDistance;
         this.stopDistance = stopDistance;
         this.canFly = canFly;
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        if (!(entity.getNavigation() instanceof GroundPathNavigation) && !(entity.getNavigation() instanceof FlyingPathNavigation)) {
-            throw new IllegalArgumentException("Unsupported mob type for LatexFollowOwnerGoal");
-        }
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     public boolean canUse() {
@@ -70,7 +64,7 @@ public class LatexFollowOwnerGoal<T extends ChangedEntity & TamableLatexEntity> 
         if (!this.tamable.isFollowingOwner())
             return false;
 
-        if (this.navigation.isDone()) {
+        if (this.tamable.getNavigation().isDone()) {
             return false;
         } else {
             return !(this.tamable.distanceToSqr(this.owner) <= (double)(this.stopDistance * this.stopDistance));
@@ -79,14 +73,11 @@ public class LatexFollowOwnerGoal<T extends ChangedEntity & TamableLatexEntity> 
 
     public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.tamable.getPathfindingMalus(BlockPathTypes.WATER);
-        this.tamable.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     public void stop() {
         this.owner = null;
-        this.navigation.stop();
-        this.tamable.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+        this.tamable.getNavigation().stop();
     }
 
     public void tick() {
@@ -94,10 +85,10 @@ public class LatexFollowOwnerGoal<T extends ChangedEntity & TamableLatexEntity> 
         if (--this.timeToRecalcPath <= 0) {
             this.timeToRecalcPath = this.adjustedTickDelay(10);
             if (!this.tamable.isLeashed() && !this.tamable.isPassenger()) {
-                if (this.tamable.distanceToSqr(this.owner) >= 144.0D) {
+                if (this.tamable.distanceToSqr(this.owner) >= TELEPORT_WHEN_DISTANCE_IS * TELEPORT_WHEN_DISTANCE_IS) {
                     this.teleportToOwner();
                 } else {
-                    this.navigation.moveTo(this.owner, this.speedModifier);
+                    this.tamable.getNavigation().moveTo(this.owner, this.speedModifier);
                 }
 
             }
@@ -108,10 +99,10 @@ public class LatexFollowOwnerGoal<T extends ChangedEntity & TamableLatexEntity> 
         BlockPos blockpos = this.owner.blockPosition();
 
         for(int i = 0; i < 10; ++i) {
-            int j = this.randomIntInclusive(-3, 3);
-            int k = this.randomIntInclusive(-1, 1);
-            int l = this.randomIntInclusive(-3, 3);
-            boolean flag = this.maybeTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
+            int xOff = this.randomIntInclusive(-MAX_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING, MAX_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING);
+            int yOff = this.randomIntInclusive(-MAX_VERTICAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING, MAX_VERTICAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING);
+            int zOff = this.randomIntInclusive(-MAX_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING, MAX_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING);
+            boolean flag = this.maybeTeleportTo(blockpos.getX() + xOff, blockpos.getY() + yOff, blockpos.getZ() + zOff);
             if (flag) {
                 return;
             }
@@ -119,21 +110,21 @@ public class LatexFollowOwnerGoal<T extends ChangedEntity & TamableLatexEntity> 
 
     }
 
-    private boolean maybeTeleportTo(int p_25304_, int p_25305_, int p_25306_) {
-        if (Math.abs((double)p_25304_ - this.owner.getX()) < 2.0D && Math.abs((double)p_25306_ - this.owner.getZ()) < 2.0D) {
+    private boolean maybeTeleportTo(int x, int y, int z) {
+        if (Math.abs((double)x - this.owner.getX()) < MIN_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING && Math.abs((double)z - this.owner.getZ()) < MIN_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING) {
             return false;
-        } else if (!this.canTeleportTo(new BlockPos(p_25304_, p_25305_, p_25306_))) {
+        } else if (!this.canTeleportTo(new BlockPos(x, y, z))) {
             return false;
         } else {
-            this.tamable.moveTo((double)p_25304_ + 0.5D, (double)p_25305_, (double)p_25306_ + 0.5D, this.tamable.getYRot(), this.tamable.getXRot());
-            this.navigation.stop();
+            this.tamable.moveTo((double)x + 0.5D, (double)y, (double)z + 0.5D, this.tamable.getYRot(), this.tamable.getXRot());
+            this.tamable.getNavigation().stop();
             return true;
         }
     }
 
     private boolean canTeleportTo(BlockPos p_25308_) {
         BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, p_25308_.mutable());
-        if (blockpathtypes != BlockPathTypes.WALKABLE) {
+        if (blockpathtypes != BlockPathTypes.WALKABLE && blockpathtypes != BlockPathTypes.WATER) {
             return false;
         } else {
             BlockState blockstate = this.level.getBlockState(p_25308_.below());

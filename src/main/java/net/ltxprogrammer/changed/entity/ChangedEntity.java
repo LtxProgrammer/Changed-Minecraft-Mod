@@ -779,6 +779,11 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         return null;
     }
 
+    @Nullable
+    protected Goal makeFollowOwnerGoal() {
+        return new LandFollowOwnerGoal<>(this, 0.35D, 10.0F, 2.0F, false);
+    }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -818,7 +823,9 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         if (this instanceof PowderSnowWalkable)
             this.goalSelector.addGoal(5, new ChangedClimbOnTopOfPowderSnowGoal(this, this.level()));
 
-        this.goalSelector.addGoal(6, new LatexFollowOwnerGoal<>(this, 0.35D, 10.0F, 2.0F, false));
+        var followGoal = this.makeFollowOwnerGoal();
+        if (followGoal != null)
+            this.goalSelector.addGoal(6, followGoal);
         this.targetSelector.addGoal(1, new LatexOwnerHurtByTargetGoal<>(this));
         this.targetSelector.addGoal(2, new LatexOwnerHurtTargetGoal<>(this));
     }

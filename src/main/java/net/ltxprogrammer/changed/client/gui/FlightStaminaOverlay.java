@@ -26,6 +26,9 @@ public class FlightStaminaOverlay {
             return;
 
         double maxFlightStamina = player.getAttributeValue(ChangedAttributes.MAX_FLIGHT_STAMINA.get());
+        if (maxFlightStamina <= 0.0)
+            return;
+
         double stamina = variant.getFlightStamina();
 
         if (stamina != LAST_RENDERED_STAMINA) {
@@ -47,15 +50,15 @@ public class FlightStaminaOverlay {
         if (gui instanceof ForgeGui forgeGui)
             y = screenHeight - (Math.max(forgeGui.leftHeight, forgeGui.rightHeight) + 5);
 
-        int pixelsOfStamina = (int) Math.round((stamina / maxFlightStamina) * 14.0);
+        int pixelsOfStamina = Mth.clamp((int) Math.round((stamina / maxFlightStamina) * 14.0), 0, 14);
 
         if (alpha <= 0.0f)
             return;
 
         graphics.setColor(1.0f, 1.0f, 1.0f, alpha);
         if (pixelsOfStamina < 14)
-            graphics.blit(design.background, x, y, 0, 0, 64, 14 - pixelsOfStamina, 64, 14);
+            graphics.blit(design.backgroundTexture(), x, y, 0, 0, 64, 14 - pixelsOfStamina, 64, 14);
         if (pixelsOfStamina > 0)
-            graphics.blit(design.foreground, x, y + (14 - pixelsOfStamina), 0, (14 - pixelsOfStamina), 64, pixelsOfStamina, 64, 14);
+            graphics.blit(design.foregroundTexture(), x, y + (14 - pixelsOfStamina), 0, (14 - pixelsOfStamina), 64, pixelsOfStamina, 64, 14);
     }
 }
