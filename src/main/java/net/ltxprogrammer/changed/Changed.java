@@ -101,6 +101,7 @@ public class Changed {
         ChangedTabs.REGISTRY.register(modEventBus);
         ChangedSounds.REGISTRY.register(modEventBus);
         ChangedPaintings.REGISTRY.register(modEventBus);
+        ChangedBannerPatterns.REGISTRY.register(modEventBus);
         ChangedParticles.REGISTRY.register(modEventBus);
         ChangedFeatures.REGISTRY_FEATURE.register(modEventBus);
         ChangedFeatures.REGISTRY_PROCESSOR.register(modEventBus);
