@@ -51,7 +51,6 @@ import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock implements CustomFallable, SimpleWaterloggedBlock {
@@ -129,7 +128,6 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
             case 1:
                 if (remaining >= 4 && !placedFluid.get()) {
                     level.setBlockAndUpdate(blockPos, Objects.requireNonNull(type.getBucketItem()).fluid.get().defaultFluidState().createLegacyBlock());
-                    popResource(level, blockPos, new ItemStack(this));
                     placedFluid.set(true);
                     return 4; // Put goo fluid
                 }
@@ -159,11 +157,7 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos blockPos, BlockState newState, boolean noSimulate) {
-        if (state.getBlock() == newState.getBlock()) return;
-        if (newState.isAir()) return;
-
         var blockEntity = getBlockEntity(state, level, blockPos);
-        super.onRemove(state, level, blockPos, newState, noSimulate);
 
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER && blockEntity != null && !blockEntity.getFillType().isAir() &&
                 blockEntity.getFillLevel() > 0 && !noSimulate) {
@@ -172,6 +166,8 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
             while (fill > 0)
                 fill -= processBreak(level, blockPos, blockEntity.getFillType(), fill, atomic);
         }
+
+        super.onRemove(state, level, blockPos, newState, noSimulate);
     }
 
     public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos pos) {
