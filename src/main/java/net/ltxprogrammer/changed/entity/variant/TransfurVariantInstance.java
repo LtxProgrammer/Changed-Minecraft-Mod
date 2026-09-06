@@ -386,6 +386,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onEntityAttack(LivingAttackEvent event) {
+        if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (GrabEntityAbility.isEntityNoControl(event.getSource().getEntity())) {
             event.setCanceled(true);
         }
@@ -393,6 +398,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onEntityRightClick(PlayerInteractEvent.EntityInteract event) {
+        if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (GrabEntityAbility.isEntityNoControl(event.getEntity())) {
             event.setCanceled(true);
             return;
@@ -406,6 +416,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
+        if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (GrabEntityAbility.isEntityNoControl(event.getEntity())) {
             event.setCanceled(true);
             return;
@@ -419,6 +434,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
+        if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (GrabEntityAbility.isEntityNoControl(event.getEntity())) {
             event.setCanceled(true);
             return;
@@ -437,6 +457,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (GrabEntityAbility.isEntityNoControl(event.getEntity())) {
             event.setCanceled(true);
             return;
