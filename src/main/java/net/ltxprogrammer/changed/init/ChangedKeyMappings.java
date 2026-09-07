@@ -14,19 +14,22 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Optional;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT})
 public class ChangedKeyMappings {
     protected static final String MAIN_CATEGORY = "key.changed.categories.main";
+
+    public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
+        event.register(OPEN_ABILITY_TREE);
+        event.register(SELECT_ABILITY);
+        event.register(USE_ABILITY);
+        event.register(USE_ABILITY_ALT);
+    }
 
     public static final KeyMapping SELECT_ABILITY = new KeyMapping("key.changed.variant_ability",
             KeyConflictContext.IN_GAME,
@@ -111,15 +114,7 @@ public class ChangedKeyMappings {
         }
     };
 
-    @SubscribeEvent
-    public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
-        event.register(SELECT_ABILITY);
-        event.register(USE_ABILITY);
-    }
-
-    @Mod.EventBusSubscriber({Dist.CLIENT})
     public static class KeyEventListener {
-        @SubscribeEvent
         public static void onKeyInput(InputEvent.Key event) {
             LocalPlayer local = Minecraft.getInstance().player;
             Options options = Minecraft.getInstance().options;
