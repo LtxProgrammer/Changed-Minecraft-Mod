@@ -24,6 +24,8 @@ public record NodePrice(int levels,
                         int experience,
                         int groupDiscountExperience,
                         List<ItemEntry> items, @Nullable NodePrice computedDiscountPrice) {
+    public static final NodePrice ZERO = new NodePrice(0, 0, 0, 0, List.of(), null);
+
     /// Save computation by computing the discount price once
     private static NodePrice precomputeDiscounted(int levels, int groupDiscountLevels, int experience, int groupDiscountExperience, List<ItemEntry> items) {
         if (groupDiscountLevels == 0 && groupDiscountExperience == 0 && items.stream().noneMatch(ItemEntry::groupDiscounted))
