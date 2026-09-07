@@ -1,11 +1,11 @@
 package net.ltxprogrammer.changed.network.packet;
 
+import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.NodePrice;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.inventory.AbilityTreeMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -17,12 +17,15 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
+import org.slf4j.Logger;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class AbilityTreeMenuPacket implements ChangedPacket {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     public AbilityTreeMenuPacket(Opcode opcode, Optional<ResourceLocation> treeName, Optional<ResourceLocation> nodeName, Optional<Integer> parameter) {
         this.opcode = opcode;
         this.treeName = treeName;
@@ -93,23 +96,33 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
 
                         return levelFuture.thenAccept(level -> {
                             NodePrice price;
+
+                            if (!tree.get().isParentNodeUnlocked(IAbstractChangedEntity.forPlayer(sender), nodeName.get())) {
+                                LOGGER.warn("Denied node purchase {} for {}: Parent node is not unlocked", nodeName.get(), sender);
+                                return;
+                            }
+
                             if (sender.getAbilities().instabuild) {
-                                if (!tree.get().isParentNodeUnlocked(IAbstractChangedEntity.forPlayer(sender), nodeName.get()))
-                                    return;
                                 price = NodePrice.ZERO;
                             } else {
-                                if (!tree.get().hasPrerequisites(IAbstractChangedEntity.forPlayer(sender), nodeName.get()))
-                                    return;
-                                if (!tree.get().canAfford(sender, variant, nodeName.get()))
-                                    return;
                                 price = tree.get().getEffectivePrice(variant, nodeName.get());
+                                if (!tree.get().hasPrerequisites(IAbstractChangedEntity.forPlayer(sender), nodeName.get())) {
+                                    LOGGER.warn("Denied node purchase {} for {}: Node is missing prerequisites", nodeName.get(), sender);
+                                    return;
+                                }
+                                if (!tree.get().canAfford(sender, variant, price)) {
+                                    LOGGER.warn("Denied node purchase {} for {}: Player cannot afford node price {}", nodeName.get(), sender, price);
+                                    return;
+                                }
                             }
 
                             if (tree.get().makePurchase(sender, variant, nodeName.get(), price.levels(), price.experience(), price.takeItems(sender.getInventory()))) {
                                 sender.connection.send(
                                         Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofTree(AbilityTreeInstance.getForPlayer(sender), tree.get().getTree()), NetworkDirection.PLAY_TO_CLIENT)
                                 );
+                                LOGGER.debug("Purchase {} successful for {}", nodeName.get(), sender);
                             } else {
+                                LOGGER.error("Purchase {} failed for {}", nodeName.get(), sender);
                                 return;
                             }
                         });

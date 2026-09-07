@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.ability.tree;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -216,6 +218,8 @@ public class AbilityTreeInstance {
     }
 
     public static class AccountedTree {
+        private static final Logger LOGGER = LogUtils.getLogger();
+
         private final Player player;
         private final AbilityTree tree;
         private final List<AccountedPurchase> purchasedNodes = new ArrayList<>();
@@ -242,7 +246,10 @@ public class AbilityTreeInstance {
         }
 
         public boolean canAfford(Player player, TransfurVariant<?> variant, ResourceLocation nodeName) {
-            var price = this.getEffectivePrice(variant, nodeName);
+            return canAfford(player, variant, this.getEffectivePrice(variant, nodeName));
+        }
+
+        public boolean canAfford(Player player, TransfurVariant<?> variant, NodePrice price) {
             return price.canAfford(player, pointStores.getOrDefault(variant, AbilityTreeInstance.PointStore.IMMUTABLE_ZERO));
         }
 
@@ -252,12 +259,17 @@ public class AbilityTreeInstance {
 
         /// Purchases the nodeName for the given price
         public boolean makePurchase(ServerPlayer player, TransfurVariant<?> variant, ResourceLocation nodeName, int levels, int experienceLevels, List<ItemStack> items) {
-            if (!tree.hasNode(nodeName))
+            if (!tree.hasNode(nodeName)) {
+                LOGGER.error("Tree is missing node {} during purchase", nodeName);
                 return false;
+            }
 
             if (purchasedNodes.stream().anyMatch(purchase -> {
                 return purchase.nodeName.equals(nodeName) && purchase.variant == variant;
-            })) return false;
+            })) {
+                LOGGER.error("Player already has {} purchased for their variant", nodeName);
+                return false;
+            }
 
             var pointStore = pointStores.computeIfAbsent(variant, PointStore::new);
 
@@ -366,10 +378,7 @@ public class AbilityTreeInstance {
             if (node == null)
                 return false;
 
-            if (!node.areRequirementsMet(this, entity.getLevel().isClientSide()))
-                return false;
-
-            return isParentNodeUnlocked(entity, nodeName);
+            return node.areRequirementsMet(this, entity.getLevel().isClientSide());
         }
 
         public Stream<NodeState> getNodeStates(TransfurVariant<?> forVariant) {
