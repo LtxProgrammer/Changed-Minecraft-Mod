@@ -59,6 +59,12 @@ public class FriendlyTransfurAbilityInstance extends AbstractAbilityInstance {
         var grabAbility = entity.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
         if (grabAbility != null && grabAbility.grabbedEntity instanceof Player grabbedPlayer) {
             if (consented) {
+                consented = false;
+                lastAskedEntity = null;
+                this.getController().forceCooldown(20 * 60 * 5);
+                if (this.entity.getLevel().isClientSide())
+                    return;
+
                 grabAbility.releaseEntity(false);
                 ProcessTransfur.transfur(grabbedPlayer, ImmediateTransfurDecision.safe(
                         entity.getSelfVariant(),
@@ -70,10 +76,6 @@ public class FriendlyTransfurAbilityInstance extends AbstractAbilityInstance {
                 AbilityTreeInstance.offerPointEvent(entity, ChangedAbilityPointEvents.ON_TRANSFUR_OTHER.get(), new OnTransfurOther.Criteria(grabbedPlayer));
 
                 applyDebuffs(entity);
-                this.getController().forceCooldown(20 * 60 * 5);
-
-                consented = false;
-                lastAskedEntity = null;
             } else {
                 lastAskedEntity = grabbedPlayer;
                 if (this.entity.getLevel().isClientSide())
@@ -97,6 +99,15 @@ public class FriendlyTransfurAbilityInstance extends AbstractAbilityInstance {
     }
 
     @Override
+    public void acceptPayload(CompoundTag tag) {
+        super.acceptPayload(tag);
+
+        if (this.entity.getLevel().isClientSide()) {
+            consented = true;
+        }
+    }
+
+    @Override
     public void acceptPayloadFromNonHost(CompoundTag tag, Player sender) {
         super.acceptPayloadFromNonHost(tag, sender);
 
@@ -107,6 +118,8 @@ public class FriendlyTransfurAbilityInstance extends AbstractAbilityInstance {
         sender.displayClientMessage(Component.translatable("ability.changed.friendly_transfur.accept", entity.getEntity().getName()), false);
         entity.displayClientMessage(Component.translatable("ability.changed.friendly_transfur.accepted", sender.getName())
                 .withStyle(Style.EMPTY.withItalic(true)), false);
+
+        this.sendPayload(tag); // Tell ability owner
     }
 
     public void provideConsent(Player grabbedEntity) {
