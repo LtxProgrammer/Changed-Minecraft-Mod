@@ -24,6 +24,7 @@ import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.world.LatexCoverGetter;
 import net.ltxprogrammer.changed.world.LatexCoverHitResult;
@@ -75,7 +76,7 @@ public class EventHandlerClient {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onRenderEntityPre(RenderLivingEvent.Pre<?, ?> event) {
-        if (!this.shouldEntityBeRendered(event.getEntity()))
+        if (!this.shouldEntityBeRendered(EntityUtil.maybeGetUnderlying(event.getEntity())))
             event.setCanceled(true);
     }
 
