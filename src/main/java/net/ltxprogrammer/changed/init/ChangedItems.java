@@ -133,6 +133,10 @@ public class ChangedItems {
     public static final RegistryObject<AbstractArmorStandItem> LEGLESS_ARMOR_STAND = register("legless_armor_stand", () -> new AbstractArmorStandItem((new Item.Properties()).stacksTo(16),
             ChangedEntities.LEGLESS_ARMOR_STAND));
 
+    public static final RegistryObject<BannerPatternItem> DARK_LATEX_MASK_BANNER_PATTERN = register("dark_latex_mask_banner_pattern", () -> new BannerPatternItem(ChangedTags.BannerPatterns.PATTERN_ITEM_DARK_LATEX_MASK, (new Item.Properties()).stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<BannerPatternItem> LATEX_BANNER_PATTERN = register("latex_banner_pattern", () -> new BannerPatternItem(ChangedTags.BannerPatterns.PATTERN_ITEM_LATEX, (new Item.Properties()).stacksTo(1)));
+    public static final RegistryObject<BannerPatternItem> CRYSTAL_BANNER_PATTERN = register("crystal_banner_pattern", () -> new BannerPatternItem(ChangedTags.BannerPatterns.PATTERN_ITEM_CRYSTAL, (new Item.Properties()).stacksTo(1)));
+
     public static final RegistryObject<AbdomenArmor> LEATHER_UPPER_ABDOMEN_ARMOR = register("leather_upper_abdomen_armor",
             () -> new DyeableAbdomenArmor(ArmorMaterials.LEATHER, ArmorItem.Type.LEGGINGS));
     public static final RegistryObject<AbdomenArmor> LEATHER_LOWER_ABDOMEN_ARMOR = register("leather_lower_abdomen_armor",

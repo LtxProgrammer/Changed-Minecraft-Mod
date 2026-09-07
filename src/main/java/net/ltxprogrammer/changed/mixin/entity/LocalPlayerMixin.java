@@ -229,6 +229,6 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
     @Inject(method = "rideTick", at = @At("TAIL"))
     public void changed$seatTick(CallbackInfo ci) {
         if (vehicle instanceof SeatEntity seatEntity)
-            this.handsBusy |= seatEntity.shouldSeatedBeInvisible();
+            this.handsBusy |= !seatEntity.canRiderInteractWithWorld();
     }
 }

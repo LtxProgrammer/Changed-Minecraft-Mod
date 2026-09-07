@@ -51,6 +51,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -385,6 +386,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onEntityAttack(LivingAttackEvent event) {
+        if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (GrabEntityAbility.isEntityNoControl(event.getSource().getEntity())) {
             event.setCanceled(true);
         }
@@ -392,6 +398,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onEntityRightClick(PlayerInteractEvent.EntityInteract event) {
+        if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (GrabEntityAbility.isEntityNoControl(event.getEntity())) {
             event.setCanceled(true);
             return;
@@ -405,6 +416,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
+        if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (GrabEntityAbility.isEntityNoControl(event.getEntity())) {
             event.setCanceled(true);
             return;
@@ -418,6 +434,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
+        if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (GrabEntityAbility.isEntityNoControl(event.getEntity())) {
             event.setCanceled(true);
             return;
@@ -436,6 +457,11 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (GrabEntityAbility.isEntityNoControl(event.getEntity())) {
             event.setCanceled(true);
             return;
@@ -912,6 +938,23 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onLivingBreathe(LivingBreatheEvent event) {
+        var grabber = GrabEntityAbility.getGrabber(event.getEntity());
+        var grab = grabber != null ? grabber.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()) : null;
+        if (grab != null && grab.grabbedEntity != null && grab.suited) { // This entity is grabbed
+            boolean oxygenSymbiosis = grabber.hasFeature(ChangedVariantFeatures.OXYGEN_SYMBIOSIS.get());
+
+            if (!oxygenSymbiosis)
+                return; // Don't modify breathing
+
+            boolean inWater = event.getEntity().isEyeInFluidType(Fluids.WATER.getFluidType());
+            boolean breatheAir = !grabber.hasFeature(ChangedVariantFeatures.BREATHE_DENY_AIR.get());
+            boolean breatheWater = grabber.hasFeature(ChangedVariantFeatures.BREATHE_ACCEPT_WATER.get()) || (grabber.getEntity() instanceof Player host && host.getAbilities().invulnerable);
+
+            event.setCanBreathe(event.canBreathe() || (inWater ? breatheWater : breatheAir));
+            event.setCanRefillAir(event.canRefillAir() || (inWater ? breatheWater : breatheAir));
+            return;
+        }
+
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(event.getEntity()), variant -> {
             if (!variant.shouldApplyAbilities())
                 return;
@@ -921,10 +964,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     protected void tickBreathing(LivingBreatheEvent event) {
-        if (!shouldApplyAbilities())
-            return;
-
         boolean oxygenSymbiosis = false;
+
         if (hasFeature(ChangedVariantFeatures.OXYGEN_SYMBIOSIS.get())) {
             var grab = getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
             if (grab != null && grab.grabbedEntity != null && grab.suited) {
@@ -932,11 +973,14 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             }
         }
 
+        boolean breatheAir = !hasFeature(ChangedVariantFeatures.BREATHE_DENY_AIR.get());
+        boolean breatheWater = hasFeature(ChangedVariantFeatures.BREATHE_ACCEPT_WATER.get());
+
         if (getBreatheMode() == TransfurVariant.BreatheMode.NOT_REQUIRED) {
             event.setCanBreathe(true);
             event.setCanRefillAir(false);
         } else if (host.isEyeInFluidType(Fluids.WATER.getFluidType())) {
-            if (getBreatheMode().canBreatheWater()) {
+            if (breatheWater) {
                 event.setCanBreathe(true);
                 event.setCanRefillAir(true);
 
@@ -947,8 +991,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                     event.setRefillAirAmount((int)(event.getRefillAirAmount() * intakeRate));
             }
         } else {
-            if (!getBreatheMode().canBreatheAir()) {
-                event.setCanBreathe(oxygenSymbiosis);
+            if (!breatheAir) {
+                event.setCanBreathe(oxygenSymbiosis || host.getAbilities().invulnerable);
                 event.setCanRefillAir(oxygenSymbiosis);
             }
         }

@@ -233,6 +233,10 @@ public class ChangedTabs {
                         output.accept(ChangedItems.ROOMBA.get());
                         output.accept(ChangedItems.EXOSKELETON.get());
 
+                        output.accept(ChangedItems.CRYSTAL_BANNER_PATTERN.get());
+                        output.accept(ChangedItems.DARK_LATEX_MASK_BANNER_PATTERN.get());
+                        output.accept(ChangedItems.LATEX_BANNER_PATTERN.get());
+
                         ChangedItems.DARK_LATEX_MASK.get().fillItemList(CHANGED_ONLY_TRANSFURS, params, output);
                         ChangedItems.LATEX_SYRINGE.get().fillItemList(CHANGED_ONLY_TRANSFURS, params, output);
                         ChangedItems.LATEX_FLASK.get().fillItemList(CHANGED_ONLY_TRANSFURS, params, output);
