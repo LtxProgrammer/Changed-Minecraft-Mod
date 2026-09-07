@@ -556,8 +556,11 @@
   "gamerule.changed:npcWantFusePlayer": "A latex NPC-k összeolvadni szeretnének a játékossal",
   "gamerule.changed:doPale": "A pale engedélyezve van-e",
 
-  "key.changed.variant_ability": "Aktív változat képessége",
-  "key.changed.use_ability": "Változat képességének használata",
+  "key.changed.categories.main": "Changed",
+  "key.changed.variant_ability": "Képességek kiválasztása",
+  "key.changed.variant_ability_tree": "Képességfa megnyítása",
+  "key.changed.use_ability": "1. képességhely kiválasztása/használata",
+  "key.changed.use_ability_alt": "2. képességhely kiválasztása/használata",
   "key.changed.extra_jump": "Extra ugrás",
 
   "container.changed.extra_hands": "Extra kezek menüje",
