@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.init.ChangedFluids;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DarkLatexFluidBlock extends AbstractLatexFluidBlock {
     public DarkLatexFluidBlock() {
-        super(ChangedFluids.DARK_LATEX, BlockBehaviour.Properties.of().replaceable().strength(100f));
+        super(ChangedFluids.DARK_LATEX, BlockBehaviour.Properties.of().mapColor(DyeColor.BLACK).replaceable().strength(100f));
     }
 
     @Override

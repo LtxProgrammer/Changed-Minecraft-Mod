@@ -32,6 +32,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
@@ -42,6 +43,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -653,6 +655,11 @@ public abstract class SpreadingLatexType extends LatexType {
         protected void spawnFluidParticle(Level level, double minX, double maxX, double minZ, double maxZ, double y) {
             level.addParticle(ChangedParticles.drippingLatex(Color3.DARK), Mth.lerp(level.random.nextDouble(), minX, maxX), y, Mth.lerp(level.random.nextDouble(), minZ, maxZ), 0.0D, 0.0D, 0.0D);
         }
+
+        @Override
+        public MapColor getMapColor(LatexCoverState state, LatexCoverGetter level, BlockPos pos) {
+            return state.getValue(DOWN) || state.getValue(UP) ? DyeColor.BLACK.getMapColor() : super.getMapColor(state, level, pos);
+        }
     }
 
     public static class WhiteLatex extends SpreadingLatexType {
@@ -786,6 +793,11 @@ public abstract class SpreadingLatexType extends LatexType {
         @Override
         protected void spawnFluidParticle(Level level, double minX, double maxX, double minZ, double maxZ, double y) {
             level.addParticle(ChangedParticles.drippingLatex(Color3.WHITE), Mth.lerp(level.random.nextDouble(), minX, maxX), y, Mth.lerp(level.random.nextDouble(), minZ, maxZ), 0.0D, 0.0D, 0.0D);
+        }
+
+        @Override
+        public MapColor getMapColor(LatexCoverState state, LatexCoverGetter level, BlockPos pos) {
+            return state.getValue(DOWN) || state.getValue(UP) ? DyeColor.WHITE.getMapColor() : super.getMapColor(state, level, pos);
         }
     }
 

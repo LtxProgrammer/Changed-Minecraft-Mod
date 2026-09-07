@@ -39,6 +39,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.StateHolder;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -111,6 +112,10 @@ public abstract class LatexType {
     public void onStruckByLighting(LatexCoverState state, Level level, BlockPos strikePosition, LightningBolt lightningBolt) {}
 
     public void animateTick(LatexCoverState state, Level level, BlockPos pos, RandomSource random) {}
+
+    public MapColor getMapColor(LatexCoverState state, LatexCoverGetter level, BlockPos pos) {
+        return MapColor.NONE;
+    }
 
     public abstract ResourceLocation getLootTable();
 
