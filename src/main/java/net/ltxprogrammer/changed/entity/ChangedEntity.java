@@ -1305,8 +1305,10 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         this.setTame(otherEntity.isTame());
         this.setOwnerUUID(otherEntity.getOwnerUUID());
         this.setFollowOwner(otherEntity.isFollowingOwner());
-        this.setCustomName(otherEntity.getCustomName());
-        this.setUnderlyingPlayer(otherEntity.getUnderlyingPlayer());
+
+        if (!entity.isPlayer())
+            this.setCustomName(otherEntity.getCustomName());
+
         if (otherEntity.inventory != null) {
             this.inventory = this.createInventory();
 
