@@ -83,6 +83,24 @@ public class AbilityTrees extends SimplePreparableReloadListener<Pair<Map<Resour
         return treesRemote;
     }
 
+    public @Nullable AbilityTree getNamedTree(ResourceLocation id) {
+        for (AbilityTree tree : trees) {
+            if (id.equals(tree.getTreeLocation()))
+                return tree;
+        }
+
+        return null;
+    }
+
+    public @Nullable AbilityTree getNamedRemoteTree(ResourceLocation id) {
+        for (AbilityTree tree : treesRemote) {
+            if (id.equals(tree.getTreeLocation()))
+                return tree;
+        }
+
+        return null;
+    }
+
     public static class SyncPacket implements ChangedPacket {
         private final Map<ResourceLocation, AbilityNode> nodes;
         private final Set<AbilityTree> trees;

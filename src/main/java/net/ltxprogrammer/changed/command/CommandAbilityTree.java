@@ -26,17 +26,18 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber
 public class CommandAbilityTree {
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_TREES = SuggestionProviders.register(Changed.modResource("trees"), (p_121667_, p_121668_) -> {
-        return SharedSuggestionProvider.suggestResource(AbilityTrees.INSTANCE.getTrees().stream().map(AbilityTree::getTreeLocation), p_121668_);
+        return SharedSuggestionProvider.suggestResource(AbilityTrees.INSTANCE.getRemoteTrees().stream().map(AbilityTree::getTreeLocation), p_121668_);
     });
 
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_NODES = SuggestionProviders.register(Changed.modResource("nodes"), (context, p_121668_) -> {
         var treeId = context.getArgument("tree", ResourceLocation.class);
-        return SharedSuggestionProvider.suggestResource(AbilityTrees.INSTANCE.getTrees().stream().filter(abilityTree -> abilityTree.getTreeLocation().equals(treeId))
-                .findFirst().map(AbilityTree::getTreeNodes).stream().flatMap(stream -> stream.map(Pair::getFirst)), p_121668_);
+        var tree = AbilityTrees.INSTANCE.getNamedRemoteTree(treeId);
+        return SharedSuggestionProvider.suggestResource(tree == null ? Stream.empty() : tree.getTreeNodes().map(Pair::getFirst), p_121668_);
     });
 
     private static final SimpleCommandExceptionType NOT_TRANSFURRED = new SimpleCommandExceptionType(Component.translatable("command.changed.error.not_transfurred"));

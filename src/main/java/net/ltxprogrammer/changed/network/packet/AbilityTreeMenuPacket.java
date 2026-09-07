@@ -92,12 +92,19 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
                             return CompletableFuture.failedFuture(new IllegalArgumentException("Cannot find TreeName"));
 
                         return levelFuture.thenAccept(level -> {
-                            if (!tree.get().hasPrerequisites(IAbstractChangedEntity.forPlayer(sender), nodeName.get()))
-                                return;
-                            if (!tree.get().canAfford(sender, variant, nodeName.get()))
-                                return;
+                            NodePrice price;
+                            if (sender.getAbilities().instabuild) {
+                                if (!tree.get().isParentNodeUnlocked(IAbstractChangedEntity.forPlayer(sender), nodeName.get()))
+                                    return;
+                                price = NodePrice.ZERO;
+                            } else {
+                                if (!tree.get().hasPrerequisites(IAbstractChangedEntity.forPlayer(sender), nodeName.get()))
+                                    return;
+                                if (!tree.get().canAfford(sender, variant, nodeName.get()))
+                                    return;
+                                price = tree.get().getEffectivePrice(variant, nodeName.get());
+                            }
 
-                            NodePrice price = tree.get().getEffectivePrice(variant, nodeName.get());
                             if (tree.get().makePurchase(sender, variant, nodeName.get(), price.levels(), price.experience(), price.takeItems(sender.getInventory()))) {
                                 sender.connection.send(
                                         Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofTree(AbilityTreeInstance.getForPlayer(sender), tree.get().getTree()), NetworkDirection.PLAY_TO_CLIENT)
