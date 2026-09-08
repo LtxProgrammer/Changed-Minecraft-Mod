@@ -824,6 +824,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                 willSurviveTransfur = true;
             }
 
+            EntityUtil.refreshDimensionsAndPushFromWall(host);
             checkBreakItems(host);
             mapAttributes(host, previousAttributes, TransfurVariantInstance::noOp,
                     newAttributes, TransfurVariantInstance::correctScaling, getMorphProgression());
@@ -1086,7 +1087,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
         this.tickTransfurProgress();
 
-        host.refreshDimensions();
         if (host.onGround())
             jumpCharges = parent.extraJumpCharges;
 
@@ -1187,7 +1187,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             player.onUpdateAbilities();
         }
         player.setNoGravity(false);
-        player.refreshDimensions();
+        EntityUtil.refreshDimensionsAndPushFromWall(player);
     }
 
     public LatexType getLatexType() {

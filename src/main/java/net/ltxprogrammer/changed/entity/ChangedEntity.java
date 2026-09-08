@@ -1033,16 +1033,16 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
             }
         }
 
-        if (maybeGetUnderlying().tickCount > 5)
+        if (maybeGetUnderlying().tickCount >= 2)
             this.renderScaleAddon = Mth.lerp(0.1f, this.renderScaleAddon, (float) (scaleAttr.getValue() - scaleAttr.getBaseValue()));
         else {
             this.renderScaleAddon = (float) (scaleAttr.getValue() - scaleAttr.getBaseValue());
             this.renderScaleAddonO = this.renderScaleAddon;
-            maybeGetUnderlying().refreshDimensions();
+            EntityUtil.refreshDimensionsAndPushFromWall(maybeGetUnderlying());
         }
 
         if (this.renderScaleAddon != this.renderScaleAddonO) {
-            maybeGetUnderlying().refreshDimensions();
+            EntityUtil.refreshDimensionsAndPushFromWall(maybeGetUnderlying());
         }
     }
 
