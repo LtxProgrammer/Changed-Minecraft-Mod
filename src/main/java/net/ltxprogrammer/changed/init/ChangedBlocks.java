@@ -240,7 +240,7 @@ public class ChangedBlocks {
 
     public static final RegistryObject<DarkLatexBlock> DARK_LATEX_BLOCK = register("dark_latex_block", () -> new DarkLatexBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.BLACK).sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F)));
     public static final RegistryObject<LatexWallSplotch> DARK_LATEX_WALL_SPLOTCH = registerNoItem("dark_latex_wall_splotch", () -> new LatexWallSplotch(ChangedLatexTypes.DARK_LATEX, List.of()));
-    public static final RegistryObject<AbstractLatexIceBlock> DARK_LATEX_ICE = register("dark_latex_ice", () -> new AbstractLatexIceBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.LIGHT_GRAY).friction(0.98F).sound(SoundType.GLASS).strength(1.5F, 1.0F)));
+    public static final RegistryObject<DarkLatexIceBlock> DARK_LATEX_ICE = register("dark_latex_ice", () -> new DarkLatexIceBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.LIGHT_GRAY).friction(0.98F).sound(SoundType.GLASS).strength(1.5F, 1.0F)));
     public static final RegistryObject<WolfCrystalBlock> WOLF_CRYSTAL_BLOCK = register("wolf_crystal_block", () -> new WolfCrystalBlock(
             BlockBehaviour.Properties.of().mapColor(DyeColor.RED).friction(0.98F).sound(SoundType.AMETHYST).strength(2.0F, 2.0F)));
     public static final RegistryObject<WhiteLatexBlock> WHITE_LATEX_BLOCK = register("white_latex_block", () -> new WhiteLatexBlock(BlockBehaviour.Properties.copy(DARK_LATEX_BLOCK.get()).mapColor(DyeColor.WHITE).noOcclusion()

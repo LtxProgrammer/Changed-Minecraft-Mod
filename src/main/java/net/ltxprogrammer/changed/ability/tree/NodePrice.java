@@ -147,7 +147,12 @@ public record NodePrice(int levels,
                 this.hasUniqueItems(player.getInventory());
     }
 
-    public record ItemEntry(RegistryElementPredicate<Item> item, boolean groupDiscounted) {}
+    public record ItemEntry(RegistryElementPredicate<Item> item, boolean groupDiscounted) {
+        @Override
+        public String toString() {
+            return item.toString();
+        }
+    }
 
     public static final Codec<RegistryElementPredicate<Item>> ITEM_PREDICATE_CODEC = RegistryElementPredicate.codecElementOrTag(ForgeRegistries.ITEMS);
 
@@ -175,4 +180,13 @@ public record NodePrice(int levels,
             either -> either.map(levels -> new NodePrice(levels, 0, 0, 0, List.of()), Function.identity()),
             Either::right
     );
+
+    @Override
+    public String toString() {
+        return "NodePrice{" +
+                "levels=" + levels +
+                ", experience=" + experience +
+                ", items=" + items +
+                '}';
+    }
 }

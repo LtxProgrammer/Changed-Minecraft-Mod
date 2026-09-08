@@ -146,6 +146,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         this.currentEscapeKey = null;
         this.escapeKeyRandom = null;
         this.lastEscapeKey = null;
+        this.getController().resetHoldTicks();
 
         this.escapeKeys.reset(false);
 

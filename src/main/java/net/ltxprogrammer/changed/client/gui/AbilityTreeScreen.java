@@ -290,15 +290,7 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
         }
 
         protected boolean canPurchase() {
-            if (entity.isCreative()) {
-                return accountedTree.isParentNodeUnlocked(entity, nodeName);
-            }
-
-            if (!accountedTree.hasPrerequisites(AbilityTreeScreen.this.entity, nodeName))
-                return false;
-            if (!accountedTree.canAfford(UniversalDist.getLocalPlayer(), AbilityTreeScreen.this.entity.getSelfVariant(), nodeName))
-                return false;
-            return true;
+            return renderState == NodeRenderState.CAN_ACQUIRE;
         }
 
         @Override
