@@ -12,6 +12,7 @@ import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -118,12 +119,15 @@ public class TransfurredPlayerRenderer extends PlayerRenderer implements StackAw
     protected PartPose getArmPose(AbstractClientPlayer player, HumanoidArm hand) {
         PlayerModel<AbstractClientPlayer> playermodel = this.getModel();
         this.setModelProperties(player);
+        playermodel.riding = player.isPassenger() && (player.getVehicle() != null && player.getVehicle().shouldRiderSit());
         playermodel.attackTime = 0.0F;
         playermodel.crouching = false;
         playermodel.swimAmount = 0.0F;
         playermodel.setupAnim(player, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
 
-        return (hand == HumanoidArm.LEFT ? playermodel.leftArm : playermodel.rightArm).storePose();
+        ModelPart arm = (hand == HumanoidArm.LEFT ? playermodel.leftArm : playermodel.rightArm);
+        arm.xRot = 0.0F;
+        return arm.storePose();
     }
 
     @Override

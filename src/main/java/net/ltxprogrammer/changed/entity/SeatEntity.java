@@ -34,6 +34,7 @@ public class SeatEntity extends Entity {
     public static final EntityDataAccessor<Boolean> SEATED_INVISIBLE = SynchedEntityData.defineId(SeatEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> SEATED_CAN_DISMOUNT = SynchedEntityData.defineId(SeatEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> SEATED_ANIMATE = SynchedEntityData.defineId(SeatEntity.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> SEATED_CAN_INTERACT = SynchedEntityData.defineId(SeatEntity.class, EntityDataSerializers.BOOLEAN);
 
     public SeatEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -50,7 +51,7 @@ public class SeatEntity extends Entity {
         }
     }
 
-    private static SeatEntity actuallyCreateFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible, boolean seatedCanDismount, boolean seatedAnimate) {
+    private static SeatEntity actuallyCreateFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible, boolean seatedCanDismount, boolean seatedAnimate, boolean seatedCanInteract) {
         SeatEntity seat = ChangedEntities.SEAT_ENTITY.get().create(level);
         if (seat == null)
             return null;
@@ -60,6 +61,7 @@ public class SeatEntity extends Entity {
         seat.entityData.set(SEATED_INVISIBLE, seatedInvisible);
         seat.entityData.set(SEATED_CAN_DISMOUNT, seatedCanDismount);
         seat.entityData.set(SEATED_ANIMATE, seatedAnimate);
+        seat.entityData.set(SEATED_CAN_INTERACT, seatedCanInteract);
         if (state.getBlock() instanceof SeatableBlock seatableBlock) {
             var offset = seatableBlock.getSitOffset(level, state, pos);
             seat.setPos(pos.getX() + 0.5 + offset.x, pos.getY() + 0.5, pos.getZ() + 0.5 + offset.z);
@@ -76,6 +78,10 @@ public class SeatEntity extends Entity {
     }
 
     public static SeatEntity createFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible, boolean seatedCanDismount, boolean seatedAnimate) {
+        return createFor(level, state, pos, seatedInvisible, seatedCanDismount, seatedAnimate, !seatedInvisible);
+    }
+
+    public static SeatEntity createFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible, boolean seatedCanDismount, boolean seatedAnimate, boolean seatedCanInteract) {
         if (level.isClientSide) {
             var seatEntity = level.getEntitiesOfClass(SeatEntity.class, new AABB(pos)).stream().filter(entity -> {
                 return entity.getAttachedBlockPos().equals(pos) &&
@@ -85,14 +91,20 @@ public class SeatEntity extends Entity {
 
             return seatEntity.orElseGet(() -> {
                 Changed.PACKET_HANDLER.sendToServer(new SeatEntityInfoPacket(pos)); // Request the server send information for the seat entity
-                return actuallyCreateFor(level, state, pos, seatedInvisible, seatedCanDismount, seatedAnimate);
+                return actuallyCreateFor(level, state, pos, seatedInvisible, seatedCanDismount, seatedAnimate, seatedCanInteract);
             });
         }
 
-        SeatEntity seat = actuallyCreateFor(level, state, pos, seatedInvisible, seatedCanDismount, seatedAnimate);
+        SeatEntity seat = actuallyCreateFor(level, state, pos, seatedInvisible, seatedCanDismount, seatedAnimate, seatedCanInteract);
         if (seat != null)
             level.addFreshEntity(seat);
         return seat;
+    }
+
+    public static boolean isSeatedEntityNoInteract(Entity entity) {
+        if (entity.getVehicle() instanceof SeatEntity seatEntity)
+            return !seatEntity.canRiderInteractWithWorld();
+        return false;
     }
 
     public Optional<BlockState> getAttachedBlockState() {
@@ -204,6 +216,10 @@ public class SeatEntity extends Entity {
         return this.entityData.get(SEATED_ANIMATE);
     }
 
+    public boolean canRiderInteractWithWorld() {
+        return this.entityData.get(SEATED_CAN_INTERACT);
+    }
+
     @Override
     protected void defineSynchedData() {
         this.entityData.define(BLOCK_STATE, Blocks.AIR.defaultBlockState());
@@ -211,6 +227,7 @@ public class SeatEntity extends Entity {
         this.entityData.define(SEATED_INVISIBLE, false);
         this.entityData.define(SEATED_CAN_DISMOUNT, true);
         this.entityData.define(SEATED_ANIMATE, true);
+        this.entityData.define(SEATED_CAN_INTERACT, true);
     }
 
     @Override
@@ -225,6 +242,8 @@ public class SeatEntity extends Entity {
             this.entityData.set(SEATED_CAN_DISMOUNT, tag.getBoolean("seatedDismount"));
         if (tag.contains("seatedAnimate"))
             this.entityData.set(SEATED_ANIMATE, tag.getBoolean("seatedAnimate"));
+        if (tag.contains("seatedInteract"))
+            this.entityData.set(SEATED_CAN_INTERACT, tag.getBoolean("seatedInteract"));
     }
 
     @Override
@@ -236,6 +255,7 @@ public class SeatEntity extends Entity {
         tag.putBoolean("seatedInvisible", this.shouldSeatedBeInvisible());
         tag.putBoolean("seatedDismount", this.canSeatedDismount());
         tag.putBoolean("seatedAnimate", this.shouldRiderSit());
+        tag.putBoolean("seatedInteract", this.canRiderInteractWithWorld());
     }
 
     @Override

@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.ability.tree;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -129,7 +131,7 @@ public class AbilityTreeInstance {
         }
 
         public void setPoints(int points) {
-            this.points = points;
+            this.points = Math.max(points, 0);
         }
 
         public void addPoints(int points) {
@@ -146,7 +148,7 @@ public class AbilityTreeInstance {
         }
 
         public void setLevels(int levels) {
-            this.levels = levels;
+            this.levels = Math.max(levels, 0);
         }
 
         public void addLevels(int levels) {
@@ -216,6 +218,8 @@ public class AbilityTreeInstance {
     }
 
     public static class AccountedTree {
+        private static final Logger LOGGER = LogUtils.getLogger();
+
         private final Player player;
         private final AbilityTree tree;
         private final List<AccountedPurchase> purchasedNodes = new ArrayList<>();
@@ -233,6 +237,10 @@ public class AbilityTreeInstance {
             this.pointStores.putAll(pointStores);
         }
 
+        public PointStore getMutablePointStore(TransfurVariant<?> variant) {
+            return pointStores.computeIfAbsent(variant, PointStore::new);
+        }
+
         public Player getPlayer() {
             return player;
         }
@@ -242,7 +250,10 @@ public class AbilityTreeInstance {
         }
 
         public boolean canAfford(Player player, TransfurVariant<?> variant, ResourceLocation nodeName) {
-            var price = this.getEffectivePrice(variant, nodeName);
+            return canAfford(player, variant, this.getEffectivePrice(variant, nodeName));
+        }
+
+        public boolean canAfford(Player player, TransfurVariant<?> variant, NodePrice price) {
             return price.canAfford(player, pointStores.getOrDefault(variant, AbilityTreeInstance.PointStore.IMMUTABLE_ZERO));
         }
 
@@ -250,21 +261,27 @@ public class AbilityTreeInstance {
             this.getEffectivePrice(variant, nodeName).getLines(lineConsumer, player, pointStores.getOrDefault(variant, AbilityTreeInstance.PointStore.IMMUTABLE_ZERO), overrideColor);
         }
 
-        /// Purchases the nodeName for the given price
-        public boolean makePurchase(ServerPlayer player, TransfurVariant<?> variant, ResourceLocation nodeName, int levels, int experienceLevels, List<ItemStack> items) {
-            if (!tree.hasNode(nodeName))
+        /// Purchases the nodeName for the given price. Does not check if the player can afford the price.
+        public boolean makePurchase(ServerPlayer player, TransfurVariant<?> variant, ResourceLocation nodeName, NodePrice price) {
+            if (!tree.hasNode(nodeName)) {
+                LOGGER.error("Tree is missing node {} during purchase", nodeName);
                 return false;
+            }
 
             if (purchasedNodes.stream().anyMatch(purchase -> {
                 return purchase.nodeName.equals(nodeName) && purchase.variant == variant;
-            })) return false;
+            })) {
+                LOGGER.error("Player already has {} purchased for their variant", nodeName);
+                return false;
+            }
 
             var pointStore = pointStores.computeIfAbsent(variant, PointStore::new);
 
-            pointStore.removeLevels(levels);
-            if (experienceLevels > 0)
-                player.setExperienceLevels(player.experienceLevel - experienceLevels);
-            purchasedNodes.add(new AccountedPurchase(nodeName, variant, levels, experienceLevels, items));
+            pointStore.removeLevels(price.levels());
+            if (price.experience() > 0)
+                player.setExperienceLevels(player.experienceLevel - price.experience());
+            var items = price.takeItems(player.getInventory());
+            purchasedNodes.add(new AccountedPurchase(nodeName, variant, price.levels(), price.experience(), items));
             return true;
         }
 
@@ -294,6 +311,9 @@ public class AbilityTreeInstance {
             toRemove.forEach(purchase -> {
                 refundPurchase(player, purchase);
             });
+
+            if (!toRemove.isEmpty())
+                player.inventoryMenu.broadcastChanges();
 
             return toRemove.size();
         }
@@ -366,10 +386,7 @@ public class AbilityTreeInstance {
             if (node == null)
                 return false;
 
-            if (!node.areRequirementsMet(this, entity.getLevel().isClientSide()))
-                return false;
-
-            return isParentNodeUnlocked(entity, nodeName);
+            return node.areRequirementsMet(this, entity.getLevel().isClientSide());
         }
 
         public Stream<NodeState> getNodeStates(TransfurVariant<?> forVariant) {
@@ -445,6 +462,9 @@ public class AbilityTreeInstance {
             invalid.forEach(purchase -> {
                 refundPurchase(player, purchase);
             });
+
+            if (!invalid.isEmpty())
+                player.inventoryMenu.broadcastChanges();
         }
 
         public void gatherNodeEffects(TransfurVariantInstance<?> variantInstance, Consumer<NodeEffect> sink) {

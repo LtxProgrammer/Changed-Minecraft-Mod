@@ -112,7 +112,7 @@ public abstract class AbstractLatexBlock extends Block implements LatexCoveringS
             return false;
 
         var event = new SpreadingLatexType.CoveringBlockEvent(spreadingLatexType, old, old,
-                spreadingLatexType.spreadState(level, relative, spreadingLatexType.sourceCoverState()), relative, level);
+                spreadingLatexType.spreadState(level, relative, spreadingLatexType.sourceCoverState(), 1), relative, level);
         spreadingLatexType.defaultCoverBehavior(event);
         if (Changed.postModEvent(event))
             return false;

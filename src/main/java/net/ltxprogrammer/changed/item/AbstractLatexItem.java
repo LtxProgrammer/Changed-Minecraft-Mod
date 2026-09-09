@@ -68,7 +68,7 @@ public class AbstractLatexItem extends ItemNameBlockItem {
         final var spreadingLatexType = type.get();
 
         var event = new SpreadingLatexType.CoveringBlockEvent(spreadingLatexType, originalState, originalState,
-                spreadingLatexType.spreadState(context.getLevel(), positionToCover, spreadingLatexType.sourceCoverState()), positionToCover, context.getLevel());
+                spreadingLatexType.spreadState(context.getLevel(), positionToCover, spreadingLatexType.sourceCoverState(), 1), positionToCover, context.getLevel());
         spreadingLatexType.defaultCoverBehavior(event);
         if (Changed.postModEvent(event))
             return InteractionResult.FAIL;

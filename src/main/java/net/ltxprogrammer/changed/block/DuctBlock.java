@@ -359,7 +359,6 @@ public class DuctBlock extends ChangedBlock implements SimpleWaterloggedBlock {
             @Override
             public void aiStep(Player player, InputWrapper input, LogicalSide side) {
                 player.setDeltaMovement(0, 0, 0);
-                player.refreshDimensions();
                 player.noPhysics = true;
 
                 if (coolDown > 0) {
@@ -414,6 +413,18 @@ public class DuctBlock extends ChangedBlock implements SimpleWaterloggedBlock {
             @Override
             public EntityDimensions getDimensions(LivingEntity entity, Pose pose, EntityDimensions currentDimensions) {
                 return EntityDimensions.scalable(0.5f, 0.5f);
+            }
+
+            @Override
+            public void onAdd(Player player) {
+                super.onAdd(player);
+                player.refreshDimensions();
+            }
+
+            @Override
+            public void onRemove(Player player) {
+                super.onRemove(player);
+                EntityUtil.refreshDimensionsAndPushFromWall(player);
             }
 
             @Override

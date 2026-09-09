@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.process.TransfurEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -28,25 +29,35 @@ public class PinkShorts extends ShortsItem implements LatexFusingItem {
     }
 
     @Override
-    public TransfurVariant<?> getFusionVariant(TransfurVariant<?> currentVariant, LivingEntity livingEntity, ItemStack itemStack) {
-        if (livingEntity.level().isClientSide)
-            return currentVariant;
+    public boolean handleLatexAssimilation(TransfurEvents.AssimilationDecisionEvent event, ItemStack itemStack) {
+        var currentVariant = event.getTransfurVariant();
 
-        if (currentVariant.is(ChangedTransfurVariants.LATEX_DEER))
-            return ChangedTransfurVariants.LATEX_PINK_DEER.get();
-        else if (currentVariant.is(ChangedTransfurVariants.LATEX_YUIN))
-            return ChangedTransfurVariants.LATEX_PINK_YUIN_DRAGON.get();
-        else {
-            if (livingEntity.getRandom().nextBoolean()) {
-                var newEntity = currentVariant.getEntityType().create(livingEntity.level());
-                newEntity.moveTo(livingEntity.position());
-                livingEntity.level().addFreshEntity(newEntity);
-                return ChangedTransfurVariants.LATEX_PINK_WYVERN.get();
+        if (currentVariant.is(ChangedTransfurVariants.LATEX_DEER)) {
+            event.setTransfurVariant(ChangedTransfurVariants.LATEX_PINK_DEER.get());
+            return true;
+        } else if (currentVariant.is(ChangedTransfurVariants.LATEX_YUIN)) {
+            event.setTransfurVariant(ChangedTransfurVariants.LATEX_PINK_YUIN_DRAGON.get());
+            return true;
+        } else {
+            if (event.entity.getRandom().nextBoolean()) {
+                event.setTransfurVariant(ChangedTransfurVariants.LATEX_PINK_WYVERN.get());
+                event.appendTransfurListener(transfurredEntity -> {
+                    var newEntity = currentVariant.getEntityType().create(transfurredEntity.getLevel());
+                    if (newEntity == null)
+                        return;
+                    newEntity.moveTo(transfurredEntity.getEntity().position());
+                    transfurredEntity.getLevel().addFreshEntity(newEntity);
+                });
+                return true;
             } else {
-                var wyvern = ChangedEntities.LATEX_PINK_WYVERN.get().create(livingEntity.level());
-                wyvern.moveTo(livingEntity.position());
-                livingEntity.level().addFreshEntity(wyvern);
-                return currentVariant; // Return current to consume pants (Yummy)
+                event.appendTransfurListener(transfurredEntity -> {
+                    var wyvern = ChangedEntities.LATEX_PINK_WYVERN.get().create(event.entity.level());
+                    if (wyvern == null)
+                        return;
+                    wyvern.moveTo(transfurredEntity.getEntity().position());
+                    event.entity.level().addFreshEntity(wyvern);
+                });
+                return true; // Return true to consume pants (Yummy)
             }
         }
     }

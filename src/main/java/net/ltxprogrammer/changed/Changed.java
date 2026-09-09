@@ -101,6 +101,7 @@ public class Changed {
         ChangedTabs.REGISTRY.register(modEventBus);
         ChangedSounds.REGISTRY.register(modEventBus);
         ChangedPaintings.REGISTRY.register(modEventBus);
+        ChangedBannerPatterns.REGISTRY.register(modEventBus);
         ChangedParticles.REGISTRY.register(modEventBus);
         ChangedFeatures.REGISTRY_FEATURE.register(modEventBus);
         ChangedFeatures.REGISTRY_PROCESSOR.register(modEventBus);
@@ -155,12 +156,7 @@ public class Changed {
 
     private void registerClientEventListeners(IEventBus eventBus) {
         MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient());
-        eventBus.addListener(RecipeCategories::registerCategories);
-        eventBus.addListener(ChangedOverlays::registerOverlays);
-        eventBus.addListener(ChangedClient::onBlockColorsInit);
-        eventBus.addListener(ChangedClient::onItemColorsInit);
-        eventBus.addListener(ChangedClient::onClientFinishSetup);
-        eventBus.addListener(AbilityRenderer::onRegisterModels);
+        ChangedClient.registerModLoadingEventListeners(eventBus);
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {

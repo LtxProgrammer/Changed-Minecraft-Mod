@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.lighting.LightEngine;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.phys.BlockHitResult;
@@ -387,6 +388,10 @@ public class LatexCoverState extends StateHolder<LatexType, LatexCoverState> {
 
     public void animateTick(Level level, BlockPos pos, RandomSource random) {
         this.getType().animateTick(this.asState(), level, pos, random);
+    }
+
+    public MapColor getMapColor(LatexCoverGetter level, BlockPos blockPos) {
+        return this.getType().getMapColor(this.asState(), level, blockPos);
     }
 
     public boolean isRandomlyTicking() {

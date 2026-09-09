@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class WhiteLatexFluidBlock extends AbstractLatexFluidBlock implements WhiteLatexTransportInterface {
     public WhiteLatexFluidBlock() {
-        super(ChangedFluids.WHITE_LATEX, BlockBehaviour.Properties.of().replaceable().strength(100f));
+        super(ChangedFluids.WHITE_LATEX, BlockBehaviour.Properties.of().mapColor(DyeColor.WHITE).replaceable().strength(100f));
     }
 
     @Override

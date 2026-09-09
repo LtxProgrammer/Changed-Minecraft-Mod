@@ -35,6 +35,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.ContainerScreenEvent;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
@@ -257,6 +258,10 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
                 return NodeRenderState.UNLOCKED;
             if (parent != null && !parent.isUnlocked() && !parent.canBeSkipped())
                 return NodeRenderState.DISTANT;
+            if (entity.getEntity() instanceof Player player && player.getAbilities().instabuild) {
+                return NodeRenderState.CAN_ACQUIRE;
+            }
+
             if (!accountedTree.hasPrerequisites(AbilityTreeScreen.this.entity, nodeName))
                 return NodeRenderState.PRE_REQ_LOCKED;
             if (!accountedTree.canAfford(UniversalDist.getLocalPlayer(), AbilityTreeScreen.this.entity.getSelfVariant(), nodeName))
@@ -272,8 +277,10 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
                 tooltipBuilder.add(DISTANT_NODE_TEXT);
             } else {
                 tooltipBuilder.add(node.getTitle().withStyle(node.displayInfo.frameType().titleColor));
-                accountedTree.getEffectivePriceText(UniversalDist.getLocalPlayer(), AbilityTreeScreen.this.entity.getSelfVariant(), nodeName, tooltipBuilder::add, renderState.costFormatting);
-                node.getRequirementProgress().forEach(progress -> progress.buildDescription(tooltipBuilder::add));
+                if (!(entity.getEntity() instanceof Player player && player.getAbilities().instabuild)) {
+                    accountedTree.getEffectivePriceText(UniversalDist.getLocalPlayer(), AbilityTreeScreen.this.entity.getSelfVariant(), nodeName, tooltipBuilder::add, renderState.costFormatting);
+                    node.getRequirementProgress().forEach(progress -> progress.buildDescription(tooltipBuilder::add));
+                }
                 node.buildDescription(tooltipBuilder::add);
                 if (renderState == NodeRenderState.UNLOCKED)
                     node.getFlavorText().ifPresent(tooltipBuilder::add);
@@ -283,11 +290,11 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
         }
 
         protected boolean canPurchase() {
-            if (!accountedTree.hasPrerequisites(AbilityTreeScreen.this.entity, nodeName))
-                return false;
-            if (!accountedTree.canAfford(UniversalDist.getLocalPlayer(), AbilityTreeScreen.this.entity.getSelfVariant(), nodeName))
-                return false;
-            return true;
+            return renderState == NodeRenderState.CAN_ACQUIRE;
+        }
+
+        protected boolean canRefund() {
+            return renderState == NodeRenderState.UNLOCKED && entity.getEntity() instanceof Player player && player.getAbilities().instabuild;
         }
 
         @Override
@@ -307,6 +314,11 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
                         Optional.of(accountedTree.getTree().getTreeLocation()),
                         Optional.of(nodeName),
                         Optional.empty()));
+            } else if (canRefund()) {
+                Changed.PACKET_HANDLER.sendToServer(new AbilityTreeMenuPacket(AbilityTreeMenuPacket.Opcode.REFUND_PURCHASE,
+                        Optional.of(accountedTree.getTree().getTreeLocation()),
+                        Optional.of(nodeName),
+                        Optional.empty()));
             }
         }
 
@@ -318,6 +330,7 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
         @Override
         protected void renderWidget(GuiGraphics graphics, int mx, int my, float partialTicks) {
             super.renderWidget(graphics, mx, my, partialTicks);
+            this.active = canPurchase() || canRefund();
 
             if (this.renderState.hideIcon) {
                 graphics.blit(DISTANT_NODE_ICON, this.getX() + 4, this.getY() + 4, 0, 0, 16, 16, 16, 16);

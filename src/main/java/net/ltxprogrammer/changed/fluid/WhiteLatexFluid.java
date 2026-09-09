@@ -26,7 +26,7 @@ public abstract class WhiteLatexFluid extends AbstractLatexFluid {
     public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
             ChangedFluids.WHITE_LATEX_FLUID, ChangedFluids.WHITE_LATEX, ChangedFluids.WHITE_LATEX_FLOWING)
             .tickRate(50)
-            .levelDecreasePerBlock(9999)
+            .levelDecreasePerBlock(3)
             .explosionResistance(100f)
             .bucket(ChangedItems.WHITE_LATEX_BUCKET)
             .block(ChangedBlocks.WHITE_LATEX_FLUID);

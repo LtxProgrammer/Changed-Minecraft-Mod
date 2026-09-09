@@ -10,6 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.material.Fluid;
 
 public class ChangedTags {
@@ -140,6 +141,16 @@ public class ChangedTags {
 
         private static TagKey<ApplicationType<?>> create(String name) {
             return TagKey.create(ChangedRegistry.APPLICATION_TYPES.key, Changed.modResource(name));
+        }
+    }
+
+    public static class BannerPatterns {
+        public static final TagKey<BannerPattern> PATTERN_ITEM_DARK_LATEX_MASK = create("pattern_item/dark_latex_mask");
+        public static final TagKey<BannerPattern> PATTERN_ITEM_LATEX = create("pattern_item/latex");
+        public static final TagKey<BannerPattern> PATTERN_ITEM_CRYSTAL = create("pattern_item/crystal");
+
+        private static TagKey<BannerPattern> create(String name) {
+            return TagKey.create(Registries.BANNER_PATTERN, Changed.modResource(name));
         }
     }
 }

@@ -17,6 +17,8 @@
     "minecraft:structure_void",
     "minecraft:barrier",
     "minecraft:jigsaw",
-    "changed:glu"
+    "changed:glu",
+    "changed:dark_latex_ice",
+    "changed:wolf_crystal_block"
   ]
 }

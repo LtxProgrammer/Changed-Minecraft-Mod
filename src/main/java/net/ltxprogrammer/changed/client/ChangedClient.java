@@ -15,10 +15,7 @@ import net.ltxprogrammer.changed.client.sound.GasSFX;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.VisionType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
-import net.ltxprogrammer.changed.init.ChangedBlocks;
-import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedFluids;
-import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
@@ -42,6 +39,7 @@ import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -86,6 +84,7 @@ public class ChangedClient {
     public static void registerEventListeners(final FMLClientSetupEvent event) {
         Changed.addEventListener(ChangedClient::afterRenderStage);
         Changed.addEventListener(ChangedClient::onClientTick);
+        Changed.addEventListener(ChangedKeyMappings.KeyEventListener::onKeyInput);
         event.enqueueWork(RendererOverride::gatherOverrides);
     }
 
@@ -100,6 +99,16 @@ public class ChangedClient {
         resourceManager.accept(wallSigns.getOrThrow());
         resourceManager.accept(AnimationDefinitions.INSTANCE);
         resourceManager.accept(AnimationAssociations.INSTANCE);
+    }
+
+    public static void registerModLoadingEventListeners(IEventBus eventBus) {
+        eventBus.addListener(RecipeCategories::registerCategories);
+        eventBus.addListener(ChangedOverlays::registerOverlays);
+        eventBus.addListener(ChangedClient::onBlockColorsInit);
+        eventBus.addListener(ChangedClient::onItemColorsInit);
+        eventBus.addListener(ChangedClient::onClientFinishSetup);
+        eventBus.addListener(AbilityRenderer::onRegisterModels);
+        eventBus.addListener(ChangedKeyMappings::registerKeyBindings);
     }
 
     public static void afterRenderStage(RenderLevelStageEvent event) {

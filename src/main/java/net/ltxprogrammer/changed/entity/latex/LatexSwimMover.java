@@ -82,6 +82,7 @@ public class LatexSwimMover extends PlayerMover<LatexSwimMover.MoverInstance> {
             final BlockPos blockPos = EntityUtil.getBlock(center);
             final BlockState blockState = player.level().getBlockState(blockPos);
             final LatexCoverState coverState = LatexCoverState.getAt(player.level(), blockPos);
+            Direction lastDirection = surfaceDirection;
             surfaceDirection = null;
             if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface && !transportInterface.allowTransport(blockState))
                 return;
@@ -96,6 +97,9 @@ public class LatexSwimMover extends PlayerMover<LatexSwimMover.MoverInstance> {
                     return;
                 Vec3 delta = surface.subtract(localized);
                 surfaceDirection = Direction.getNearest(delta.x, delta.y, delta.z);
+                if (lastDirection != surfaceDirection)
+                    player.refreshDimensions();
+
                 player.move(MoverType.SELF, surface.subtract(localized));
             }
         }
@@ -149,7 +153,6 @@ public class LatexSwimMover extends PlayerMover<LatexSwimMover.MoverInstance> {
             });
 
             player.setDeltaMovement(0, 0, 0);
-            player.refreshDimensions();
             player.heal(0.0625F);
             if (player.tickCount % 50 == 0)
                 player.getFoodData().eat(Foods.DRIED_KELP.getNutrition(), Foods.DRIED_KELP.getSaturationModifier());
@@ -258,6 +261,7 @@ public class LatexSwimMover extends PlayerMover<LatexSwimMover.MoverInstance> {
         public void onRemove(Player player) {
             super.onRemove(player);
 
+            EntityUtil.refreshDimensionsAndPushFromWall(player);
             if (player.isSpectator())
                 return;
 

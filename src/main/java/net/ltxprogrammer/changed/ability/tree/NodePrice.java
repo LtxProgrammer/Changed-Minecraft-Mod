@@ -24,6 +24,8 @@ public record NodePrice(int levels,
                         int experience,
                         int groupDiscountExperience,
                         List<ItemEntry> items, @Nullable NodePrice computedDiscountPrice) {
+    public static final NodePrice ZERO = new NodePrice(0, 0, 0, 0, List.of(), null);
+
     /// Save computation by computing the discount price once
     private static NodePrice precomputeDiscounted(int levels, int groupDiscountLevels, int experience, int groupDiscountExperience, List<ItemEntry> items) {
         if (groupDiscountLevels == 0 && groupDiscountExperience == 0 && items.stream().noneMatch(ItemEntry::groupDiscounted))
@@ -60,8 +62,8 @@ public record NodePrice(int levels,
 
         var checkItems = new ObjectArrayList<>(this.items);
 
-        for (int slotIndex = 0; slotIndex < inventory.getContainerSize(); ++slotIndex) {
-            var itemStack = inventory.getItem(slotIndex);
+        for (int slotIndex = 0; slotIndex < inventory.items.size(); ++slotIndex) {
+            var itemStack = inventory.items.get(slotIndex);
             int simuCount = itemStack.getCount();
             if (simuCount <= 0)
                 continue;
@@ -92,8 +94,8 @@ public record NodePrice(int levels,
         List<ItemStack> takenItems = new ObjectArrayList<>(this.items.size());
         var checkItems = new ObjectArrayList<>(this.items);
 
-        for (int slotIndex = 0; slotIndex < inventory.getContainerSize(); ++slotIndex) {
-            var itemStack = inventory.getItem(slotIndex);
+        for (int slotIndex = 0; slotIndex < inventory.items.size(); ++slotIndex) {
+            var itemStack = inventory.items.get(slotIndex);
             if (itemStack.isEmpty())
                 continue;
 
@@ -113,6 +115,8 @@ public record NodePrice(int levels,
                 break;
         }
 
+        if (!takenItems.isEmpty())
+            inventory.player.inventoryMenu.broadcastChanges();
         return takenItems;
     }
 
@@ -141,11 +145,16 @@ public record NodePrice(int levels,
 
     public boolean canAfford(Player player, AbilityTreeInstance.PointStore pointStore) {
         return this.levels() <= pointStore.getLevels() &&
-                this.levels() <= player.experienceLevel &&
+                this.experience() <= player.experienceLevel &&
                 this.hasUniqueItems(player.getInventory());
     }
 
-    public record ItemEntry(RegistryElementPredicate<Item> item, boolean groupDiscounted) {}
+    public record ItemEntry(RegistryElementPredicate<Item> item, boolean groupDiscounted) {
+        @Override
+        public String toString() {
+            return item.toString();
+        }
+    }
 
     public static final Codec<RegistryElementPredicate<Item>> ITEM_PREDICATE_CODEC = RegistryElementPredicate.codecElementOrTag(ForgeRegistries.ITEMS);
 
@@ -173,4 +182,13 @@ public record NodePrice(int levels,
             either -> either.map(levels -> new NodePrice(levels, 0, 0, 0, List.of()), Function.identity()),
             Either::right
     );
+
+    @Override
+    public String toString() {
+        return "NodePrice{" +
+                "levels=" + levels +
+                ", experience=" + experience +
+                ", items=" + items +
+                '}';
+    }
 }

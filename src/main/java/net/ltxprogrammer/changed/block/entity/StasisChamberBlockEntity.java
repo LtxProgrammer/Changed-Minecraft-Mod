@@ -291,7 +291,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
 
     public boolean chamberEntity(LivingEntity entity) {
         if (entityHolder == null || entityHolder.isRemoved()) {
-            entityHolder = SeatEntity.createFor(entity.level(), this.getBlockState(), this.getBlockPos(), false, false, false);
+            entityHolder = SeatEntity.createFor(entity.level(), this.getBlockState(), this.getBlockPos(), false, false, false, false);
             this.markUpdated();
         }
 
