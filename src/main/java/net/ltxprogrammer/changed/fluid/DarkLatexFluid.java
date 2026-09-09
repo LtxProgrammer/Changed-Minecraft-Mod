@@ -26,7 +26,7 @@ public abstract class DarkLatexFluid extends AbstractLatexFluid {
     public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
             ChangedFluids.DARK_LATEX_FLUID, ChangedFluids.DARK_LATEX, ChangedFluids.DARK_LATEX_FLOWING)
             .tickRate(50)
-            .levelDecreasePerBlock(9999)
+            .levelDecreasePerBlock(3)
             .explosionResistance(100f)
             .bucket(ChangedItems.DARK_LATEX_BUCKET)
             .block(ChangedBlocks.DARK_LATEX_FLUID);
