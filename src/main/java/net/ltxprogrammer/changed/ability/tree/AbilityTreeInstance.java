@@ -131,7 +131,7 @@ public class AbilityTreeInstance {
         }
 
         public void setPoints(int points) {
-            this.points = points;
+            this.points = Math.max(points, 0);
         }
 
         public void addPoints(int points) {
@@ -148,7 +148,7 @@ public class AbilityTreeInstance {
         }
 
         public void setLevels(int levels) {
-            this.levels = levels;
+            this.levels = Math.max(levels, 0);
         }
 
         public void addLevels(int levels) {
@@ -235,6 +235,10 @@ public class AbilityTreeInstance {
             this.tree = tree;
             this.purchasedNodes.addAll(purchasedNodes);
             this.pointStores.putAll(pointStores);
+        }
+
+        public PointStore getMutablePointStore(TransfurVariant<?> variant) {
+            return pointStores.computeIfAbsent(variant, PointStore::new);
         }
 
         public Player getPlayer() {

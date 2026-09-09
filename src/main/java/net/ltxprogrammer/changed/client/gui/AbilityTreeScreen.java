@@ -293,6 +293,10 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
             return renderState == NodeRenderState.CAN_ACQUIRE;
         }
 
+        protected boolean canRefund() {
+            return renderState == NodeRenderState.UNLOCKED && entity.getEntity() instanceof Player player && player.getAbilities().instabuild;
+        }
+
         @Override
         protected boolean isUnlocked() {
             return accountedTree.getNodeState(AbilityTreeScreen.this.entity.getSelfVariant(), node).map(AbilityTreeInstance.NodeState::unlocked).orElse(false);
@@ -310,6 +314,11 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
                         Optional.of(accountedTree.getTree().getTreeLocation()),
                         Optional.of(nodeName),
                         Optional.empty()));
+            } else if (canRefund()) {
+                Changed.PACKET_HANDLER.sendToServer(new AbilityTreeMenuPacket(AbilityTreeMenuPacket.Opcode.REFUND_PURCHASE,
+                        Optional.of(accountedTree.getTree().getTreeLocation()),
+                        Optional.of(nodeName),
+                        Optional.empty()));
             }
         }
 
@@ -321,6 +330,7 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
         @Override
         protected void renderWidget(GuiGraphics graphics, int mx, int my, float partialTicks) {
             super.renderWidget(graphics, mx, my, partialTicks);
+            this.active = canPurchase() || canRefund();
 
             if (this.renderState.hideIcon) {
                 graphics.blit(DISTANT_NODE_ICON, this.getX() + 4, this.getY() + 4, 0, 0, 16, 16, 16, 16);
