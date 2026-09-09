@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.tree.AbilityTree;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
+import net.ltxprogrammer.changed.ability.tree.NodePrice;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.network.packet.AbilityTreeSyncInstancePacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -91,7 +92,7 @@ public class CommandAbilityTree {
         if (node == null)
             throw NOT_NODE.create();
 
-        int granted = tree.get().makePurchase(player, variant.getParent(), nodeId, 0, 0, List.of()) ? 1 : 0;
+        int granted = tree.get().makePurchase(player, variant.getParent(), nodeId, NodePrice.ZERO) ? 1 : 0;
 
         if (granted > 0) {
             player.connection.send(
@@ -116,7 +117,7 @@ public class CommandAbilityTree {
             throw NOT_TREE.create();
 
         int granted = tree.get().getTree().getTreeNodes().map(Pair::getFirst).map(nodeId -> {
-            return tree.get().makePurchase(player, variant.getParent(), nodeId, 0, 0, List.of()) ? 1 : 0;
+            return tree.get().makePurchase(player, variant.getParent(), nodeId, NodePrice.ZERO) ? 1 : 0;
         }).reduce(Integer::sum).orElse(0);
 
         if (granted > 0) {

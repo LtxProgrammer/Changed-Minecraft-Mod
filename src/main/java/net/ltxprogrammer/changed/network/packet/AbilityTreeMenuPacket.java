@@ -117,7 +117,7 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
                                 }
                             }
 
-                            if (tree.get().makePurchase(sender, variant, nodeName.get(), price.levels(), price.experience(), price.takeItems(sender.getInventory()))) {
+                            if (tree.get().makePurchase(sender, variant, nodeName.get(), price)) {
                                 sender.connection.send(
                                         Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofTree(AbilityTreeInstance.getForPlayer(sender), tree.get().getTree()), NetworkDirection.PLAY_TO_CLIENT)
                                 );
