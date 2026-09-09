@@ -1202,10 +1202,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         return parent.is(variant);
     }
 
-    protected AbstractAbility<?>[] createAbilitySlots() {
-        return new AbstractAbility[2];
-    }
-
     public boolean isAbilitySelected(AbstractAbility<?> ability) {
         return abilityHandler.isSelected(ability);
     }

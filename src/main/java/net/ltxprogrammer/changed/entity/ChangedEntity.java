@@ -114,6 +114,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     float tailDragAmountO;
     float renderScaleAddon = 0.0f;
     float renderScaleAddonO = 0.0f;
+    private double baseScaleO = 1.0f;
 
     Vec3 deltaMovementOO = Vec3.ZERO;
     Vec3 deltaMovementO = Vec3.ZERO;
@@ -893,15 +894,28 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
         this.useItemRemaining = player.useItemRemaining;
 
-        Pose pose = this.getPose();
         this.setPose(player.getPose());
 
-        if (pose != this.getPose())
+        if (Mth.abs(this.dimensions.width - player.dimensions.width) > Mth.EPSILON ||
+                Mth.abs(this.dimensions.height - player.dimensions.height) > Mth.EPSILON) {
             this.refreshDimensions();
+        }
         if(player.getSleepingPos().isPresent())
             this.setSleepingPos(player.getSleepingPos().get());
         else
             this.clearSleepingPos();
+    }
+
+    @Override
+    public void refreshDimensions() {
+        if (underlyingPlayer != null) {
+            this.dimensions = underlyingPlayer.dimensions;
+            this.eyeHeight = underlyingPlayer.eyeHeight;
+            this.reapplyPosition();
+            return;
+        }
+
+        super.refreshDimensions();
     }
 
     @Override
@@ -1038,10 +1052,12 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         else {
             this.renderScaleAddon = (float) (scaleAttr.getValue() - scaleAttr.getBaseValue());
             this.renderScaleAddonO = this.renderScaleAddon;
+            this.baseScaleO = scaleAttr.getBaseValue();
             EntityUtil.refreshDimensionsAndPushFromWall(maybeGetUnderlying());
         }
 
-        if (this.renderScaleAddon != this.renderScaleAddonO) {
+        if (this.renderScaleAddon != this.renderScaleAddonO || this.baseScaleO != scaleAttr.getBaseValue()) {
+            this.baseScaleO = scaleAttr.getBaseValue();
             EntityUtil.refreshDimensionsAndPushFromWall(maybeGetUnderlying());
         }
     }
