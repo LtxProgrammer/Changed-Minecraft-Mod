@@ -9,10 +9,13 @@ import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelReader;
@@ -20,6 +23,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
@@ -125,5 +130,39 @@ public class EntityUtil {
     public static boolean isEntityInvisibleAndInvulnerable(LivingEntity entity) {
         return isEntityHiddenBySuit(entity) ||
                 isEntityHiddenInSeat(entity);
+    }
+
+    public static void refreshDimensionsAndPushFromWall(LivingEntity entity) {
+        EntityDimensions previousDimensions = entity.dimensions;
+
+        entity.refreshDimensions();
+
+        if (!(UniversalDist.isLocalPlayer(entity) || entity instanceof ServerPlayer))
+            return; // Only reposition the local player, or server players
+
+        EntityDimensions currentDimensions = entity.dimensions;
+        if (currentDimensions.width <= previousDimensions.width && currentDimensions.height <= previousDimensions.height)
+            return; // Hitbox did not grow
+
+        float pushOffset = 1.0f / 32.0f;
+        float pushAsWidth = currentDimensions.width + pushOffset;
+        float pushAsHeight = currentDimensions.height + pushOffset;
+        boolean tooBigToCheck = !((double)pushAsWidth <= (double)4.0F && (double)pushAsHeight <= (double)4.0F);
+        if (entity.tickCount < 2 || entity.noPhysics || tooBigToCheck)
+            return;
+
+        Vec3 previousCenter = entity.position().add((double)0.0F, (double)previousDimensions.height / (double)2.0F, (double)0.0F);
+        double deltaWidth = (double)Math.max(0.0F, pushAsWidth - previousDimensions.width) + 1.0E-6;
+        double deltaHeight = (double)Math.max(0.0F, pushAsHeight - previousDimensions.height) + 1.0E-6;
+        VoxelShape voxelshape = Shapes.create(AABB.ofSize(previousCenter, deltaWidth, deltaHeight, deltaWidth));
+        entity.level().findFreePosition(entity, voxelshape, previousCenter, pushAsWidth, pushAsHeight, pushAsWidth)
+                .ifPresent((position) -> {
+                    Vec3 horizontalPosition = new Vec3(
+                            position.x,
+                            position.y + (double)(-pushAsHeight) / (double)2.0F,
+                            position.z
+                    );
+                    entity.setPos(horizontalPosition);
+                });
     }
 }

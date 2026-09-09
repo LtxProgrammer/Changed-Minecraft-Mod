@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -69,6 +70,13 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
         this.entityData.define(DATA_PUDDLE_ID, false);
     }
 
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+        super.onSyncedDataUpdated(accessor);
+        if (accessor.equals(DATA_PUDDLE_ID))
+            EntityUtil.refreshDimensionsAndPushFromWall(maybeGetUnderlying());
+    }
+
     public void setPuddle(boolean isPuddle) {
         this.goalSelector.setControlFlag(Goal.Flag.MOVE, !isPuddle);
         this.entityData.set(DATA_PUDDLE_ID, isPuddle);
@@ -88,7 +96,6 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
             if (ticksLeftAsPuddle <= 0)
                 setPuddle(false);
         }
-        this.refreshDimensions();
     }
 
     @Override
