@@ -23,6 +23,7 @@ public class SlitherAbility extends SimpleAbility {
     public void startUsing(IAbstractChangedEntity entity) {
         super.startUsing(entity);
         entity.getChangedEntity().overridePose = Pose.SWIMMING;
+        entity.getEntity().refreshDimensions();
         setDirty(entity);
     }
 
@@ -30,6 +31,7 @@ public class SlitherAbility extends SimpleAbility {
     public void stopUsing(IAbstractChangedEntity entity) {
         super.stopUsing(entity);
         entity.getChangedEntity().overridePose = null;
+        entity.getEntity().refreshDimensions();
         setDirty(entity);
     }
 
@@ -43,8 +45,10 @@ public class SlitherAbility extends SimpleAbility {
     @Override
     public void readData(CompoundTag tag, IAbstractChangedEntity entity) {
         super.readData(tag, entity);
-        if (tag.contains("overridePose"))
+        if (tag.contains("overridePose")) {
             entity.getChangedEntity().overridePose = Pose.valueOf(tag.getString("overridePose"));
+            entity.getEntity().refreshDimensions();
+        }
     }
 
     @Override
