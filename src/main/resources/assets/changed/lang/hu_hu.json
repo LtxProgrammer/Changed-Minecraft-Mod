@@ -533,7 +533,7 @@
   "command.changed.success.abilitytree.grant.many": "%2$s megkapott %1$s csomópontot", 
   "command.changed.success.abilitytree.refund.many": "%2$s elvesztett %1$s csomópontot",
   "command.changed.success.abilitytree.addlevels.positive": "%s szint hozzáadva a következőhöz: %s",
-  "command.changed.success.abilitytree.addlevels.negative": "%s szint eltávolítva innen: %s",
+  "command.changed.success.abilitytree.addlevels.negative": "%s szint eltávolítva a következőhöz: %s",
   "command.changed.success.abilitytree.addlevels.zero": "Nincs szint hozzáadva a következőhöz: %s",
   "command.changed.success.tame.tamed.one": "%s megszelídítve %s játékoshoz",
   "command.changed.success.tame.tamed.many": "%s entitás megszelídítve %s játékoshoz",
