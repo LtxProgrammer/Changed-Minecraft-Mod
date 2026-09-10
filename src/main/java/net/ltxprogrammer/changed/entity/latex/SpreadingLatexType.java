@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.latex;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.*;
@@ -14,11 +15,13 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
+import net.ltxprogrammer.changed.world.DiagonalDirection;
 import net.ltxprogrammer.changed.world.LatexCoverGetter;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -204,11 +207,33 @@ public abstract class SpreadingLatexType extends LatexType {
             return false;
         if (Arrays.stream(Direction.values()).map(FACES::get).noneMatch(state::getValue))
             return true;
-        return Arrays.stream(Direction.values())
-                .map(blockPos::relative)
-                .map(checkPos -> LatexCoverState.getAt(level, checkPos))
-                .filter(otherState -> otherState.is(this))
-                .noneMatch(otherState -> otherState.getValue(SATURATION) < thisSaturation);
+
+        BlockPos.MutableBlockPos checkPos = blockPos.mutable();
+        for (Direction direction : Direction.values()) {
+            checkPos.setWithOffset(blockPos,
+                    direction.getStepX(),
+                    direction.getStepY(),
+                    direction.getStepZ());
+            LatexCoverState otherState = LatexCoverState.getAt(level, checkPos);
+            if (!otherState.is(this))
+                continue;
+            if (otherState.getValue(SATURATION) < thisSaturation)
+                return false;
+        }
+
+        for (DiagonalDirection direction : DiagonalDirection.values()) {
+            checkPos.setWithOffset(blockPos,
+                    direction.getStepX(),
+                    direction.getStepY(),
+                    direction.getStepZ());
+            LatexCoverState otherState = LatexCoverState.getAt(level, checkPos);
+            if (!otherState.is(this))
+                continue;
+            if (otherState.getValue(SATURATION) < thisSaturation)
+                return false;
+        }
+
+        return true;
     }
 
     public static boolean canExistOnSurface(BlockGetter level, BlockPos sourcePos, BlockState sourceState, BlockPos neighborPos, BlockState neighbor, Direction surfaceNormal) {
@@ -223,11 +248,14 @@ public abstract class SpreadingLatexType extends LatexType {
         return !sourceState.isFaceSturdy(level, sourcePos, surfaceNormal.getOpposite(), SupportType.FULL);
     }
 
-    public LatexCoverState spreadState(LevelReader level, BlockPos blockPos, LatexCoverState state) {
-        state = state.setValue(SATURATION,
-                Changed.config.server.unlimitedLatexSpread.get() ?
-                        state.getValue(SATURATION) :
-                        state.getValue(SATURATION) + 1);
+    public LatexCoverState spreadState(LevelReader level, BlockPos blockPos, LatexCoverState state, int manhattanDistance) {
+        int nextSaturation = Changed.config.server.unlimitedLatexSpread.get() ?
+                state.getValue(SATURATION) :
+                state.getValue(SATURATION) + manhattanDistance;
+        if (nextSaturation >= 16)
+            return ChangedLatexTypes.NONE.get().defaultCoverState();
+
+        state = state.setValue(SATURATION, nextSaturation);
         BlockState sourceState = level.getBlockState(blockPos);
         for (Direction direction : Direction.values()) {
             var face = FACES.get(direction);
@@ -242,6 +270,34 @@ public abstract class SpreadingLatexType extends LatexType {
         return wantedState;
     }
 
+    protected boolean trySpreadTo(LatexCoverState state, BlockState sourceBlockState, ServerLevel level, BlockPos blockPos, BlockPos spreadPos) {
+        BlockState checkState = level.getBlockState(spreadPos);
+        LatexCoverState checkCoverState = LatexCoverState.getAt(level, spreadPos);
+
+        int manhattan = blockPos.distManhattan(spreadPos);
+
+        boolean isAirOrLessThanSpread = checkCoverState.isAir() ||
+                (checkCoverState.is(this) && checkCoverState.getValue(SATURATION) > state.getValue(SATURATION) + manhattan);
+
+        if (checkState.is(ChangedTags.Blocks.DENY_LATEX_COVER) || checkState.isCollisionShapeFullBlock(level, spreadPos) || !isAirOrLessThanSpread)
+            return false;
+
+        if (Arrays.stream(Direction.values()).noneMatch(direction -> canExistOnSurface(level, blockPos, sourceBlockState, spreadPos, level.getBlockState(spreadPos.relative(direction)), direction.getOpposite())))
+            return false;
+
+        var event = new CoveringBlockEvent(this,
+                checkState, checkState, this.spreadState(level, spreadPos, state, manhattan), spreadPos, level);
+        this.defaultCoverBehavior(event);
+        if (Changed.postModEvent(event))
+            return false;
+
+        level.setBlockAndUpdate(spreadPos, event.getPlannedState());
+        LatexCoverState.setAtAndUpdate(level, spreadPos, event.plannedCoverState);
+
+        event.getPostProcess().accept(level, spreadPos);
+        return true;
+    }
+
     @Override
     public void randomTick(LatexCoverState state, ServerLevel level, BlockPos blockPos, RandomSource random) {
         if (this.shouldDecay(state, level, blockPos)) {
@@ -250,37 +306,40 @@ public abstract class SpreadingLatexType extends LatexType {
         }
         if (!this.canSpread(state)) return;
         if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0) return;
-        if (!level.isAreaLoaded(blockPos, 3)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
-        if (random.nextInt(10 * level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE)) < 600) return;
+        if (!level.isAreaLoaded(blockPos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
 
         BlockState sourceState = level.getBlockState(blockPos);
 
-        Direction checkDir = Direction.getRandom(random);
-        BlockPos.MutableBlockPos checkPos = blockPos.relative(checkDir).mutable();
+        int spreadCount = Math.round(
+                (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) / 100f) *
+                (random.nextFloat() * 4));
+        if (spreadCount <= 0) return;
 
-        BlockState checkState = level.getBlockState(checkPos);
-        LatexCoverState checkCoverState = LatexCoverState.getAt(level, checkPos);
+        BlockPos.MutableBlockPos spreadPos = new BlockPos.MutableBlockPos();
+        for (Direction direction : Direction.allShuffled(random)) {
+            if (spreadCount <= 0)
+                break;
 
-        boolean isAirOrLessThanSpread = checkCoverState.isAir() ||
-                (checkCoverState.is(this) && checkCoverState.getValue(SATURATION) > state.getValue(SATURATION) + 1);
+            spreadPos.setWithOffset(blockPos,
+                    direction.getStepX(),
+                    direction.getStepY(),
+                    direction.getStepZ());
+            if (this.trySpreadTo(state, sourceState, level, blockPos, spreadPos))
+                spreadCount--;
+        }
 
-        if (!checkState.is(ChangedTags.Blocks.DENY_LATEX_COVER) && !checkState.isCollisionShapeFullBlock(level, checkPos) && isAirOrLessThanSpread) {
-            if (checkPos.subtract(blockPos).getY() > 0 && random.nextInt(3) > 0) // Reduced chance of spreading up
-                return;
+        if (spreadCount <= 0) return;
 
-            if (Arrays.stream(Direction.values()).noneMatch(direction -> canExistOnSurface(level, blockPos, sourceState, checkPos, level.getBlockState(checkPos.relative(direction)), direction.getOpposite())))
-                return;
+        for (DiagonalDirection direction : DiagonalDirection.allShuffled(random)) {
+            if (spreadCount <= 0)
+                break;
 
-            var event = new CoveringBlockEvent(this,
-                    checkState, checkState, this.spreadState(level, checkPos, state), checkPos, level);
-            this.defaultCoverBehavior(event);
-            if (Changed.postModEvent(event))
-                return;
-
-            level.setBlockAndUpdate(checkPos, event.getPlannedState());
-            LatexCoverState.setAtAndUpdate(level, checkPos, event.plannedCoverState);
-
-            event.getPostProcess().accept(level, checkPos);
+            spreadPos.setWithOffset(blockPos,
+                    direction.getStepX(),
+                    direction.getStepY(),
+                    direction.getStepZ());
+            if (this.trySpreadTo(state, sourceState, level, blockPos, spreadPos))
+                spreadCount--;
         }
     }
 
@@ -341,7 +400,7 @@ public abstract class SpreadingLatexType extends LatexType {
         if (neighborState.getType() != this)
             return state;
         if (neighborState.getValue(SATURATION) < state.getValue(SATURATION))
-            return this.spreadState(level, blockPos, neighborState);
+            return this.spreadState(level, blockPos, neighborState, 1);
         return state;
     }
 

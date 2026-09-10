@@ -43,6 +43,7 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
     public enum Opcode {
         OPEN_MENU,
         MAKE_PURCHASE,
+        REFUND_PURCHASE,
         CONFIRM_PURCHASE
     }
 
@@ -116,7 +117,7 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
                                 }
                             }
 
-                            if (tree.get().makePurchase(sender, variant, nodeName.get(), price.levels(), price.experience(), price.takeItems(sender.getInventory()))) {
+                            if (tree.get().makePurchase(sender, variant, nodeName.get(), price)) {
                                 sender.connection.send(
                                         Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofTree(AbilityTreeInstance.getForPlayer(sender), tree.get().getTree()), NetworkDirection.PLAY_TO_CLIENT)
                                 );
@@ -124,6 +125,27 @@ public class AbilityTreeMenuPacket implements ChangedPacket {
                             } else {
                                 LOGGER.error("Purchase {} failed for {}", nodeName.get(), sender);
                                 return;
+                            }
+                        });
+                    }
+                    case REFUND_PURCHASE -> {
+                        if (treeName.isEmpty() || nodeName.isEmpty())
+                            return CompletableFuture.failedFuture(new IllegalArgumentException("TreeName and NodeName must be specified"));
+                        var treeId = treeName.get();
+                        var tree = AbilityTreeInstance.getForPlayer(sender).getTrees(variant).stream().filter(accountedTree -> accountedTree.getTree().getTreeLocation().equals(treeId)).findFirst();
+                        if (tree.isEmpty())
+                            return CompletableFuture.failedFuture(new IllegalArgumentException("Cannot find TreeName"));
+                        if (!sender.getAbilities().instabuild)
+                            return CompletableFuture.failedFuture(new IllegalArgumentException("Sender has no permission to refund their nodes"));
+
+                        return levelFuture.thenAccept(level -> {
+                            if (tree.get().refundNodePurchases(sender, nodeName.get()) > 0) {
+                                sender.connection.send(
+                                        Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofTree(AbilityTreeInstance.getForPlayer(sender), tree.get().getTree()), NetworkDirection.PLAY_TO_CLIENT)
+                                );
+                                LOGGER.debug("Refund {} successful for {}", nodeName.get(), sender);
+                            } else {
+                                LOGGER.error("Refund {} failed for {}", nodeName.get(), sender);
                             }
                         });
                     }

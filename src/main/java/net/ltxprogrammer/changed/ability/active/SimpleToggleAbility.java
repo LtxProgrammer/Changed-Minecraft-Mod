@@ -9,6 +9,11 @@ public abstract class SimpleToggleAbility extends AbstractAbility<SimpleToggleAb
         super((ability, entity) -> new SimpleToggleAbilityInstance(ability, entity, startActive));
     }
 
+    @Override
+    public boolean canUse(IAbstractChangedEntity entity) {
+        return true;
+    }
+
     public boolean isActive(IAbstractChangedEntity entity) {
         var instance = entity.getAbilityInstance(this);
         return instance != null && instance.isActive();

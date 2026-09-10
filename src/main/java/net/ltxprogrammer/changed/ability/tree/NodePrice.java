@@ -62,8 +62,8 @@ public record NodePrice(int levels,
 
         var checkItems = new ObjectArrayList<>(this.items);
 
-        for (int slotIndex = 0; slotIndex < inventory.getContainerSize(); ++slotIndex) {
-            var itemStack = inventory.getItem(slotIndex);
+        for (int slotIndex = 0; slotIndex < inventory.items.size(); ++slotIndex) {
+            var itemStack = inventory.items.get(slotIndex);
             int simuCount = itemStack.getCount();
             if (simuCount <= 0)
                 continue;
@@ -94,8 +94,8 @@ public record NodePrice(int levels,
         List<ItemStack> takenItems = new ObjectArrayList<>(this.items.size());
         var checkItems = new ObjectArrayList<>(this.items);
 
-        for (int slotIndex = 0; slotIndex < inventory.getContainerSize(); ++slotIndex) {
-            var itemStack = inventory.getItem(slotIndex);
+        for (int slotIndex = 0; slotIndex < inventory.items.size(); ++slotIndex) {
+            var itemStack = inventory.items.get(slotIndex);
             if (itemStack.isEmpty())
                 continue;
 
@@ -115,6 +115,8 @@ public record NodePrice(int levels,
                 break;
         }
 
+        if (!takenItems.isEmpty())
+            inventory.player.inventoryMenu.broadcastChanges();
         return takenItems;
     }
 
@@ -143,7 +145,7 @@ public record NodePrice(int levels,
 
     public boolean canAfford(Player player, AbilityTreeInstance.PointStore pointStore) {
         return this.levels() <= pointStore.getLevels() &&
-                this.levels() <= player.experienceLevel &&
+                this.experience() <= player.experienceLevel &&
                 this.hasUniqueItems(player.getInventory());
     }
 

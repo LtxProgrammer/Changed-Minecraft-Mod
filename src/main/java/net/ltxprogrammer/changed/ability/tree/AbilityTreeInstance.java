@@ -131,7 +131,7 @@ public class AbilityTreeInstance {
         }
 
         public void setPoints(int points) {
-            this.points = points;
+            this.points = Math.max(points, 0);
         }
 
         public void addPoints(int points) {
@@ -148,7 +148,7 @@ public class AbilityTreeInstance {
         }
 
         public void setLevels(int levels) {
-            this.levels = levels;
+            this.levels = Math.max(levels, 0);
         }
 
         public void addLevels(int levels) {
@@ -237,6 +237,10 @@ public class AbilityTreeInstance {
             this.pointStores.putAll(pointStores);
         }
 
+        public PointStore getMutablePointStore(TransfurVariant<?> variant) {
+            return pointStores.computeIfAbsent(variant, PointStore::new);
+        }
+
         public Player getPlayer() {
             return player;
         }
@@ -257,8 +261,8 @@ public class AbilityTreeInstance {
             this.getEffectivePrice(variant, nodeName).getLines(lineConsumer, player, pointStores.getOrDefault(variant, AbilityTreeInstance.PointStore.IMMUTABLE_ZERO), overrideColor);
         }
 
-        /// Purchases the nodeName for the given price
-        public boolean makePurchase(ServerPlayer player, TransfurVariant<?> variant, ResourceLocation nodeName, int levels, int experienceLevels, List<ItemStack> items) {
+        /// Purchases the nodeName for the given price. Does not check if the player can afford the price.
+        public boolean makePurchase(ServerPlayer player, TransfurVariant<?> variant, ResourceLocation nodeName, NodePrice price) {
             if (!tree.hasNode(nodeName)) {
                 LOGGER.error("Tree is missing node {} during purchase", nodeName);
                 return false;
@@ -273,10 +277,11 @@ public class AbilityTreeInstance {
 
             var pointStore = pointStores.computeIfAbsent(variant, PointStore::new);
 
-            pointStore.removeLevels(levels);
-            if (experienceLevels > 0)
-                player.setExperienceLevels(player.experienceLevel - experienceLevels);
-            purchasedNodes.add(new AccountedPurchase(nodeName, variant, levels, experienceLevels, items));
+            pointStore.removeLevels(price.levels());
+            if (price.experience() > 0)
+                player.setExperienceLevels(player.experienceLevel - price.experience());
+            var items = price.takeItems(player.getInventory());
+            purchasedNodes.add(new AccountedPurchase(nodeName, variant, price.levels(), price.experience(), items));
             return true;
         }
 
@@ -306,6 +311,9 @@ public class AbilityTreeInstance {
             toRemove.forEach(purchase -> {
                 refundPurchase(player, purchase);
             });
+
+            if (!toRemove.isEmpty())
+                player.inventoryMenu.broadcastChanges();
 
             return toRemove.size();
         }
@@ -454,6 +462,9 @@ public class AbilityTreeInstance {
             invalid.forEach(purchase -> {
                 refundPurchase(player, purchase);
             });
+
+            if (!invalid.isEmpty())
+                player.inventoryMenu.broadcastChanges();
         }
 
         public void gatherNodeEffects(TransfurVariantInstance<?> variantInstance, Consumer<NodeEffect> sink) {

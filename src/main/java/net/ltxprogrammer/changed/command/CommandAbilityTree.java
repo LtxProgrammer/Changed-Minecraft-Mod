@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.command;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
@@ -8,6 +9,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.tree.AbilityTree;
 import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
+import net.ltxprogrammer.changed.ability.tree.NodePrice;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.network.packet.AbilityTreeSyncInstancePacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -65,6 +67,11 @@ public class CommandAbilityTree {
                                 .then(Commands.literal("refundall")
                                         .executes(context -> refundAllTreeNodes(context.getSource(), EntityArgument.getPlayer(context, "player"), ResourceLocationArgument.getId(context, "tree")))
                                 )
+                                .then(Commands.literal("addlevels")
+                                        .then(Commands.argument("levels", IntegerArgumentType.integer())
+                                                .executes(context -> addTreeLevels(context.getSource(), EntityArgument.getPlayer(context, "player"), ResourceLocationArgument.getId(context, "tree"), IntegerArgumentType.getInteger(context, "levels")))
+                                        )
+                                )
                         )
                 )
         );
@@ -85,7 +92,7 @@ public class CommandAbilityTree {
         if (node == null)
             throw NOT_NODE.create();
 
-        int granted = tree.get().makePurchase(player, variant.getParent(), nodeId, 0, 0, List.of()) ? 1 : 0;
+        int granted = tree.get().makePurchase(player, variant.getParent(), nodeId, NodePrice.ZERO) ? 1 : 0;
 
         if (granted > 0) {
             player.connection.send(
@@ -110,7 +117,7 @@ public class CommandAbilityTree {
             throw NOT_TREE.create();
 
         int granted = tree.get().getTree().getTreeNodes().map(Pair::getFirst).map(nodeId -> {
-            return tree.get().makePurchase(player, variant.getParent(), nodeId, 0, 0, List.of()) ? 1 : 0;
+            return tree.get().makePurchase(player, variant.getParent(), nodeId, NodePrice.ZERO) ? 1 : 0;
         }).reduce(Integer::sum).orElse(0);
 
         if (granted > 0) {
@@ -162,5 +169,30 @@ public class CommandAbilityTree {
             source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.refund.many", refunded, player.getScoreboardName()), false);
         }
         return refunded;
+    }
+
+    private static int addTreeLevels(CommandSourceStack source, ServerPlayer player, ResourceLocation treeId, int deltaLevels) throws CommandSyntaxException {
+        var variant = ProcessTransfur.getPlayerTransfurVariant(player);
+        if (variant == null)
+            throw NOT_TRANSFURRED.create();
+
+        var abilityTree = ((PlayerDataExtension)player).getAbilityTree();
+        var tree = abilityTree.getTrees(variant.getParent()).stream().filter(accountedTree -> accountedTree.getTree().getTreeLocation().equals(treeId)).findFirst();
+
+        if (tree.isEmpty())
+            throw NOT_TREE.create();
+
+        var pointStore = tree.get().getMutablePointStore(variant.getParent());
+        int levelsBefore = pointStore.getLevels();
+        pointStore.addLevels(deltaLevels);
+
+        int actualDelta = pointStore.getLevels() - levelsBefore;
+        if (actualDelta > 0)
+            source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.addlevels.positive", actualDelta, player.getScoreboardName()), false);
+        else if (actualDelta < 0)
+            source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.addlevels.negative", -actualDelta, player.getScoreboardName()), false);
+        else
+            source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.addlevels.zero", player.getScoreboardName()), false);
+        return actualDelta;
     }
 }
