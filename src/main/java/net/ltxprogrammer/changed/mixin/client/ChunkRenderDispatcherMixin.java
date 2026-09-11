@@ -76,14 +76,23 @@ public abstract class ChunkRenderDispatcherMixin {
                 beginLayer(bufferbuilder);
             }
 
+            int blockX0 = blockPos.getX() & 15;
+            int blockY0 = blockPos.getY() & 15;
+            int blockZ0 = blockPos.getZ() & 15;
+            poseStack.pushPose();
+            poseStack.translate(blockX0, blockY0, blockZ0);
+
             ChangedClient.latexCoveredBlocksRenderer.get().tesselate(
                     region,
                     LatexCoverGetter.extend(region, fetchPos -> this.getLatexCoverState(region, fetchPos)),
                     blockPos,
+                    poseStack,
                     bufferbuilder,
                     blockState,
                     latexCoverState,
                     random);
+
+            poseStack.popPose();
         }
     }
 }

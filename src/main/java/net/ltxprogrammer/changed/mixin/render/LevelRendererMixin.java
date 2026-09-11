@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.google.common.collect.Queues;
+import com.google.common.collect.Sets;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -13,13 +14,17 @@ import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import com.mojang.math.Axis;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.ltxprogrammer.changed.client.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.item.LoopedRecordItem;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.CameraUtil;
+import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -39,6 +44,7 @@ import net.minecraft.server.level.BlockDestructionProgress;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.RecordItem;
@@ -48,6 +54,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.model.data.ModelData;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.slf4j.Logger;
@@ -68,7 +75,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Mixin(LevelRenderer.class)
-public abstract class LevelRendererMixin {
+public abstract class LevelRendererMixin implements LevelRendererExtension {
     @Shadow protected abstract void renderChunkLayer(RenderType p_172994_, PoseStack p_172995_, double p_172996_, double p_172997_, double p_172998_, Matrix4f p_172999_);
     @Shadow @Final private Map<BlockPos, SoundInstance> playingRecords;
     @Shadow @Final private Minecraft minecraft;
@@ -115,6 +122,8 @@ public abstract class LevelRendererMixin {
 
     @Shadow @Final private ObjectArrayList<LevelRenderer.RenderChunkInfo> renderChunksInFrustum;
     @Shadow @Final private Long2ObjectMap<SortedSet<BlockDestructionProgress>> destructionProgress;
+    @Unique private final Int2ObjectMap<BlockDestructionProgress> destroyingLatexCovers = new Int2ObjectOpenHashMap();;
+    @Unique private final Long2ObjectMap<SortedSet<BlockDestructionProgress>> latexCoverDestructionProgress = new Long2ObjectOpenHashMap<>();
     @Shadow @Final private Set<BlockEntity> globalBlockEntities;
     @Shadow @Nullable private PostChain entityEffect;
 
@@ -154,27 +163,93 @@ public abstract class LevelRendererMixin {
     @Shadow private double prevCamRotY;
     @Shadow private boolean generateClouds;
 
-
     @Shadow @Final private static Logger LOGGER;
 
-    /*@Inject(method = "renderChunkLayer", at = @At("RETURN"))
-    public void postRenderLayer(RenderType type, PoseStack pose, double x, double y, double z, Matrix4f matrix, CallbackInfo callback) {
-        if (type == RenderType.solid()) {
-            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = true;
-            renderChunkLayer(ChangedShaders.latexSolid(), pose, x, y, z, matrix);
-            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = false;
+    @Shadow private int ticks;
+
+    @Unique
+    private void changed$removeProgress(BlockDestructionProgress p_109766_) {
+        long i = p_109766_.getPos().asLong();
+        Set<BlockDestructionProgress> set = (Set)this.latexCoverDestructionProgress.get(i);
+        set.remove(p_109766_);
+        if (set.isEmpty()) {
+            this.latexCoverDestructionProgress.remove(i);
         }
-        else if (type == RenderType.cutoutMipped()) {
-            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = true;
-            renderChunkLayer(ChangedShaders.latexCutoutMipped(), pose, x, y, z, matrix);
-            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = false;
+
+    }
+
+    @Unique
+    public RandomSource changed$random = RandomSource.create();
+
+    @Unique
+    public void changed$renderLatexCoverDestruction(PoseStack poseStack, Camera camera) {
+        Vec3 vec3 = camera.getPosition();
+        double camX = vec3.x();
+        double camY = vec3.y();
+        double camZ = vec3.z();
+
+        for (Long2ObjectMap.Entry<SortedSet<BlockDestructionProgress>> sortedSetEntry : this.latexCoverDestructionProgress.long2ObjectEntrySet()) {
+            BlockPos blockpos2 = BlockPos.of(sortedSetEntry.getLongKey());
+            double d3 = (double) blockpos2.getX() - camX;
+            double d4 = (double) blockpos2.getY() - camY;
+            double d5 = (double) blockpos2.getZ() - camZ;
+            if (!(d3 * d3 + d4 * d4 + d5 * d5 > (double) 1024.0F)) {
+                SortedSet<BlockDestructionProgress> sortedset1 = sortedSetEntry.getValue();
+                if (sortedset1 != null && !sortedset1.isEmpty()) {
+                    int k = sortedset1.last().getProgress();
+                    poseStack.pushPose();
+                    poseStack.translate((double) blockpos2.getX() - camX, (double) blockpos2.getY() - camY, (double) blockpos2.getZ() - camZ);
+                    PoseStack.Pose posestack$pose1 = poseStack.last();
+                    VertexConsumer vertexconsumer1 = new SheetedDecalTextureGenerator(this.renderBuffers.crumblingBufferSource().getBuffer(ModelBakery.DESTROY_TYPES.get(k)), posestack$pose1.pose(), posestack$pose1.normal(), 1.0F);
+                    ChangedClient.latexCoveredBlocksRenderer.get().renderBreakingTexture(this.level.getBlockState(blockpos2), LatexCoverState.getAt(this.level, blockpos2), blockpos2, this.level, poseStack, vertexconsumer1, changed$random);
+                    poseStack.popPose();
+                }
+            }
         }
-        else if (type == RenderType.cutout()) {
-            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = true;
-            renderChunkLayer(ChangedShaders.latexCutout(), pose, x, y, z, matrix);
-            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = false;
+    }
+
+    @Unique
+    public void changed$destroyLatexCoverProgress(int entityId, BlockPos blockPos, int progress) {
+        if (progress >= 0 && progress < 10) {
+            BlockDestructionProgress destructionProgress = this.destroyingLatexCovers.get(entityId);
+            if (destructionProgress != null) {
+                this.changed$removeProgress(destructionProgress);
+            }
+
+            if (destructionProgress == null || destructionProgress.getPos().getX() != blockPos.getX() || destructionProgress.getPos().getY() != blockPos.getY() || destructionProgress.getPos().getZ() != blockPos.getZ()) {
+                destructionProgress = new BlockDestructionProgress(entityId, blockPos);
+                this.destroyingLatexCovers.put(entityId, destructionProgress);
+            }
+
+            destructionProgress.setProgress(progress);
+            destructionProgress.updateTick(this.ticks);
+            this.latexCoverDestructionProgress.computeIfAbsent(destructionProgress.getPos().asLong(), (p_234254_) -> Sets.newTreeSet()).add(destructionProgress);
+        } else {
+            BlockDestructionProgress blockdestructionprogress = this.destroyingLatexCovers.remove(entityId);
+            if (blockdestructionprogress != null) {
+                this.changed$removeProgress(blockdestructionprogress);
+            }
         }
-    }*/
+
+    }
+
+    @WrapMethod(method = "tick")
+    public void changed$additionalTick(Operation<Void> original) {
+        original.call();
+
+        if (this.ticks % 20 == 0) {
+            Iterator<BlockDestructionProgress> iterator = this.destroyingLatexCovers.values().iterator();
+
+            while(iterator.hasNext()) {
+                BlockDestructionProgress blockdestructionprogress = iterator.next();
+                int i = blockdestructionprogress.getUpdatedRenderTick();
+                if (this.ticks - i > 400) {
+                    iterator.remove();
+                    this.changed$removeProgress(blockdestructionprogress);
+                }
+            }
+        }
+    }
 
     @WrapOperation(method = "playStreamingMusic(Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/RecordItem;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/sounds/SimpleSoundInstance;forRecord(Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/client/resources/sounds/SimpleSoundInstance;"))
@@ -559,6 +634,8 @@ public abstract class LevelRendererMixin {
                 }
             }
         }
+
+        changed$renderLatexCoverDestruction(poseStack, camera);
 
         this.checkPoseStack(poseStack);
         HitResult hitresult = this.minecraft.hitResult;

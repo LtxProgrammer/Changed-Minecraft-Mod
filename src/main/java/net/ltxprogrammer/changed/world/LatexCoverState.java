@@ -6,7 +6,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
-import net.ltxprogrammer.changed.entity.latex.SpreadingLatexType;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.util.Cacheable;
@@ -14,7 +13,6 @@ import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
@@ -29,14 +27,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateHolder;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.*;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.lighting.LightEngine;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.phys.BlockHitResult;
@@ -56,20 +55,49 @@ public class LatexCoverState extends StateHolder<LatexType, LatexCoverState> {
 
     public static final Cacheable<Codec<LatexCoverState>> CODEC = Cacheable.of(() -> codec(ChangedRegistry.LATEX_TYPE.get().getCodec(), LatexType::defaultCoverState).stable());
 
+    private final int lightEmission;
+    private final boolean isAir;
+    private final boolean ignitedByLava;
+    private final MapColor mapColor;
+    private final float destroySpeed;
+    private final boolean requiresCorrectToolForDrops;
+    private final boolean canOcclude;
+    private final boolean spawnParticlesOnBreak;
+    private final boolean replaceable;
+    private boolean isRandomlyTicking;
+
     public LatexCoverState(LatexType type, ImmutableMap<Property<?>, Comparable<?>> properties, MapCodec<LatexCoverState> codec) {
         super(type, properties, codec);
+        LatexCoverProperties gameProperties = type.properties;
+        this.lightEmission = gameProperties.lightEmission.applyAsInt(this.asState());
+        this.isAir = gameProperties.isAir;
+        this.ignitedByLava = gameProperties.ignitedByLava;
+        this.mapColor = gameProperties.mapColor.apply(this.asState());
+        this.destroySpeed = gameProperties.destroyTime;
+        this.requiresCorrectToolForDrops = gameProperties.requiresCorrectToolForDrops;
+        this.canOcclude = gameProperties.canOcclude;
+        this.spawnParticlesOnBreak = gameProperties.spawnParticlesOnBreak;
+        this.replaceable = gameProperties.replaceable;
     }
 
     public boolean canOcclude(BlockGetter level, BlockPos pos, LatexCoverState other, BlockPos otherPos) {
         return this.getType().canOcclude(this.asState(), level, pos, other, otherPos);
     }
 
+    public int getLightEmission() {
+        return this.lightEmission;
+    }
+
     public boolean isPresent() {
-        return this.owner != ChangedLatexTypes.NONE.get();
+        return !isAir;
     }
 
     public boolean isAir() {
-        return this.owner == ChangedLatexTypes.NONE.get();
+        return isAir;
+    }
+
+    public boolean ignitedByLava() {
+        return this.ignitedByLava;
     }
 
     public LatexType getType() {
@@ -218,7 +246,7 @@ public class LatexCoverState extends StateHolder<LatexType, LatexCoverState> {
         int i = blockPos.getY();
         LevelChunkSection section = chunk.getSection(chunk.getSectionIndex(i));
         boolean hasOnlyAir = section.hasOnlyAir();
-        if (hasOnlyAir && state.isPresent()) {
+        if (hasOnlyAir && state.isAir()) {
             return null;
         } else {
             int j = blockPos.getX() & 15;
@@ -290,6 +318,14 @@ public class LatexCoverState extends StateHolder<LatexType, LatexCoverState> {
 
     public LatexCoverState asState() {
         return this;
+    }
+
+    public boolean requiresCorrectToolForDrops() {
+        return this.requiresCorrectToolForDrops;
+    }
+
+    public boolean shouldSpawnParticlesOnBreak() {
+        return this.spawnParticlesOnBreak;
     }
 
     public final void updateNeighbourShapes(LevelAccessor level, BlockPos p_60703_, int flags) {
@@ -391,11 +427,11 @@ public class LatexCoverState extends StateHolder<LatexType, LatexCoverState> {
     }
 
     public MapColor getMapColor(LatexCoverGetter level, BlockPos blockPos) {
-        return this.getType().getMapColor(this.asState(), level, blockPos);
+        return this.getType().getMapColor(this.asState(), level, blockPos, this.mapColor);
     }
 
     public boolean isRandomlyTicking() {
-        return !isAir();
+        return this.isRandomlyTicking;
     }
 
     public long getSeed(BlockPos blockPos) {
@@ -412,6 +448,14 @@ public class LatexCoverState extends StateHolder<LatexType, LatexCoverState> {
 
     public LatexCoverState updateInPlace(BlockState oldState, BlockState newState, LevelAccessor level, BlockPos pos) {
         return this.getType().updateInPlace(this.asState(), oldState, newState, level, pos);
+    }
+
+    public boolean canBeReplaced() {
+        return this.replaceable;
+    }
+
+    public boolean canOcclude() {
+        return this.canOcclude;
     }
 
     public VoxelShape getShape(LatexCoverGetter level, BlockPos blockPos) {
@@ -455,6 +499,8 @@ public class LatexCoverState extends StateHolder<LatexType, LatexCoverState> {
     }
 
     public void initCache() {
+        this.isRandomlyTicking = this.owner.isRandomlyTicking(this.asState());
+
         /*this.fluidState = this.owner.getFluidState(this.asState());
         this.isRandomlyTicking = this.owner.isRandomlyTicking(this.asState());
         if (!this.getBlock().hasDynamicShape()) {
@@ -600,9 +646,34 @@ public class LatexCoverState extends StateHolder<LatexType, LatexCoverState> {
         return this.getType().use(this.asState(), level, player, hand, hitVec);
     }
 
+    public void attack(Level level, BlockPos blockPos, Player player) {
+        this.getType().attack(this.asState(), level, blockPos, player);
+    }
+
     // TODO: hook into appropriate places
     @Nullable
     public SoundType getSoundType(LevelReader level, BlockPos pos, @Nullable Entity entity) {
         return this.getType().getSoundType(this.asState(), level, pos, entity);
+    }
+
+    public float getDestroySpeed(LatexCoverGetter level, BlockPos blockPos) {
+        return this.destroySpeed;
+    }
+
+    public float getDestroyProgress(Player player, LatexCoverGetter level, BlockPos blockPos) {
+        return this.getType().getDestroyProgress(this.asState(), player, level, blockPos);
+    }
+
+    public boolean canHarvestLatexCover(LatexCoverGetter level, BlockPos pos, Player player) {
+        return this.getType().canHarvestLatexCover(this.asState(), level, pos, player);
+    }
+
+    public boolean onDestroyedByPlayer(Level level, BlockPos pos, Player player, boolean willHarvest) {
+        return this.getType().onDestroyedByPlayer(this.asState(), level, pos, player, willHarvest);
+    }
+
+    public BlockState getBlockStateForProperties() {
+        Block block = getType().getBlock();
+        return block != null ? block.defaultBlockState() : Blocks.AIR.defaultBlockState();
     }
 }

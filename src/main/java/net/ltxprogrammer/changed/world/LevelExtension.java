@@ -20,6 +20,10 @@ import javax.annotation.Nullable;
 public class LevelExtension {
     public static final LevelExtension INSTANCE = new LevelExtension();
 
+    public void destroyLatexCoverProgress(LevelAccessor level, int entityId, BlockPos blockPos, int progress) {
+
+    }
+
     public void setCoversDirty(LevelAccessor level, BlockPos blockPos, LatexCoverState oldState, LatexCoverState recordedState) {
 
     }

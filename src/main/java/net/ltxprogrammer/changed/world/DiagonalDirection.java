@@ -7,28 +7,37 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.util.RandomSource;
 
 import java.util.Collection;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /// Represents relative block positions that share an edge instead of sharing a face
 public enum DiagonalDirection {
-    UP_NORTH(new Vec3i(0, 1, -1)),
-    UP_EAST(new Vec3i(1, 1, 0)),
-    UP_SOUTH(new Vec3i(0, 1, 1)),
-    UP_WEST(new Vec3i(-1, 1, 0)),
-    DOWN_NORTH(new Vec3i(0, -1, -1)),
-    DOWN_EAST(new Vec3i(1, -1, 0)),
-    DOWN_SOUTH(new Vec3i(0, -1, 1)),
-    DOWN_WEST(new Vec3i(-1, -1, 0)),
-    NORTH_EAST(new Vec3i(1, 0, -1)),
-    SOUTH_EAST(new Vec3i(1, 0, 1)),
-    SOUTH_WEST(new Vec3i(-1, 0, 1)),
-    NORTH_WEST(new Vec3i(-1, 0, -1));
+    UP_NORTH(Direction.UP, Direction.NORTH),
+    UP_EAST(Direction.UP, Direction.EAST),
+    UP_SOUTH(Direction.UP, Direction.SOUTH),
+    UP_WEST(Direction.UP, Direction.WEST),
+    DOWN_NORTH(Direction.DOWN, Direction.NORTH),
+    DOWN_EAST(Direction.DOWN, Direction.EAST),
+    DOWN_SOUTH(Direction.DOWN, Direction.SOUTH),
+    DOWN_WEST(Direction.DOWN, Direction.WEST),
+    NORTH_EAST(Direction.NORTH, Direction.EAST),
+    SOUTH_EAST(Direction.SOUTH, Direction.EAST),
+    SOUTH_WEST(Direction.SOUTH, Direction.WEST),
+    NORTH_WEST(Direction.NORTH, Direction.WEST);
 
+    private final Direction directionA, directionB;
     private final Vec3i normal;
     private static final DiagonalDirection[] VALUES = values();
 
-    DiagonalDirection(Vec3i normal) {
-        this.normal = normal;
+    DiagonalDirection(Direction directionA, Direction directionB) {
+        this.directionA = directionA;
+        this.directionB = directionB;
+        this.normal = new Vec3i(
+                directionA.getStepX() + directionB.getStepX(),
+                directionA.getStepY() + directionB.getStepY(),
+                directionA.getStepZ() + directionB.getStepZ()
+        );
     }
 
     public int getStepX() {
@@ -53,6 +62,18 @@ public enum DiagonalDirection {
                 normal.getY() * multiplier,
                 normal.getZ() * multiplier
         );
+    }
+
+    public Stream<BlockPos> intermediatePositions(BlockPos pos) {
+        return Stream.of(pos.relative(directionA), pos.relative(directionB));
+    }
+
+    public boolean doEitherIntermediateMatch(BlockPos pos, Predicate<BlockPos> blockPosPredicate) {
+        return blockPosPredicate.test(pos.relative(directionA)) || blockPosPredicate.test(pos.relative(directionB));
+    }
+
+    public boolean doNeitherIntermediateMatch(BlockPos pos, Predicate<BlockPos> blockPosPredicate) {
+        return !blockPosPredicate.test(pos.relative(directionA)) && !blockPosPredicate.test(pos.relative(directionB));
     }
 
     public static DiagonalDirection getRandom(RandomSource random) {

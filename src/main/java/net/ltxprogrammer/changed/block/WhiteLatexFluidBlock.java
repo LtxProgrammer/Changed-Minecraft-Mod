@@ -1,13 +1,11 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedFluids;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -27,7 +25,7 @@ public class WhiteLatexFluidBlock extends AbstractLatexFluidBlock implements Whi
     }
 
     @Override
-    public @NotNull LatexCoverState getLatexCoverState(BlockState blockState, BlockPos blockPos) {
+    public @NotNull LatexCoverState getLatexCoverState(BlockState blockState) {
         return blockState.getValue(GROUNDED) ? ChangedLatexTypes.WHITE_LATEX.get().sourceCoverState() : ChangedLatexTypes.NONE.get().defaultCoverState();
     }
 

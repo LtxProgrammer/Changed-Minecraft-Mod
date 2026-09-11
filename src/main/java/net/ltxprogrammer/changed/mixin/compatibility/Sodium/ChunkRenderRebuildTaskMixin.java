@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.compatibility.Sodium;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.vertex.PoseStack;
 import me.jellysquid.mods.sodium.client.render.chunk.RenderSection;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.ChunkBuildBuffers;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.ChunkBuildContext;
@@ -66,6 +67,8 @@ public abstract class ChunkRenderRebuildTaskMixin {
         int maxY = minY + 16;
         int maxZ = minZ + 16;
 
+        PoseStack poseStack = new PoseStack();
+
         for(int y = minY; y < maxY; ++y) {
             if (cancellationToken.isCancelled()) {
                 return;
@@ -77,7 +80,7 @@ public abstract class ChunkRenderRebuildTaskMixin {
 
                     BlockState blockState = slice.getBlockState(blockPos);
                     if (blockState.getBlock() instanceof LatexCoveringSource source)
-                        source.getLatexCoverState(blockState, blockPos);
+                        source.getLatexCoverState(blockState);
                     LatexCoverState latexCoverState = getLatexCoverState(slice, blockPos);
 
                     if (!latexCoverState.isPresent())
@@ -86,10 +89,17 @@ public abstract class ChunkRenderRebuildTaskMixin {
                     RenderType rendertype = ChangedClient.latexCoveredBlocksRenderer.get().getRenderType(latexCoverState);
                     Material material = DefaultMaterials.forRenderLayer(rendertype);
 
+                    int blockX0 = blockPos.getX() & 15;
+                    int blockY0 = blockPos.getY() & 15;
+                    int blockZ0 = blockPos.getZ() & 15;
+                    poseStack.pushPose();
+                    poseStack.translate(blockX0, blockY0, blockZ0);
+
                     boolean rendered = ChangedClient.latexCoveredBlocksRenderer.get().tesselate(
                             slice,
                             LatexCoverGetter.extend(slice, fetchPos -> this.getLatexCoverState(slice, fetchPos)),
                             blockPos,
+                            poseStack,
                             builderCache.computeIfAbsent(rendertype, type -> new OptimizedVertexBuilder(
                                     vertices,
                                     buffers.get(material),
@@ -97,6 +107,8 @@ public abstract class ChunkRenderRebuildTaskMixin {
                             blockState,
                             latexCoverState,
                             this.random);
+
+                    poseStack.popPose();
 
                     if (rendered) {
                         blockPos.set(x & 15, y & 15, z & 15);
