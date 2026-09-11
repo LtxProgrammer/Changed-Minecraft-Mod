@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
@@ -49,5 +50,20 @@ public class WhiteLatexFluidBlock extends AbstractLatexFluidBlock implements Whi
 
         if (ChangedLatexTypes.WHITE_LATEX.get().isHostileTo(LatexType.getEntityLatexType(entity)))
             entity.hurt(ChangedDamageSources.WHITE_LATEX.source(entity.level().registryAccess()), 3.0f);
+    }
+
+    @Override
+    public void fallOn(Level level, BlockState state, BlockPos blockPos, Entity entity, float distance) {
+        if (!(entity instanceof LivingEntity livingEntity)) {
+            super.fallOn(level, state, blockPos, entity, distance);
+            return;
+        }
+
+        if (LatexType.getEntityLatexType(livingEntity) == ChangedLatexTypes.WHITE_LATEX.get() && distance > 3.0f) {
+            if (livingEntity instanceof Player player)
+                WhiteLatexTransportInterface.entityEnterLatex(player, blockPos);
+        } else {
+            super.fallOn(level, state, blockPos, entity, distance);
+        }
     }
 }

@@ -40,6 +40,14 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
         return ChangedLatexTypes.WHITE_LATEX.get().sourceCoverState();
     }
 
+    public static final List<Supplier<? extends WhiteLatexFlora>> SMALL_FLORA = List.of(
+            ChangedBlocks.WHITE_LATEX_SWIRL,
+            ChangedBlocks.WHITE_LATEX_SQUIGGLE,
+            ChangedBlocks.WHITE_LATEX_STUMP
+    );
+
+    public static final List<Supplier<? extends WhiteLatexFlora>> LARGE_FLORA = List.of();
+
     public boolean skipRendering(BlockState thisState, BlockState otherState, Direction direction) {
         return otherState.is(this) ? true : super.skipRendering(thisState, otherState, direction);
     }
@@ -56,8 +64,6 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
         if (context instanceof EntityCollisionContext ecc) {
             if (ecc.getEntity() instanceof LivingEntity le) {
-                if (le.fallDistance > 3.0f)
-                    return Shapes.empty();
                 if (WhiteLatexTransportInterface.isEntityInWhiteLatex(le))
                     return Shapes.empty();
             }

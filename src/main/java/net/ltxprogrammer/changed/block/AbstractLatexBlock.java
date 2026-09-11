@@ -139,11 +139,11 @@ public abstract class AbstractLatexBlock extends Block implements LatexCoveringS
     }
 
     @Override
-    public void fallOn(Level level, BlockState blockState, BlockPos blockPos, Entity entity, float p_152430_) {
-        if (latexType.get().stepOn(level, blockPos.above(), simulatedCoverState.getOrThrow(), blockPos, blockState, entity))
+    public void fallOn(Level level, BlockState blockState, BlockPos blockPos, Entity entity, float distance) {
+        if (latexType.get().fallOn(level, blockState, blockPos.above(), simulatedCoverState.getOrThrow(), blockPos, entity, distance))
             return;
 
-        super.stepOn(level, blockPos, blockState, entity);
+        super.fallOn(level, blockState, blockPos, entity, distance);
     }
 
     @Override

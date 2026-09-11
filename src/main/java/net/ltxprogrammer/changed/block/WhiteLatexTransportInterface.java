@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.entity.latex.LatexSwimMover;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.core.BlockPos;
@@ -85,8 +86,12 @@ public interface WhiteLatexTransportInterface {
         AABB testHitbox = entity.getBoundingBox().inflate(-0.15);
         return BlockPos.betweenClosedStream(testHitbox).filter(blockPos -> {
             final BlockState blockState = entity.level().getBlockState(blockPos);
-            if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface)
-                return transportInterface.allowTransport(blockState);
+            if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface) {
+                if (!transportInterface.allowTransport(blockState))
+                    return false;
+
+                return entity.isColliding(blockPos, blockState);
+            }
 
             return false;
         }).findFirst();

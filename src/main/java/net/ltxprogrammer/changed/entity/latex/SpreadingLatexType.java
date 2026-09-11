@@ -678,14 +678,7 @@ public abstract class SpreadingLatexType extends LatexType {
             }
         }
 
-        @Override
-        public void randomTick(LatexCoverState state, ServerLevel level, BlockPos blockPos, RandomSource random) {
-            super.randomTick(state, level, blockPos, random);
-
-            if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
-                    random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
-                return;
-
+        protected void doCrystalGrowth(LatexCoverState state, ServerLevel level, BlockPos blockPos, RandomSource random) {
             BlockPos below = blockPos.below();
             BlockPos above = blockPos.above();
             boolean isAir = level.getBlockState(blockPos).isAir();
@@ -704,6 +697,17 @@ public abstract class SpreadingLatexType extends LatexType {
                     level.setBlockAndUpdate(blockPos, newBlockState.setValue(AbstractDoubleTransfurCrystal.HALF, DoubleBlockHalf.LOWER));
                     level.setBlockAndUpdate(above, newBlockState.setValue(AbstractDoubleTransfurCrystal.HALF, DoubleBlockHalf.UPPER));
                 }
+            }
+        }
+
+        @Override
+        public void randomTick(LatexCoverState state, ServerLevel level, BlockPos blockPos, RandomSource random) {
+            super.randomTick(state, level, blockPos, random);
+
+            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
+                    random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))) {
+                this.doCrystalGrowth(state, level, blockPos, random);
+                return;
             }
         }
 
@@ -800,6 +804,9 @@ public abstract class SpreadingLatexType extends LatexType {
         @Override
         public void defaultCoverBehavior(CoveringBlockEvent event) {
             super.defaultCoverBehavior(event);
+            if (event.originalState.is(Blocks.GRASS) || event.originalState.is(BlockTags.SMALL_FLOWERS) || event.originalState.is(Blocks.FERN) || event.originalState.is(BlockTags.SAPLINGS)) {
+                event.setPlannedState(Util.getRandom(WhiteLatexBlock.SMALL_FLORA, event.level.getRandom()).get().defaultBlockState());
+            }
 
             if (event.originalState.getProperties().contains(BlockStateProperties.DOUBLE_BLOCK_HALF) &&
                     (event.originalState.is(Blocks.TALL_GRASS) || event.originalState.is(Blocks.LARGE_FERN) || event.originalState.is(BlockTags.TALL_FLOWERS))) {
@@ -822,21 +829,37 @@ public abstract class SpreadingLatexType extends LatexType {
             }
         }
 
-        @Override
-        public void randomTick(@NotNull LatexCoverState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull RandomSource random) {
-            super.randomTick(state, level, position, random);
+        protected void doFloraGrowth(@NotNull LatexCoverState state, @NotNull ServerLevel level, @NotNull BlockPos blockPos, @NotNull RandomSource random) {
+            BlockPos below = blockPos.below();
+            BlockPos above = blockPos.above();
+            boolean isAir = level.getBlockState(blockPos).isAir();
+            boolean isAboveAir = level.getBlockState(above).isAir();
+            if (isAir && WhiteLatexBlock.canSupportRigidBlock(level, below)) { // Do growth event
+                long floraCount = level.getBlockStates(new AABB(blockPos).inflate(3.0))
+                        .filter(neighbor -> neighbor.is(ChangedTags.Blocks.WHITE_LATEX_FLORA))
+                        .count();
 
+                if (floraCount > 6) return;
+
+                if (random.nextFloat() < 0.75f || !isAboveAir) {
+                    level.setBlockAndUpdate(blockPos, Util.getRandom(WhiteLatexBlock.SMALL_FLORA, random).get().defaultBlockState());
+                } /*else {
+                    final var newBlockState = Util.getRandom(WhiteLatexBlock.LARGE_FLORA, random).get().defaultBlockState();
+                    level.setBlockAndUpdate(blockPos, newBlockState.setValue(AbstractDoubleTransfurCrystal.HALF, DoubleBlockHalf.LOWER));
+                    level.setBlockAndUpdate(above, newBlockState.setValue(AbstractDoubleTransfurCrystal.HALF, DoubleBlockHalf.UPPER));
+                }*/
+            }
+        }
+
+        protected void doEntitySpawn(@NotNull LatexCoverState state, @NotNull ServerLevel level, @NotNull BlockPos blockPos, @NotNull RandomSource random) {
             if (!level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING))
                 return;
             if (level.getDifficulty() == Difficulty.PEACEFUL)
                 return;
-            if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
-                    random.nextInt(1000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
-                return;
-            if (!WhiteLatexBlock.targetNearby(level, position))
+            if (!WhiteLatexBlock.targetNearby(level, blockPos))
                 return;
 
-            BlockPos above = position.above();
+            BlockPos above = blockPos.above();
             if (level.getBlockState(above).is(Blocks.AIR) && level.getBlockState(above.above()).is(Blocks.AIR)) {
                 if (level.getEntitiesOfClass(WhiteLatexEntity.class, new AABB(above).inflate(8)).size() < 8) {
                     ChangedEntities.PURE_WHITE_LATEX_WOLF.get().spawn(level, (CompoundTag) null, null, above, MobSpawnType.NATURAL, true, true);
@@ -845,8 +868,40 @@ public abstract class SpreadingLatexType extends LatexType {
         }
 
         @Override
+        public void randomTick(@NotNull LatexCoverState state, @NotNull ServerLevel level, @NotNull BlockPos blockPos, @NotNull RandomSource random) {
+            super.randomTick(state, level, blockPos, random);
+
+            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
+                    random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))) {
+                this.doFloraGrowth(state, level, blockPos, random);
+                return;
+            }
+
+            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
+                    random.nextInt(1000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))) {
+                this.doEntitySpawn(state, level, blockPos, random);
+                return;
+            }
+        }
+
+        @Override
         protected void spawnFluidParticle(Level level, double minX, double maxX, double minZ, double maxZ, double y) {
             level.addParticle(ChangedParticles.drippingLatex(Color3.WHITE), Mth.lerp(level.random.nextDouble(), minX, maxX), y, Mth.lerp(level.random.nextDouble(), minZ, maxZ), 0.0D, 0.0D, 0.0D);
+        }
+
+        @Override
+        public boolean fallOn(Level level, BlockState originalState, BlockPos originalPos, LatexCoverState coverState, BlockPos coverPos, Entity entity, float distance) {
+            if (!(entity instanceof LivingEntity livingEntity)) {
+                return super.fallOn(level, originalState, originalPos, coverState, coverPos, entity, distance);
+            }
+
+            if (LatexType.getEntityLatexType(livingEntity) == ChangedLatexTypes.WHITE_LATEX.get() && distance > 3.0f) {
+                if (livingEntity instanceof Player player)
+                    WhiteLatexTransportInterface.entityEnterLatex(player, coverPos);
+                return true;
+            } else {
+                return super.fallOn(level, originalState, originalPos, coverState, coverPos, entity, distance);
+            }
         }
     }
 

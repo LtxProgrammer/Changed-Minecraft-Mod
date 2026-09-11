@@ -39,6 +39,7 @@ public class ChangedTags {
 
     public static class Blocks {
         public static final TagKey<Block> GROWS_LATEX_CRYSTALS = create("grows_latex_crystal");
+        public static final TagKey<Block> GROWS_WHITE_LATEX_FLORA = create("grows_white_latex_flora");
         public static final TagKey<Block> LASER_TRANSLUCENT = create("laser_translucent");
         public static final TagKey<Block> DUCT_CONNECTOR = create("duct_connector");
         public static final TagKey<Block> DUCT_EXIT = create("duct_exit");
@@ -46,6 +47,7 @@ public class ChangedTags {
         public static final TagKey<Block> AIR_CONDITIONER = create("air_conditioner");
         public static final TagKey<Block> LATEX_CRYSTAL = create("latex_crystal");
         public static final TagKey<Block> LATEX_SPAWNABLE_ON = create("latex_spawnable_on");
+        public static final TagKey<Block> WHITE_LATEX_FLORA = create("white_latex_flora");
         public static final TagKey<Block> CRYSTALLINE = create("crystalline");
         public static final TagKey<Block> DENY_LATEX_COVER = create("deny_latex_cover");
         public static final TagKey<Block> DENY_LATEX_COVER_CLIMB = create("deny_latex_cover_climb");
