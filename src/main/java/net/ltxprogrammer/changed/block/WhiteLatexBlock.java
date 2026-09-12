@@ -46,7 +46,9 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
             ChangedBlocks.WHITE_LATEX_STUMP
     );
 
-    public static final List<Supplier<? extends WhiteLatexFlora>> LARGE_FLORA = List.of();
+    public static final List<Supplier<? extends WhiteLatexFlora>> LARGE_FLORA = List.of(
+            ChangedBlocks.WHITE_LATEX_STEM
+    );
 
     public boolean skipRendering(BlockState thisState, BlockState otherState, Direction direction) {
         return otherState.is(this) ? true : super.skipRendering(thisState, otherState, direction);

@@ -843,11 +843,11 @@ public abstract class SpreadingLatexType extends LatexType {
 
                 if (random.nextFloat() < 0.75f || !isAboveAir) {
                     level.setBlockAndUpdate(blockPos, Util.getRandom(WhiteLatexBlock.SMALL_FLORA, random).get().defaultBlockState());
-                } /*else {
+                } else {
                     final var newBlockState = Util.getRandom(WhiteLatexBlock.LARGE_FLORA, random).get().defaultBlockState();
-                    level.setBlockAndUpdate(blockPos, newBlockState.setValue(AbstractDoubleTransfurCrystal.HALF, DoubleBlockHalf.LOWER));
-                    level.setBlockAndUpdate(above, newBlockState.setValue(AbstractDoubleTransfurCrystal.HALF, DoubleBlockHalf.UPPER));
-                }*/
+                    level.setBlockAndUpdate(blockPos, newBlockState.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER));
+                    level.setBlockAndUpdate(above, newBlockState.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER));
+                }
             }
         }
 
