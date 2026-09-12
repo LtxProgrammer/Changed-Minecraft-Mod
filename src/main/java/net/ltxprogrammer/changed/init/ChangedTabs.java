@@ -183,6 +183,10 @@ public class ChangedTabs {
                         output.accept(ChangedBlocks.WOLF_CRYSTAL_BLOCK.get());
                         output.accept(ChangedBlocks.WHITE_LATEX_BLOCK.get());
                         output.accept(ChangedBlocks.WHITE_LATEX_PILLAR.get());
+                        output.accept(ChangedBlocks.WHITE_LATEX_SWIRL.get());
+                        output.accept(ChangedBlocks.WHITE_LATEX_SQUIGGLE.get());
+                        output.accept(ChangedBlocks.WHITE_LATEX_STUMP.get());
+                        output.accept(ChangedBlocks.WHITE_LATEX_STEM.get());
 
                         output.accept(ChangedItems.BIPED_ARMOR_STAND.get());
                         output.accept(ChangedItems.CENTAUR_ARMOR_STAND.get());

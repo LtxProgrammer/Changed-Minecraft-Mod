@@ -1,6 +1,9 @@
 package net.ltxprogrammer.changed.client;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.animations.AnimationAssociations;
 import net.ltxprogrammer.changed.client.animations.AnimationDefinitions;
@@ -25,6 +28,9 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.BlockDestructionProgress;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -38,6 +44,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -47,6 +54,7 @@ import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -115,6 +123,13 @@ public class ChangedClient {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             particleSystem.get().render(event.getPoseStack(), Minecraft.getInstance().gameRenderer.lightTexture(), event.getCamera(), event.getPartialTick(), event.getFrustum(), SetupContext.THIRD_PERSON);
             FirstPersonLayer.renderFirstPersonLayersOnFace(event.getPoseStack(), event.getCamera(), event.getPartialTick());
+        }
+
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) {
+            ((LevelRendererExtension)event.getLevelRenderer()).changed$renderLatexCoverDestruction(
+                    event.getPoseStack(),
+                    event.getCamera()
+            );
         }
     }
 

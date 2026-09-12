@@ -261,6 +261,8 @@ public class EventHandlerClient {
         public static void onRenderBlockHighlight(RenderHighlightEvent.Block event) {
             if (event.getTarget() instanceof LatexCoverHitResult)
                 event.setCanceled(true);
+            else
+                return;
 
             final var level = Minecraft.getInstance().level;
             final var getter = LatexCoverGetter.wrap(level);

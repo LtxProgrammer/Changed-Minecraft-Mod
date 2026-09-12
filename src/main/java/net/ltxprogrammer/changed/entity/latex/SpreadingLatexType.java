@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.entity.latex;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.*;
@@ -17,11 +16,11 @@ import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.DiagonalDirection;
 import net.ltxprogrammer.changed.world.LatexCoverGetter;
+import net.ltxprogrammer.changed.world.LatexCoverProperties;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -61,6 +60,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class SpreadingLatexType extends LatexType {
@@ -84,8 +84,12 @@ public abstract class SpreadingLatexType extends LatexType {
     private final Map<LatexCoverState, VoxelShape> cachedShapes;
     private final Map<LatexCoverState, VoxelShape> cachedShapesSwim;
 
-    public SpreadingLatexType() {
-        super();
+    protected static Function<LatexCoverState, MapColor> makeMapColoring(MapColor color) {
+        return coverState -> coverState.getValue(DOWN) || coverState.getValue(UP) ? color : MapColor.NONE;
+    }
+
+    public SpreadingLatexType(LatexCoverProperties properties) {
+        super(properties.randomTicks());
         this.registerDefaultCoverState(this.coverStateDefinition.any().setValue(SATURATION, 0)
                 .setValue(UP, false)
                 .setValue(DOWN, false)
@@ -227,6 +231,11 @@ public abstract class SpreadingLatexType extends LatexType {
                     direction.getStepY(),
                     direction.getStepZ());
             LatexCoverState otherState = LatexCoverState.getAt(level, checkPos);
+
+            if (direction.doNeitherIntermediateMatch(blockPos, intermediatePos -> {
+                return !isBlockFull(level, intermediatePos, level.getBlockState(intermediatePos));
+            })) continue;
+
             if (!otherState.is(this))
                 continue;
             if (otherState.getValue(SATURATION) < thisSaturation)
@@ -236,16 +245,22 @@ public abstract class SpreadingLatexType extends LatexType {
         return true;
     }
 
+    public static boolean isBlockFull(BlockGetter level, BlockPos blockPos, BlockState blockState) {
+        return blockState.isCollisionShapeFullBlock(level, blockPos) || blockState.is(ChangedTags.Blocks.ACT_AS_FULL_SIZE);
+    }
+
     public static boolean canExistOnSurface(BlockGetter level, BlockPos sourcePos, BlockState sourceState, BlockPos neighborPos, BlockState neighbor, Direction surfaceNormal) {
         boolean neighborSurfacePresent =
                 !neighbor.is(surfaceNormal == Direction.UP ? ChangedTags.Blocks.DENY_LATEX_COVER : ChangedTags.Blocks.DENY_LATEX_COVER_CLIMB) &&
-                neighbor.isFaceSturdy(level, neighborPos, surfaceNormal, SupportType.FULL);
+                (neighbor.isFaceSturdy(level, neighborPos, surfaceNormal, SupportType.FULL) || isBlockFull(level, neighborPos, neighbor));
 
         if (!neighborSurfacePresent)
             return false;
 
         // Deny surface cover if block at sourcePos has complete collision
-        return !sourceState.isFaceSturdy(level, sourcePos, surfaceNormal.getOpposite(), SupportType.FULL);
+        if (sourceState.isFaceSturdy(level, sourcePos, surfaceNormal.getOpposite(), SupportType.FULL))
+            return false;
+        return !isBlockFull(level, sourcePos, sourceState);
     }
 
     public LatexCoverState spreadState(LevelReader level, BlockPos blockPos, LatexCoverState state, int manhattanDistance) {
@@ -279,14 +294,14 @@ public abstract class SpreadingLatexType extends LatexType {
         boolean isAirOrLessThanSpread = checkCoverState.isAir() ||
                 (checkCoverState.is(this) && checkCoverState.getValue(SATURATION) > state.getValue(SATURATION) + manhattan);
 
-        if (checkState.is(ChangedTags.Blocks.DENY_LATEX_COVER) || checkState.isCollisionShapeFullBlock(level, spreadPos) || !isAirOrLessThanSpread)
+        if (checkState.is(ChangedTags.Blocks.DENY_LATEX_COVER) || isBlockFull(level, spreadPos, checkState) || !isAirOrLessThanSpread)
             return false;
 
-        if (Arrays.stream(Direction.values()).noneMatch(direction -> canExistOnSurface(level, blockPos, sourceBlockState, spreadPos, level.getBlockState(spreadPos.relative(direction)), direction.getOpposite())))
+        LatexCoverState spreadState = this.spreadState(level, spreadPos, state, manhattan);
+        if (spreadState.isAir())
             return false;
 
-        var event = new CoveringBlockEvent(this,
-                checkState, checkState, this.spreadState(level, spreadPos, state, manhattan), spreadPos, level);
+        var event = new CoveringBlockEvent(this, checkState, checkState, spreadState, spreadPos, level);
         this.defaultCoverBehavior(event);
         if (Changed.postModEvent(event))
             return false;
@@ -338,7 +353,10 @@ public abstract class SpreadingLatexType extends LatexType {
                     direction.getStepX(),
                     direction.getStepY(),
                     direction.getStepZ());
-            if (this.trySpreadTo(state, sourceState, level, blockPos, spreadPos))
+
+            if (direction.doEitherIntermediateMatch(blockPos, intermediatePos -> {
+                return !isBlockFull(level, intermediatePos, level.getBlockState(intermediatePos));
+            }) && this.trySpreadTo(state, sourceState, level, blockPos, spreadPos))
                 spreadCount--;
         }
     }
@@ -411,8 +429,8 @@ public abstract class SpreadingLatexType extends LatexType {
         if (newState.isAir())
             wantedState = state;
         else if (newState.getBlock() instanceof LatexCoveringSource source)
-            wantedState = source.getLatexCoverState(newState, pos);
-        else if (newState.is(ChangedTags.Blocks.DENY_LATEX_COVER) || newState.isCollisionShapeFullBlock(level, pos))
+            wantedState = source.getLatexCoverState(newState);
+        else if (newState.is(ChangedTags.Blocks.DENY_LATEX_COVER) || isBlockFull(level, pos, newState))
             wantedState = ChangedLatexTypes.NONE.get().defaultCoverState();
         else
             wantedState = state;
@@ -430,22 +448,6 @@ public abstract class SpreadingLatexType extends LatexType {
     @Override
     public VoxelShape getSwimShape(LatexCoverState state, LatexCoverGetter level, BlockPos blockPos, CollisionContext context) {
         return cachedShapesSwim.get(getVisualState(state));
-    }
-
-    @Override
-    public InteractionResult use(LatexCoverState state, Level level, Player player, InteractionHand hand, BlockHitResult hitVec) {
-        final ItemStack itemStack = player.getItemInHand(hand);
-        if (itemStack.is(ItemTags.SHOVELS)) {
-            if (UniversalDist.getLevelExtension(player.level()).destroyLatexCover(level, hitVec.getBlockPos(), true, player)) {
-                itemStack.hurtAndBreak(1, player, (p_43122_) -> {
-                    p_43122_.broadcastBreakEvent(hand);
-                });
-
-                return InteractionResult.sidedSuccess(level.isClientSide);
-            }
-        }
-
-        return super.use(state, level, player, hand, hitVec);
     }
 
     @Override
@@ -525,14 +527,6 @@ public abstract class SpreadingLatexType extends LatexType {
     }
 
     @Override
-    public @Nullable SoundType getSoundType(LatexCoverState state, LevelReader level, BlockPos pos, @Nullable Entity entity) {
-        final Block block = getBlock();
-        if (block == null)
-            return null;
-        return block.defaultBlockState().getSoundType(level, pos, entity);
-    }
-
-    @Override
     public void animateTick(LatexCoverState coverState, Level level, BlockPos blockPos, RandomSource random) {
         if (Changed.config.client.latexBlocksDrip.get()) {
             for (int i = 0; i < random.nextInt(1) + 1; ++i) {
@@ -589,9 +583,12 @@ public abstract class SpreadingLatexType extends LatexType {
             list.add(ChangedTransfurVariants.DARK_LATEX_WOLF_FEMALE);
         });
 
-        @Override
-        public ResourceLocation getLootTable() {
-            return BuiltInLootTables.EMPTY;
+        public DarkLatex() {
+            super(LatexCoverProperties.of()
+                    .noCollission()
+                    .strength(0.4F)
+                    .mapColor(makeMapColoring(DyeColor.BLACK.getMapColor()))
+                    .sound(SoundType.SLIME_BLOCK));
         }
 
         @Override
@@ -681,14 +678,7 @@ public abstract class SpreadingLatexType extends LatexType {
             }
         }
 
-        @Override
-        public void randomTick(LatexCoverState state, ServerLevel level, BlockPos blockPos, RandomSource random) {
-            super.randomTick(state, level, blockPos, random);
-
-            if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
-                    random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
-                return;
-
+        protected void doCrystalGrowth(LatexCoverState state, ServerLevel level, BlockPos blockPos, RandomSource random) {
             BlockPos below = blockPos.below();
             BlockPos above = blockPos.above();
             boolean isAir = level.getBlockState(blockPos).isAir();
@@ -711,13 +701,19 @@ public abstract class SpreadingLatexType extends LatexType {
         }
 
         @Override
-        protected void spawnFluidParticle(Level level, double minX, double maxX, double minZ, double maxZ, double y) {
-            level.addParticle(ChangedParticles.drippingLatex(Color3.DARK), Mth.lerp(level.random.nextDouble(), minX, maxX), y, Mth.lerp(level.random.nextDouble(), minZ, maxZ), 0.0D, 0.0D, 0.0D);
+        public void randomTick(LatexCoverState state, ServerLevel level, BlockPos blockPos, RandomSource random) {
+            super.randomTick(state, level, blockPos, random);
+
+            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
+                    random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))) {
+                this.doCrystalGrowth(state, level, blockPos, random);
+                return;
+            }
         }
 
         @Override
-        public MapColor getMapColor(LatexCoverState state, LatexCoverGetter level, BlockPos pos) {
-            return state.getValue(DOWN) || state.getValue(UP) ? DyeColor.BLACK.getMapColor() : super.getMapColor(state, level, pos);
+        protected void spawnFluidParticle(Level level, double minX, double maxX, double minZ, double maxZ, double y) {
+            level.addParticle(ChangedParticles.drippingLatex(Color3.DARK), Mth.lerp(level.random.nextDouble(), minX, maxX), y, Mth.lerp(level.random.nextDouble(), minZ, maxZ), 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -727,9 +723,12 @@ public abstract class SpreadingLatexType extends LatexType {
             list.add(ChangedTransfurVariants.LATEX_MUTANT_BLOODCELL_WOLF);
         });
 
-        @Override
-        public ResourceLocation getLootTable() {
-            return BuiltInLootTables.EMPTY;
+        public WhiteLatex() {
+            super(LatexCoverProperties.of()
+                    .noCollission()
+                    .strength(0.4F)
+                    .mapColor(makeMapColoring(DyeColor.WHITE.getMapColor()))
+                    .sound(SoundType.SLIME_BLOCK));
         }
 
         @Override
@@ -805,6 +804,9 @@ public abstract class SpreadingLatexType extends LatexType {
         @Override
         public void defaultCoverBehavior(CoveringBlockEvent event) {
             super.defaultCoverBehavior(event);
+            if (event.originalState.is(Blocks.GRASS) || event.originalState.is(BlockTags.SMALL_FLOWERS) || event.originalState.is(Blocks.FERN) || event.originalState.is(BlockTags.SAPLINGS)) {
+                event.setPlannedState(Util.getRandom(WhiteLatexBlock.SMALL_FLORA, event.level.getRandom()).get().defaultBlockState());
+            }
 
             if (event.originalState.getProperties().contains(BlockStateProperties.DOUBLE_BLOCK_HALF) &&
                     (event.originalState.is(Blocks.TALL_GRASS) || event.originalState.is(Blocks.LARGE_FERN) || event.originalState.is(BlockTags.TALL_FLOWERS))) {
@@ -827,25 +829,58 @@ public abstract class SpreadingLatexType extends LatexType {
             }
         }
 
-        @Override
-        public void randomTick(@NotNull LatexCoverState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull RandomSource random) {
-            super.randomTick(state, level, position, random);
+        protected void doFloraGrowth(@NotNull LatexCoverState state, @NotNull ServerLevel level, @NotNull BlockPos blockPos, @NotNull RandomSource random) {
+            BlockPos below = blockPos.below();
+            BlockPos above = blockPos.above();
+            boolean isAir = level.getBlockState(blockPos).isAir();
+            boolean isAboveAir = level.getBlockState(above).isAir();
+            if (isAir && WhiteLatexBlock.canSupportRigidBlock(level, below)) { // Do growth event
+                long floraCount = level.getBlockStates(new AABB(blockPos).inflate(3.0))
+                        .filter(neighbor -> neighbor.is(ChangedTags.Blocks.WHITE_LATEX_FLORA))
+                        .count();
 
+                if (floraCount > 6) return;
+
+                if (random.nextFloat() < 0.75f || !isAboveAir) {
+                    level.setBlockAndUpdate(blockPos, Util.getRandom(WhiteLatexBlock.SMALL_FLORA, random).get().defaultBlockState());
+                } else {
+                    final var newBlockState = Util.getRandom(WhiteLatexBlock.LARGE_FLORA, random).get().defaultBlockState();
+                    level.setBlockAndUpdate(blockPos, newBlockState.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER));
+                    level.setBlockAndUpdate(above, newBlockState.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER));
+                }
+            }
+        }
+
+        protected void doEntitySpawn(@NotNull LatexCoverState state, @NotNull ServerLevel level, @NotNull BlockPos blockPos, @NotNull RandomSource random) {
             if (!level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING))
                 return;
             if (level.getDifficulty() == Difficulty.PEACEFUL)
                 return;
-            if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
-                    random.nextInt(1000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
-                return;
-            if (!WhiteLatexBlock.targetNearby(level, position))
+            if (!WhiteLatexBlock.targetNearby(level, blockPos))
                 return;
 
-            BlockPos above = position.above();
+            BlockPos above = blockPos.above();
             if (level.getBlockState(above).is(Blocks.AIR) && level.getBlockState(above.above()).is(Blocks.AIR)) {
                 if (level.getEntitiesOfClass(WhiteLatexEntity.class, new AABB(above).inflate(8)).size() < 8) {
                     ChangedEntities.PURE_WHITE_LATEX_WOLF.get().spawn(level, (CompoundTag) null, null, above, MobSpawnType.NATURAL, true, true);
                 }
+            }
+        }
+
+        @Override
+        public void randomTick(@NotNull LatexCoverState state, @NotNull ServerLevel level, @NotNull BlockPos blockPos, @NotNull RandomSource random) {
+            super.randomTick(state, level, blockPos, random);
+
+            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
+                    random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))) {
+                this.doFloraGrowth(state, level, blockPos, random);
+                return;
+            }
+
+            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
+                    random.nextInt(1000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))) {
+                this.doEntitySpawn(state, level, blockPos, random);
+                return;
             }
         }
 
@@ -855,8 +890,18 @@ public abstract class SpreadingLatexType extends LatexType {
         }
 
         @Override
-        public MapColor getMapColor(LatexCoverState state, LatexCoverGetter level, BlockPos pos) {
-            return state.getValue(DOWN) || state.getValue(UP) ? DyeColor.WHITE.getMapColor() : super.getMapColor(state, level, pos);
+        public boolean fallOn(Level level, BlockState originalState, BlockPos originalPos, LatexCoverState coverState, BlockPos coverPos, Entity entity, float distance) {
+            if (!(entity instanceof LivingEntity livingEntity)) {
+                return super.fallOn(level, originalState, originalPos, coverState, coverPos, entity, distance);
+            }
+
+            if (LatexType.getEntityLatexType(livingEntity) == ChangedLatexTypes.WHITE_LATEX.get() && distance > 3.0f) {
+                if (livingEntity instanceof Player player)
+                    WhiteLatexTransportInterface.entityEnterLatex(player, coverPos);
+                return true;
+            } else {
+                return super.fallOn(level, originalState, originalPos, coverState, coverPos, entity, distance);
+            }
         }
     }
 

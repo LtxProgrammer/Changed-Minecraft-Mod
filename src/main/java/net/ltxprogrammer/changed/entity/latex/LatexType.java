@@ -8,7 +8,9 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.AbstractLatexBucket;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.LatexCoverGetter;
+import net.ltxprogrammer.changed.world.LatexCoverProperties;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -18,27 +20,27 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.StateHolder;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -49,22 +51,62 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public abstract class LatexType {
     protected final StateDefinition<LatexType, LatexCoverState> coverStateDefinition;
     private LatexCoverState defaultCoverState;
 
+    protected final boolean hasCollision;
+    protected final float explosionResistance;
+    protected final boolean isRandomlyTicking;
+    protected final SoundType soundType;
+    protected final float friction;
+    protected final float speedFactor;
+    protected final float jumpFactor;
+    public final LatexCoverProperties properties;
+    @Nullable
+    protected ResourceLocation drops;
+    private final Supplier<ResourceLocation> lootTableSupplier;
+
     private Object renderProperties;
 
-    protected LatexType() {
+    protected LatexType(LatexCoverProperties properties) {
+        this.hasCollision = properties.hasCollision;
+        this.drops = properties.drops;
+        this.explosionResistance = properties.explosionResistance;
+        this.isRandomlyTicking = properties.isRandomlyTicking;
+        this.soundType = properties.soundType;
+        this.friction = properties.friction;
+        this.speedFactor = properties.speedFactor;
+        this.jumpFactor = properties.jumpFactor;
+        this.properties = properties;
+        ResourceLocation lootTableCache = properties.drops;
+        if (lootTableCache != null) {
+            this.lootTableSupplier = () -> lootTableCache;
+        } else if (properties.lootTableSupplier != null) {
+            this.lootTableSupplier = properties.lootTableSupplier;
+        } else {
+            this.lootTableSupplier = () -> {
+                ResourceLocation registryName = ChangedRegistry.LATEX_TYPE.getKey(this);
+                return ResourceLocation.fromNamespaceAndPath(registryName.getNamespace(), "latex_cover/" + registryName.getPath());
+            };
+        }
+
         this.coverStateDefinition = createStateDefinition();
         this.defaultCoverState = coverStateDefinition.any();
 
         this.initClient();
+    }
+
+    public boolean isRandomlyTicking(LatexCoverState coverState) {
+        return this.isRandomlyTicking;
     }
 
     public String toString() {
@@ -113,11 +155,17 @@ public abstract class LatexType {
 
     public void animateTick(LatexCoverState state, Level level, BlockPos pos, RandomSource random) {}
 
-    public MapColor getMapColor(LatexCoverState state, LatexCoverGetter level, BlockPos pos) {
-        return MapColor.NONE;
+    public MapColor getMapColor(LatexCoverState state, LatexCoverGetter level, BlockPos pos, MapColor defaultColor) {
+        return defaultColor;
     }
 
-    public abstract ResourceLocation getLootTable();
+    public final ResourceLocation getLootTable() {
+        if (this.drops == null) {
+            this.drops = this.lootTableSupplier.get();
+        }
+
+        return this.drops;
+    }
 
     public long getSeed(LatexCoverState state, BlockPos blockPos) {
         return Mth.getSeed(blockPos);
@@ -195,7 +243,7 @@ public abstract class LatexType {
     }
 
     public VoxelShape getCollisionShape(LatexCoverState state, LatexCoverGetter level, BlockPos blockPos, CollisionContext context) {
-        return this.getShape(state, level, blockPos, context);
+        return this.hasCollision ? this.getShape(state, level, blockPos, context) : Shapes.empty();
     }
 
     public VoxelShape getSwimShape(LatexCoverState state, LatexCoverGetter level, BlockPos blockPos, CollisionContext context) {
@@ -239,11 +287,13 @@ public abstract class LatexType {
     }
 
     public InteractionResult use(LatexCoverState state, Level level, Player player, InteractionHand hand, BlockHitResult hitVec) {
-        return InteractionResult.CONSUME;
+        return InteractionResult.PASS;
     }
 
+    public void attack(LatexCoverState state, Level level, BlockPos blockPos, Player player) {}
+
     public boolean isAir() {
-        return false;
+        return this.properties.isAir;
     }
 
     public boolean is(TagKey<LatexType> tag) {
@@ -308,14 +358,74 @@ public abstract class LatexType {
         return false;
     }
 
+    public void popExperience(ServerLevel level, BlockPos blockPos, int exp) {
+        if (level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && !level.restoringBlockSnapshots) {
+            ExperienceOrb.award(level, Vec3.atCenterOf(blockPos), exp);
+        }
+
+    }
+
     // Return true to cancel the call to Block.stepOn
     public boolean stepOn(Level level, BlockPos coverPos, LatexCoverState coverState, BlockPos originalPos, BlockState originalState, Entity entity) {
         return false;
     }
 
+    public void playerDestroy(Level level, Player player, BlockPos blockPos, LatexCoverState coverState, ItemStack heldItem) {
+        //player.awardStat(Stats.BLOCK_MINED.get(this));
+        player.causeFoodExhaustion(0.005F);
+        dropResources(coverState, level, blockPos, player, heldItem, false);
+    }
+
     @Nullable
     public SoundType getSoundType(LatexCoverState state, LevelReader level, BlockPos pos, @Nullable Entity entity) {
-        return null;
+        return this.soundType;
+    }
+
+    public float getFriction() {
+        return this.friction;
+    }
+
+    public float getSpeedFactor() {
+        return this.speedFactor;
+    }
+
+    public float getJumpFactor() {
+        return this.jumpFactor;
+    }
+
+    public float getDestroyProgress(LatexCoverState state, Player player, LatexCoverGetter level, BlockPos blockPos) {
+        BlockState propertyState = state.getBlockStateForProperties();
+
+        float f = state.getDestroySpeed(level, blockPos);
+        if (f == -1.0F) {
+            return 0.0F;
+        } else {
+            int i = ForgeHooks.isCorrectToolForDrops(propertyState, player) ? 30 : 100;
+            return player.getDigSpeed(propertyState, blockPos) / f / (float)i;
+        }
+    }
+
+    public boolean canHarvestLatexCover(LatexCoverState coverState, LatexCoverGetter level, BlockPos pos, Player player) {
+        BlockState propertyState = coverState.getBlockStateForProperties();
+
+        return ForgeHooks.isCorrectToolForDrops(propertyState, player);
+    }
+
+    protected void spawnDestroyParticles(Level level, Player player, BlockPos blockPos, LatexCoverState coverState) {
+        UniversalDist.getLevelExtension(level).customLevelEvent(level, player, 2001, blockPos, ChangedLatexTypes.getLatexCoverStateIDMap().getId(coverState));
+    }
+
+    public void playerWillDestroy(Level level, BlockPos blockPos, LatexCoverState coverState, Player player) {
+        this.spawnDestroyParticles(level, player, blockPos, coverState);
+        //level.gameEvent(GameEvent.BLOCK_DESTROY, blockPos, GameEvent.Context.of(player, coverState));
+    }
+
+    public boolean onDestroyedByPlayer(LatexCoverState coverState, Level level, BlockPos pos, Player player, boolean willHarvest) {
+        this.playerWillDestroy(level, pos, coverState, player);
+        return LatexCoverState.setAt(level, pos, ChangedLatexTypes.NONE.get().defaultCoverState(), level.isClientSide ? 11 : 3);
+    }
+
+    public void destroy(LevelAccessor level, BlockPos blockPos, LatexCoverState coverState) {
     }
 
     public boolean canOcclude(LatexCoverState latexCoverState, BlockGetter level, BlockPos pos, LatexCoverState other, BlockPos otherPos) {
@@ -327,24 +437,13 @@ public abstract class LatexType {
     }
 
     public static class None extends LatexType {
-        @Override
-        public ResourceLocation getLootTable() {
-            return BuiltInLootTables.EMPTY;
+        public None() {
+            super(LatexCoverProperties.of().air().replaceable().noLootTable());
         }
 
         @Override
         public VoxelShape getShape(LatexCoverState state, LatexCoverGetter level, BlockPos blockPos, CollisionContext context) {
             return Shapes.empty();
-        }
-
-        @Override
-        public InteractionResult use(LatexCoverState state, Level level, Player player, InteractionHand hand, BlockHitResult hitVec) {
-            return InteractionResult.PASS;
-        }
-
-        @Override
-        public boolean isAir() {
-            return true;
         }
     }
 

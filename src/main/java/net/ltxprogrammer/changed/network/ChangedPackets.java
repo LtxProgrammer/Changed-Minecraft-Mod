@@ -99,6 +99,7 @@ public class ChangedPackets {
         addNetworkMessage(AbilitySelectMenuRequestPacket.class, AbilitySelectMenuRequestPacket::read);
         addNetworkMessage(AbilityKeyStatePacket.class, AbilityKeyStatePacket::new);
         addNetworkMessage(AbilitySelectPacket.class, AbilitySelectPacket::new);
+        addNetworkMessage(ServerboundPlayerActionPacketExt.class, ServerboundPlayerActionPacketExt::new);
 
         addNetworkMessage(DebuggerPacket.class, DebuggerPacket::new);
         DebuggerPacket.registerDebugPacket(FacilityAddPiecesPayload.IDENTIFIER, FacilityAddPiecesPayload::new);

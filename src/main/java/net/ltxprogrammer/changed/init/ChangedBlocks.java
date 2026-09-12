@@ -255,6 +255,10 @@ public class ChangedBlocks {
     public static final RegistryObject<FlowerPotBlock> POTTED_ORANGE_TREE_SAPLING = registerPottedPlant("potted_orange_tree_sapling", ORANGE_TREE_SAPLING);
     public static final RegistryObject<LeavesBlock> ORANGE_TREE_LEAVES = register("orange_tree_leaves", () -> new LeavesBlock(
             BlockBehaviour.Properties.of().strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(ChangedBlocks::ocelotOrParrot).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
+    public static final RegistryObject<WhiteLatexFlora> WHITE_LATEX_SWIRL = register("white_latex_swirl", () -> new WhiteLatexFlora(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.SLIME_BLOCK).noOcclusion().noCollission()));
+    public static final RegistryObject<WhiteLatexFlora> WHITE_LATEX_SQUIGGLE = register("white_latex_squiggle", () -> new WhiteLatexFlora(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.SLIME_BLOCK).noOcclusion().noCollission()));
+    public static final RegistryObject<WhiteLatexFlora> WHITE_LATEX_STUMP = register("white_latex_stump", () -> new WhiteLatexFlora(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.SLIME_BLOCK).noOcclusion().noCollission()));
+    public static final RegistryObject<WhiteLatexFloraTall> WHITE_LATEX_STEM = register("white_latex_stem", () -> new WhiteLatexFloraTall(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.SLIME_BLOCK).noOcclusion().noCollission()));
     public static final RegistryObject<InkCloud> INK_CLOUD = registerNoItem("ink_cloud", () -> new InkCloud(
             BlockBehaviour.Properties.of().strength(-1.0F, 3600000.0F).noCollission().noLootTable().isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
 

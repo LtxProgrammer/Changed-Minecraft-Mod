@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "": {
+      "bottom": {
+        "model": "changed:bottom_cross_large"
+      }
+    }
+  }
+}

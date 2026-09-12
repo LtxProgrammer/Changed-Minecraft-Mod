@@ -24,6 +24,11 @@ public class ClientLevelExtension extends LevelExtension {
     public static final ClientLevelExtension INSTANCE = new ClientLevelExtension();
 
     @Override
+    public void destroyLatexCoverProgress(LevelAccessor level, int entityId, BlockPos blockPos, int progress) {
+        ((LevelRendererExtension)Minecraft.getInstance().levelRenderer).changed$destroyLatexCoverProgress(entityId, blockPos, progress);
+    }
+
+    @Override
     public void setCoversDirty(LevelAccessor level, BlockPos blockPos, LatexCoverState oldState, LatexCoverState recordedState) {
         Minecraft.getInstance().levelRenderer.setBlocksDirty(blockPos.getX(), blockPos.getY(), blockPos.getZ(), blockPos.getX(), blockPos.getY(), blockPos.getZ());
     }
