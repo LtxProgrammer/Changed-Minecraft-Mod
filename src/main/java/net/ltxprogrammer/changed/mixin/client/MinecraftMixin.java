@@ -122,7 +122,7 @@ public abstract class MinecraftMixin {
         }
     }
 
-    @Inject(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/event/InputEvent$InteractionKeyMappingTriggered;isCanceled()Z"), cancellable = true)
+    @Inject(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/event/InputEvent$InteractionKeyMappingTriggered;isCanceled()Z", remap = false), cancellable = true)
     public void changed$startAttackOnLatexCover(CallbackInfoReturnable<Boolean> cir,
                                                 @Local InputEvent.InteractionKeyMappingTriggered inputEvent) {
         if (inputEvent.isCanceled())
