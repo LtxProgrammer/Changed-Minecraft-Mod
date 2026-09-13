@@ -17,7 +17,8 @@ public class ChangedBannerPatterns {
     public static final RegistryObject<BannerPattern> GOO_BOTTOM = register("goo_bottom", "c:gb");
     public static final RegistryObject<BannerPattern> GOO_TOP = register("goo_top", "c:gt");
     public static final RegistryObject<BannerPattern> PAW_PRINT = register("paw_print", "c:pp");
-    public static final RegistryObject<BannerPattern> DORSAL_FIN = register("dorsal_fin", "c:df");
+    public static final RegistryObject<BannerPattern> DORSAL_FIN_RIGHT = register("dorsal_fin_right", "c:dfr");
+    public static final RegistryObject<BannerPattern> DORSAL_FIN_LEFT = register("dorsal_fin_left", "c:dfl");
     public static final RegistryObject<BannerPattern> TENTAPAWS = register("tentapaws", "c:tp");
     public static final RegistryObject<BannerPattern> TSC_LOGO = register("tsc_logo", "c:tsc");
     public static final RegistryObject<BannerPattern> CRYSTAL_BOTTOM = register("crystal_bottom", "c:bc");

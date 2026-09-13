@@ -2,7 +2,8 @@
   "replace": false,
   "values": [
     "changed:paw_print",
-    "changed:dorsal_fin",
+    "changed:dorsal_fin_right",
+    "changed:dorsal_fin_left",
     "changed:tentapaws"
   ]
 }
