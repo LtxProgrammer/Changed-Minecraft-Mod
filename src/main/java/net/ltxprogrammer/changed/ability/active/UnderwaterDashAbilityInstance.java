@@ -168,7 +168,7 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
                 this.reentryTicks = 0;
             }
 
-            if (!this.breached) {
+            else if (!this.breached) {
                 this.reentryTicks = 20;
                 this.boostAngle = self.getDeltaMovement().normalize();
                 this.playBoostSound();
