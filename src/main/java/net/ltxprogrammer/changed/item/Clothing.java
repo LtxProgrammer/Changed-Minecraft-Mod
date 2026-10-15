@@ -60,11 +60,11 @@ public interface Clothing extends AccessoryItem {
 
     @Deprecated @Nullable
     default ResourceLocation getTexture(ItemStack stack, Entity entity) {
-        return this.getTexture(stack, entity, EquipmentSlot.MAINHAND, null);
+        return this.getTexture(stack, entity, EquipmentSlot.MAINHAND, null, false);
     }
 
     @Nullable
-    default ResourceLocation getTexture(ItemStack stack, Entity entity, EquipmentSlot renderSlot, @Nullable String type) {
+    default ResourceLocation getTexture(ItemStack stack, Entity entity, EquipmentSlot renderSlot, @Nullable String type, boolean slim) {
         return ResourceLocation.tryParse(stack.getItem().getArmorTexture(stack, entity, renderSlot, type));
     }
 

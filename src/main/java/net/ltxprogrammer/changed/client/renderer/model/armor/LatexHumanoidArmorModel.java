@@ -97,10 +97,7 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
     }
 
     public static void addUnifiedLegs(PartDefinition partDefinition, ArmorModel layer) {
-        int calfUVy = switch (layer) {
-            case CLOTHING_INNER, CLOTHING_MIDDLE, ARMOR_INNER -> 20;
-            default -> 16;
-        };
+        int calfUVy = layer.isInnerModel() ? 20 : 16;
 
         PartDefinition RightLeg = partDefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-2.5F, 10.5F, 0.0F));
 
@@ -136,10 +133,7 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
     }
 
     protected static void addUnifiedBirdLegs(PartDefinition partDefinition, ArmorModel layer) {
-        int calfUVy = switch (layer) {
-            case CLOTHING_INNER, CLOTHING_MIDDLE, ARMOR_INNER -> 21;
-            default -> 17;
-        };
+        int calfUVy = layer.isInnerModel() ? 21 : 17;
 
         PartDefinition RightLeg = partDefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-2.5F, 10.5F, 0.0F));
 
@@ -187,32 +181,30 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
     }
 
     public static void addBreastplate(PartDefinition torso, ArmorModel layer, float yOffset, float zOffset, float sizeOffset, float angle) {
-        switch (layer) {
-            case ARMOR_OUTER -> {
-                PartDefinition Plantoids = torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, -2.0F + zOffset));
+        if (layer.isArmor() && layer.isOuterModel()) {
+            PartDefinition Plantoids = torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, -2.0F + zOffset));
 
-                final var plantoidCubes = ((CubeListBuilderExtender)CubeListBuilder.create())
-                        .texOffs(18, 19).mirror().addBox(-4.0F, -2.2F + yOffset, -0.8F, 8.0F, 3.0F, 2.0F, layer.dualDeformation.extend(-0.4f)).mirror(false)
-                            .removeLastFaces(Direction.DOWN)
-                        .texOffs(18, 22).mirror().addBox(-4.0F, 2.0F + yOffset, -0.8F, 8.0F, 1.0F, 2.0F, layer.dualDeformation.extend(-0.4f)).mirror(false)
-                            .overrideLastFaceTexOffs(Direction.DOWN, 20, 23)
-                            .removeLastFaces(Direction.UP);
+            final var plantoidCubes = ((CubeListBuilderExtender)CubeListBuilder.create())
+                    .texOffs(18, 19).mirror().addBox(-4.0F, -2.2F + yOffset, -0.8F, 8.0F, 3.0F, 2.0F, layer.dualDeformation.extend(-0.4f)).mirror(false)
+                    .removeLastFaces(Direction.DOWN)
+                    .texOffs(18, 22).mirror().addBox(-4.0F, 2.0F + yOffset, -0.8F, 8.0F, 1.0F, 2.0F, layer.dualDeformation.extend(-0.4f)).mirror(false)
+                    .overrideLastFaceTexOffs(Direction.DOWN, 20, 23)
+                    .removeLastFaces(Direction.UP);
 
-                PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", plantoidCubes.finish(), PartPose.offsetAndRotation(0.0F, 2.5F - yOffset, 0.0F, angle, 0.0F, 0.0F));
-            }
+            PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", plantoidCubes.finish(), PartPose.offsetAndRotation(0.0F, 2.5F - yOffset, 0.0F, angle, 0.0F, 0.0F));
+        }
 
-            case CLOTHING_INNER, CLOTHING_MIDDLE, CLOTHING_OUTER -> {
-                PartDefinition Plantoids = torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, -2.0F + zOffset));
+        else if (layer.isClothing()) {
+            PartDefinition Plantoids = torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, -2.0F + zOffset));
 
-                final var plantoidCubes = ((CubeListBuilderExtender)CubeListBuilder.create())
-                        .texOffs(18, 19).mirror().addBox(-4.0F, -2.2F + yOffset, -0.8F, 8.0F, 2.0F, 2.0F, layer.dualDeformation.extend(0.05f + sizeOffset)).mirror(false)
-                            .removeLastFaces(Direction.DOWN)
-                        .texOffs(18, 22).mirror().addBox(-4.0F, 0.5F + yOffset, -0.8F, 8.0F, 1.0F, 2.0F, layer.dualDeformation.extend(0.05f + sizeOffset)).mirror(false)
-                            .overrideLastFaceTexOffs(Direction.DOWN, 20, 23)
-                            .removeLastFaces(Direction.UP);
+            final var plantoidCubes = ((CubeListBuilderExtender)CubeListBuilder.create())
+                    .texOffs(18, 19).mirror().addBox(-4.0F, -2.2F + yOffset, -0.8F, 8.0F, 2.0F, 2.0F, layer.dualDeformation.extend(0.05f + sizeOffset)).mirror(false)
+                    .removeLastFaces(Direction.DOWN)
+                    .texOffs(18, 22).mirror().addBox(-4.0F, 0.5F + yOffset, -0.8F, 8.0F, 1.0F, 2.0F, layer.dualDeformation.extend(0.05f + sizeOffset)).mirror(false)
+                    .overrideLastFaceTexOffs(Direction.DOWN, 20, 23)
+                    .removeLastFaces(Direction.UP);
 
-                PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", plantoidCubes.finish(), PartPose.offsetAndRotation(0.0F, 2.5F - yOffset, 0.0F, angle, 0.0F, 0.0F));
-            }
+            PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", plantoidCubes.finish(), PartPose.offsetAndRotation(0.0F, 2.5F - yOffset, 0.0F, angle, 0.0F, 0.0F));
         }
     }
 

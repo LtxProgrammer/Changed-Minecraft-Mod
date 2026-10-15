@@ -305,6 +305,11 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         this.blockUsingShield(attacker);
     }
 
+    @Override
+    public void changed$playHurtSound(DamageSource damageSource) {
+        this.playHurtSound(damageSource);
+    }
+
     @Inject(method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo callback) {
         if (controlDisabledFor > 0) {
@@ -381,6 +386,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Shadow protected abstract float getJumpPower();
 
     @Shadow public abstract void remove(RemovalReason p_276115_);
+
+    @Shadow protected abstract void playHurtSound(DamageSource p_21160_);
 
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;

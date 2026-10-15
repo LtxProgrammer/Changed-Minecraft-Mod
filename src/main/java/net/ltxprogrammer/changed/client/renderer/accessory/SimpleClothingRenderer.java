@@ -19,6 +19,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -28,6 +29,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 
@@ -42,16 +44,20 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
 
     protected final ArmorModel humanoid;
     protected final HumanoidModel clothingModel;
+    protected final HumanoidModel clothingModelSlim;
     protected final Set<ModelComponent> components;
 
     public SimpleClothingRenderer(ArmorModel humanoid, Set<ModelComponent> components) {
         this.humanoid = humanoid;
         this.components = components;
         clothingModel = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ArmorHumanModel.MODEL_SET.getModelName(humanoid)));
+        clothingModelSlim = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ArmorHumanModel.MODEL_SET_SLIM.getModelName(humanoid)));
     }
 
     @Override
     public Optional<HumanoidModel<?>> getBeforeModel(AccessorySlotContext<?> slotContext, RenderLayerParent<?,?> renderLayerParent) {
+        if (slotContext.wearer() instanceof AbstractClientPlayer player && player.getModelName().equals("slim"))
+            return Optional.of(clothingModelSlim);
         return Optional.of(clothingModel);
     }
 
@@ -86,6 +92,7 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                 for (var component : components) {
                     final LatexHumanoidArmorModel model = (LatexHumanoidArmorModel<?, ?>) layer.modelPicker.getModelSetForSlot(changedEntity, component.renderAs)
                             .get(component.armorModel);
+                    boolean slimTextures = layer.modelPicker.usesSlimTextures(changedEntity, component.renderAs);
 
                     model.getAnimator(changedEntity).copyProperties(advancedHumanoidRenderer.getModel(changedEntity).getAnimator(changedEntity));
                     model.prepareMobModel(changedEntity, limbSwing, limbSwingAmount, partialTicks);
@@ -102,18 +109,18 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                     model.prepareVisibility(component.renderAs, stack);
                     if (stack.getItem() instanceof DyeableLeatherItem dyeable) {
                         Color3 color = Color3.fromInt(dyeable.getColor(stack));
-                        final ResourceLocation texture = clothing.getTexture(stack, entity, component.renderAs, null);
+                        final ResourceLocation texture = clothing.getTexture(stack, entity, component.renderAs, null, slimTextures);
                         if (texture != null)
                             model.renderForSlot(changedEntity, advancedHumanoidRenderer, stack, component.renderAs, matrixStack,
                                     ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                                     light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);
-                        final ResourceLocation overlay = clothing.getTexture(stack, entity, component.renderAs, "overlay");
+                        final ResourceLocation overlay = clothing.getTexture(stack, entity, component.renderAs, "overlay", slimTextures);
                         if (overlay != null)
                             model.renderForSlot(changedEntity, advancedHumanoidRenderer, stack, component.renderAs, matrixStack,
                                     ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(overlay), false, stack.hasFoil()),
                                     light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
                     } else {
-                        final ResourceLocation texture = clothing.getTexture(stack, entity, component.renderAs, null);
+                        final ResourceLocation texture = clothing.getTexture(stack, entity, component.renderAs, null, slimTextures);
                         if (texture != null)
                             model.renderForSlot(changedEntity, advancedHumanoidRenderer, stack, component.renderAs, matrixStack,
                                     ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
@@ -124,8 +131,11 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                 }
             } else if (renderLayerParent.getModel() instanceof HumanoidModel<?> baseModel) {
                 // TODO: Multiple humanoid layers
-                EquipmentSlot equipmentSlot = (humanoid == ArmorModel.CLOTHING_OUTER || humanoid == ArmorModel.ARMOR_OUTER) ? EquipmentSlot.CHEST : EquipmentSlot.LEGS;
-                baseModel.copyPropertiesTo(clothingModel);
+                EquipmentSlot equipmentSlot = humanoid.isOuterModel() ? EquipmentSlot.CHEST : EquipmentSlot.LEGS;
+
+                boolean slimTextures = (entity instanceof AbstractClientPlayer player) && player.getModelName().equals("slim");
+                var model = slimTextures ? clothingModelSlim : clothingModel;
+                baseModel.copyPropertiesTo(model);
 
                 List<ModelPart> hiddenParts = new ObjectArrayList<>();
                 clothing.hideModelParts(stack, entity, equipmentSlot, partIdentifier -> {
@@ -137,20 +147,20 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
 
                 if (stack.getItem() instanceof DyeableLeatherItem dyeable) {
                     Color3 color = Color3.fromInt(dyeable.getColor(stack));
-                    final ResourceLocation texture = clothing.getTexture(stack, entity, equipmentSlot, null);
+                    final ResourceLocation texture = clothing.getTexture(stack, entity, equipmentSlot, null, slimTextures);
                     if (texture != null)
-                        clothingModel.renderToBuffer(matrixStack,
+                        model.renderToBuffer(matrixStack,
                                 ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                                 light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);
-                    final ResourceLocation overlay = clothing.getTexture(stack, entity, equipmentSlot, "overlay");
+                    final ResourceLocation overlay = clothing.getTexture(stack, entity, equipmentSlot, "overlay", slimTextures);
                     if (overlay != null)
-                        clothingModel.renderToBuffer(matrixStack,
+                        model.renderToBuffer(matrixStack,
                                 ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(overlay), false, stack.hasFoil()),
                                 light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
                 } else {
-                    final ResourceLocation texture = clothing.getTexture(stack, entity, equipmentSlot, null);
+                    final ResourceLocation texture = clothing.getTexture(stack, entity, equipmentSlot, null, slimTextures);
                     if (texture != null)
-                        clothingModel.renderToBuffer(matrixStack,
+                        model.renderToBuffer(matrixStack,
                                 ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                                 light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
                 }
@@ -173,6 +183,7 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
 
                     final LatexHumanoidArmorModel model = (LatexHumanoidArmorModel<?, ?>) layer.modelPicker.getModelSetForSlot(changedEntity, component.renderAs)
                             .get(component.armorModel);
+                    boolean slimTextures = layer.modelPicker.usesSlimTextures(changedEntity, component.renderAs);
 
                     model.prepareMobModel(changedEntity, 0f, 0f, partialTicks);
                     /*model.setupAnim(changedEntity, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -191,18 +202,18 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                     armPart.loadPose(armPose);
                     if (stack.getItem() instanceof DyeableLeatherItem dyeable) {
                         Color3 color = Color3.fromInt(dyeable.getColor(stack));
-                        final ResourceLocation texture = clothing.getTexture(stack, entity, component.renderAs, null);
+                        final ResourceLocation texture = clothing.getTexture(stack, entity, component.renderAs, null, slimTextures);
                         if (texture != null)
                             FormRenderHandler.renderModelPartWithTexture(model.getArm(arm),
                                     matrixStack, ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                                     light, color.red(), color.green(), color.blue(), 1F);
-                        final ResourceLocation overlay = clothing.getTexture(stack, entity, component.renderAs, "overlay");
+                        final ResourceLocation overlay = clothing.getTexture(stack, entity, component.renderAs, "overlay", slimTextures);
                         if (overlay != null)
                             FormRenderHandler.renderModelPartWithTexture(model.getArm(arm),
                                     matrixStack, ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(overlay), false, stack.hasFoil()),
                                     light, 1F, 1F, 1F, 1F);
                     } else {
-                        final ResourceLocation texture = clothing.getTexture(stack, entity, component.renderAs, null);
+                        final ResourceLocation texture = clothing.getTexture(stack, entity, component.renderAs, null, slimTextures);
                         if (texture != null)
                             FormRenderHandler.renderModelPartWithTexture(model.getArm(arm),
                                     matrixStack, ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
@@ -213,7 +224,10 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                 }
             } else if (renderLayerParent.getModel() instanceof HumanoidModel<?> baseModel) {
                 // TODO: Multiple humanoid layers
-                baseModel.copyPropertiesTo(clothingModel);
+                boolean slimTextures = (entity instanceof AbstractClientPlayer player) && player.getModelName().equals("slim");
+                var model = slimTextures ? clothingModelSlim : clothingModel;
+                baseModel.copyPropertiesTo(model);
+
 
                 List<ModelPart> hiddenParts = new ObjectArrayList<>();
                 clothing.hideModelParts(stack, entity, EquipmentSlot.CHEST, partIdentifier -> {
@@ -223,22 +237,22 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
                 });
                 hiddenParts.forEach(part -> part.visible = false);
 
-                var armPart = arm == HumanoidArm.RIGHT ? clothingModel.rightArm : clothingModel.leftArm;
+                var armPart = arm == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
                 armPart.loadPose(armPose);
                 if (stack.getItem() instanceof DyeableLeatherItem dyeable) {
                     Color3 color = Color3.fromInt(dyeable.getColor(stack));
-                    final ResourceLocation texture = clothing.getTexture(stack, entity, EquipmentSlot.CHEST, null);
+                    final ResourceLocation texture = clothing.getTexture(stack, entity, EquipmentSlot.CHEST, null, slimTextures);
                     if (texture != null)
                         FormRenderHandler.renderVanillaModelPartWithTexture(armPart,
                                 matrixStack, ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                                 light, color.red(), color.green(), color.blue(), 1F);
-                    final ResourceLocation overlay = clothing.getTexture(stack, entity, EquipmentSlot.CHEST, "overlay");
+                    final ResourceLocation overlay = clothing.getTexture(stack, entity, EquipmentSlot.CHEST, "overlay", slimTextures);
                     if (overlay != null)
                         FormRenderHandler.renderVanillaModelPartWithTexture(armPart,
                                 matrixStack, ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(overlay), false, stack.hasFoil()),
                                 light, 1F, 1F, 1F, 1F);
                 } else {
-                    final ResourceLocation texture = clothing.getTexture(stack, entity, EquipmentSlot.CHEST, null);
+                    final ResourceLocation texture = clothing.getTexture(stack, entity, EquipmentSlot.CHEST, null, slimTextures);
                     if (texture != null)
                         FormRenderHandler.renderVanillaModelPartWithTexture(armPart,
                                 matrixStack, ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),

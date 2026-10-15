@@ -92,13 +92,13 @@ public class ArmorPooltoyWolfModel<T extends ChangedEntity> extends LatexHumanoi
         torsoCubes.removeLastFaces(Direction.DOWN);
         torsoCubes = ((CubeListBuilderExtender)torsoCubes.finish().texOffs(16, 21).addBox(-4.0F, 5.0F, -2.75F, 8.0F, 6.0F, 4.0F, layer.dualDeformation));
         torsoCubes.removeLastFaces(Direction.DOWN);
-        if (layer == ArmorModel.CLOTHING_INNER || layer == ArmorModel.ARMOR_INNER)
+        if (layer.isInnerModel())
             torsoCubes.removeLastFaces(Direction.UP);
         else
             torsoCubes.overrideLastFaceTexOffs(Direction.UP, 20, 27);
         torsoCubes = ((CubeListBuilderExtender)torsoCubes.finish().texOffs(16, 21).addBox(-4.0F, 5.0F, -1.75F, 8.0F, 6.0F, 4.0F, layer.dualDeformation.extend(-0.05F)));
         torsoCubes.removeLastFaces(Direction.DOWN);
-        if (layer == ArmorModel.CLOTHING_INNER || layer == ArmorModel.ARMOR_INNER)
+        if (layer.isInnerModel())
             torsoCubes.removeLastFaces(Direction.UP);
         else
             torsoCubes.overrideLastFaceTexOffs(Direction.UP, 20, 27);
