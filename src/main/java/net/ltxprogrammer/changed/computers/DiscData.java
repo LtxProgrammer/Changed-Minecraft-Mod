@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -27,6 +28,15 @@ public class DiscData {
 
         name = "New Disk";
         generatorId = null;
+        rootFolder = createFolder();
+    }
+
+    public DiscData(Runnable modifiedListener, ResourceLocation generatorId, long generatorSeed) {
+        this.modifiedListener = modifiedListener;
+        this.generatorId = generatorId;
+        this.generatorSeed = generatorSeed;
+
+        name = "New Disk";
         rootFolder = createFolder();
     }
 
@@ -81,9 +91,9 @@ public class DiscData {
         return tag;
     }
 
-    public DiscData generateIfNecessary(FileSystemGenerator.DirectoryConsumer consumer) {
+    public DiscData generateIfNecessary(Level level, FileSystemGenerator.DirectoryConsumer consumer) {
         if (generatorId != null) {
-            var generator = ConfiguredFileSystemGenerators.getGenerator(generatorId);
+            var generator = ConfiguredFileSystemGenerators.getGenerator(level, generatorId);
             generatorId = null;
 
             if (generator != null)
@@ -154,5 +164,10 @@ public class DiscData {
 
     public boolean isModified() {
         return modified;
+    }
+
+    public void setGenerator(ResourceLocation generatorId, long seed) {
+        this.generatorId = generatorId;
+        this.generatorSeed = seed;
     }
 }

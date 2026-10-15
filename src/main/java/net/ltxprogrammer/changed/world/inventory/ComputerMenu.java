@@ -107,7 +107,7 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
     }
 
     public LexicalPath.Absolute getWorkingDir() {
-        return computer.currentWorkingDirectory;
+        return computer.currentWorkingDirectory == null ? computer.homeDirectory : computer.currentWorkingDirectory;
     }
 
     public void setWorkingDir(LexicalPath.Absolute workingDir) {

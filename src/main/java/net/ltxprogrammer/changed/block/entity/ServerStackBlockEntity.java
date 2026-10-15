@@ -73,7 +73,7 @@ public class ServerStackBlockEntity extends BlockEntity implements NetworkInterf
 
         if (packet == FileSystemShareProtocol.Query.INSTANCE) {
             nic.sendPacket(level, logicalSource, new FileSystemShareProtocol(
-                    primaryDisc.generateIfNecessary(this.configureDirectory()).getRootFolder(),
+                    primaryDisc.generateIfNecessary(level, this.configureDirectory()).getRootFolder(),
                     Permissions.READ_ONLY
             ));
         }
@@ -96,12 +96,6 @@ public class ServerStackBlockEntity extends BlockEntity implements NetworkInterf
     }
 
     protected DiscData createFileSystem(RandomSource random) {
-        var data = new DiscData(this::setChanged);
-        var generator = ConfiguredFileSystemGenerators.getGenerator(Changed.modResource("default_server"));
-        if (generator == null)
-            return data;
-
-        generator.generate(random, data, this.configureDirectory());
-        return data;
+        return new DiscData(this::setChanged, Changed.modResource("default_server"), random.nextLong());
     }
 }

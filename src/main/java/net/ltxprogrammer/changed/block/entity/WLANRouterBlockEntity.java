@@ -35,25 +35,10 @@ public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterfa
     protected final Queue<Pair<Integer, Packet>> unprocessedPackets = new ArrayDeque<>();
     protected final Queue<Pair<NetworkInterface.Address, Frame>> outboundFrames = new ArrayDeque<>();
 
-    public LexicalPath currentWorkingDirectory;
-    public LexicalPath homeDirectory;
-    public LexicalPath binariesDirectory;
-    public DiscData localFileSystem = Util.make(new DiscData(this::setChanged), data -> {
-        var generator = ConfiguredFileSystemGenerators.getGenerator(Changed.modResource("default_pc"));
-        if (generator == null)
-            return;
-
-        generator.generate(random, data, this.configureDirectory());
-        currentWorkingDirectory = homeDirectory;
-    });
+    public DiscData localFileSystem = new DiscData(this::setChanged, Changed.modResource("default_wlan_router"), random.nextLong());
 
     protected FileSystemGenerator.DirectoryConsumer configureDirectory() {
-        return (dir, path) -> {
-            switch (dir) {
-                case HOME_DIR -> homeDirectory = path;
-                case BIN_DIR -> binariesDirectory = path;
-            }
-        };
+        return (dir, path) -> {};
     }
 
     public WLANRouterBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -134,7 +119,7 @@ public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterfa
     }
 
     public DiscData getFileSystem(LexicalPath drive) {
-        return localFileSystem;
+        return localFileSystem.generateIfNecessary(this.level, this.configureDirectory());
     }
 
     public Either<File, File.Error> getFile(LexicalPath path) {

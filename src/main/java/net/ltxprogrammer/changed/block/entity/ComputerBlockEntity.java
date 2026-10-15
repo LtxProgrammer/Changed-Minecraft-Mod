@@ -264,6 +264,10 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         this.writeBackAll();
         ContainerHelper.saveAllItems(tag, this.items);
         tag.put("fs", this.primaryDisc.serialize());
+        if (this.homeDirectory != null)
+            tag.putString("homeDir", this.homeDirectory.toString());
+        if (this.binariesDirectory != null)
+            tag.putString("binDir", this.binariesDirectory.toString());
     }
 
     @Override
@@ -273,13 +277,19 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         CompoundTag mounted = new CompoundTag();
         for (var entry : mountedFileSystems.char2ObjectEntrySet()) {
             CompoundTag discInfo = new CompoundTag();
-            discInfo.put("fs", entry.getValue().getDiscData().generateIfNecessary(this.configureDirectory(entry.getCharKey())).serialize());
+            discInfo.put("fs", entry.getValue().getDiscData().generateIfNecessary(this.level, this.configureDirectory(entry.getCharKey())).serialize());
             discInfo.putBoolean("ejectable", entry.getValue().canEject());
             mounted.put(String.valueOf(entry.getCharKey()), discInfo);
         }
 
         tag.remove("fs");
         tag.put("mounted", mounted);
+
+        // Directories may have changed after generating directories
+        if (this.homeDirectory != null)
+            tag.putString("homeDir", this.homeDirectory.toString());
+        if (this.binariesDirectory != null)
+            tag.putString("binDir", this.binariesDirectory.toString());
 
         return tag;
     }
@@ -303,6 +313,11 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
                         discInfo.getBoolean("ejectable")));
             });
         }
+
+        if (tag.contains("homeDir"))
+            this.homeDirectory = LexicalPath.of(tag.getString("homeDir")).assertAbsolute();
+        if (tag.contains("binDir"))
+            this.binariesDirectory = LexicalPath.of(tag.getString("binDir")).assertAbsolute();
     }
 
     @Override
@@ -358,7 +373,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         for (var entry : mountedFileSystems.char2ObjectEntrySet()) {
             consumer.visit(
                     entry.getCharKey(),
-                    entry.getValue().getDiscData().generateIfNecessary(this.configureDirectory(entry.getCharKey())),
+                    entry.getValue().getDiscData().generateIfNecessary(this.level, this.configureDirectory(entry.getCharKey())),
                     entry.getValue().canEject()
             );
         }
@@ -368,7 +383,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         var sourcedData = mountedFileSystems.get(driveLetter);
         if (sourcedData == null)
             return null;
-        return sourcedData.getDiscData().generateIfNecessary(this.configureDirectory(driveLetter));
+        return sourcedData.getDiscData().generateIfNecessary(this.level, this.configureDirectory(driveLetter));
     }
 
     public @Nullable DiscData getFileSystem(LexicalPath.Absolute drive) {
@@ -540,22 +555,18 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
 
     protected FileSystemGenerator.DirectoryConsumer configureDirectory(char driveLetter) {
         var driveRoot = LexicalPath.fromDriveLetter(driveLetter);
+        if (driveLetter != 'C')
+            return (dir, path) -> {};
+
         return (dir, path) -> {
             switch (dir) {
-                case HOME_DIR -> homeDirectory = driveRoot.resolve(path);
+                case HOME_DIR -> currentWorkingDirectory = homeDirectory = driveRoot.resolve(path);
                 case BIN_DIR -> binariesDirectory = driveRoot.resolve(path);
             }
         };
     }
 
     protected DiscData createFileSystem(RandomSource random) {
-        var data = new DiscData(this::setChanged);
-        var generator = ConfiguredFileSystemGenerators.getGenerator(Changed.modResource("default_pc"));
-        if (generator == null)
-            return data;
-
-        generator.generate(random, data, this.configureDirectory('C'));
-        currentWorkingDirectory = homeDirectory;
-        return data;
+        return new DiscData(this::setChanged, Changed.modResource("default_pc"), random.nextLong());
     }
 }
