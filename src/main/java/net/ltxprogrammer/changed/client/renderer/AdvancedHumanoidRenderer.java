@@ -113,6 +113,15 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
             poseStack.scale(renderScale, renderScale, renderScale);
     }
 
+    protected float getSwimAngle(@NotNull T entity, float bob, float bodyYRot, float partialTicks, float swimAmount) {
+        boolean matchLookAngle = (entity.isInWater() || entity.canSwimInFluidType(ForgeMod.EMPTY_TYPE.get())) && entity.isSprinting();
+        float swimmingAngle = matchLookAngle ? -90.0F - entity.getXRot() : -90.0F;
+        return swimmingAngle * Mth.DEG_TO_RAD;
+
+        // TODO: animate dive into water based on velocity
+        // Mer idle animation when not moving in water?
+    }
+
     @Override
     protected void setupRotations(@NotNull T entity, PoseStack poseStack, float bob, float bodyYRot, float partialTicks) {
         this.setModelResetPoseStack(entity, null);
@@ -139,9 +148,9 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
             }
         } else if (upright && swimAmount > 0.0F) {
             super.setupRotations(entity, poseStack, bob, bodyYRot, partialTicks);
-            float f3 = (entity.isInWater() || entity.canSwimInFluidType(ForgeMod.EMPTY_TYPE.get())) ? -90.0F - entity.getXRot() : -90.0F;
-            float f4 = Mth.lerp(swimAmount, 0.0F, f3);
-            poseStack.mulPose(Axis.XP.rotationDegrees(f4));
+            poseStack.mulPose(Axis.XP.rotation(Mth.lerp(swimAmount,
+                    0.0F,
+                    this.getSwimAngle(entity, bob, bodyYRot, partialTicks, swimAmount))));
             if (entity.isVisuallySwimming()) {
                 poseStack.translate(0.0D, -1.0D, (double)0.3F);
             }

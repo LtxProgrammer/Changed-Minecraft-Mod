@@ -112,7 +112,8 @@
     "render.RenderLayerMixin",
     "render.RenderSystemMixin",
     "render.RenderTypeMixin",
-    "render.TextureAtlasMixin"
+    "render.TextureAtlasMixin",
+    "render.model.AgeableListModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1

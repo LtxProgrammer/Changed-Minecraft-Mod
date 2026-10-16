@@ -108,14 +108,6 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
             ci.cancel();
             return;
         }
-
-        LocalPlayer player = (LocalPlayer)(Object)this;
-        if (!player.level().isClientSide) return;
-
-        ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-            if (player.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) >= 1.1F && variant.getEntityShape().isLegless() && player.isUnderWater())
-                player.setSprinting(true);
-        });
     }
 
     @WrapOperation(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/Input;tick(ZF)V"))

@@ -1,72 +1,33 @@
 package net.ltxprogrammer.changed.client.renderer.model.armor;
 
-import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.resources.ResourceLocation;
 
-public enum ArmorModel {
-    ARMOR_OUTER(
-            "armor_outer",
-            ArmorModelType.ARMOR,
-            LayerDefinitions.OUTER_ARMOR_DEFORMATION,
-            LayerDefinitions.INNER_ARMOR_DEFORMATION,
-            new CubeDeformation(0.95F),
-            LatexHumanoidArmorModel.HIDDEN_CUBE,
-            LatexHumanoidArmorModel.HIDDEN_CUBE,
-            LayerDefinitions.OUTER_ARMOR_DEFORMATION),
-    ARMOR_INNER(
-            "armor_inner",
-            ArmorModelType.ARMOR,
-            LatexHumanoidArmorModel.HIDDEN_CUBE,
-            LayerDefinitions.OUTER_ARMOR_DEFORMATION,
-            LatexHumanoidArmorModel.HIDDEN_CUBE,
-            LayerDefinitions.INNER_ARMOR_DEFORMATION,
-            new CubeDeformation(0.45F),
-            LayerDefinitions.INNER_ARMOR_DEFORMATION),
-
-    CLOTHING_OUTER(
-            "clothing_outer",
-            ArmorModelType.CLOTHING,
-            ARMOR_OUTER.deformation.extend(-0.75f),
-            ARMOR_OUTER.inverseDeformation.extend(-0.66f),
-            ARMOR_OUTER.slightDeformation.extend(-0.66f),
-            ARMOR_OUTER.altDeformation.extend(-0.66f),
-            ARMOR_OUTER.slightAltDeformation.extend(-0.66f),
-            ARMOR_OUTER.dualDeformation.extend(-0.66f)),
-    CLOTHING_MIDDLE(
-            "clothing_middle",
-            ArmorModelType.CLOTHING,
-            ARMOR_INNER.deformation.extend(-0.2f),
-            ARMOR_INNER.inverseDeformation.extend(-0.15f),
-            ARMOR_INNER.slightDeformation.extend(-0.15f),
-            ARMOR_INNER.altDeformation.extend(-0.15f),
-            ARMOR_INNER.slightAltDeformation.extend(-0.15f),
-            ARMOR_INNER.dualDeformation.extend(-0.15f)),
-    CLOTHING_INNER(
-            "clothing_inner",
-            ArmorModelType.CLOTHING,
-            ARMOR_INNER.deformation.extend(-0.25f),
-            ARMOR_INNER.inverseDeformation.extend(-0.2f),
-            ARMOR_INNER.slightDeformation.extend(-0.2f),
-            ARMOR_INNER.altDeformation.extend(-0.2f),
-            ARMOR_INNER.slightAltDeformation.extend(-0.2f),
-            ARMOR_INNER.dualDeformation.extend(-0.2f));
-
+public class ArmorModel {
     public enum ArmorModelType {
         ARMOR, CLOTHING;
     };
 
+    public enum ArmorModelPosition {
+        INNER, OUTER;
+    };
+
+    public final ResourceLocation id;
     public final String identifier;
-    public final ArmorModelType modelType;
+    private final ArmorModelType modelType;
+    private final ArmorModelPosition modelPosition;
     public final CubeDeformation deformation;
     public final CubeDeformation inverseDeformation;
     public final CubeDeformation slightDeformation;
     public final CubeDeformation altDeformation;
     public final CubeDeformation slightAltDeformation;
     public final CubeDeformation dualDeformation;
-    ArmorModel(String identifier, ArmorModelType modelType, CubeDeformation deformation, CubeDeformation inverseDeformation, CubeDeformation slightDeformation, CubeDeformation altDeformation, CubeDeformation slightAltDeformation, CubeDeformation dualDeformation) {
-        this.identifier = identifier;
+
+    public ArmorModel(ResourceLocation id, ArmorModelType modelType, ArmorModelPosition modelPosition, CubeDeformation deformation, CubeDeformation inverseDeformation, CubeDeformation slightDeformation, CubeDeformation altDeformation, CubeDeformation slightAltDeformation, CubeDeformation dualDeformation) {
+        this.id = id;
+        this.identifier = "%s_%s".formatted(id.getNamespace(), id.getPath());
         this.modelType = modelType;
+        this.modelPosition = modelPosition;
         this.deformation = deformation;
         this.inverseDeformation = inverseDeformation;
         this.slightDeformation = slightDeformation;
@@ -81,5 +42,17 @@ public enum ArmorModel {
 
     public boolean isClothing() {
         return this.modelType == ArmorModelType.CLOTHING;
+    }
+
+    public boolean isInnerModel() {
+        return this.modelPosition == ArmorModelPosition.INNER;
+    }
+
+    public boolean isOuterModel() {
+        return this.modelPosition == ArmorModelPosition.OUTER;
+    }
+
+    public boolean isModelSlim(boolean slim) {
+        return slim && isClothing();
     }
 }

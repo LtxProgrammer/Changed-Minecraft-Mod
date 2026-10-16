@@ -134,6 +134,7 @@ public class ChangedLayerDefinitions {
         // v --- ARMOR / ENTITY --- ^
 
         ArmorLatexMaleWolfModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexMaleWolfModel.MODEL_SET_SLIM.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexMaleBuffWolfModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexFemaleWolfModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexHeavyWolfModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
@@ -179,6 +180,7 @@ public class ChangedLayerDefinitions {
         ArmorLatexFemaleBirdModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
 
         ArmorHumanModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorHumanModel.MODEL_SET_SLIM.registerDefinitions(event::registerLayerDefinition);
 
         ArmorLatexMothModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexOtterModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
