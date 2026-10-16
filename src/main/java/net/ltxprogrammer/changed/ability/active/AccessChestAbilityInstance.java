@@ -17,6 +17,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import org.jetbrains.annotations.Nullable;
 
 public class AccessChestAbilityInstance extends AbstractAbilityInstance implements Container, MenuProvider {
@@ -68,9 +69,10 @@ public class AccessChestAbilityInstance extends AbstractAbilityInstance implemen
     @Override
     public void onRemove() {
         super.onRemove();
-        if (entity.isDeadOrDying() && entity.getLevel().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM)) {
-            clearContent();
-            return;
+        if (entity.isDeadOrDying() &&
+                entity.getLevel().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) &&
+                entity.getLevel().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+            return; // Don't drop contents, preserve for player restoring from state
         }
 
         itemStacks.forEach(itemStack -> {
