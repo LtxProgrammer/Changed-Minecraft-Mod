@@ -226,8 +226,8 @@ dependencies {
     implementation fg.deobf("dev.architectury:architectury-forge:${archVersion}")
 
     if (runWithClientOnlyMods && runWithMods.contains("entityculling")) {
-        runtimeOnly fg.deobf("dev.tr7zw:TRender-1.0.26-1.20.1-forge-SNAPSHOT:1.0.26")
-        runtimeOnly fg.deobf("dev.tr7zw:TRansition-1.0.17-1.20.1-forge-SNAPSHOT:1.0.17")
+        runtimeOnly fg.deobf("dev.tr7zw:TRender-1.0.17-1.20.1-forge-SNAPSHOT:1.0.17")
+        runtimeOnly fg.deobf("dev.tr7zw:TRansition-1.0.26-1.20.1-forge-SNAPSHOT:1.0.26")
     }
 
     // CGM does not exist for 1.20.1
