@@ -272,8 +272,6 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
 
     @Override
     public CompoundTag getUpdateTag() {
-        CompoundTag tag = this.saveWithoutMetadata();
-
         CompoundTag mounted = new CompoundTag();
         for (var entry : mountedFileSystems.char2ObjectEntrySet()) {
             CompoundTag discInfo = new CompoundTag();
@@ -282,14 +280,10 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
             mounted.put(String.valueOf(entry.getCharKey()), discInfo);
         }
 
+        CompoundTag tag = this.saveWithoutMetadata();
+
         tag.remove("fs");
         tag.put("mounted", mounted);
-
-        // Directories may have changed after generating directories
-        if (this.homeDirectory != null)
-            tag.putString("homeDir", this.homeDirectory.toString());
-        if (this.binariesDirectory != null)
-            tag.putString("binDir", this.binariesDirectory.toString());
 
         return tag;
     }
@@ -445,6 +439,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     public Optional<Folder> getFolderSafe(LexicalPath.Absolute path) {
+        if (path == null) return Optional.empty();
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)

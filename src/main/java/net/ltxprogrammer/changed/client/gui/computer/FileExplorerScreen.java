@@ -67,6 +67,10 @@ public class FileExplorerScreen implements ApplicationScreen {
         });
     }
 
+    protected void openFile(LexicalPath.Absolute fullPath) {
+        screen.openFile(fullPath);
+    }
+
     protected void copyFileOrFolder(LexicalPath.Absolute from, LexicalPath.Absolute to) {
         CompoundTag payload = new CompoundTag();
         payload.putString("control", "copy");
@@ -90,6 +94,14 @@ public class FileExplorerScreen implements ApplicationScreen {
         Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
     }
 
+    protected int getScrollRegionHeight() {
+        return 163;
+    }
+
+    protected int getScrollElementCount() {
+        return 7;
+    }
+
     protected int buildBasicWidgets() {
         int x = desktopLeft + 4;
         int y = desktopTop + 4;
@@ -105,8 +117,8 @@ public class FileExplorerScreen implements ApplicationScreen {
                 .tooltip(Tooltip.create(COMPONENT_EXIT))
                 .build(ApplicationScreen.iconButton(screen::getTheme, 200, 0)));
 
-        this.scrollBar = screen.addApplicationWidget(this.scrollBar != null ? this.scrollBar : ApplicationScreen.verticalScrollBarStepped(screen::getTheme, desktopLeft + 314, desktopTop + 27, 6, 163)
-                .setCanvasSize(5).setViewportSize(7).setScrollListener((lastScroll, scroll) -> {
+        this.scrollBar = screen.addApplicationWidget(this.scrollBar != null ? this.scrollBar : ApplicationScreen.verticalScrollBarStepped(screen::getTheme, desktopLeft + 314, desktopTop + 27, 6, this.getScrollRegionHeight())
+                .setCanvasSize(5).setViewportSize(this.getScrollElementCount()).setScrollListener((lastScroll, scroll) -> {
             if (lastScroll == scroll)
                 return;
             refreshListings.run();
@@ -198,7 +210,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         return remainingWidth;
     }
 
-    protected void buildRegularListings(boolean isLocal) {
+    protected int buildRegularListings(boolean isLocal) {
         screen.clearApplicationWidgets();
 
         int x = desktopLeft + 4;
@@ -278,7 +290,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                 int iconX = file.type.xTexture;
                 int iconY = file.type.yTexture;
                 lineWidgets.add(screen.addApplicationWidget(Button.builder(Component.literal(name), (self) -> {
-                            screen.openFile(filePath);
+                            this.openFile(filePath);
                         }).bounds(x, y + yOffset.getAndAdd(23), remainingWidth, 20)
                         .build(explorerListItemButton(screen::getTheme, iconX, iconY))));
             });
@@ -333,6 +345,8 @@ public class FileExplorerScreen implements ApplicationScreen {
         listenForDeviceUpdates = false;
         refreshListings = () -> buildRegularListings(isLocal);
         renaming = false;
+
+        return yOffset.getAcquire();
     }
 
     protected void buildDriveListings() {
