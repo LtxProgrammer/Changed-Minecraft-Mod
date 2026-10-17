@@ -31,7 +31,7 @@ public abstract class WaveVisionRendererMixin {
     )
     private void renderEntity(Entity entity, double cameraX, double cameraY, double cameraZ, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, CallbackInfo info) {
         if (!EntityCullingModBase.instance.config.skipEntityCulling) {
-            dev.tr7zw.entityculling.versionless.access.Cullable cullable = (dev.tr7zw.entityculling.versionless.access.Cullable)entity;
+            dev.tr7zw.entityculling.access.Cullable cullable = (dev.tr7zw.entityculling.access.Cullable)entity;
             if (!cullable.isForcedVisible() && cullable.isCulled() && !NMSCullingHelper.ignoresCulling(entity)) {
                 EntityRenderer renderer = this.entityRenderDispatcher.getRenderer(entity);
                 if (renderer instanceof EntityRenderer) {

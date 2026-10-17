@@ -1,0 +1,6 @@
+{
+  "parent": "changed:custom/filled_mug_overflow",
+  "textures": {
+    "mug": "changed:block/mug_with_white_latex"
+  }
+}

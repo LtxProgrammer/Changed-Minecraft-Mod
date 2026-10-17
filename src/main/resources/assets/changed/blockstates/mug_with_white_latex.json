@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/mug_with_white_latex"
+    },
+    "facing=east": {
+      "model": "changed:block/mug_with_white_latex",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed:block/mug_with_white_latex",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed:block/mug_with_white_latex",
+      "y": 270
+    }
+  }
+}

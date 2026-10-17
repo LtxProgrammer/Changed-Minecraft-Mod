@@ -97,21 +97,21 @@ public class ChangedItems {
     public static final RegistryObject<LatexInkballItem> LATEX_INKBALL = register("latex_inkball", LatexInkballItem::new);
     public static final RegistryObject<LatexSyringe> LATEX_SYRINGE = register("latex_syringe", () -> new LatexSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<LatexTippedArrowItem> LATEX_TIPPED_ARROW = register("latex_tipped_arrow", LatexTippedArrowItem::new);
-    public static final RegistryObject<FilledMug> MUG_WITH_WATER = register("mug_with_water", () -> new FilledMug(new Item.Properties().stacksTo(16)));
-    public static final RegistryObject<FilledMug> MUG_WITH_MILK = register("mug_with_milk", () -> new FilledMug(new Item.Properties().stacksTo(16)) {
+    public static final RegistryObject<FilledMug> MUG_WITH_WATER = register("mug_with_water", () -> new FilledMug(ChangedBlocks.MUG_WITH_WATER.get(), new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<FilledMug> MUG_WITH_MILK = register("mug_with_milk", () -> new FilledMug(ChangedBlocks.MUG_WITH_MILK.get(), new Item.Properties().stacksTo(16)) {
         @Override
         protected void onDrink(ItemStack stack, Level level, LivingEntity user) {
             user.removeAllEffects();
         }
     });
-    public static final RegistryObject<FilledMug> MUG_WITH_COFFEE = register("mug_with_coffee", () -> new FilledMug(new Item.Properties().stacksTo(16)) {
+    public static final RegistryObject<FilledMug> MUG_WITH_COFFEE = register("mug_with_coffee", () -> new FilledMug(ChangedBlocks.MUG_WITH_COFFEE.get(), new Item.Properties().stacksTo(16)) {
         @Override
         protected void onDrink(ItemStack stack, Level level, LivingEntity user) {
             ChangedEffects.CAFFEINATED.get().stackEffect(user, 5 * 60 * 20, (5 * 60 * 20) / 2);
         }
     });
-    public static final RegistryObject<FilledMug> MUG_WITH_DARK_LATEX = register("mug_with_dark_latex", () -> new LatexFilledMug(ChangedLatexTypes.DARK_LATEX, new Item.Properties().stacksTo(16)));
-    public static final RegistryObject<FilledMug> MUG_WITH_WHITE_LATEX = register("mug_with_white_latex", () -> new LatexFilledMug(ChangedLatexTypes.WHITE_LATEX, new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<FilledMug> MUG_WITH_DARK_LATEX = register("mug_with_dark_latex", () -> new LatexFilledMug(ChangedBlocks.MUG_WITH_DARK_LATEX.get(), ChangedLatexTypes.DARK_LATEX, new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<FilledMug> MUG_WITH_WHITE_LATEX = register("mug_with_white_latex", () -> new LatexFilledMug(ChangedBlocks.MUG_WITH_WHITE_LATEX.get(), ChangedLatexTypes.WHITE_LATEX, new Item.Properties().stacksTo(16)));
     public static final RegistryObject<TransfurCrystalItem> WOLF_CRYSTAL_FRAGMENT = register("wolf_crystal_fragment",
             () -> new TransfurCrystalItem(ChangedTransfurVariants.CRYSTAL_WOLF));
     public static final RegistryObject<Item> PHAGE_CRYSTAL = register("phage_crystal", () -> new Item(new Item.Properties()));
