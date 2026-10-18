@@ -45,7 +45,7 @@ public class FileExplorerApplication extends NetworkDeviceControllerApplication 
         return FileSystemShareProtocol.Query.class;
     }
 
-    private void refreshRemoteListings() {
+    protected void refreshRemoteListings() {
         CompoundTag response = new CompoundTag();
         response.putString("control", "refreshListings");
 

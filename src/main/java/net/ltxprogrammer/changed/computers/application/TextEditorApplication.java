@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.computers.File;
 import net.ltxprogrammer.changed.computers.LexicalPath;
 import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.ltxprogrammer.changed.network.ChangedPackets;
+import net.ltxprogrammer.changed.network.packet.ComputerAppLaunchPacket;
 import net.ltxprogrammer.changed.network.packet.ComputerAppSyncPacket;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TextEditorApplication implements Application {
+public class TextEditorApplication implements Application, ISaveDialogListener {
     protected final ComputerMenu menu;
     protected @Nullable LexicalPath.Absolute activeFile;
     protected String fileContent = "";
@@ -26,6 +27,11 @@ public class TextEditorApplication implements Application {
             this.openFile(LexicalPath.of(args.get(0)));
         } else
             this.activeFile = null;
+    }
+
+    @Override
+    public void acceptSavePath(LexicalPath.Absolute path) {
+        this.activeFile = path;
     }
 
     public void openFile(LexicalPath relativePath) {
@@ -45,8 +51,14 @@ public class TextEditorApplication implements Application {
     }
 
     public void save() {
-        if (this.activeFile == null)
+        if (this.activeFile == null) {
+            Changed.PACKET_HANDLER.sendToServer(ComputerAppLaunchPacket.launchApplication(ChangedApplications.SAVE_FILE_DIALOG.get(),
+                    File.Type.TEXT.getSerializedName(),
+                    this.fileContent,
+                    "document.txt"
+            ));
             return; // Force prompt for save location?
+        }
 
         if (menu.getPlayer().level().isClientSide()) {
             CompoundTag payload = new CompoundTag();

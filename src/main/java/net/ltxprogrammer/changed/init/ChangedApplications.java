@@ -12,4 +12,5 @@ public class ChangedApplications {
     public static final RegistryObject<ApplicationType<FileExplorerApplication>> FILE_EXPLORER = REGISTRY.register("file_explorer", () -> new ApplicationType<>(FileExplorerApplication::new));
     public static final RegistryObject<ApplicationType<DoorControllerApplication>> DOOR_CONTROLLER = REGISTRY.register("door_controller", () -> new ApplicationType<>(DoorControllerApplication::new));
     public static final RegistryObject<ApplicationType<TextEditorApplication>> TEXT_EDITOR = REGISTRY.register("text_editor", () -> new ApplicationType<>(TextEditorApplication::new));
+    public static final RegistryObject<ApplicationType<SaveFileDialog>> SAVE_FILE_DIALOG = REGISTRY.register("save_file_dialog", () -> new ApplicationType<>(SaveFileDialog::new));
 }
