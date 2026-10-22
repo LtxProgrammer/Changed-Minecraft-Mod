@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.ComputerScreen;
 import net.ltxprogrammer.changed.computers.UITheme;
 import net.ltxprogrammer.changed.computers.application.DoorControllerApplication;
-import net.ltxprogrammer.changed.computers.protocol.LogicalNetworkInterface;
+import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
 import net.ltxprogrammer.changed.network.packet.ComputerAppClosePacket;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
@@ -42,7 +42,7 @@ public class DoorControllerScreen implements ApplicationScreen {
 
     protected final SingleRunnable appCloser;
 
-    protected @Nullable Integer selectedDoor;
+    protected @Nullable NetworkInterface.Address selectedDoor;
     protected EditBox doorNameWidget;
     protected Button openDoorButton;
     protected Button closeDoorButton;
@@ -63,7 +63,7 @@ public class DoorControllerScreen implements ApplicationScreen {
         });
     }
 
-    protected void updateDoorActionButtons(Integer door) {
+    protected void updateDoorActionButtons(NetworkInterface.Address door) {
         if (doorNameWidget == null)
             return;
 

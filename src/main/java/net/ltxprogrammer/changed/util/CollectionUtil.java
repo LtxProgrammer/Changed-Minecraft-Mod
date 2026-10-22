@@ -1,9 +1,5 @@
 package net.ltxprogrammer.changed.util;
 
-import com.mojang.datafixers.util.Pair;
-import net.ltxprogrammer.changed.computers.protocol.Frame;
-import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
-import net.ltxprogrammer.changed.computers.protocol.Packet;
 import net.minecraft.util.RandomSource;
 
 import javax.annotation.Nullable;

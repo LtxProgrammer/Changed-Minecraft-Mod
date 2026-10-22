@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.computers;
 
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.util.CollectionUtil;
 import net.minecraft.core.BlockPos;
@@ -9,80 +10,62 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.Set;
 
-public class BasicNIC implements LogicalNetworkInterface {
-    private final NetworkInterface.Address physicalAddress;
-    public int logicalAddress;
-    public int ticksSpentConnecting = 0;
-    public @Nullable NetworkInterface.Address remoteConnectedPhysicalAddress;
-    public Queue<Pair<Integer, Packet>> unprocessedPackets;
+public class BasicNIC implements NetworkInterface {
+    public final NetworkInterface.Address physicalAddress;
+    protected long tickCount;
+    public final Set<Address> nearbyAddresses = new ObjectArraySet<>();
+    public Queue<Pair<Address, Frame>> unprocessedFrames;
 
     public BasicNIC(Address physicalAddress) {
         this.physicalAddress = physicalAddress;
     }
 
-    public interface PacketHandler {
-        void handlePacket(ServerLevel level, int logicalSource, Packet packet);
+    public interface FrameHandler {
+        void handleFrame(ServerLevel level, Address physicalSource, Frame dataFrame);
+    }
+
+    @Override
+    public void acceptNeighbor(ServerLevel level, Address physicalSource) {
+        nearbyAddresses.add(physicalSource);
     }
 
     @Override
     public void acceptFrame(ServerLevel level, Address physicalSource, Frame dataFrame) {
-        LogicalNetworkInterface.super.acceptFrame(level, physicalSource, dataFrame);
-        if (dataFrame instanceof NetworkDiscoveryFrame networkDiscoveryFrame && networkDiscoveryFrame.isReply()) {
-            if (!networkDiscoveryFrame.commitConnection()) {
-                this.remoteConnectedPhysicalAddress = physicalSource;
-                ticksSpentConnecting = 0;
-                NetworkInterface.sendFrameToAddress(level, physicalSource, this.physicalAddress, NetworkDiscoveryFrame.CONNECT);
-            }
-        }
+        if (unprocessedFrames == null)
+            unprocessedFrames = new ArrayDeque<>();
+        unprocessedFrames.add(Pair.of(physicalSource, dataFrame));
     }
 
     @Override
-    public void acceptPacket(ServerLevel level, int logicalSource, Packet packet) {
-        if (unprocessedPackets == null)
-            unprocessedPackets = new ArrayDeque<>();
-        unprocessedPackets.add(Pair.of(logicalSource, packet));
-    }
-
-    @Override
-    public int getLogicalAddress() {
-        return logicalAddress;
-    }
-
-    @Override
-    public void sendFrame(ServerLevel level, Frame dataFrame) {
-        if (remoteConnectedPhysicalAddress != null) {
-            boolean success = NetworkInterface.sendFrameToAddress(level, remoteConnectedPhysicalAddress, this.physicalAddress, dataFrame);
-            if (!success) // Dropped frame
-                remoteConnectedPhysicalAddress = null;
-        }
+    public void sendOutFrame(ServerLevel level, @Nullable Address destination, Frame frame, int ttl) {
+        NetworkInterface.sendFrameToAddress(level, destination, this.physicalAddress, frame, ttl, this.nearbyAddresses);
     }
 
     public void tick(ServerLevel level, BlockPos pos) {
-        if (remoteConnectedPhysicalAddress != null && NetworkInterface.findAtAddress(level, remoteConnectedPhysicalAddress) == null)
-            remoteConnectedPhysicalAddress = null;
-        if (remoteConnectedPhysicalAddress != null)
-            return;
-
-        ticksSpentConnecting++;
-        int tickMod = ticksSpentConnecting % 64;
-        int posMod = Math.abs(pos.hashCode()) % 64;
+        tickCount++;
+        int updateRate = nearbyAddresses.isEmpty() ? 64 : 256;
+        long tickMod = tickCount % updateRate;
+        int posMod = Math.abs(pos.hashCode()) % updateRate;
         if (tickMod != posMod)
             return;
 
-        NetworkInterface.findNearbyAddresses(level, pos, 16).forEach(address -> {
+        nearbyAddresses.removeIf(address -> NetworkInterface.findAtAddress(level, address) == null);
+        NetworkInterface.findNearbyAddresses(level, pos, MAX_LOCAL_TRAVEL_DISTANCE).forEach(address -> {
             if (address.equals(this.physicalAddress))
                 return;
-            NetworkInterface.sendFrameToAddress(level, address, this.physicalAddress, NetworkDiscoveryFrame.PROBE);
+            NetworkInterface.findAtAddress(level, address).acceptNeighbor(level, address);
+            nearbyAddresses.add(address);
         });
     }
 
-    public void processPackets(ServerLevel level, PacketHandler handler) {
-        if (unprocessedPackets == null)
+    public void processFrames(ServerLevel level, FrameHandler handler) {
+        if (unprocessedFrames == null)
             return;
 
-        CollectionUtil.deplete(unprocessedPackets, packet -> {
-            handler.handlePacket(level, packet.getFirst(), packet.getSecond());
+        CollectionUtil.deplete(unprocessedFrames, packet -> {
+            handler.handleFrame(level, packet.getFirst(), packet.getSecond());
         });
     }
 }

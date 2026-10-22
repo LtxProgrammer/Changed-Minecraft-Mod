@@ -4,7 +4,7 @@ import net.minecraft.core.Direction;
 
 import java.util.Set;
 
-public final class RedstoneOutputProtocol extends Packet {
+public final class RedstoneOutputProtocol extends Frame {
     private final int signal;
     private final int duration;
     private final Set<Direction> directions;
