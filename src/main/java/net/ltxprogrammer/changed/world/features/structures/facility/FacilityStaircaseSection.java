@@ -17,9 +17,11 @@ public class FacilityStaircaseSection extends FacilitySinglePiece {
             WeightedPieceNeighborSupplier.of(ChangedFacilityPieceTypes.STAIRCASE_SECTION, 1));
     private static final WeightedRandomList<WeightedPieceNeighborSupplier> VALID_NEIGHBORS_HIGH = WeightedRandomList.create(
             WeightedPieceNeighborSupplier.of(ChangedFacilityPieceTypes.STAIRCASE_SECTION, 5),
+            WeightedPieceNeighborSupplier.of(ChangedFacilityPieceTypes.STAIRCASE_LANDING, 3),
             WeightedPieceNeighborSupplier.of(ChangedFacilityPieceTypes.STAIRCASE_END, 1));
     private static final WeightedRandomList<WeightedPieceNeighborSupplier> VALID_NEIGHBORS_LOW = WeightedRandomList.create(
             WeightedPieceNeighborSupplier.of(ChangedFacilityPieceTypes.STAIRCASE_SECTION, 2),
+            WeightedPieceNeighborSupplier.of(ChangedFacilityPieceTypes.STAIRCASE_LANDING, 1),
             WeightedPieceNeighborSupplier.of(ChangedFacilityPieceTypes.STAIRCASE_END, 5));
     private static final WeightedRandomList<WeightedPieceNeighborSupplier> VALID_NEIGHBORS_MAXIMUM = WeightedRandomList.create(
             WeightedPieceNeighborSupplier.of(ChangedFacilityPieceTypes.STAIRCASE_END, 1));

@@ -1,0 +1,12 @@
+{
+  "piece": {
+    "type": "changed:staircase_landing",
+    "template": "changed:facility/staircase/staircase_landing_blue",
+    "loot_table": "changed:chests/low_tier_lab",
+    "expected_dependents": 2
+  },
+  "spawn_weight": 20,
+  "neighboring_zones": [
+    "changed:entrance"
+  ]
+}
