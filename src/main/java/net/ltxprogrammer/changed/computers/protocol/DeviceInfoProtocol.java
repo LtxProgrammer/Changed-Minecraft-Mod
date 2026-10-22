@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Objects;
 
-public final class DeviceInfoProtocol extends Packet {
+public final class DeviceInfoProtocol extends Frame {
     private final Component deviceName;
     private final BlockPos position;
     private final ResourceLocation icon;
@@ -52,7 +52,7 @@ public final class DeviceInfoProtocol extends Packet {
                 "icon=" + icon + ']';
     }
 
-    public static class Query extends Packet {
+    public static class Query extends Frame {
         public static final Query INSTANCE = new Query();
 
         private Query() {}

@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.*;
-import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
 import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
@@ -165,8 +164,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
 
     public ComputerBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ChangedBlockEntities.COMPUTER.get(), blockPos, blockState);
-        nic = new BasicNIC(Address.forBlock(blockPos.immutable()));
-        nic.logicalAddress = this.random.nextInt();
+        this.nic = new BasicNIC(Address.forBlock(blockPos));
 
         primaryDisc = createFileSystem(random);
         this.mountDisc(SourcedDiscData.wrap(primaryDisc, false));
@@ -315,16 +313,21 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     @Override
+    public void acceptNeighbor(ServerLevel level, Address physicalSource) {
+        nic.acceptNeighbor(level, physicalSource);
+    }
+
+    @Override
     public void acceptFrame(ServerLevel level, Address physicalSource, Frame dataFrame) {
         nic.acceptFrame(level, physicalSource, dataFrame);
     }
 
     @Override
-    public void sendFrame(ServerLevel level, Frame dataFrame) {
-        nic.sendFrame(level, dataFrame);
+    public void sendOutFrame(ServerLevel level, @Nullable Address destination, Frame frame, int ttl) {
+        nic.sendOutFrame(level, destination, frame, ttl);
     }
 
-    public void handlePacket(ServerLevel level, int logicalSource, Packet packet) {
+    public void handleFrame(ServerLevel level, Address logicalSource, Frame packet) {
         var menu = this.getActiveMenu();
 
         if (packet instanceof DiscoveryProtocol discoveryProtocol && !discoveryProtocol.isReply()) {
@@ -334,11 +337,11 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
             protocols.add(FileSystemShareProtocol.Query.class);
             if (menu != null)
                 protocols.addAll(menu.currentApplication().getNetworkProtocols());
-            nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(protocols));
+            nic.sendOutFrame(level, logicalSource, discoveryProtocol.intersect(protocols));
         }
 
         if (packet == DeviceInfoProtocol.Query.INSTANCE) {
-            nic.sendPacket(level, logicalSource, new DeviceInfoProtocol(
+            nic.sendOutFrame(level, logicalSource, new DeviceInfoProtocol(
                     Component.literal("Computer"),
                     this.getBlockPos(),
                     Changed.modResource("computer")
@@ -355,7 +358,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
             var menu = blockEntity.getActiveMenu();
             if (menu != null)
                 menu.currentApplication().serverTick(serverLevel);
-            blockEntity.nic.processPackets(serverLevel, blockEntity::handlePacket);
+            blockEntity.nic.processFrames(serverLevel, blockEntity::handleFrame);
         }
     }
 

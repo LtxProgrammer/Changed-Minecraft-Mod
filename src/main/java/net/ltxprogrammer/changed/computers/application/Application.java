@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.computers.application;
 
-import net.ltxprogrammer.changed.computers.protocol.Packet;
+import net.ltxprogrammer.changed.computers.protocol.Frame;
+import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,7 +21,7 @@ public interface Application {
     }
 
     /// Called to handle a packet from an in-game device
-    default void handlePacket(ServerLevel level, int logicalSource, Packet packet) {
+    default void handlePacket(ServerLevel level, NetworkInterface.Address physicalSource, Frame frame) {
 
     }
 

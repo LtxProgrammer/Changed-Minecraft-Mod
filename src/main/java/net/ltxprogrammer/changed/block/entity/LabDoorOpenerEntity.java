@@ -39,8 +39,7 @@ public class LabDoorOpenerEntity extends BlockEntity implements NetworkInterface
     public LabDoorOpenerEntity(BlockPos pos, BlockState state, OpenableDoor door) {
         super(ChangedBlockEntities.LAB_DOOR_OPENER.get(), pos, state);
         this.door = door;
-        this.nic = new BasicNIC(Address.forBlock(pos.immutable()));
-        nic.logicalAddress = this.random.nextInt();
+        this.nic = new BasicNIC(Address.forBlock(pos));
     }
 
     public static boolean canOpenDoor(@Nullable LivingEntity entity) {
@@ -68,9 +67,9 @@ public class LabDoorOpenerEntity extends BlockEntity implements NetworkInterface
         }
     }
 
-    public void handlePacket(ServerLevel level, int logicalSource, Object packet) {
+    public void handleFrame(ServerLevel level, NetworkInterface.Address logicalSource, Frame packet) {
         if (packet instanceof DiscoveryProtocol discoveryProtocol && !discoveryProtocol.isReply()) {
-            nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(PROTOCOLS));
+            nic.sendOutFrame(level, logicalSource, discoveryProtocol.intersect(PROTOCOLS));
         }
 
         if (packet instanceof DoorControlProtocol doorControlProtocol) {
@@ -93,7 +92,7 @@ public class LabDoorOpenerEntity extends BlockEntity implements NetworkInterface
             var state = this.getBlockState();
             var pos = this.getBlockPos();
             var icon = door.getDeviceIcon(state, level, pos);
-            nic.sendPacket(level, logicalSource, new DeviceInfoProtocol(
+            nic.sendOutFrame(level, logicalSource, new DeviceInfoProtocol(
                     this.getBlockState().getBlock().getName(),
                     this.getBlockPos(),
                     icon == null ? FALLBACK_ICON : icon
@@ -104,11 +103,16 @@ public class LabDoorOpenerEntity extends BlockEntity implements NetworkInterface
     public static void serverTick(Level level, BlockPos pos, BlockState state, LabDoorOpenerEntity blockEntity) {
         if (level instanceof ServerLevel serverLevel) {
             blockEntity.nic.tick(serverLevel, pos);
-            blockEntity.nic.processPackets(serverLevel, blockEntity::handlePacket);
+            blockEntity.nic.processFrames(serverLevel, blockEntity::handleFrame);
         }
         if (state.getProperties().contains(BlockStateProperties.POWERED) && !state.getValue(AbstractLabDoor.POWERED))
             return;
         blockEntity.tick(level, pos, state);
+    }
+
+    @Override
+    public void acceptNeighbor(ServerLevel level, Address physicalSource) {
+        nic.acceptNeighbor(level, physicalSource);
     }
 
     @Override
@@ -117,7 +121,7 @@ public class LabDoorOpenerEntity extends BlockEntity implements NetworkInterface
     }
 
     @Override
-    public void sendFrame(ServerLevel level, Frame dataFrame) {
-        nic.sendFrame(level, dataFrame);
+    public void sendOutFrame(ServerLevel level, @Nullable Address destination, Frame frame, int ttl) {
+        nic.sendOutFrame(level, destination, frame, ttl);
     }
 }

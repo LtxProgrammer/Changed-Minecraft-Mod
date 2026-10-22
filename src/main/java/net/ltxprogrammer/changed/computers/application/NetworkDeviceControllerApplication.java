@@ -1,23 +1,18 @@
 package net.ltxprogrammer.changed.computers.application;
 
 import com.mojang.datafixers.util.Pair;
-import net.ltxprogrammer.changed.computers.protocol.DeviceInfoProtocol;
-import net.ltxprogrammer.changed.computers.protocol.DiscoveryProtocol;
-import net.ltxprogrammer.changed.computers.protocol.DoorControlProtocol;
-import net.ltxprogrammer.changed.computers.protocol.Packet;
+import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class NetworkDeviceControllerApplication implements Application {
-    protected final Map<Integer, AtomicInteger> availableDevices = new HashMap<>();
+    protected final Map<NetworkInterface.Address, AtomicInteger> availableDevices = new HashMap<>();
     protected final ComputerMenu menu;
     protected int ticksSinceLastDiscovery = 1000000;
-    private final Queue<Pair<Integer, Packet>> packetQueue = new ArrayDeque<>();
+    private final Queue<Pair<NetworkInterface.Address, Frame>> frameQueue = new ArrayDeque<>();
 
     protected NetworkDeviceControllerApplication(ComputerMenu menu) {
         this.menu = menu;
@@ -25,38 +20,38 @@ public abstract class NetworkDeviceControllerApplication implements Application 
 
     protected abstract Class<?> getNetworkDeviceProtocol();
 
-    protected void queuePacket(int logicalDestination, Packet packet) {
-        packetQueue.add(Pair.of(logicalDestination, packet));
+    protected void queueFrame(NetworkInterface.Address logicalDestination, Frame packet) {
+        frameQueue.add(Pair.of(logicalDestination, packet));
     }
 
-    protected boolean isDeviceReachable(int logicalAddress) {
+    protected boolean isDeviceReachable(NetworkInterface.Address logicalAddress) {
         return availableDevices.containsKey(logicalAddress);
     }
 
-    protected void deviceAdded(ServerLevel level, int logicalDevice, DeviceInfoProtocol deviceInfoProtocol) {
+    protected void deviceAdded(ServerLevel level, NetworkInterface.Address logicalDevice, DeviceInfoProtocol deviceInfoProtocol) {
 
     }
 
-    protected void deviceRemoved(ServerLevel level, int logicalDevice) {
+    protected void deviceRemoved(ServerLevel level, NetworkInterface.Address logicalDevice) {
 
     }
 
     @Override
-    public void handlePacket(ServerLevel level, int logicalSource, Packet packet) {
-        if (packet instanceof DiscoveryProtocol discoveryProtocol && discoveryProtocol.isReply() &&
+    public void handlePacket(ServerLevel level, NetworkInterface.Address physicalSource, Frame frame) {
+        if (frame instanceof DiscoveryProtocol discoveryProtocol && discoveryProtocol.isReply() &&
             discoveryProtocol.contains(this.getNetworkDeviceProtocol()) &&
             discoveryProtocol.contains(DeviceInfoProtocol.Query.class)) {
-            boolean addDevice = !availableDevices.containsKey(logicalSource);
+            boolean addDevice = !availableDevices.containsKey(physicalSource);
             if (addDevice) { // Query device info before adding
-                menu.computer.nic.sendPacket(level, logicalSource, DeviceInfoProtocol.Query.INSTANCE);
+                menu.computer.sendOutFrame(level, physicalSource, DeviceInfoProtocol.Query.INSTANCE);
             } else { // Subsequent DiscoveryProtocol replies do not require a DeviceInfoProtocol reply
-                availableDevices.computeIfAbsent(logicalSource, source -> new AtomicInteger(0)).set(0);
+                availableDevices.computeIfAbsent(physicalSource, source -> new AtomicInteger(0)).set(0);
             }
-        } else if (packet instanceof DeviceInfoProtocol deviceInfoProtocol) {
-            boolean addDevice = !availableDevices.containsKey(logicalSource);
+        } else if (frame instanceof DeviceInfoProtocol deviceInfoProtocol) {
+            boolean addDevice = !availableDevices.containsKey(physicalSource);
             if (addDevice) {
-                availableDevices.computeIfAbsent(logicalSource, source -> new AtomicInteger(0)).set(0);
-                this.deviceAdded(level, logicalSource, deviceInfoProtocol);
+                availableDevices.computeIfAbsent(physicalSource, source -> new AtomicInteger(0)).set(0);
+                this.deviceAdded(level, physicalSource, deviceInfoProtocol);
             }
         }
     }
@@ -72,16 +67,16 @@ public abstract class NetworkDeviceControllerApplication implements Application 
         });
 
         if (this.ticksSinceLastDiscovery++ > 40) {
-            menu.computer.nic.broadcastPacket(level, DiscoveryProtocol.create(Set.of(
+            menu.computer.sendOutFrame(level, NetworkInterface.BROADCAST, DiscoveryProtocol.create(Set.of(
                     this.getNetworkDeviceProtocol(),
                     DeviceInfoProtocol.Query.class
             )));
             this.ticksSinceLastDiscovery = 0;
         }
 
-        while (!packetQueue.isEmpty()) {
-            var packet = packetQueue.poll();
-            menu.computer.nic.sendPacket(level, packet.getFirst(), packet.getSecond());
+        while (!frameQueue.isEmpty()) {
+            var packet = frameQueue.poll();
+            menu.computer.sendOutFrame(level, packet.getFirst(), packet.getSecond());
         }
     }
 }

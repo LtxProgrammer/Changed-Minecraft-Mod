@@ -137,8 +137,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
 
     public StasisChamberBlockEntity(BlockPos pos, BlockState state) {
         super(ChangedBlockEntities.STASIS_CHAMBER.get(), pos, state);
-        this.nic = new BasicNIC(Address.forBlock(pos.immutable()));
-        this.nic.logicalAddress = this.random.nextInt();
+        this.nic = new BasicNIC(Address.forBlock(pos));
     }
 
     public boolean isEmpty() {
@@ -374,13 +373,13 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         return openersCounter.getOpenerCount() > 0;
     }
 
-    public void handlePacket(ServerLevel level, int logicalSource, Object packet) {
+    public void handleFrame(ServerLevel level, NetworkInterface.Address logicalSource, Frame packet) {
         if (packet instanceof DiscoveryProtocol discoveryProtocol && !discoveryProtocol.isReply()) {
-            nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(PROTOCOLS));
+            nic.sendOutFrame(level, logicalSource, discoveryProtocol.intersect(PROTOCOLS));
         }
 
         if (packet == DeviceInfoProtocol.Query.INSTANCE) {
-            nic.sendPacket(level, logicalSource, new DeviceInfoProtocol(
+            nic.sendOutFrame(level, logicalSource, new DeviceInfoProtocol(
                     Component.literal("Stasis Chamber"),
                     this.getBlockPos(),
                     Changed.modResource("stasis_chamber")
@@ -393,7 +392,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
 
         if (level instanceof ServerLevel serverLevel) {
             blockEntity.nic.tick(serverLevel, blockPos);
-            blockEntity.nic.processPackets(serverLevel, blockEntity::handlePacket);
+            blockEntity.nic.processFrames(serverLevel, blockEntity::handleFrame);
         }
 
         var commands = blockEntity.scheduledCommands;
@@ -424,13 +423,18 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
     }
 
     @Override
+    public void acceptNeighbor(ServerLevel level, Address physicalSource) {
+        nic.acceptNeighbor(level, physicalSource);
+    }
+
+    @Override
     public void acceptFrame(ServerLevel level, Address physicalSource, Frame dataFrame) {
         nic.acceptFrame(level, physicalSource, dataFrame);
     }
 
     @Override
-    public void sendFrame(ServerLevel level, Frame dataFrame) {
-        nic.sendFrame(level, dataFrame);
+    public void sendOutFrame(ServerLevel level, @Nullable Address destination, Frame frame, int ttl) {
+        nic.sendOutFrame(level, destination, frame, ttl);
     }
 
     public boolean isOpen() {

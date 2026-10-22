@@ -430,7 +430,7 @@ public class FileExplorerScreen implements ApplicationScreen {
             screen.addApplicationWidget(Button.builder(deviceInfo.deviceName(), (self) -> {
                         CompoundTag payload = new CompoundTag();
                         payload.putString("control", "mount");
-                        payload.putInt("address", logicalAddress);
+                        payload.put("address", logicalAddress.encode());
                         Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
 
                         self.active = false;

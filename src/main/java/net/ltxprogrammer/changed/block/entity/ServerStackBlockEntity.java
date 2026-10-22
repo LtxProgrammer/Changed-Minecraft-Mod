@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.BasicNIC;
 import net.ltxprogrammer.changed.computers.DiscData;
 import net.ltxprogrammer.changed.computers.Permissions;
-import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
 import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
@@ -16,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,8 +30,7 @@ public class ServerStackBlockEntity extends BlockEntity implements NetworkInterf
 
     public ServerStackBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ChangedBlockEntities.SERVER_STACK.get(), blockPos, blockState);
-        nic = new BasicNIC(Address.forBlock(blockPos.immutable()));
-        nic.logicalAddress = this.random.nextInt();
+        this.nic = new BasicNIC(Address.forBlock(blockPos));
 
         primaryDisc = createFileSystem(random);
     }
@@ -45,26 +44,31 @@ public class ServerStackBlockEntity extends BlockEntity implements NetworkInterf
     }
 
     @Override
+    public void acceptNeighbor(ServerLevel level, Address physicalSource) {
+        nic.acceptNeighbor(level, physicalSource);
+    }
+
+    @Override
     public void acceptFrame(ServerLevel level, Address physicalSource, Frame dataFrame) {
         nic.acceptFrame(level, physicalSource, dataFrame);
     }
 
     @Override
-    public void sendFrame(ServerLevel level, Frame dataFrame) {
-        nic.sendFrame(level, dataFrame);
+    public void sendOutFrame(ServerLevel level, @Nullable Address destination, Frame frame, int ttl) {
+        nic.sendOutFrame(level, destination, frame, ttl);
     }
 
-    public void handlePacket(ServerLevel level, int logicalSource, Packet packet) {
+    public void handleFrame(ServerLevel level, Address source, Frame packet) {
         if (packet instanceof DiscoveryProtocol discoveryProtocol && !discoveryProtocol.isReply()) {
             Set<Class<?>> protocols = new HashSet<>();
             protocols.add(DiscoveryProtocol.class);
             protocols.add(DeviceInfoProtocol.Query.class);
             protocols.add(FileSystemShareProtocol.Query.class);
-            nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(protocols));
+            nic.sendOutFrame(level, source, discoveryProtocol.intersect(protocols));
         }
 
         if (packet == DeviceInfoProtocol.Query.INSTANCE) {
-            nic.sendPacket(level, logicalSource, new DeviceInfoProtocol(
+            nic.sendOutFrame(level, source, new DeviceInfoProtocol(
                     Component.literal("Server"),
                     this.getBlockPos(),
                     Changed.modResource("server")
@@ -72,7 +76,7 @@ public class ServerStackBlockEntity extends BlockEntity implements NetworkInterf
         }
 
         if (packet == FileSystemShareProtocol.Query.INSTANCE) {
-            nic.sendPacket(level, logicalSource, new FileSystemShareProtocol(
+            nic.sendOutFrame(level, source, new FileSystemShareProtocol(
                     primaryDisc.generateIfNecessary(level, this.configureDirectory()).getRootFolder(),
                     Permissions.READ_ONLY
             ));
@@ -82,7 +86,7 @@ public class ServerStackBlockEntity extends BlockEntity implements NetworkInterf
     public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, ServerStackBlockEntity blockEntity) {
         if (level instanceof ServerLevel serverLevel) {
             blockEntity.nic.tick(serverLevel, blockPos);
-            blockEntity.nic.processPackets(serverLevel, blockEntity::handlePacket);
+            blockEntity.nic.processFrames(serverLevel, blockEntity::handleFrame);
         }
     }
 
