@@ -1849,6 +1849,17 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
             this.inventory.dropAll();
     }
 
+    public void setEquipmentDropChance(EquipmentSlot slot, float chance) {
+        switch (slot.getType()) {
+            case HAND:
+                this.handDropChances[slot.getIndex()] = chance;
+                break;
+            case ARMOR:
+                this.armorDropChances[slot.getIndex()] = chance;
+        }
+
+    }
+
     @Override
     public boolean canPickUpLoot() {
         return inventory != null;

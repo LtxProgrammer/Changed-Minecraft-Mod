@@ -8,16 +8,23 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.process.TransfurEvents;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.world.enchantments.FormFittingEnchantment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -214,6 +221,148 @@ public class TransfurVariant<T extends ChangedEntity> {
         return replaceEntity(entity, cause == null ? null : cause.map(IAbstractChangedEntity::getEntity, ILatexAssimilatedEntity::getEntity));
     }
 
+    protected static boolean canEntityWearItem(ChangedEntity entity, ItemStack itemStack, EquipmentSlot slot) {
+        if (slot == EquipmentSlot.MAINHAND)
+            return true;
+        if (itemStack.isEmpty())
+            return true;
+        itemStack = FormFittingEnchantment.getFormFitted(entity, itemStack, slot);
+        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem) {
+            if (!wearableItem.allowedInSlot(itemStack, entity, slot))
+                return false;
+        }
+
+        else { // Default expected entity shapes
+            boolean shapeFits = switch (slot) {
+                case HEAD -> entity.getEntityShape().getHeadShape() == ClothingShape.Head.ANTHRO;
+                case CHEST -> entity.getEntityShape().getTorsoShape() == ClothingShape.Torso.ANTHRO;
+                case LEGS -> entity.getEntityShape().getLegsShape() == ClothingShape.Legs.BIPEDAL;
+                case FEET -> entity.getEntityShape().getFeetShape() == ClothingShape.Feet.BIPEDAL;
+                default -> true;
+            };
+
+            if (!shapeFits)
+                return false;
+        }
+
+        if (!entity.isItemAllowedInSlot(itemStack, slot))
+            return false;
+
+        return true;
+    }
+
+    public static void takeOldEntityItems(@NotNull IAbstractChangedEntity mapTo, @NotNull LivingEntity mapFrom) {
+        LivingEntity newEntity = mapTo.getEntity();
+
+        if (mapFrom instanceof Player player) {
+            if (mapFrom.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY))
+                return;
+
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                ItemStack itemstack = mapFrom.getItemBySlot(slot);
+
+                if (slot.isArmor() && newEntity.getItemBySlot(slot).isEmpty() && canEntityWearItem(mapTo.getChangedEntity(), itemstack, slot)) { // Take armor
+                    newEntity.setItemSlot(slot, itemstack);
+                    mapTo.getChangedEntity().setGuaranteedDrop(slot);
+                    mapTo.getChangedEntity().setPersistenceRequired();
+                    mapFrom.setItemSlot(slot, ItemStack.EMPTY);
+                }
+
+                // Let items not taken to drop normally
+            }
+        } else if (mapFrom instanceof MobDataExtension mob) { // Inherit equipment and drop chance
+            boolean hurtByPlayerAtAll = ((LivingEntityDataExtension)mapFrom).changed$getLastHurtByPlayerTime() > 0;
+            boolean recipientIsPlayer = mapTo.isPlayer();
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                ItemStack itemstack = mapFrom.getItemBySlot(slot);
+                float f = mob.changed$getEquipmentDropChance(slot);
+
+                if (slot.isArmor() && newEntity.getItemBySlot(slot).isEmpty() && canEntityWearItem(mapTo.getChangedEntity(), itemstack, slot)) { // Take armor
+                    if (recipientIsPlayer) { // Simulate drop chance when player is getting items
+                        boolean guaranteedDrop = f > 1.0F;
+                        if (!itemstack.isEmpty() && !EnchantmentHelper.hasVanishingCurse(itemstack) && Math.max(mapFrom.getRandom().nextFloat() - (float)0 * 0.01F, 0.0F) < f) {
+                            if (!guaranteedDrop && itemstack.isDamageableItem()) {
+                                itemstack.setDamageValue(itemstack.getMaxDamage() - mapFrom.getRandom().nextInt(1 + mapFrom.getRandom().nextInt(Math.max(itemstack.getMaxDamage() - 3, 1))));
+                            }
+
+                            newEntity.setItemSlot(slot, itemstack);
+                        }
+                    } else {
+                        newEntity.setItemSlot(slot, itemstack);
+                        mapTo.getChangedEntity().setEquipmentDropChance(slot, f);
+                        if (f > 1.0F)
+                            mapTo.getChangedEntity().setPersistenceRequired();
+                    }
+
+                    mapFrom.setItemSlot(slot, ItemStack.EMPTY);
+                } else { // Drop items based on drop chance
+                    boolean guaranteedDrop = f > 1.0F;
+                    if (!itemstack.isEmpty() && !EnchantmentHelper.hasVanishingCurse(itemstack) && (hurtByPlayerAtAll || guaranteedDrop) && Math.max(mapFrom.getRandom().nextFloat() - (float)0 * 0.01F, 0.0F) < f) {
+                        if (!guaranteedDrop && itemstack.isDamageableItem()) {
+                            itemstack.setDamageValue(itemstack.getMaxDamage() - mapFrom.getRandom().nextInt(1 + mapFrom.getRandom().nextInt(Math.max(itemstack.getMaxDamage() - 3, 1))));
+                        }
+
+                        if (!mapTo.addItem(itemstack))
+                            Block.popResource(mapFrom.level(), mapFrom.blockPosition(), itemstack.copy());
+                        mapFrom.setItemSlot(slot, ItemStack.EMPTY);
+                    }
+                }
+            }
+        } else { // Replacing non-mob or non-player, do our best
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                ItemStack itemstack = mapFrom.getItemBySlot(slot);
+                if (slot.isArmor() && newEntity.getItemBySlot(slot).isEmpty() && canEntityWearItem(mapTo.getChangedEntity(), itemstack, slot)) { // Take armor
+                    newEntity.setItemSlot(slot, itemstack.copy());
+                } else { // Drop held items
+                    if (mapFrom.getRandom().nextFloat() < 0.05f) { // 5% Drop rate
+                        if (!mapTo.addItem(itemstack))
+                            Block.popResource(mapFrom.level(), mapFrom.blockPosition(), itemstack.copy());
+                    }
+                }
+            }
+        }
+    }
+
+    private static int repairPlayerItems(Player player, int totalValue, int remainingValue) {
+        Map.Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(Enchantments.MENDING, player, ItemStack::isDamaged);
+        if (entry != null) {
+            ItemStack itemstack = entry.getValue();
+            int i = Math.min((int) (totalValue * itemstack.getXpRepairRatio()), itemstack.getDamageValue());
+            itemstack.setDamageValue(itemstack.getDamageValue() - i);
+            int j = remainingValue - durabilityToXp(i);
+            return j > 0 ? repairPlayerItems(player, totalValue, j) : 0;
+        } else {
+            return remainingValue;
+        }
+    }
+
+    private static int durabilityToXp(int durability) {
+        return durability / 2;
+    }
+
+    public static void takeOldEntityExperience(@NotNull IAbstractChangedEntity mapTo, @NotNull LivingEntity mapFrom) {
+        var ext = (LivingEntityDataExtension)mapFrom;
+
+        if (mapFrom.level() instanceof ServerLevel && !mapFrom.wasExperienceConsumed() && (ext.changed$isAlwaysExperienceDropper() || ext.changed$getLastHurtByPlayerTime() > 0 && mapFrom.shouldDropExperience() && mapFrom.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
+            int preReward = mapFrom.getExperienceReward();
+            int reward = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(mapFrom, ext.changed$getLastHurtByPlayer(), preReward);
+
+            if (mapTo.getEntity() instanceof Player player) { // Give experience directly to player: simulate XP pickup
+                int remainingReward = repairPlayerItems(player, reward, reward);
+                if (remainingReward > 0)
+                    player.giveExperiencePoints(remainingReward);
+            } else {
+                ExperienceOrb.award((ServerLevel) mapFrom.level(), mapFrom.position(), reward);
+            }
+
+            if (mapFrom instanceof Player player && preReward > 0) { // Clear victims XP to prevent duplicate; preReward already considers KEEPINVENTORY
+                player.experienceLevel = 0;
+                player.experienceProgress = 0.0F;
+                player.totalExperience = 0;
+            }
+        }
+    }
+
     public IAbstractChangedEntity replaceEntity(@NotNull LivingEntity entity, @Nullable LivingEntity cause) {
         var newEntity = spawnAtEntity(entity);
         var event = new TransfurEvents.ReplaceEntityEvent(entity, this, cause, newEntity);
@@ -232,44 +381,45 @@ public class TransfurVariant<T extends ChangedEntity> {
             newEntity.setLeftHanded(mob.isLeftHanded());
         }
 
+        if (entity instanceof ChangedEntity changedEntity) {
+            newEntity.copyTraitsFrom(IAbstractChangedEntity.forEntity(changedEntity));
+        }
+
+        IAbstractChangedEntity abstraction = IAbstractChangedEntity.forEntity(newEntity);
         if (entity instanceof Player player) {
             newEntity.getBasicPlayerInfo().copyFrom(((PlayerDataExtension)player).getBasicPlayerInfo());
             if (ProcessTransfur.isPlayerTransfurred(player))
                 newEntity.copyTraitsFrom(IAbstractChangedEntity.forPlayer(player));
 
+            // Cache experience incase killPlayerByTransfur fails
+            int experienceLevel = player.experienceLevel;
+            float experienceProgress = player.experienceProgress;
+            int totalExperience = player.totalExperience;
+            takeOldEntityItems(abstraction, entity);
+            takeOldEntityExperience(abstraction, entity);
             if (!ProcessTransfur.killPlayerByTransfur(player, cause != null ? cause : newEntity)) {
-                newEntity.discard();
                 var instance = ProcessTransfur.setPlayerTransfurVariant(player, this, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE), 1.0f);
                 instance.willSurviveTransfur = true;
 
                 ProcessTransfur.onNewlyTransfurred(IAbstractChangedEntity.forPlayer(player));
-                return IAbstractChangedEntity.forPlayer(player);
+                abstraction = IAbstractChangedEntity.forPlayer(player);
+
+                // Take items and XP back
+                takeOldEntityItems(abstraction, newEntity);
+                player.experienceLevel = experienceLevel;
+                player.experienceProgress = experienceProgress;
+                player.totalExperience = totalExperience;
+                newEntity.discard();
             }
-        } else if (entity instanceof ChangedEntity changedEntity) {
-            newEntity.copyTraitsFrom(IAbstractChangedEntity.forEntity(changedEntity));
-            // Take armor and held items
-            Arrays.stream(EquipmentSlot.values()).forEach(slot -> {
-                newEntity.setItemSlot(slot, entity.getItemBySlot(slot).copy());
-            });
-
-            changedEntity.discard();
         } else {
-            // Take armor
-            Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).forEach(slot -> {
-                newEntity.setItemSlot(slot, entity.getItemBySlot(slot).copy());
-            });
-            // Drop held items
-            Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.HAND).forEach(slot -> {
-                if (entity.getRandom().nextFloat() < 0.05f) // 5% Drop rate
-                    Block.popResource(entity.level(), entity.blockPosition(), entity.getItemBySlot(slot).copy());
-            });
-
+            takeOldEntityItems(abstraction, entity);
+            takeOldEntityExperience(abstraction, entity);
             entity.discard();
         }
 
         entity.invulnerableTime = 30;
 
-        return IAbstractChangedEntity.forEntity(newEntity);
+        return abstraction;
     }
 
     @Deprecated
