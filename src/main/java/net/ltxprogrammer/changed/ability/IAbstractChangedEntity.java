@@ -445,6 +445,10 @@ public interface IAbstractChangedEntity {
                 // Take armor and held items
                 Arrays.stream(EquipmentSlot.values()).forEach(slot -> {
                     newEntity.setItemSlot(slot, entity.getItemBySlot(slot).copy());
+                    float f = ((MobDataExtension)entity).changed$getEquipmentDropChance(slot);
+                    newEntity.setEquipmentDropChance(slot, f);
+                    if (f > 1.0F)
+                        newEntity.setPersistenceRequired();
                 });
 
                 newEntity.copyTraitsFrom(IAbstractChangedEntity.forEntity(oldEntity));
@@ -490,11 +494,9 @@ public interface IAbstractChangedEntity {
 
             @Override
             public boolean addItem(ItemStack item) {
-                if (cached.get() instanceof AbstractDarkLatexEntity darkLatexEntity) {
-                    var inv = darkLatexEntity.getInventory();
-                    if (inv != null)
-                        return darkLatexEntity.getInventory().add(item);
-                }
+                var inv = cached.get().getInventory();
+                if (inv != null)
+                    return inv.add(item);
                 return false;
             }
 
