@@ -21,6 +21,11 @@ public class ChangedFacilityPieceTypes {
      */
     public static final RegistryObject<StaircaseSectionType> STAIRCASE_SECTION = REGISTRY.register("staircase_section", StaircaseSectionType::new);
     /**
+     * Section of staircase generation that has a landing. Next piece will likely be a "changed:staircase_section" or else a "changed:staircase_end"
+     * Also neighbors into a split piece
+     */
+    public static final RegistryObject<StaircaseLandingType> STAIRCASE_LANDING = REGISTRY.register("staircase_landing", StaircaseLandingType::new);
+    /**
      * End of staircase generation. Next piece will always be a "changed:split"
      */
     public static final RegistryObject<StaircaseEndType> STAIRCASE_END = REGISTRY.register("staircase_end", StaircaseEndType::new);
