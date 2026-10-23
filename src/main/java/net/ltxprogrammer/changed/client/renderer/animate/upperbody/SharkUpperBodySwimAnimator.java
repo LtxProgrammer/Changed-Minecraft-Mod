@@ -29,11 +29,20 @@ public class SharkUpperBodySwimAnimator<T extends ChangedEntity, M extends Advan
 
         torso.x += Mth.lerp(core.swimAmount, 0.0f, armOffset * SWIM_SCALE);
         torso.zRot = Mth.lerp(core.swimAmount, torso.zRot, midSegmentSway);
-        leftArm.zRot = Mth.lerp(core.swimAmount, leftArm.zRot, midSegmentSway - 0.075f);
-        rightArm.zRot = Mth.lerp(core.swimAmount, rightArm.zRot, midSegmentSway + 0.075f);
-        leftArm.y += Mth.lerp(core.swimAmount, 0.0f, -armOffset);
-        rightArm.y += Mth.lerp(core.swimAmount, 0.0f, armOffset);
-        leftArm.x += Mth.lerp(core.swimAmount, 0.0f, armOffset * SWIM_SCALE);
-        rightArm.x += Mth.lerp(core.swimAmount, 0.0f, armOffset * SWIM_SCALE);
+        leftArm.zRot += Mth.lerp(core.swimAmount, 0.0f, midSegmentSway);
+        rightArm.zRot += Mth.lerp(core.swimAmount, 0.0f, midSegmentSway);
+        leftArm.xRot += Mth.lerp(core.swimAmount, 0.0f, -0.17f);
+        rightArm.xRot += Mth.lerp(core.swimAmount, 0.0f, -0.17f);
+
+        positionLeftArmByTorso((x, y, z) -> {
+            leftArm.x = Mth.lerp(core.swimAmount, leftArm.x, x);
+            leftArm.y = Mth.lerp(core.swimAmount, leftArm.y, y);
+            leftArm.z = Mth.lerp(core.swimAmount, leftArm.z, z);
+        });
+        positionRightArmByTorso((x, y, z) -> {
+            rightArm.x = Mth.lerp(core.swimAmount, rightArm.x, x);
+            rightArm.y = Mth.lerp(core.swimAmount, rightArm.y, y);
+            rightArm.z = Mth.lerp(core.swimAmount, rightArm.z, z);
+        });
     }
 }

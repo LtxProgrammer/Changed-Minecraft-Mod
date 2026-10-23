@@ -504,7 +504,9 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     }
 
     protected float getEyeHeightMul(Pose pose) {
-        if (pose == Pose.CROUCHING)
+        if (pose == Pose.SWIMMING)
+            return 0.6F;
+        else if (pose == Pose.CROUCHING)
             return 0.83F;
         else
             return 0.93F;
