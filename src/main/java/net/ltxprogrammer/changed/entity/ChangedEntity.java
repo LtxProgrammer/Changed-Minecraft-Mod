@@ -14,6 +14,7 @@ import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.entity.variant.VariantFeature;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -469,17 +470,20 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
 
+        EntityDimensions dimensions;
         if (WhiteLatexTransportInterface.isEntityInWhiteLatex(this.maybeGetUnderlying()))
-            return EntityDimensions.scalable(core.width, core.width);
+            dimensions = EntityDimensions.scalable(core.width, core.width);
+        else
+            dimensions = (switch (Objects.requireNonNullElse(overridePose, pose)) {
+                case STANDING -> core;
+                case SLEEPING -> SLEEPING_DIMENSIONS;
+                case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
+                case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.3f);
+                case DYING -> EntityDimensions.fixed(0.2f, 0.2f);
+                default -> core;
+            }).scale(this.getScale());
 
-        return (switch (Objects.requireNonNullElse(overridePose, pose)) {
-            case STANDING -> core;
-            case SLEEPING -> SLEEPING_DIMENSIONS;
-            case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
-            case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.3f);
-            case DYING -> EntityDimensions.fixed(0.2f, 0.2f);
-            default -> core;
-        }).scale(this.getScale());
+        return ChangedCompatibility.maybeAdjustEntitySize(this, dimensions);
     }
 
     @Override
@@ -500,7 +504,9 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     }
 
     protected float getEyeHeightMul(Pose pose) {
-        if (pose == Pose.CROUCHING)
+        if (pose == Pose.SWIMMING)
+            return 0.6F;
+        else if (pose == Pose.CROUCHING)
             return 0.83F;
         else
             return 0.93F;

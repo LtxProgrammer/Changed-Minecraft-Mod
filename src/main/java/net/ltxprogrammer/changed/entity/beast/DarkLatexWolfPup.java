@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.ai.TamedEntityFavor;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
@@ -142,11 +143,12 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        EntityDimensions core = super.getDimensions(pose);
+        EntityDimensions core = this.getType().getDimensions();
+
         if (this.isPuddle())
-            return EntityDimensions.scalable(core.width + 0.4f, core.height - 0.5f);
+            return ChangedCompatibility.maybeAdjustEntitySize(this, EntityDimensions.scalable(core.width + 0.4f, core.height - 0.5f));
         else
-            return core;
+            return super.getDimensions(pose);
     }
 
     @Override
