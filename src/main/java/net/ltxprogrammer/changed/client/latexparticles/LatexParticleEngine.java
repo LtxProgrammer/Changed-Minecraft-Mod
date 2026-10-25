@@ -236,12 +236,12 @@ public class LatexParticleEngine implements PreparableReloadListener {
         }, execB);
     }
 
-    private Optional<List<ResourceLocation>> loadParticleDescription(ResourceLocation location, Resource p_248793_) {
+    private Optional<List<ResourceLocation>> loadParticleDescription(ResourceLocation location, Resource resource) {
         if (!this.spriteSets.containsKey(location)) {
             LOGGER.debug("Redundant texture list for particle: {}", (Object)location);
             return Optional.empty();
         } else {
-            try (Reader reader = p_248793_.openAsReader()) {
+            try (Reader reader = resource.openAsReader()) {
                 ParticleDescription particledescription = ParticleDescription.fromJson(GsonHelper.parse(reader));
                 return Optional.of(particledescription.getTextures());
             } catch (IOException ioexception) {
@@ -262,16 +262,16 @@ public class LatexParticleEngine implements PreparableReloadListener {
     static class MutableSpriteSet implements SpriteSet {
         private List<TextureAtlasSprite> sprites;
 
-        public TextureAtlasSprite get(int p_107413_, int p_107414_) {
-            return this.sprites.get(p_107413_ * (this.sprites.size() - 1) / p_107414_);
+        public TextureAtlasSprite get(int index, int maxIndex) {
+            return this.sprites.get(index * (this.sprites.size() - 1) / maxIndex);
         }
 
-        public TextureAtlasSprite get(RandomSource p_107418_) {
-            return this.sprites.get(p_107418_.nextInt(this.sprites.size()));
+        public TextureAtlasSprite get(RandomSource random) {
+            return this.sprites.get(random.nextInt(this.sprites.size()));
         }
 
-        public void rebind(List<TextureAtlasSprite> p_107416_) {
-            this.sprites = ImmutableList.copyOf(p_107416_);
+        public void rebind(List<TextureAtlasSprite> sprites) {
+            this.sprites = ImmutableList.copyOf(sprites);
         }
     }
 }
