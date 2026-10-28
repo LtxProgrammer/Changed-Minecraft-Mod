@@ -325,22 +325,21 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     }
 
     public EntityDimensions getDimensions(Pose pose) {
-        EntityDimensions core = getDimensionsForForm();
+        EntityDimensions coreDimensions = getDimensionsForForm();
+        EntityDimensions poseDimensions = switch (pose) {
+            case STANDING -> coreDimensions;
+            case SLEEPING -> SLEEPING_DIMENSIONS;
+            case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(coreDimensions.width, coreDimensions.width);
+            case CROUCHING -> EntityDimensions.scalable(coreDimensions.width, coreDimensions.height - 0.3f);
+            case DYING -> EntityDimensions.fixed(0.2f, 0.2f);
+            default -> coreDimensions;
+        };
 
-        EntityDimensions dimensions;
-        if (WhiteLatexTransportInterface.isEntityInWhiteLatex(this.maybeGetUnderlying()))
-            dimensions = EntityDimensions.scalable(core.width, core.width);
-        else
-            dimensions = (switch (Objects.requireNonNullElse(overridePose, pose)) {
-                case STANDING -> core;
-                case SLEEPING -> SLEEPING_DIMENSIONS;
-                case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
-                case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.3f);
-                case DYING -> EntityDimensions.fixed(0.2f, 0.2f);
-                default -> core;
-            }).scale(this.getScale());
+        PoseExtension poseExtension = getPoseExtension();
+        if (poseExtension != null && poseExtension.getUnderlyingPose() == pose)
+            poseDimensions = poseExtension.getDimensions(this, coreDimensions, poseDimensions);
 
-        return ChangedCompatibility.maybeAdjustEntitySize(this, dimensions);
+        return ChangedCompatibility.maybeAdjustEntitySize(this, poseDimensions.scale(this.getScale()));
     }
 
     public int getRawFormFlags() {

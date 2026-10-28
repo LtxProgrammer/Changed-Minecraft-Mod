@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.ability.active.mer.*;
 import net.ltxprogrammer.changed.ability.active.multiarm.*;
 import net.ltxprogrammer.changed.ability.active.spider.*;
 import net.ltxprogrammer.changed.ability.active.taur.BackKick;
+import net.ltxprogrammer.changed.ability.active.taur.Rear;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -54,6 +55,7 @@ public class ChangedAbilities {
     public static RegistryObject<CamouflageAbility> CAMOUFLAGE = REGISTRY.register("camouflage", CamouflageAbility::new);
     public static RegistryObject<TailWhip> MER_TAIL_WHIP = REGISTRY.register("mer/tail_whip", TailWhip::new);
     public static RegistryObject<BackKick> TAUR_BACK_KICK = REGISTRY.register("taur/back_kick", BackKick::new);
+    public static RegistryObject<Rear> TAUR_REAR = REGISTRY.register("taur/rear", Rear::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return ChangedRegistry.ABILITY.get().getValue(location);

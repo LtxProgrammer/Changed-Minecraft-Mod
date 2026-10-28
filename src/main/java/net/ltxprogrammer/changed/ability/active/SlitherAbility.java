@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.ability.active;
 
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.init.ChangedPoseExtensions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Pose;
@@ -11,7 +12,7 @@ import java.util.Collections;
 public class SlitherAbility extends SimpleAbility {
     @Override
     public boolean canUse(IAbstractChangedEntity entity) {
-        return true;
+        return entity.getChangedEntity().canEnterPose(ChangedPoseExtensions.SLITHERING.get());
     }
 
     @Override
@@ -22,7 +23,7 @@ public class SlitherAbility extends SimpleAbility {
     @Override
     public void startUsing(IAbstractChangedEntity entity) {
         super.startUsing(entity);
-        entity.getChangedEntity().overridePose = Pose.SWIMMING;
+        entity.getChangedEntity().setPoseExtension(ChangedPoseExtensions.SLITHERING.get());
         entity.getEntity().refreshDimensions();
         setDirty(entity);
     }
@@ -30,7 +31,7 @@ public class SlitherAbility extends SimpleAbility {
     @Override
     public void stopUsing(IAbstractChangedEntity entity) {
         super.stopUsing(entity);
-        entity.getChangedEntity().overridePose = null;
+        entity.getChangedEntity().clearPoseExtension(ChangedPoseExtensions.SLITHERING.get());
         entity.getEntity().refreshDimensions();
         setDirty(entity);
     }
@@ -38,15 +39,15 @@ public class SlitherAbility extends SimpleAbility {
     @Override
     public void saveData(CompoundTag tag, IAbstractChangedEntity entity) {
         super.saveData(tag, entity);
-        if (entity.getChangedEntity().overridePose != null)
-            tag.putString("overridePose", entity.getChangedEntity().overridePose.name());
+        if (entity.getChangedEntity().getPoseExtension() == ChangedPoseExtensions.SLITHERING.get())
+            tag.putBoolean("slithering", true);
     }
 
     @Override
     public void readData(CompoundTag tag, IAbstractChangedEntity entity) {
         super.readData(tag, entity);
-        if (tag.contains("overridePose")) {
-            entity.getChangedEntity().overridePose = Pose.valueOf(tag.getString("overridePose"));
+        if (tag.getBoolean("slithering")) {
+            entity.getChangedEntity().setPoseExtension(ChangedPoseExtensions.SLITHERING.get());
             entity.getEntity().refreshDimensions();
         }
     }
