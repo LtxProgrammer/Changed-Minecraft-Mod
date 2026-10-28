@@ -1,14 +1,12 @@
 package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.item.AccessoryItem;
 import net.ltxprogrammer.changed.world.inventory.AccessoryAccessMenu;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -33,22 +31,26 @@ public class AccessoryAccessScreen extends EffectRenderingInventoryScreen<Access
     private float yMouse;
     private int textureWidth;
     private int textureHeight;
+    private boolean extraHandsPanel;
     private @Nullable Runnable toolTip = null;
 
     public AccessoryAccessScreen(AccessoryAccessMenu menu, Inventory inventory, Component text) {
         super(menu, inventory, text);
         this.menu = menu;
-        this.imageWidth = 176;
+        this.textureWidth = 176 + 18;
+        this.textureHeight = 166;
+        this.extraHandsPanel = menu.getExtraHandSlots() > 0;
+
+        this.imageWidth = 176 + (extraHandsPanel ? 50 : 0);
         this.imageHeight = 166;
-        this.textureWidth = imageWidth + 18;
-        this.textureHeight = imageHeight;
     }
 
     public void setToolTip(Runnable fn) {
         this.toolTip = fn;
     }
 
-    private static final ResourceLocation texture = Changed.modResource("textures/gui/accessories.png");
+    private static final ResourceLocation TEXTURE = Changed.modResource("textures/gui/accessories.png");
+    private static final ResourceLocation TEXTURE_EXTRA_HANDS = Changed.modResource("textures/gui/extra_hands.png");
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
@@ -74,7 +76,11 @@ public class AccessoryAccessScreen extends EffectRenderingInventoryScreen<Access
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        graphics.blit(texture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.textureWidth, this.textureHeight);
+        int leftOffset = extraHandsPanel ? 50 : 0;
+
+        graphics.blit(TEXTURE, this.leftPos + leftOffset, this.topPos, 0, 0, 176, 166, this.textureWidth, this.textureHeight);
+        if (extraHandsPanel)
+            graphics.blit(TEXTURE_EXTRA_HANDS, this.leftPos, this.topPos, 0, 0, 50, 166, 68, 166);
 
         AtomicInteger slotIndex = new AtomicInteger(0);
         menu.getBuiltSlots().forEach(slotType -> {
@@ -93,9 +99,9 @@ public class AccessoryAccessScreen extends EffectRenderingInventoryScreen<Access
                     }).filter(Objects::nonNull).toList();
 
             if (conflictingItems.isEmpty())
-                graphics.blit(texture, this.leftPos + slot.x - 1, this.topPos + slot.y - 1, this.imageWidth, 0, 18, 18, this.textureWidth, this.textureHeight);
+                graphics.blit(TEXTURE, this.leftPos + slot.x - 1, this.topPos + slot.y - 1, 176, 0, 18, 18, this.textureWidth, this.textureHeight);
             else {
-                graphics.blit(texture, this.leftPos + slot.x - 1, this.topPos + slot.y - 1, this.imageWidth, 18, 18, 18, this.textureWidth, this.textureHeight);
+                graphics.blit(TEXTURE, this.leftPos + slot.x - 1, this.topPos + slot.y - 1, 176, 18, 18, 18, this.textureWidth, this.textureHeight);
 
                 if (slot == this.hoveredSlot) {
                     setToolTip(() -> {
@@ -109,11 +115,19 @@ public class AccessoryAccessScreen extends EffectRenderingInventoryScreen<Access
             }
         });
 
+        for (int extraHandSlot = 0; extraHandSlot < menu.getExtraHandSlots(); ++extraHandSlot) {
+            var slot = menu.getCustomSlot(extraHandSlot + slotIndex.getAcquire());
+            if (slot == null)
+                return;
+
+            graphics.blit(TEXTURE_EXTRA_HANDS, this.leftPos + slot.x - 1, this.topPos + slot.y - 1, 50, 0, 18, 18, 68, 166);
+        }
+
         RenderSystem.disableBlend();
 
         int i = this.leftPos;
         int j = this.topPos;
-        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, i + 51, j + 75, 30, (float)(i + 51) - this.xMouse, (float)(j + 75 - 50) - this.yMouse, this.minecraft.player);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, i + 51 + leftOffset, j + 75, 30, (float)(i + 51) - this.xMouse, (float)(j + 75 - 50) - this.yMouse, this.minecraft.player);
     }
 
     @Override
