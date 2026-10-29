@@ -76,6 +76,8 @@
   "ability.changed.mer.tail_whip.desc": "Quickly spin in place to hit all surrounding entities.",
   "ability.changed.taur.back_kick": "Back Kick",
   "ability.changed.taur.back_kick.desc": "Attack entities that happen to be behind you.",
+  "ability.changed.taur.rear": "Rear",
+  "ability.changed.taur.rear.desc": "Stand on your hind legs to reach further and intimidate those around you.",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.desc": "Hold onto an entity to either transfur them or to protect them.",

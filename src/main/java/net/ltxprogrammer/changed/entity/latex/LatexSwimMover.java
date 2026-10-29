@@ -250,6 +250,10 @@ public class LatexSwimMover extends PlayerMover<LatexSwimMover.MoverInstance> {
         public void onAdd(Player player) {
             super.onAdd(player);
 
+            var form = getForm(player);
+            if (form != null)
+                form.getChangedEntity().setPoseExtension(ChangedPoseExtensions.DISSOLVED.get());
+
             player.refreshDimensions();
             player.setInvulnerable(true);
 
@@ -261,6 +265,9 @@ public class LatexSwimMover extends PlayerMover<LatexSwimMover.MoverInstance> {
         public void onRemove(Player player) {
             super.onRemove(player);
 
+            var form = getForm(player);
+            if (form != null)
+                form.getChangedEntity().clearPoseExtension(ChangedPoseExtensions.DISSOLVED.get());
             EntityUtil.refreshDimensionsAndPushFromWall(player);
             if (player.isSpectator())
                 return;
