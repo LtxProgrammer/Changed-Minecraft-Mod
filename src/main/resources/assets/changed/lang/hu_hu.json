@@ -76,6 +76,8 @@
   "ability.changed.mer.tail_whip.desc": "Gyorsan pörögj egy helyben, hogy eltaláld az összes környező entitást.",
   "ability.changed.taur.back_kick": "Hátrarugás",
   "ability.changed.taur.back_kick.desc": "Támadd meg azokat az entitásokat, akik éppen mögötted vannak.",
+  "ability.changed.taur.rear": "Felágaskodás",
+  "ability.changed.taur.rear.desc": "Állj a hátsó lábaidra, hogy messzebb érj, és megfélemlítsd a körülötted lévőket.",
 
   "ability.changed.grab_entity": "Entitás megragadása",
   "ability.changed.grab_entity.desc": "Ragaszkodjon egy entitásba, hogy transzfurálja vagy megvédje.",
