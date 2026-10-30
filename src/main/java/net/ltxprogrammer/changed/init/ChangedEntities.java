@@ -180,7 +180,7 @@ public class ChangedEntities {
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PooltoyWolf::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<DarkDragon>> DARK_DRAGON = registerSpawning("dark_dragon", 0x393939, 0x909090,
             EntityType.Builder.of(DarkDragon::new, MobCategory.CREATURE).clientTrackingRange(10).sized(0.7F, 1.93F),
-            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkDragon::checkEntitySpawnRules);
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkDragon::checkEntitySpawnRules, AbstractFlyingCapableEntity::createFlyingLatexAttributes);
     public static final RegistryObject<EntityType<DarkLatexWolfMale>> DARK_LATEX_WOLF_MALE = registerSpawning("dark_latex_wolf_male", 0x393939, 0x303030,
             EntityType.Builder.of(DarkLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkLatexWolfMale::checkEntitySpawnRules);
@@ -192,10 +192,10 @@ public class ChangedEntities {
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkLatexWolfPup::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<DarkLatexYufeng>> DARK_LATEX_YUFENG = registerSpawning("dark_latex_yufeng", 0x393939, 0x0,
             EntityType.Builder.of(DarkLatexYufeng::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
-            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkLatexYufeng::checkEntitySpawnRules);
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkLatexYufeng::checkEntitySpawnRules, AbstractFlyingCapableEntity::createFlyingLatexAttributes);
     public static final RegistryObject<EntityType<DarkLatexDoubleYufeng>> DARK_LATEX_DOUBLE_YUFENG = registerSpawning("dark_latex_double_yufeng", 0x393939, 0x0,
             EntityType.Builder.of(DarkLatexDoubleYufeng::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
-            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkLatexDoubleYufeng::checkEntitySpawnRules);
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkLatexDoubleYufeng::checkEntitySpawnRules, AbstractFlyingCapableEntity::createFlyingLatexAttributes);
     public static final RegistryObject<EntityType<PhageLatexWolfMale>> PHAGE_LATEX_WOLF_MALE = registerSpawning("phage_latex_wolf_male", 0x393939, 0x3499ff,
             EntityType.Builder.of(PhageLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PhageLatexWolfMale::checkEntitySpawnRules);
@@ -222,7 +222,7 @@ public class ChangedEntities {
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexCrocodile::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexCrow>> LATEX_CROW = registerSpawning("latex_crow", 0x0e0e0e, 0xffffff,
             EntityType.Builder.of(LatexCrow::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
-            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexCrow::checkEntitySpawnRules);
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexCrow::checkEntitySpawnRules, AbstractFlyingCapableEntity::createFlyingLatexAttributes);
     public static final RegistryObject<EntityType<LatexEel>> LATEX_EEL = registerSpawning("latex_eel", 0xffdb4f, 0xffffffff,
             EntityType.Builder.of(LatexEel::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexFennecFox::checkEntitySpawnRules);
@@ -234,7 +234,7 @@ public class ChangedEntities {
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, GreenLizard::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexGoldenDragon>> LATEX_GOLDEN_DRAGON = registerSpawning("latex_golden_dragon", 0xffdb4f, 0xf9b44a,
             EntityType.Builder.of(LatexGoldenDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
-            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexGoldenDragon::checkEntitySpawnRules);
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexGoldenDragon::checkEntitySpawnRules, AbstractFlyingCapableEntity::createFlyingLatexAttributes);
     public static final RegistryObject<EntityType<LatexHypnoCat>> LATEX_HYPNO_CAT = registerSpawning("latex_hypno_cat", 0x52596D, 0xD7FF46,
             EntityType.Builder.of(LatexHypnoCat::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexHypnoCat::checkEntitySpawnRules);
@@ -282,7 +282,7 @@ public class ChangedEntities {
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexPinkWyvern::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexPinkYuinDragon>> LATEX_PINK_YUIN_DRAGON = registerSpawning("latex_pink_yuin_dragon", 0xFFFFFF, 0xF2AABA,
             EntityType.Builder.of(LatexPinkYuinDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
-            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexPinkYuinDragon::checkEntitySpawnRules);
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexPinkYuinDragon::checkEntitySpawnRules, AbstractFlyingCapableEntity::createFlyingLatexAttributes);
     public static final RegistryObject<EntityType<LatexPurpleFox>> LATEX_PURPLE_FOX = registerSpawning("latex_purple_fox", 0xcebbe8, 0xf1e3f1,
             EntityType.Builder.of(LatexPurpleFox::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexPurpleFox::checkEntitySpawnRules);
@@ -297,7 +297,7 @@ public class ChangedEntities {
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexRaccoon::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexRedDragon>> LATEX_RED_DRAGON = registerSpawning("latex_red_dragon", 0xa54f58, 0xfcfa4a,
             EntityType.Builder.of(LatexRedDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
-            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexRedDragon::checkEntitySpawnRules);
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexRedDragon::checkEntitySpawnRules, AbstractFlyingCapableEntity::createFlyingLatexAttributes);
     public static final RegistryObject<EntityType<LatexRedPanda>> LATEX_RED_PANDA = registerSpawning("latex_red_panda", 0xbd4040, 0x663d53,
             EntityType.Builder.of(LatexRedPanda::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexRedPanda::checkEntitySpawnRules);

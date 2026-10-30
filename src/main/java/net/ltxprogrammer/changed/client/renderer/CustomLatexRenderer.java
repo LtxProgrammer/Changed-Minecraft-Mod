@@ -93,9 +93,9 @@ public class CustomLatexRenderer extends AdvancedHumanoidRenderer<CustomLatexEnt
 			final var set = this.getModelSetForSlot(entity, slot);
 
 			return switch (entity.getLegType()) {
-				case BIPEDAL ->	set.get(slot == EquipmentSlot.LEGS ? ArmorModel.ARMOR_INNER : ArmorModel.ARMOR_OUTER);
-				case CENTAUR -> set.get(QuadrupedalArmor.useInnerQuadrupedalModel(slot) ? ArmorModel.ARMOR_INNER : ArmorModel.ARMOR_OUTER);
-				case MERMAID -> set.get(AbdomenArmor.useInnerAbdomenModel(slot) ? ArmorModel.ARMOR_INNER : ArmorModel.ARMOR_OUTER);
+				case BIPEDAL ->	set.get(slot == EquipmentSlot.LEGS ? ArmorModels.ARMOR_INNER : ArmorModels.ARMOR_OUTER);
+				case CENTAUR -> set.get(QuadrupedalArmor.useInnerQuadrupedalModel(slot) ? ArmorModels.ARMOR_INNER : ArmorModels.ARMOR_OUTER);
+				case MERMAID -> set.get(AbdomenArmor.useInnerAbdomenModel(slot) ? ArmorModels.ARMOR_INNER : ArmorModels.ARMOR_OUTER);
 			};
 		}
 
@@ -144,6 +144,11 @@ public class CustomLatexRenderer extends AdvancedHumanoidRenderer<CustomLatexEnt
 		}
 
 		@Override
+		public boolean usesSlimTextures(CustomLatexEntity entity, EquipmentSlot slot) {
+			return false;
+		}
+
+		@Override
 		public void forEach(CustomLatexEntity entity, Predicate<ArmorModel> predicate, BiConsumer<ArmorModel, ? super LatexHumanoidArmorModel<CustomLatexEntity, ?>> consumer) {
 			Stream.of(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR)
 					.map(slot -> this.getModelSetForSlot(entity, slot))
@@ -160,11 +165,11 @@ public class CustomLatexRenderer extends AdvancedHumanoidRenderer<CustomLatexEnt
 			Stream.of(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR)
 					.map(slot -> this.getModelSetForSlot(entity, slot))
 					.forEach(set -> {
-						final var inner = set.get(ArmorModel.ARMOR_INNER);
+						final var inner = set.get(ArmorModels.ARMOR_INNER);
 						inner.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
 						inner.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-						final var outer = set.get(ArmorModel.ARMOR_OUTER);
+						final var outer = set.get(ArmorModels.ARMOR_OUTER);
 						outer.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
 						outer.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 					});

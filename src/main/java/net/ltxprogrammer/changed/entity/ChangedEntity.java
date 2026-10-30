@@ -7,13 +7,13 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.active.GrabEntityAbilityInstance;
-import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.ai.*;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.entity.variant.VariantFeature;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -250,6 +250,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(ChangedEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
     protected static final EntityDataAccessor<BasicPlayerInfo> DATA_LOCAL_VARIANT_INFO = SynchedEntityData.defineId(ChangedEntity.class, ChangedEntityDataSerializers.BASIC_PLAYER_INFO.get());
+    protected static final EntityDataAccessor<Optional<PoseExtension>> POSE_EXTENSION_ID = SynchedEntityData.defineId(ChangedEntity.class, ChangedEntityDataSerializers.POSE_EXTENSION.get());
     protected static final EntityDataAccessor<Byte> DATA_CHANGED_ENTITY_FLAGS = SynchedEntityData.defineId(ChangedEntity.class, EntityDataSerializers.BYTE);
     protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(ChangedEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     protected static final EntityDataAccessor<TamedEntityTargetType> DATA_TARGET_TYPE_ID = SynchedEntityData.defineId(ChangedEntity.class, ChangedEntityDataSerializers.TAMED_ENTITY_TARGET_TYPE.get());
@@ -265,6 +266,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         super.defineSynchedData();
         this.entityData.define(DATA_TARGET_ID, OptionalInt.empty());
         this.entityData.define(DATA_LOCAL_VARIANT_INFO, new BasicPlayerInfo());
+        this.entityData.define(POSE_EXTENSION_ID, Optional.empty());
         this.entityData.define(DATA_CHANGED_ENTITY_FLAGS, (byte)0);
         this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
         this.entityData.define(DATA_TARGET_TYPE_ID, TamedEntityTargetType.TRANSFURABLE_ENTITIES);
@@ -455,7 +457,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
     @Override
     protected boolean canEnterPose(Pose pose) {
-        if (overridePose != null && overridePose != pose)
+        var poseExtension = getPoseExtension();
+        if (poseExtension != null && poseExtension.getUnderlyingPose() != pose)
             return false;
         return super.canEnterPose(pose);
     }
@@ -467,19 +470,21 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     }
 
     public EntityDimensions getDimensions(Pose pose) {
-        EntityDimensions core = this.getType().getDimensions();
-
-        if (WhiteLatexTransportInterface.isEntityInWhiteLatex(this.maybeGetUnderlying()))
-            return EntityDimensions.scalable(core.width, core.width);
-
-        return (switch (Objects.requireNonNullElse(overridePose, pose)) {
-            case STANDING -> core;
+        EntityDimensions coreDimensions = this.getType().getDimensions();
+        EntityDimensions poseDimensions = switch (pose) {
+            case STANDING -> coreDimensions;
             case SLEEPING -> SLEEPING_DIMENSIONS;
-            case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
-            case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.3f);
+            case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(coreDimensions.width, coreDimensions.width);
+            case CROUCHING -> EntityDimensions.scalable(coreDimensions.width, coreDimensions.height - 0.3f);
             case DYING -> EntityDimensions.fixed(0.2f, 0.2f);
-            default -> core;
-        }).scale(this.getScale());
+            default -> coreDimensions;
+        };
+
+        PoseExtension poseExtension = getPoseExtension();
+        if (poseExtension != null && poseExtension.getUnderlyingPose() == pose)
+            poseDimensions = poseExtension.getDimensions(this, coreDimensions, poseDimensions);
+
+        return ChangedCompatibility.maybeAdjustEntitySize(this, poseDimensions.scale(this.getScale()));
     }
 
     @Override
@@ -500,7 +505,9 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
     }
 
     protected float getEyeHeightMul(Pose pose) {
-        if (pose == Pose.CROUCHING)
+        if (pose == Pose.SWIMMING)
+            return 0.6F;
+        else if (pose == Pose.CROUCHING)
             return 0.83F;
         else
             return 0.93F;
@@ -1198,11 +1205,57 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         return this.isCrouching() || this.isVisuallyCrawling();
     }
 
-    public Pose overridePose = null;
+    private PoseExtension overridePoseExtension = null;
+    public @Nullable PoseExtension getPoseExtension() {
+        if (overridePoseExtension != null)
+            return overridePoseExtension;
+        return this.entityData.get(POSE_EXTENSION_ID).orElse(null);
+    }
+
+    @Override
+    public Pose getPose() {
+        PoseExtension poseExtension = getPoseExtension();
+        return poseExtension != null ? poseExtension.getUnderlyingPose() : super.getPose();
+    }
+
+    public boolean canEnterPose(@NotNull PoseExtension pose) {
+        overridePoseExtension = pose;
+        boolean flag = this.canEnterPose(pose.getUnderlyingPose());
+        overridePoseExtension = null;
+
+        return flag;
+    }
+
+    public void setPoseExtension(@Nullable PoseExtension pose) {
+        this.entityData.set(POSE_EXTENSION_ID, Optional.ofNullable(pose));
+        if (pose == null)
+            return;
+
+        this.setPose(pose.getUnderlyingPose());
+        if (underlyingPlayer != null)
+            underlyingPlayer.setPose(pose.getUnderlyingPose());
+    }
+
+    public boolean tryEnterPoseExtension(@NotNull PoseExtension pose) {
+        if (this.canEnterPose(pose)) {
+            this.setPoseExtension(pose);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean clearPoseExtension(@NotNull PoseExtension pose) {
+        if (getPoseExtension() == pose) {
+            setPoseExtension(null);
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public boolean isVisuallySwimming() {
-        if (overridePose == Pose.SWIMMING)
-            return true;
         return super.isVisuallySwimming();
     }
 
@@ -1573,7 +1626,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         } if (DATA_FAVOR_ID.equals(accessor) && !this.level().isClientSide) {
             favorGoals.forEach(this.goalSelector::removeGoal);
             getCurrentFavor().createFavorGoals(this, this.getOwner(), this.goalSelector::addGoal);
-        }
+        } if (POSE_EXTENSION_ID.equals(accessor))
+            EntityUtil.refreshDimensionsAndPushFromWall(maybeGetUnderlying());
     }
 
     @Override
@@ -1847,6 +1901,17 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         super.dropEquipment();
         if (this.inventory != null)
             this.inventory.dropAll();
+    }
+
+    public void setEquipmentDropChance(EquipmentSlot slot, float chance) {
+        switch (slot.getType()) {
+            case HAND:
+                this.handDropChances[slot.getIndex()] = chance;
+                break;
+            case ARMOR:
+                this.armorDropChances[slot.getIndex()] = chance;
+        }
+
     }
 
     @Override

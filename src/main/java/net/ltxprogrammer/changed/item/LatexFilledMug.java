@@ -9,14 +9,15 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
 import java.util.function.Supplier;
 
 public class LatexFilledMug extends FilledMug {
     protected final Supplier<? extends LatexType> latexType;
 
-    public LatexFilledMug(Supplier<? extends LatexType> latexType, Properties properties) {
-        super(properties);
+    public LatexFilledMug(Block block, Supplier<? extends LatexType> latexType, Properties properties) {
+        super(block, properties);
         this.latexType = latexType;
     }
 

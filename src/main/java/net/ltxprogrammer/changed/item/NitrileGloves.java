@@ -12,10 +12,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class NitrileGloves extends ClothingItem implements Gloves {
     @Override
-    protected ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type) {
+    protected ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type, boolean slim) {
         ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        String stem = slim ? "_slim" : "";
         return ResourceLocation.fromNamespaceAndPath(itemId.getNamespace(),
-                String.format("textures/models/%s_%s.png", itemId.getPath(), Mth.clamp(stack.getDamageValue() - 1, 0, 4)));
+                String.format("textures/models/%s%s_%s.png", itemId.getPath(), stem, Mth.clamp(stack.getDamageValue() - 1, 0, 4)));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.ability.active.multiarm;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
@@ -7,17 +8,22 @@ import net.ltxprogrammer.changed.init.ChangedVariantFeatures;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
+public class SwitchHandsAbilityInstance extends AbstractAbilityInstance implements Container {
     private NonNullList<ItemStack> extraMainHandSlots = NonNullList.withSize(1, ItemStack.EMPTY);
     private NonNullList<ItemStack> extraOffHandSlots = NonNullList.withSize(1, ItemStack.EMPTY);
+    private final List<NonNullList<ItemStack>> compartments = new ObjectArrayList<>();
 
     public SwitchHandsAbilityInstance(AbstractAbility<?> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
@@ -57,6 +63,10 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
         );
     }
 
+    public int getSlotCount() {
+        return Math.max((int)entity.getFeatureLevel(ChangedVariantFeatures.SWITCH_HANDS_BONUS_HANDS.get()), 0) + 2;
+    }
+
     protected void updateSlotCount() {
         int extraSlots = Math.max((int)entity.getFeatureLevel(ChangedVariantFeatures.SWITCH_HANDS_BONUS_HANDS.get()), 0);
         if ((extraMainHandSlots.size() + extraOffHandSlots.size() - 2) == extraSlots)
@@ -70,6 +80,9 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
 
         extraMainHandSlots = NonNullList.withSize(slotCountMain, ItemStack.EMPTY);
         extraOffHandSlots = NonNullList.withSize(slotCountOff, ItemStack.EMPTY);
+        compartments.clear();
+        compartments.add(extraMainHandSlots);
+        compartments.add(extraOffHandSlots);
 
         for (int i = 0; i < lastExtraMain.size(); ++i) {
             var item = lastExtraMain.get(i);
@@ -207,5 +220,89 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
             persistentData.remove("changed:extra_hands_rh");
             persistentData.remove("changed:extra_hands_lh");
         }
+    }
+
+    @Override
+    public int getContainerSize() {
+        return extraMainHandSlots.size() + extraOffHandSlots.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        for (var slot : extraMainHandSlots)
+            if (!slot.isEmpty())
+                return false;
+
+        for (var slot : extraOffHandSlots)
+            if (!slot.isEmpty())
+                return false;
+
+        return true;
+    }
+
+    // Slot index will be staggered between main and offset (0, 1), (2, 3), (4, 5) etc.
+    protected NonNullList<ItemStack> getListForIndex(int index) {
+        return index % 2 == 0 ? extraMainHandSlots : extraOffHandSlots;
+    }
+
+    protected int getListIndexForIndex(int index) {
+        return index / 2;
+    }
+
+    @Override
+    public ItemStack getItem(int slotIndex) {
+        return getListForIndex(slotIndex).get(getListIndexForIndex(slotIndex));
+    }
+
+    @Override
+    public ItemStack removeItem(int slotIndex, int count) {
+        List<ItemStack> list = getListForIndex(slotIndex);
+        slotIndex = getListIndexForIndex(slotIndex);
+
+        return list != null && !list.get(slotIndex).isEmpty() ? ContainerHelper.removeItem(list, slotIndex, count) : ItemStack.EMPTY;
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int slotIndex) {
+        NonNullList<ItemStack> list = getListForIndex(slotIndex);
+        slotIndex = getListIndexForIndex(slotIndex);
+
+        if (list != null && !list.get(slotIndex).isEmpty()) {
+            ItemStack itemstack = list.get(slotIndex);
+            list.set(slotIndex, ItemStack.EMPTY);
+            return itemstack;
+        } else {
+            return ItemStack.EMPTY;
+        }
+    }
+
+    @Override
+    public void setItem(int slotIndex, ItemStack itemStack) {
+        NonNullList<ItemStack> list = getListForIndex(slotIndex);
+        slotIndex = getListIndexForIndex(slotIndex);
+
+        if (list != null) {
+            list.set(slotIndex, itemStack);
+        }
+    }
+
+    @Override
+    public void setChanged() {
+
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        if (this.entity.getEntity().isRemoved()) {
+            return false;
+        } else {
+            return !(player.distanceToSqr(this.entity.getEntity()) > 64.0D);
+        }
+    }
+
+    @Override
+    public void clearContent() {
+        this.extraMainHandSlots.clear();
+        this.extraOffHandSlots.clear();
     }
 }

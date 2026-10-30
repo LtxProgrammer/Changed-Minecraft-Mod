@@ -668,11 +668,25 @@ public abstract class TransfurAnimator {
                     var afterModel = latexHumanoidRenderer.getArmorLayer().getArmorModel(variant.getChangedEntity(), armorSlot);
                     try {
                         afterModel.prepareVisibility(armorSlot, item);
-                        renderMorphedEntity(player,
-                                model,
-                                afterModel,
-                                partialTick, morphProgress, Color3.WHITE, 1f, stack, buffer, coverLight,
-                                texture, true);
+                        if (item.getItem() instanceof DyeableLeatherItem dyeable) {
+                            var dyedColor = Color3.fromInt(dyeable.getColor(item));
+                            renderMorphedEntity(player,
+                                    model,
+                                    afterModel,
+                                    partialTick, morphProgress, dyedColor, 1f, stack, buffer, coverLight,
+                                    texture, true);
+                            renderMorphedEntity(player,
+                                    model,
+                                    afterModel,
+                                    partialTick, morphProgress, Color3.WHITE, 1f, stack, buffer, coverLight,
+                                    armorLayer.getArmorResource(player, item, armorSlot, "overlay"), true);
+                        } else {
+                            renderMorphedEntity(player,
+                                    model,
+                                    afterModel,
+                                    partialTick, morphProgress, Color3.WHITE, 1f, stack, buffer, coverLight,
+                                    texture, true);
+                        }
                     } catch (Exception e) {
                         CrashReport report = CrashReport.forThrowable(e, "Rendering transfurring entity's armor");
                         CrashReportCategory category = report.addCategory("Armor being rendered");

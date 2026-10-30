@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -324,19 +325,21 @@ public class CustomLatexEntity extends ChangedEntity implements LatexTaur<Custom
     }
 
     public EntityDimensions getDimensions(Pose pose) {
-        EntityDimensions core = getDimensionsForForm();
-
-        if (WhiteLatexTransportInterface.isEntityInWhiteLatex(this.maybeGetUnderlying()))
-            return EntityDimensions.scalable(core.width, core.width);
-
-        return (switch (Objects.requireNonNullElse(overridePose, pose)) {
-            case STANDING -> core;
+        EntityDimensions coreDimensions = getDimensionsForForm();
+        EntityDimensions poseDimensions = switch (pose) {
+            case STANDING -> coreDimensions;
             case SLEEPING -> SLEEPING_DIMENSIONS;
-            case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
-            case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.3f);
+            case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(coreDimensions.width, coreDimensions.width);
+            case CROUCHING -> EntityDimensions.scalable(coreDimensions.width, coreDimensions.height - 0.3f);
             case DYING -> EntityDimensions.fixed(0.2f, 0.2f);
-            default -> core;
-        }).scale(this.getScale());
+            default -> coreDimensions;
+        };
+
+        PoseExtension poseExtension = getPoseExtension();
+        if (poseExtension != null && poseExtension.getUnderlyingPose() == pose)
+            poseDimensions = poseExtension.getDimensions(this, coreDimensions, poseDimensions);
+
+        return ChangedCompatibility.maybeAdjustEntitySize(this, poseDimensions.scale(this.getScale()));
     }
 
     public int getRawFormFlags() {

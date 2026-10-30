@@ -19,7 +19,9 @@ import net.minecraft.world.item.ItemStack;
 
 public class ArmorLatexMaleWolfModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleWolfModel<T>> {
     public static final ArmorModelSet<ChangedEntity, ArmorLatexMaleWolfModel<ChangedEntity>> MODEL_SET =
-            ArmorModelSet.of(Changed.modResource("armor_latex_wolf_male_unified"), ArmorLatexMaleWolfModel::createArmorLayer, ArmorLatexMaleWolfModel::new);
+            ArmorModelSet.of(Changed.modResource("armor_latex_wolf_male_unified"), layer -> createArmorLayer(layer, false), ArmorLatexMaleWolfModel::new, false);
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexMaleWolfModel<ChangedEntity>> MODEL_SET_SLIM =
+            ArmorModelSet.of(Changed.modResource("armor_latex_wolf_male_unified_slim"), layer -> createArmorLayer(layer, true), ArmorLatexMaleWolfModel::new, true);
 
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -48,7 +50,7 @@ public class ArmorLatexMaleWolfModel<T extends ChangedEntity> extends LatexHuman
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
     }
 
-    public static LayerDefinition createArmorLayer(ArmorModel layer) {
+    public static LayerDefinition createArmorLayer(ArmorModel layer, boolean slim) {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -58,9 +60,9 @@ public class ArmorLatexMaleWolfModel<T extends ChangedEntity> extends LatexHuman
 
         PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.dualDeformation), PartPose.offset(0.0F, -0.5F, 0.0F));
 
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(-5.0F, 1.5F, 0.0F));
+        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(layer.isModelSlim(slim) ? -2.0F : -3.0F, -2.0F, -2.0F, layer.isModelSlim(slim) ? 3.0F : 4.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(-5.0F, 1.5F, 0.0F));
 
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation).mirror(false), PartPose.offset(5.0F, 1.5F, 0.0F));
+        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, layer.isModelSlim(slim) ? 3.0F : 4.0F, 12.0F, 4.0F, layer.dualDeformation).mirror(false), PartPose.offset(5.0F, 1.5F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }

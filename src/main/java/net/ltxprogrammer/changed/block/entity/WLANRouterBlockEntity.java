@@ -2,17 +2,13 @@ package net.ltxprogrammer.changed.block.entity;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.computers.DiscData;
-import net.ltxprogrammer.changed.computers.File;
-import net.ltxprogrammer.changed.computers.Folder;
-import net.ltxprogrammer.changed.computers.LexicalPath;
-import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
+import net.ltxprogrammer.changed.computers.*;
 import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.util.CollectionUtil;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -25,15 +21,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterface {
+public class WLANRouterBlockEntity extends BlockEntity implements Router {
     public final RandomSource random = RandomSource.create();
 
-    protected final NetworkInterface.Address physicalAddress;
-    protected int logicalAddress;
+    protected record OutboundFrame(Address origin, Address immediateSource, @Nullable Address destination, Frame frame, int ttl) {}
 
-    protected final List<NetworkInterface.Address> remoteConnectedPhysicalAddresses = new ArrayList<>();
-    protected final Queue<Pair<Integer, Packet>> unprocessedPackets = new ArrayDeque<>();
-    protected final Queue<Pair<NetworkInterface.Address, Frame>> outboundFrames = new ArrayDeque<>();
+    private final BasicNIC nic;
+    protected final Queue<OutboundFrame> outboundFrames = new ArrayDeque<>();
 
     public DiscData localFileSystem = new DiscData(this::setChanged, Changed.modResource("default_wlan_router"), random.nextLong());
 
@@ -43,8 +37,7 @@ public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterfa
 
     public WLANRouterBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ChangedBlockEntities.WLAN_ROUTER.get(), blockPos, blockState);
-        this.physicalAddress = Address.forBlock(blockPos);
-        this.logicalAddress = this.random.nextInt();
+        this.nic = new BasicNIC(Address.forBlock(blockPos));
     }
 
     protected void saveAdditional(CompoundTag tag) {
@@ -55,61 +48,42 @@ public class WLANRouterBlockEntity extends BlockEntity implements NetworkInterfa
         this.localFileSystem = new DiscData(tag.getCompound("fs"), this::setChanged);
     }
 
+    public void handleFrame(ServerLevel level, NetworkInterface.Address logicalSource, Frame packet) {
+
+    }
+
+    @Override
+    public void acceptNeighbor(ServerLevel level, Address physicalSource) {
+        nic.acceptNeighbor(level, physicalSource);
+    }
+
     @Override
     public void acceptFrame(ServerLevel level, Address physicalSource, Frame dataFrame) {
-        if (dataFrame instanceof IPFrame<?> ipFrame) {
-            if (ipFrame.logicalDestination() == this.logicalAddress) // Consume packet
-                unprocessedPackets.add(Pair.of(ipFrame.logicalSource(), ipFrame.packet()));
-            else if (ipFrame.isBroadcast()) { // Consume and forward packet
-                unprocessedPackets.add(Pair.of(ipFrame.logicalSource(), ipFrame.packet()));
-                remoteConnectedPhysicalAddresses.forEach(remoteAddress -> {
-                    if (remoteAddress.equals(physicalSource))
-                        return;
-                    outboundFrames.add(Pair.of(remoteAddress, dataFrame));
-                });
-            } else { // TODO: smarter forwarding
-                remoteConnectedPhysicalAddresses.forEach(remoteAddress -> {
-                    if (remoteAddress.equals(physicalSource))
-                        return;
-                    outboundFrames.add(Pair.of(remoteAddress, dataFrame));
-                });
-            }
-        } else if (dataFrame instanceof NetworkDiscoveryFrame networkDiscoveryFrame) {
-            if (!networkDiscoveryFrame.isReply()) {
-                if (networkDiscoveryFrame.commitConnection() && !this.remoteConnectedPhysicalAddresses.contains(physicalSource))
-                    this.remoteConnectedPhysicalAddresses.add(physicalSource);
-                NetworkInterface.sendFrameToAddress(level, physicalSource, this.physicalAddress,
-                        networkDiscoveryFrame.reply());
-            }
-        }
+        nic.acceptFrame(level, physicalSource, dataFrame);
     }
 
     @Override
-    public void sendFrame(ServerLevel level, Frame dataFrame) {
-
+    public void sendOutFrame(ServerLevel level, @Nullable Address destination, Frame frame, int ttl) {
+        nic.sendOutFrame(level, destination, frame, ttl);
     }
 
-    public void handlePacket(ServerLevel level, int logicalSource, Packet packet) {
-        /*if (packet instanceof DiscoveryProtocol discoveryProtocol && !discoveryProtocol.isReply()) {
-            Set<Class<?>> protocols = new HashSet<>();
-            protocols.add(DiscoveryProtocol.class);
-            if (menu != null)
-                protocols.addAll(menu.currentApplication().getNetworkProtocols());
-            nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(protocols));
-        }
+    @Override
+    public void handoffUnicastFrame(ServerLevel level, Address origin, Address immediateSource, Address destination, Frame frame, int ttl) {
+        outboundFrames.add(new OutboundFrame(origin, immediateSource, destination, frame, ttl - 1));
+    }
 
-        if (menu != null)
-            menu.currentApplication().handlePacket(level, logicalSource, packet);*/
+    @Override
+    public void handoffBroadcastFrame(ServerLevel level, Address origin, Address immediateSource, Frame frame, int ttl) {
+        outboundFrames.add(new OutboundFrame(origin, immediateSource, null, frame, ttl - 1));
     }
 
     public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, WLANRouterBlockEntity blockEntity) {
         if (level instanceof ServerLevel serverLevel) {
-            CollectionUtil.deplete(blockEntity.unprocessedPackets, packet -> {
-                blockEntity.handlePacket(serverLevel, packet.getFirst(), packet.getSecond());
-            });
+            blockEntity.nic.tick(serverLevel, blockPos);
+            blockEntity.nic.processFrames(serverLevel, blockEntity::handleFrame);
 
             CollectionUtil.deplete(blockEntity.outboundFrames, frame -> {
-                NetworkInterface.sendFrameToAddress(serverLevel, frame.getFirst(), blockEntity.physicalAddress, frame.getSecond());
+                NetworkInterface.sendFrameToAddress(serverLevel, frame.destination(), frame.origin(), blockEntity.nic.physicalAddress, frame.immediateSource(), frame.frame(), frame.ttl(), blockEntity.nic.nearbyAddresses);
             });
         }
     }

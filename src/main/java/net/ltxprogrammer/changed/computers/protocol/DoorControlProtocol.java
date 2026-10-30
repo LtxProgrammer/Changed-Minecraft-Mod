@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.computers.protocol;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class DoorControlProtocol extends Packet {
+public final class DoorControlProtocol extends Frame {
     public static final DoorControlProtocol AUTOMATIC = new DoorControlProtocol(Optional.of(true), Optional.empty(), Optional.empty());
     public static final DoorControlProtocol MANUAL = new DoorControlProtocol(Optional.of(false), Optional.empty(), Optional.empty());
     public static final DoorControlProtocol OPEN_DOOR = new DoorControlProtocol(Optional.of(false), Optional.of(true), Optional.empty());

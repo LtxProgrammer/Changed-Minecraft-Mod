@@ -3,13 +3,12 @@ package net.ltxprogrammer.changed.computers.application;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.protocol.DeviceInfoProtocol;
 import net.ltxprogrammer.changed.computers.protocol.DoorControlProtocol;
+import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
 import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.ltxprogrammer.changed.network.packet.ComputerAppSyncPacket;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
-import net.ltxprogrammer.changed.world.inventory.StasisChamberMenu;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,36 +19,34 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class DoorControllerApplication extends NetworkDeviceControllerApplication {
-    public final Map<Integer, DeviceInfoProtocol> reachableDevices = new HashMap<>();
+    public final Map<NetworkInterface.Address, DeviceInfoProtocol> reachableDevices = new HashMap<>();
     public boolean devicesDirty = true;
 
     public enum Command {
         NOOP((app, logicalDevice) -> {}),
         AUTOMATIC((app, logicalDevice) -> {
-            app.queuePacket(logicalDevice, DoorControlProtocol.AUTOMATIC);
+            app.queueFrame(logicalDevice, DoorControlProtocol.AUTOMATIC);
         }),
         MANUAL((app, logicalDevice) -> {
-            app.queuePacket(logicalDevice, DoorControlProtocol.MANUAL);
+            app.queueFrame(logicalDevice, DoorControlProtocol.MANUAL);
         }),
         OPEN_DOOR((app, logicalDevice) -> {
-            app.queuePacket(logicalDevice, DoorControlProtocol.OPEN_DOOR);
+            app.queueFrame(logicalDevice, DoorControlProtocol.OPEN_DOOR);
         }),
         CLOSE_DOOR((app, logicalDevice) -> {
-            app.queuePacket(logicalDevice, DoorControlProtocol.CLOSE_DOOR);
+            app.queueFrame(logicalDevice, DoorControlProtocol.CLOSE_DOOR);
         });
 
-        private final BiConsumer<DoorControllerApplication, Integer> handler;
+        private final BiConsumer<DoorControllerApplication, NetworkInterface.Address> handler;
 
-        Command(BiConsumer<DoorControllerApplication, Integer> handler) {
+        Command(BiConsumer<DoorControllerApplication, NetworkInterface.Address> handler) {
             this.handler = handler;
         }
 
-        public void handle(DoorControllerApplication app, int logicalDevice) {
+        public void handle(DoorControllerApplication app, NetworkInterface.Address logicalDevice) {
             handler.accept(app, logicalDevice);
         }
     }
@@ -76,30 +73,30 @@ public class DoorControllerApplication extends NetworkDeviceControllerApplicatio
                 int commandId = payload.getInt("command");
                 if (commandId < 0 || commandId >= Command.values().length)
                     return;
-                int address = payload.getInt("address");
+                var address = NetworkInterface.Address.decode(payload.get("address"));
                 Command.values()[commandId].handle(this, address);
             }
         } else {
             String control = payload.getString("control");
             if ("addDevice".equals(control)) {
-                reachableDevices.put(payload.getInt("address"), new DeviceInfoProtocol(
+                reachableDevices.put(NetworkInterface.Address.decode(payload.get("address")), new DeviceInfoProtocol(
                         Component.Serializer.fromJson(payload.getString("name")),
                         TagUtil.getBlockPos(payload, "pos"),
                         TagUtil.getResourceLocation(payload, "icon")
                 ));
                 devicesDirty = true;
             } else if ("removeDevice".equals(control)) {
-                reachableDevices.remove(payload.getInt("address"));
+                reachableDevices.remove(NetworkInterface.Address.decode(payload.get("address")));
                 devicesDirty = true;
             }
         }
     }
 
     @Override
-    protected void deviceAdded(ServerLevel level, int logicalDevice, DeviceInfoProtocol deviceInfoProtocol) {
+    protected void deviceAdded(ServerLevel level, NetworkInterface.Address address, DeviceInfoProtocol deviceInfoProtocol) {
         CompoundTag payload = new CompoundTag();
         payload.putString("control", "addDevice");
-        payload.putInt("address", logicalDevice);
+        payload.put("address", address.encode());
         payload.putString("name", Component.Serializer.toJson(deviceInfoProtocol.deviceName()));
         TagUtil.putBlockPos(payload, "pos", deviceInfoProtocol.position());
         TagUtil.putResourceLocation(payload, "icon", deviceInfoProtocol.icon());
@@ -108,19 +105,19 @@ public class DoorControllerApplication extends NetworkDeviceControllerApplicatio
     }
 
     @Override
-    protected void deviceRemoved(ServerLevel level, int logicalDevice) {
+    protected void deviceRemoved(ServerLevel level, NetworkInterface.Address address) {
         CompoundTag payload = new CompoundTag();
         payload.putString("control", "removeDevice");
-        payload.putInt("address", logicalDevice);
+        payload.put("address", address.encode());
         Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)menu.getPlayer()),
                 ComputerAppSyncPacket.syncApplication(this.getType(), payload));
     }
 
-    public void requestCommand(Command command, Integer logicalDevice) {
+    public void requestCommand(Command command, NetworkInterface.Address address) {
         CompoundTag payload = new CompoundTag();
         payload.putString("control", "command");
         payload.putInt("command", command.ordinal());
-        payload.putInt("address", logicalDevice);
+        payload.put("address", address.encode());
         Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(this.getType(), payload));
     }
 }

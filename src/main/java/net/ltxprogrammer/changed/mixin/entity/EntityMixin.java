@@ -100,6 +100,17 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                 .ifPresent(entity -> entity.setPose(pose));
     }
 
+    @WrapMethod(method = "getPose")
+    public Pose changed$overridePoseToPoseExtension(Operation<Pose> original) {
+        var variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull((Entity)(Object)this));
+        if (variant == null)
+            return original.call();
+        else if (variant.getChangedEntity().getPoseExtension() == null)
+            return original.call();
+        else
+            return variant.getChangedEntity().getPoseExtension().getUnderlyingPose();
+    }
+
     @Unique
     private boolean isCallingIsInWall = false;
 

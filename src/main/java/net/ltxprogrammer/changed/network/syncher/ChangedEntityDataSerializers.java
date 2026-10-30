@@ -2,12 +2,14 @@ package net.ltxprogrammer.changed.network.syncher;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
+import net.ltxprogrammer.changed.entity.PoseExtension;
 import net.ltxprogrammer.changed.entity.ai.TamedEntityAttackCondition;
 import net.ltxprogrammer.changed.entity.ai.TamedEntityAttackType;
 import net.ltxprogrammer.changed.entity.ai.TamedEntityFavor;
 import net.ltxprogrammer.changed.entity.ai.TamedEntityTargetType;
 import net.ltxprogrammer.changed.entity.decoration.WallSignVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.minecraft.core.IdMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -15,8 +17,18 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Optional;
+
 public class ChangedEntityDataSerializers {
     public static final DeferredRegister<EntityDataSerializer<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Changed.MODID);
+
+    static <T> EntityDataSerializer<Optional<T>> optionalId(IdMap<T> map) {
+        return EntityDataSerializer.optional((buffer, item) -> {
+            buffer.writeId(map, item);
+        }, (buffer) -> {
+            return buffer.readById(map);
+        });
+    }
 
     public static final RegistryObject<EntityDataSerializer<BasicPlayerInfo>> BASIC_PLAYER_INFO = REGISTRY.register("basic_player_info", () -> new EntityDataSerializer<>() {
         public void write(FriendlyByteBuf buffer, BasicPlayerInfo info) {
@@ -39,6 +51,7 @@ public class ChangedEntityDataSerializers {
     });
 
     public static final RegistryObject<EntityDataSerializer<WallSignVariant>> WALL_SIGN_VARIANT = REGISTRY.register("wall_sign_variant", () -> EntityDataSerializer.simpleId(ChangedRegistry.WALL_SIGN_VARIANT.asIdMap()));
+    public static final RegistryObject<EntityDataSerializer<Optional<PoseExtension>>> POSE_EXTENSION = REGISTRY.register("pose_extension", () -> optionalId(ChangedRegistry.POSE_EXTENSION.asIdMap()));
     public static final RegistryObject<EntityDataSerializer<TamedEntityTargetType>> TAMED_ENTITY_TARGET_TYPE = REGISTRY.register("tamed_entity_target_type", () -> EntityDataSerializer.simpleEnum(TamedEntityTargetType.class));
     public static final RegistryObject<EntityDataSerializer<TamedEntityAttackType>> TAMED_ENTITY_ATTACK_TYPE = REGISTRY.register("tamed_entity_attack_type", () -> EntityDataSerializer.simpleEnum(TamedEntityAttackType.class));
     public static final RegistryObject<EntityDataSerializer<TamedEntityAttackCondition>> TAMED_ENTITY_ATTACK_CONDITION = REGISTRY.register("tamed_entity_attack_condition", () -> EntityDataSerializer.simpleEnum(TamedEntityAttackCondition.class));

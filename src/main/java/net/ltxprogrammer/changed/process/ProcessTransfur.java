@@ -18,6 +18,7 @@ import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.packet.*;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -26,6 +27,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -34,6 +36,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -895,5 +898,49 @@ public class ProcessTransfur {
 
         if (behavior != null)
             behavior.stepAssimilate();
+    }
+
+    /**
+     * Invokes untransfur logic for player if they're transfurred.
+     * @param player The player to untransfur.
+     * @param causeEntity The entity that caused the untransfur event. Can be equal to player.
+     */
+    public static void untransfur(@NotNull Player player, @NotNull Entity causeEntity) {
+        ifPlayerTransfurred(player, variant -> {
+            var event = new TransfurEvents.UntransfurPlayerByEntityEvent(causeEntity, player, variant, null);
+            if (Changed.postModEvent(event))
+                return;
+            TransfurEvents.finalizeUntransfurPlayerEvent(event);
+        });
+    }
+
+    /**
+     * Invokes untransfur logic for player if they're transfurred.
+     * @param player The player to untransfur.
+     * @param causeEntity The entity that caused the untransfur event. Can be equal to player.
+     * @param causeItem The item used to untransfur.
+     */
+    public static void untransfur(@NotNull Player player, @NotNull Entity causeEntity, @NotNull ItemStack causeItem) {
+        ifPlayerTransfurred(player, variant -> {
+            var event = new TransfurEvents.UntransfurPlayerByItemEvent(causeEntity, causeItem, player, variant, null);
+            if (Changed.postModEvent(event))
+                return;
+            TransfurEvents.finalizeUntransfurPlayerEvent(event);
+        });
+    }
+
+    /**
+     * Invokes untransfur logic for player if they're transfurred.
+     * @param player The player to untransfur
+     * @param blockState The block state that caused the untransfur event
+     * @param blockPosition Where the block that caused the untransfur event was.
+     */
+    public static void untransfur(@NotNull Player player, @NotNull BlockState blockState, @NotNull BlockPos blockPosition) {
+        ifPlayerTransfurred(player, variant -> {
+            var event = new TransfurEvents.UntransfurPlayerByBlockEvent(blockState, blockPosition, player, variant, null);
+            if (Changed.postModEvent(event))
+                return;
+            TransfurEvents.finalizeUntransfurPlayerEvent(event);
+        });
     }
 }

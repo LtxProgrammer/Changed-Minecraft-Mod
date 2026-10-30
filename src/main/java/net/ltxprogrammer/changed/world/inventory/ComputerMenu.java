@@ -27,6 +27,7 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
     protected final Player player;
     public ComputerBlockEntity computer;
 
+    protected Application previousApplication = null;
     protected final Stack<Application> applications = new Stack<>();
 
     public ComputerMenu(int id, Inventory inventory, ComputerBlockEntity computer) {
@@ -148,6 +149,10 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
         return applications;
     }
 
+    public Application previousApplication() {
+        return applications.peek();
+    }
+
     public Application currentApplication() {
         return applications.peek();
     }
@@ -158,8 +163,9 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
         }
     }
 
-    /// INTERNAL
+    /// INTERNAL, use {@link net.ltxprogrammer.changed.network.packet.ComputerAppLaunchPacket#launchApplication(ApplicationType, String...)} to launch an app
     public Application launchApplication(ApplicationType<?> applicationType, List<String> args) {
+        previousApplication = currentApplication();
         var app = applicationType.createApplication(this, args);
         applications.push(app);
 
@@ -171,5 +177,7 @@ public class ComputerMenu extends AbstractContainerMenu implements UpdateableMen
         if (applications.peek().getType() != applicationType)
             throw new IllegalArgumentException("Application type mismatch");
         applications.pop().onClose();
+
+        previousApplication = applications.size() <= 1 ? null : applications.get(applications.size() - 2);
     }
 }

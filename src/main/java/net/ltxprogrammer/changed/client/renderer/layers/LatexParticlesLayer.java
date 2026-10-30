@@ -182,10 +182,10 @@ public class LatexParticlesLayer<T extends LivingEntity, M extends EntityModel<T
         List<ModelPartStem> partsWithCubes;
         if (model instanceof AdvancedHumanoidModel<?> advancedHumanoidModel)
             partsWithCubes = advancedHumanoidModel.getAllParts().filter(part -> !part.getLeaf().cubes.isEmpty()).filter(part -> canPartDrip.test(part.getLeaf())).toList();
-        else if (model instanceof AgeableListModel<?> ageableListModel) {
+        else if (model instanceof AgeableListModelExtender ageableListModel) {
             partsWithCubes = Stream.concat(
-                    StreamSupport.stream(ageableListModel.headParts().spliterator(), false),
-                    StreamSupport.stream(ageableListModel.bodyParts().spliterator(), false)
+                    StreamSupport.stream(ageableListModel.changed$headParts().spliterator(), false),
+                    StreamSupport.stream(ageableListModel.changed$bodyParts().spliterator(), false)
             ).flatMap(ModelPartStem::streamFromRoot).filter(part -> !part.getLeaf().cubes.isEmpty()).filter(part -> canPartDrip.test(part.getLeaf())).toList();
         } else {
             partsWithCubes = List.of();
