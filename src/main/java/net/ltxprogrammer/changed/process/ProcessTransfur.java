@@ -545,9 +545,9 @@ public class ProcessTransfur {
             public final @Nullable
             TransfurContext context;
 
-            public ChangedVariant(LivingEntity livingEntity, @Nullable TransfurVariant<?> variant, @Nullable TransfurContext context) {
+            public ChangedVariant(LivingEntity livingEntity, @Nullable TransfurVariant<?> oldVariant, @Nullable TransfurVariant<?> variant, @Nullable TransfurContext context) {
                 this.livingEntity = livingEntity;
-                this.oldVariant = TransfurVariant.getEntityVariant(livingEntity);
+                this.oldVariant = oldVariant;
                 this.newVariant = variant;
                 this.context = context;
             }
@@ -640,7 +640,7 @@ public class ProcessTransfur {
         player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
 
         if (variant != null && !event.isRedundant() && !instance.isTemporaryFromSuit()) {
-            Changed.postModEvent(new EntityVariantAssigned.ChangedVariant(player, variant, context));
+            Changed.postModEvent(new EntityVariantAssigned.ChangedVariant(player, oldVariant != null ? oldVariant.getParent() : null, variant, context));
             ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
         }
 
@@ -698,14 +698,14 @@ public class ProcessTransfur {
     }
 
     // Checks if player is either not latex or is organic latex
+    @Deprecated
     public static boolean isPlayerNotLatex(Player player) {
-        var variant = getPlayerTransfurVariant(player);
-        return variant == null || !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
+        return isNonGoo(player);
     }
 
+    @Deprecated
     public static boolean isPlayerLatex(Player player) {
-        var variant = getPlayerTransfurVariant(player);
-        return variant != null && variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
+        return isGoo(player);
     }
 
     public static Optional<TransfurVariant<?>> getEntityVariant(LivingEntity livingEntity) {
@@ -739,14 +739,12 @@ public class ProcessTransfur {
         }
     }
 
-    private static boolean isNonGoo(LivingEntity entity) {
-        if (entity instanceof ChangedEntity latex) {
-            return !entity.getType().is(ChangedTags.EntityTypes.LATEX);
-        }
+    public static boolean isGoo(LivingEntity entity) {
+        return EntityUtil.maybeGetOverlaying(entity).getType().is(ChangedTags.EntityTypes.LATEX);
+    }
 
-        else return ifPlayerTransfurred(EntityUtil.playerOrNull(entity), variant -> {
-            return !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
-        }, () -> true);
+    public static boolean isNonGoo(LivingEntity entity) {
+        return !isGoo(entity);
     }
 
     public static ItemStack getEntityAttackItem(LivingEntity entity) {

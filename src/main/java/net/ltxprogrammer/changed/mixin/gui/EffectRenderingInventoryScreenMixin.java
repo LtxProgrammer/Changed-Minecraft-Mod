@@ -36,7 +36,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
         if (!Changed.config.client.useGoopyInventory.get())
             return;
         ProcessTransfur.ifPlayerTransfurred(this.minecraft.player, variant -> {
-            if (ProcessTransfur.isPlayerNotLatex(this.minecraft.player))
+            if (ProcessTransfur.isNonGoo(this.minecraft.player))
                 return;
 
             var colorPair = AbstractRadialScreen.getColors(variant);
