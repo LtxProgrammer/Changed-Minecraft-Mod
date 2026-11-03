@@ -5,5 +5,12 @@
   "display": { "icon": "changed:textures/gui/nodes/apidae_wing_practice.png", "numeral": 3, "frame": "strong" },
   "price": 2,
 
-  "comment": "Bonus jumps +2"
+  "comment": "Bonus jumps +2",
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:midair_jumps",
+      "factor": 2
+    }
+  ]
 }

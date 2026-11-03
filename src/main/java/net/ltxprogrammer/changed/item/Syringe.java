@@ -122,7 +122,7 @@ public class Syringe extends Item implements SpecializedAnimations {
     public @NotNull ItemStack usedOnPlayer(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player, @NotNull Player sourcePlayer, boolean ignoreMovement) {
         if (!ignoreMovement && player.getDeltaMovement().lengthSqr() > 0.01f)
             return stack;
-        if (ProcessTransfur.isPlayerLatex(player) && player != sourcePlayer)
+        if (ProcessTransfur.isGoo(player) && player != sourcePlayer)
             return stack;
 
         player.hurt(ChangedDamageSources.BLOODLOSS.source(player.level().registryAccess()), 1.0f);

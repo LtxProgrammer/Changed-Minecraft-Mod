@@ -278,12 +278,12 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
         #1587 - Non-latex transfurs variants can still be assimilated
          */
         protected boolean isPlayerLatexTransfurred(Player player) {
-            return ProcessTransfur.isPlayerLatex(player);
+            return ProcessTransfur.isGoo(player);
         }
 
         protected boolean isPlayerNonLatexTransfurred(Player player) {
             var variant = ProcessTransfur.getPlayerTransfurVariant(player);
-            return variant != null && !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
+            return variant != null && ProcessTransfur.isNonGoo(player);
         }
 
         protected boolean isPlayerNotTransfurred(Player player) {

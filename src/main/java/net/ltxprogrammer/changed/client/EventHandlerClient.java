@@ -247,7 +247,7 @@ public class EventHandlerClient {
             if (event.oldVariant != null || event.livingEntity.tickCount < 20)
                 return; // Only do effect if player was human
 
-            if (event.livingEntity instanceof Player player && player.isCreative())
+            if (event.livingEntity instanceof Player player && (player.isCreative() || player.isSpectator()))
                 return; // Don't do effect if player is creative mode
 
             event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, duration, 1, false, false));

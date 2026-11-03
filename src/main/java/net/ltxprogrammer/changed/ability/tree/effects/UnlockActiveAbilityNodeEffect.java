@@ -46,19 +46,13 @@ public class UnlockActiveAbilityNodeEffect extends NodeEffect {
     public void buildDescription(Consumer<Component> componentConsumer, boolean negate) {
         super.buildDescription(componentConsumer, negate);
 
-        double d0 = this.level;
-        if (negate)
-            d0 = -d0;
-
-        double d1 = d0;
-
         var abilityName = Component.translatable("ability." + ChangedRegistry.ABILITY.getKey(ability).toString().replace(':', '.'));;
 
-        if (d0 > 0.0D) {
-            componentConsumer.accept(Component.translatable("attribute.modifier.plus.0", ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), abilityName).withStyle(ChatFormatting.BLUE));
-        } else if (d0 < 0.0D) {
-            d1 *= -1.0D;
-            componentConsumer.accept(Component.translatable("attribute.modifier.take.0", ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), abilityName).withStyle(ChatFormatting.RED));
+        var levelText = Component.translatable("enchantment.level." + (this.level + 1));
+        if (!negate) {
+            componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.active_ability.give", abilityName, levelText).withStyle(ChatFormatting.BLUE));
+        } else {
+            componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.active_ability.take", abilityName, levelText).withStyle(ChatFormatting.RED));
         }
     }
 }

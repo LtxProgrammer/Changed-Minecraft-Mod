@@ -142,7 +142,6 @@ public class TransfurVariant<T extends ChangedEntity> {
     // Variant properties
     public final Supplier<EntityType<T>> ctor;
     public final BreatheMode breatheMode;
-    public final int extraJumpCharges;
     public final VisionType visionType;
     public final UseItemMode itemUseMode;
     public final @Nullable BiPredicate<T, PathfinderMob> scares;
@@ -151,13 +150,12 @@ public class TransfurVariant<T extends ChangedEntity> {
     public final ResourceLocation sound;
 
     public TransfurVariant(Supplier<EntityType<T>> ctor,
-                           BreatheMode breatheMode, int extraJumpCharges,
+                           BreatheMode breatheMode,
                            VisionType visionType, UseItemMode itemUseMode, @Nullable BiPredicate<T, PathfinderMob> scares, TransfurMode transfurMode,
                            float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
         this.breatheMode = breatheMode;
         this.visionType = visionType;
-        this.extraJumpCharges = extraJumpCharges;
         this.itemUseMode = itemUseMode;
         this.scares = scares;
         this.transfurMode = transfurMode;
@@ -427,8 +425,6 @@ public class TransfurVariant<T extends ChangedEntity> {
         return breatheMode;
     }
 
-    public boolean canDoubleJump() { return extraJumpCharges > 0; }
-
     @Deprecated
     public boolean rideable() {
         return AccessoryEntities.INSTANCE.canEntityTypeUseSlot(this.getEntityType()).test(ChangedAccessorySlots.LOWER_BODY.get());
@@ -465,7 +461,6 @@ public class TransfurVariant<T extends ChangedEntity> {
     public static class Builder<T extends ChangedEntity> {
         final Supplier<EntityType<T>> entityType;
         BreatheMode breatheMode = BreatheMode.NORMAL;
-        int extraJumpCharges = 0;
         boolean reducedFall = false;
         VisionType visionType = VisionType.NORMAL;
         UseItemMode itemUseMode = UseItemMode.NORMAL;
@@ -559,12 +554,14 @@ public class TransfurVariant<T extends ChangedEntity> {
             return this;
         }
 
+        @Deprecated(forRemoval = true)
         public Builder<T> doubleJump() {
             return extraJumps(1);
         }
 
+        @Deprecated(forRemoval = true)
         public Builder<T> extraJumps(int count) {
-            this.extraJumpCharges = count; return this;
+            return this;
         }
 
         @Deprecated(forRemoval = true)
@@ -676,7 +673,7 @@ public class TransfurVariant<T extends ChangedEntity> {
         }
 
         public TransfurVariant<T> build() {
-            return new TransfurVariant<>(entityType, breatheMode, extraJumpCharges,
+            return new TransfurVariant<>(entityType, breatheMode,
                     visionType, itemUseMode, scares, transfurMode, cameraZOffset, sound);
         }
     }

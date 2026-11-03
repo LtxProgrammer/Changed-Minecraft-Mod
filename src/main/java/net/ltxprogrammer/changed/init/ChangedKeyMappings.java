@@ -125,8 +125,6 @@ public class ChangedKeyMappings {
                 if (event.getKey() == options.keyJump.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
                     if (!local.onGround())
                         ProcessTransfur.ifPlayerTransfurred(local, variant -> {
-                            if (!variant.getParent().canDoubleJump())
-                                return;
                             if (variant.getJumpCharges() > 0) {
                                 variant.decJumpCharges();
                                 local.jumpFromGround();
