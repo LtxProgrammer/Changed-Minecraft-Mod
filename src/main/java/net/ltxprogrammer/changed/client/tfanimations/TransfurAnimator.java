@@ -665,7 +665,10 @@ public abstract class TransfurAnimator {
 
                     var model = armorLayer.getArmorModel(armorSlot);
                     ((HumanoidArmorLayer) armorLayer).setPartVisibility((HumanoidModel) model, armorSlot);
-                    var afterModel = latexHumanoidRenderer.getArmorLayer().getArmorModel(variant.getChangedEntity(), armorSlot);
+                    var afterArmorLayer = latexHumanoidRenderer.getArmorLayer();
+                    if (afterArmorLayer == null)
+                        return;
+                    var afterModel = afterArmorLayer.getArmorModel(variant.getChangedEntity(), armorSlot);
                     try {
                         afterModel.prepareVisibility(armorSlot, item);
                         if (item.getItem() instanceof DyeableLeatherItem dyeable) {

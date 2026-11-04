@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.InputWrapper;
 import net.ltxprogrammer.changed.util.UniversalDist;
@@ -194,6 +195,20 @@ public class LatexSwimMover extends PlayerMover<LatexSwimMover.MoverInstance> {
                     .add(leftAngle.multiply(horizontal.x, horizontal.x, horizontal.x)).normalize().multiply(moveSpeed, moveSpeed, moveSpeed);
 
             player.move(MoverType.SELF, controlDir.add(velocity));
+            if (surfaceDirection != null && velocity.length() > 0.0001 && controlDir.length() > 0.0001) {
+                var boundingBox = player.getBoundingBox();
+                double xVar = (1 - Mth.abs(surfaceDirection.getStepX())) * 0.35;
+                double yVar = (1 - Mth.abs(surfaceDirection.getStepY())) * 0.35;
+                double zVar = (1 - Mth.abs(surfaceDirection.getStepZ())) * 0.35;
+                var particleCount = controlDir.length() * 10;
+                for (int i = 0; i < particleCount && i < 4; ++i) {
+                    double x = Mth.lerp(player.getRandom().nextFloat(), boundingBox.minX - xVar, boundingBox.maxX + xVar);
+                    double y = Mth.lerp(player.getRandom().nextFloat(), boundingBox.minY - yVar, boundingBox.maxY + yVar);
+                    double z = Mth.lerp(player.getRandom().nextFloat(), boundingBox.minZ - zVar, boundingBox.maxZ + zVar);
+                    player.level().addParticle(ChangedParticles.globbedLatex(player, Color3.WHITE),
+                            x, y, z, 0, 0, 0);
+                }
+            }
             if (!input.getJumping())
                 this.maybeAdhereToSurface(player, input, side);
             lastPos = currentPos;

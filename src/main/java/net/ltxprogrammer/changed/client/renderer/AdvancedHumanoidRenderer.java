@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -33,13 +34,14 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
     @Nullable
     private LatexHumanoidHairLayer<T, M> hairLayer;
 
-    private LatexHumanoidArmorLayer<T, M> armorLayer;
+    @Nullable
+    private final LatexHumanoidArmorLayer<T, M> armorLayer;
 
     public @Nullable LatexHumanoidHairLayer<T, M> getHairLayer() {
         return hairLayer;
     }
 
-    public LatexHumanoidArmorLayer<T, M> getArmorLayer() {
+    public @Nullable LatexHumanoidArmorLayer<T, M> getArmorLayer() {
         return armorLayer;
     }
 
@@ -82,14 +84,21 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
     public AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,
                                     ArmorModelPicker<T, ? extends LatexHumanoidArmorModel<? super T, ?>> modelPicker, float shadowSize) {
         super(context, main, shadowSize);
-        if (main == null) return;
-        this.armorLayer = new LatexHumanoidArmorLayer<>(this, modelPicker, context.getModelManager());
+        if (main == null) {
+            this.armorLayer = null;
+            return;
+        }
+        this.armorLayer = this.makeArmorLayer(this, modelPicker, context.getModelManager());
         this.addLayers(context, main);
     }
 
     public AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,
                                     ArmorModelSet<? super T, ? extends LatexHumanoidArmorModel<? super T, ?>> modelSet, float shadowSize) {
         this(context, main, ArmorModelPicker.basic(context.getModelSet(), modelSet), shadowSize);
+    }
+
+    protected @Nullable LatexHumanoidArmorLayer<T, M> makeArmorLayer(AdvancedHumanoidRenderer<T, M> parentModel, ArmorModelPicker<T, ? extends LatexHumanoidArmorModel<? super T, ?>> modelPicker, ModelManager modelManager) {
+        return new LatexHumanoidArmorLayer<>(parentModel, modelPicker, modelManager);
     }
 
     protected boolean isEntityUprightType(@NotNull T entity) {
