@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ServerGamePacketListenerImpl.class)
 public abstract class ServerGamePacketListenerImplMixin implements ServerPlayerConnection, TickablePacketListener, ServerGamePacketListener {
-    @WrapOperation(method = { "tick", "handleMovePlayer" },
+    @WrapOperation(method = { "tick" },
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isPassenger()Z"))
     public boolean changed$shouldIgnoreFloating(ServerPlayer instance, Operation<Boolean> original) {
         WallClimbAbilityInstance wallClimb = AbstractAbility.getAbilityInstance(instance, ChangedAbilities.WALL_CLIMB.get());
