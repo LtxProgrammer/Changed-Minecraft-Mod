@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:black_dye"
+    },
+    {
+      "item": "minecraft:leather_leggings"
+    },
+    {
+      "item": "changed:latex_base"
+    }
+  ],
+  "result": {
+    "item": "changed:black_pants"
+  }
+}
