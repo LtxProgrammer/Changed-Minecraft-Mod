@@ -29,7 +29,8 @@
   "rewards": {
     "recipes": [
       "changed:black_tshirt",
-      "changed:white_tshirt"
+      "changed:white_tshirt",
+      "changed:wetsuit"
     ]
   },
   "sends_telemetry_event": false
