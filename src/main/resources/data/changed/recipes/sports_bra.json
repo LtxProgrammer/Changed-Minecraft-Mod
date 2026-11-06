@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "#D#",
-    "LBL"
+    "FRF"
   ],
   "key": {
     "#": {
@@ -11,11 +11,11 @@
     "D": {
       "item": "minecraft:black_dye"
     },
-    "L": {
-      "item": "minecraft:leather"
+    "F": {
+      "item": "changed:fabric"
     },
-    "B": {
-      "item": "changed:latex_base"
+    "R": {
+      "item": "changed:rubber"
     }
   },
   "result": {

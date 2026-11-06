@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_leather_chestplate": {
+    "has_fabric": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:leather_chestplate"
+              "changed:fabric"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_leather_chestplate",
+      "has_fabric",
       "has_the_recipe"
     ]
   ],

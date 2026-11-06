@@ -213,6 +213,8 @@ public class ChangedTabs {
                         output.accept(ChangedItems.GAS_MASK.get());
                         output.accept(ChangedItems.COMPACT_DISC.get());
                         output.accept(ChangedItems.LAB_BOOK.get());
+                        output.accept(ChangedItems.FABRIC.get());
+                        output.accept(ChangedItems.RUBBER.get());
                         output.accept(ChangedItems.LATEX_BASE.get());
                         output.accept(ChangedBlocks.MUG.get());
                         output.accept(ChangedItems.MUG_WITH_WATER.get());
