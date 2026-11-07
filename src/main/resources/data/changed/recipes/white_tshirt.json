@@ -1,16 +1,19 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "minecraft:white_dye"
-    },
-    {
-      "item": "minecraft:leather_chestplate"
-    },
-    {
-      "item": "changed:latex_base"
-    }
+  "type": "minecraft:crafting_shaped",
+  "group": "tshirt",
+  "pattern": [
+    "FDF",
+    "FFF",
+    "FFF"
   ],
+  "key": {
+    "F": {
+      "item": "changed:fabric"
+    },
+    "D": {
+      "item": "minecraft:white_dye"
+    }
+  },
   "result": {
     "item": "changed:white_tshirt"
   }

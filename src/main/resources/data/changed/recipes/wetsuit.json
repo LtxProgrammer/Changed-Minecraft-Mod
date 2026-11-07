@@ -1,19 +1,18 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "minecraft:black_dye"
-    },
-    {
-      "item": "minecraft:leather_leggings"
-    },
-    {
-      "item": "minecraft:leather_chestplate"
-    },
-    {
-      "item": "changed:latex_base"
-    }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RFR",
+    "RFR",
+    "RFR"
   ],
+  "key": {
+    "R": {
+      "item": "changed:rubber"
+    },
+    "F": {
+      "item": "changed:fabric"
+    }
+  },
   "result": {
     "item": "changed:wetsuit"
   }
