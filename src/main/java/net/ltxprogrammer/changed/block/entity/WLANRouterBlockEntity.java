@@ -83,7 +83,7 @@ public class WLANRouterBlockEntity extends BlockEntity implements Router {
             blockEntity.nic.processFrames(serverLevel, blockEntity::handleFrame);
 
             CollectionUtil.deplete(blockEntity.outboundFrames, frame -> {
-                NetworkInterface.sendFrameToAddress(serverLevel, frame.destination(), frame.origin(), blockEntity.nic.physicalAddress, frame.immediateSource(), frame.frame(), frame.ttl(), blockEntity.nic.nearbyAddresses);
+                NetworkInterface.sendFrameToAddress(serverLevel, frame.destination(), frame.origin(), blockEntity.nic.getPhysicalAddress(), frame.immediateSource(), frame.frame(), frame.ttl(), blockEntity.nic.nearbyAddresses);
             });
         }
     }

@@ -9,11 +9,12 @@ import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
 public class BasicNIC implements NetworkInterface {
-    public final NetworkInterface.Address physicalAddress;
+    protected NetworkInterface.Address physicalAddress;
     protected long tickCount;
     public final Set<Address> nearbyAddresses = new ObjectArraySet<>();
     public Queue<Pair<Address, Frame>> unprocessedFrames;
@@ -24,6 +25,14 @@ public class BasicNIC implements NetworkInterface {
 
     public interface FrameHandler {
         void handleFrame(ServerLevel level, Address physicalSource, Frame dataFrame);
+    }
+
+    public void setPhysicalAddress(Address physicalAddress) {
+        this.physicalAddress = Objects.requireNonNull(physicalAddress);
+    }
+
+    public Address getPhysicalAddress() {
+        return physicalAddress;
     }
 
     @Override
