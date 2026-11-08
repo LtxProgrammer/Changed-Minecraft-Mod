@@ -1591,6 +1591,7 @@
   "application.changed.save_file_dialog": "Save As...",
   "application.changed.door_controller": "Door Controller",
   "application.changed.text_editor": "Text Editor",
+  "application.changed.exoskeleton_controller": "Exoskeleton Controller",
 
   "application.changed.file_explorer.parent_dir": "Parent Directory",
   "application.changed.file_explorer.drives": "Local Drives",
@@ -1611,5 +1612,7 @@
   "application.changed.file_explorer.paste": "Paste",
   "application.changed.door_controller.open": "Open Door",
   "application.changed.door_controller.close": "Close Door",
-  "application.changed.door_controller.automatic": "Automatic"
+  "application.changed.door_controller.automatic": "Automatic",
+  "application.changed.exoskeleton_controller.enabled": "Enabled",
+  "application.changed.exoskeleton_controller.hostile": "Hostile"
 }

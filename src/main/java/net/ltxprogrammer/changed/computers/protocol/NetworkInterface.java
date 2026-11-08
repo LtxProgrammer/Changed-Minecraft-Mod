@@ -3,15 +3,13 @@ package net.ltxprogrammer.changed.computers.protocol;
 import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
@@ -26,27 +24,33 @@ public interface NetworkInterface {
     int MAX_LOCAL_TRAVEL_DISTANCE = 32;
     Address BROADCAST = null;
 
-    record Address(Either<BlockPos, UUID> blockPosOrID) {
+    record Address(Either<BlockPos, Integer> blockPosOrID) {
         public static Address forBlock(BlockPos blockPos) {
             return new Address(Either.left(blockPos.immutable()));
         }
 
         public static Address forEntity(Entity entity) {
-            return new Address(Either.right(entity.getUUID()));
+            return new Address(Either.right(entity.getId()));
         }
 
-        public @Nullable BlockPos getPosition(ServerLevel level) {
-            return blockPosOrID.map(Function.identity(), uuid -> {
-                var entity = level.getEntities().get(uuid);
+        public @Nullable BlockPos getPosition(Level level) {
+            return blockPosOrID.map(Function.identity(), id -> {
+                var entity = level.getEntity(id);
                 return entity == null ? null : entity.blockPosition();
             });
         }
 
-        public boolean isRoutable(ServerLevel level) {
-            return blockPosOrID.map(pos -> true, uuid -> level.getEntities().get(uuid) != null);
+        public @Nullable Entity getEntity(Level level) {
+            return blockPosOrID.map(blockPos -> null, id -> {
+                return level.getEntity(id);
+            });
         }
 
-        public int getManhattanDistance(ServerLevel level, Address other) {
+        public boolean isRoutable(Level level) {
+            return blockPosOrID.map(pos -> true, id -> level.getEntity(id) != null);
+        }
+
+        public int getManhattanDistance(Level level, Address other) {
             BlockPos myPos = getPosition(level);
             BlockPos otherPos = other.getPosition(level);
 
@@ -59,13 +63,13 @@ public interface NetworkInterface {
             if (tag instanceof CompoundTag compoundTag)
                 return Address.forBlock(NbtUtils.readBlockPos(compoundTag));
             else
-                return new Address(Either.right(NbtUtils.loadUUID(tag)));
+                return new Address(Either.right(((IntTag)tag).getAsInt()));
         }
 
         public Tag encode() {
             return blockPosOrID.map(
                     NbtUtils::writeBlockPos,
-                    NbtUtils::createUUID
+                    IntTag::valueOf
             );
         }
 
@@ -108,8 +112,8 @@ public interface NetworkInterface {
         return null;
     }
 
-    static NetworkInterface findWithEntityUUID(ServerLevel level, UUID uuid) {
-        return findWithEntity(level.getEntities().get(uuid));
+    static NetworkInterface findWithEntityID(Level level, int uuid) {
+        return findWithEntity(level.getEntity(uuid));
     }
 
     static NetworkInterface findWithEntity(Entity entity) {
@@ -123,11 +127,11 @@ public interface NetworkInterface {
     }
 
     /// Finds a network compatible device (block/entity) at the given physicalAddress.
-    static NetworkInterface findAtAddress(ServerLevel level, Address physicalAddress) {
-        return physicalAddress.blockPosOrID.map(blockPos -> findAtBlockPos(level, blockPos), uuid -> findWithEntityUUID(level, uuid));
+    static NetworkInterface findAtAddress(Level level, Address physicalAddress) {
+        return physicalAddress.blockPosOrID.map(blockPos -> findAtBlockPos(level, blockPos), id -> findWithEntityID(level, id));
     }
 
-    static Stream<Address> findNearbyAddresses(ServerLevel level, BlockPos source, int manhattanRadius) {
+    static Stream<Address> findNearbyAddresses(Level level, BlockPos source, int manhattanRadius) {
         AABB boundingBox = AABB.of(BoundingBox.fromCorners(
                 source.offset(-manhattanRadius, -manhattanRadius, -manhattanRadius),
                 source.offset(manhattanRadius, manhattanRadius, manhattanRadius)
