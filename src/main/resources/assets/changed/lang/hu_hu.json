@@ -1591,6 +1591,7 @@
   "application.changed.save_file_dialog": "Mentés másként...",
   "application.changed.door_controller": "Ajtóvezérlő",
   "application.changed.text_editor": "Szövegszerkesztő",
+  "application.changed.exoskeleton_controller": "Exoskeleton vezérlője",
 
   "application.changed.file_explorer.parent_dir": "Szülőkönyvtár",
   "application.changed.file_explorer.drives": "Helyi meghajtók",
@@ -1611,5 +1612,7 @@
   "application.changed.file_explorer.paste": "Beillesztés",
   "application.changed.door_controller.open": "Ajtó nyitása",
   "application.changed.door_controller.close": "Ajtó zárása",
-  "application.changed.door_controller.automatic": "Automatikus"
+  "application.changed.door_controller.automatic": "Automatikus",
+  "application.changed.exoskeleton_controller.enabled": "Engedélyezve",
+  "application.changed.exoskeleton_controller.hostile": "Ellenséges"
 }
