@@ -15,7 +15,7 @@ import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.entity.ai.EntityAssimilationBehavior;
+import net.ltxprogrammer.changed.entity.ai.AssimilationDecisionHandler;
 import net.ltxprogrammer.changed.entity.latex.SpreadingLatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
@@ -542,7 +542,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 pathfinder instanceof PathFinderMobDataExtension ext &&
                 tag.contains("ChangedIsAssimilated") &&
                 tag.getBoolean("ChangedIsAssimilated")) {
-            if (!ext.isLatexAssimilated() && ProcessTransfur.getEntityAssimilationBehavior(pathfinder) instanceof EntityAssimilationBehavior.InjectEntityWithTransfurGoals behavior) {
+            if (!ext.isLatexAssimilated() && ProcessTransfur.getAssimilationDecisionHandler(pathfinder) instanceof AssimilationDecisionHandler.InjectWithTransfurGoals behavior) {
                 if (Changed.config.server.doMobAssimilation.get())
                     behavior.assimilate(pathfinder);
             }

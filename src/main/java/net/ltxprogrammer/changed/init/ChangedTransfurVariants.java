@@ -8,7 +8,7 @@ import net.ltxprogrammer.changed.datagen.ability.AbilityTreeProvider;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.VisionType;
-import net.ltxprogrammer.changed.entity.ai.EntityAssimilationBehavior;
+import net.ltxprogrammer.changed.entity.ai.AssimilationDecisionHandler;
 import net.ltxprogrammer.changed.entity.ai.TransfurDecider;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.GenderedPair;
@@ -275,9 +275,9 @@ public class ChangedTransfurVariants {
     }
 
     public static void addChangedMobAssimilations(ProcessTransfur.GatherMobAssimilationsEvent event) {
-        event.register(EntityType.BEE, EntityAssimilationBehavior.latexAssimilation(1.4, true,
+        event.register(EntityType.BEE, AssimilationDecisionHandler.latexAssimilation(1.4, true,
                 TransfurDecider.simpleMobDecider(LATEX_BEE, 3.0f)));
-        event.register(EntityType.RABBIT, EntityAssimilationBehavior.latexAssimilation(2.0, true,
+        event.register(EntityType.RABBIT, AssimilationDecisionHandler.latexAssimilation(2.0, true,
                 TransfurDecider.simpleMobDecider(Gendered.LATEX_RABBITS, 3.0f)));
     }
 }
