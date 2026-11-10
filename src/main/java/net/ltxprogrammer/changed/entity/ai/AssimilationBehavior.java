@@ -1,9 +1,7 @@
 package net.ltxprogrammer.changed.entity.ai;
 
-import it.unimi.dsi.fastutil.floats.FloatConsumer;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
-import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
 import net.minecraft.world.damagesource.DamageSource;

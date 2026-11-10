@@ -65,6 +65,8 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
     public Stream<AdvancedHumanoidModel<?>> getAfterModels(AccessorySlotContext<?> slotContext, RenderLayerParent<?,?> renderLayerParent) {
         if (renderLayerParent instanceof AdvancedHumanoidRenderer advancedHumanoidRenderer && EntityUtil.maybeGetOverlaying(slotContext.wearer()) instanceof ChangedEntity wearer) {
             final LatexHumanoidArmorLayer layer = advancedHumanoidRenderer.getArmorLayer();
+            if (layer == null)
+                return Stream.empty();
             return components.stream().map(component -> Optional.of((LatexHumanoidArmorModel<?,?>) layer.modelPicker.getModelSetForSlot(wearer, component.renderAs)
                     .get(component.armorModel))).filter(Optional::isPresent).map(Optional::get);
         }
@@ -89,6 +91,8 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
             final T entity = slotContext.wearer();
             if (entity instanceof ChangedEntity changedEntity && renderLayerParent instanceof AdvancedHumanoidRenderer advancedHumanoidRenderer) {
                 final var layer = advancedHumanoidRenderer.getArmorLayer();
+                if (layer == null)
+                    return;
                 for (var component : components) {
                     final LatexHumanoidArmorModel model = (LatexHumanoidArmorModel<?, ?>) layer.modelPicker.getModelSetForSlot(changedEntity, component.renderAs)
                             .get(component.armorModel);
@@ -178,6 +182,8 @@ public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAc
 
             if (entity instanceof ChangedEntity changedEntity && renderLayerParent instanceof AdvancedHumanoidRenderer advancedHumanoidRenderer) {
                 final var layer = advancedHumanoidRenderer.getArmorLayer();
+                if (layer == null)
+                    return;
                 for (var component : components) {
                     if (component.renderAs != EquipmentSlot.CHEST) continue;
 

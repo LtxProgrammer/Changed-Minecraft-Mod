@@ -718,7 +718,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
                 return false; // Cancel attempt to transfur
         }
 
-        if (!this.getType().is(ChangedTags.EntityTypes.LATEX))
+        if (ProcessTransfur.isNonGoo(this))
             return false;
         if (!(entity instanceof LivingEntity target))
             return false;
@@ -814,7 +814,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
             this.targetSelector.addGoal(1, hurtByTargetGoal);
 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ChangedEntity.class, true, this::targetSelectorTest));
-        if (this.getType().is(ChangedTags.EntityTypes.LATEX)) {
+        if (ProcessTransfur.isGoo(this)) {
             this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, this::targetSelectorTest));
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, this::targetSelectorTest));
         }
@@ -981,7 +981,7 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
 
     /// Allows NPC entities to specify the level of a VariantFeature. This function does not get called for Transfurred players
     protected double getNPCFeatureLevel(VariantFeature feature) {
-        boolean isLatex = this.getType().is(ChangedTags.EntityTypes.LATEX);
+        boolean isLatex = ProcessTransfur.isGoo(this);
         if (isLatex && ChangedVariantFeatures.SCARE_VILLAGERS.get() == feature)
             return 1.0d;
         if (isLatex && ChangedVariantFeatures.ABSORPTION.get() == feature)

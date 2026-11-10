@@ -56,7 +56,7 @@ public abstract class GuiMixin {
             return;
 
         if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
-            if (ProcessTransfur.isPlayerNotLatex(player))
+            if (ProcessTransfur.isNonGoo(player))
                 return;
             ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                 var colors = VariantRadialScreen.getColors(variant);
@@ -75,7 +75,7 @@ public abstract class GuiMixin {
         if (!Changed.config.client.useGoopyInventory.get())
             return;
         ProcessTransfur.ifPlayerTransfurred(this.minecraft.player, variant -> {
-            if (ProcessTransfur.isPlayerNotLatex(this.minecraft.player))
+            if (ProcessTransfur.isNonGoo(this.minecraft.player))
                 return;
 
             var colorPair = AbstractRadialScreen.getColors(variant);

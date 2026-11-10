@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_white_carpet": {
+    "has_fabric": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:white_carpet"
+              "changed:fabric"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_white_carpet",
+      "has_fabric",
       "has_the_recipe"
     ]
   ]

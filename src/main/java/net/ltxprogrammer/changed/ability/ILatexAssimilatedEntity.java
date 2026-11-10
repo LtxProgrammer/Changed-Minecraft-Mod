@@ -3,9 +3,8 @@ package net.ltxprogrammer.changed.ability;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
-import net.ltxprogrammer.changed.entity.ai.EntityAssimilationBehavior;
+import net.ltxprogrammer.changed.entity.ai.AssimilationDecisionHandler;
 import net.ltxprogrammer.changed.entity.ai.TransfurDecider;
-import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -28,8 +27,8 @@ public interface ILatexAssimilatedEntity {
     }
 
     static ILatexAssimilatedEntity forEntity(LivingEntity entity) {
-        final var behavior = ProcessTransfur.getEntityAssimilationBehavior(entity);
-        if (!(behavior instanceof EntityAssimilationBehavior.InjectEntityWithTransfurGoals<?> transfurGoalsBehavior))
+        final var behavior = ProcessTransfur.getAssimilationDecisionHandler(entity);
+        if (!(behavior instanceof AssimilationDecisionHandler.InjectWithTransfurGoals<?> transfurGoalsBehavior))
             return null;
 
         return forEntity(entity, transfurGoalsBehavior.decider);

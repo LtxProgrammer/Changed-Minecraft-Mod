@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -37,15 +38,15 @@ public abstract class VariantRadialScreen<T extends AbstractContainerMenu> exten
         return (section / 4) * 80;
     }
 
-    protected ResourceLocation getTextureForSection(@Nullable TransfurVariant<?> variant, int section, boolean thisHovered, boolean anyHovered) {
-        if (variant == null || variant.getEntityType().is(ChangedTags.EntityTypes.LATEX))
+    protected ResourceLocation getTextureForSection(int section, boolean thisHovered, boolean anyHovered) {
+        if (ProcessTransfur.isGoo(centerEntity))
             return thisHovered ? PATH_GOO_HOVERED : PATH_GOO;
         else
             return thisHovered ? PATH_ORGANIC_HOVERED : PATH_ORGANIC;
     }
 
-    protected ResourceLocation getTextureForSelectedSection(@Nullable TransfurVariant<?> variant) {
-        if (variant == null || variant.getEntityType().is(ChangedTags.EntityTypes.LATEX))
+    protected ResourceLocation getTextureForSelectedSection() {
+        if (ProcessTransfur.isGoo(centerEntity))
             return PATH_GOO_SELECTED;
         else
             return PATH_ORGANIC_SELECTED;
@@ -54,21 +55,20 @@ public abstract class VariantRadialScreen<T extends AbstractContainerMenu> exten
     @Override
     public void renderSectionBackground(GuiGraphics graphics, int section, double x, double y, float partialTicks, int mouseX, int mouseY, float red, float green, float blue) {
         var hovered = getSectionAt(mouseX, mouseY);
-        var variant = TransfurVariant.getEntityVariant((LivingEntity) Minecraft.getInstance().getCameraEntity());
         boolean anyHovered = hovered.isPresent();
         boolean thisHovered = anyHovered && hovered.get() == section;
         boolean thisSelected = this.isSelected(section);
         int u = this.getSectionU(section);
         int v = this.getSectionV(section);
         graphics.setColor(red, green, blue, 1);
-        graphics.blit(getTextureForSection(variant, section, thisHovered, anyHovered),
+        graphics.blit(getTextureForSection(section, thisHovered, anyHovered),
                 (int)x - 32 + this.leftPos - 8, (int)y - 32 + this.topPos - 8, u, v, 80, 80, 320, 160);
         graphics.setColor(1, 1, 1, 1);
 
         if (!thisSelected)
             return;
 
-        graphics.blit(getTextureForSelectedSection(variant),
+        graphics.blit(getTextureForSelectedSection(),
                 (int)x - 32 + this.leftPos - 8, (int)y - 32 + this.topPos - 8, u, v, 80, 80, 320, 160);
     }
 }

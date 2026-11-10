@@ -37,15 +37,15 @@ import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
  * Defines what happens when this mob gets assimilated.
  * @param <T> type of entity being assimilated
  */
-public interface EntityAssimilationBehavior<T extends LivingEntity> {
-    class InjectEntityWithTransfurGoals<T extends PathfinderMob> implements EntityAssimilationBehavior<T> {
+public interface AssimilationDecisionHandler<T extends LivingEntity> {
+    class InjectWithTransfurGoals<T extends PathfinderMob> implements AssimilationDecisionHandler<T> {
         public final boolean mustSeeTarget;
         public final boolean mustReachTarget;
         public final double speedModifier;
         public final boolean followingTargetEvenIfNotSeen;
         public final TransfurDecider<T> decider;
 
-        public InjectEntityWithTransfurGoals(boolean mustSeeTarget, boolean mustReachTarget, double speedModifier, boolean followingTargetEvenIfNotSeen, TransfurDecider<T> decider) {
+        public InjectWithTransfurGoals(boolean mustSeeTarget, boolean mustReachTarget, double speedModifier, boolean followingTargetEvenIfNotSeen, TransfurDecider<T> decider) {
             this.mustSeeTarget = mustSeeTarget;
             this.mustReachTarget = mustReachTarget;
             this.speedModifier = speedModifier;
@@ -72,19 +72,19 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
             var targetGoal = new NearestAttackableTargetGoal<>(entity, LivingEntity.class, 10, mustSeeTarget, mustReachTarget, canTransfurTarget) {
                 @Override
                 public boolean canUse() {
-                    return super.canUse();
+                    return super.canUse() && ((PathFinderMobDataExtension)mob).isLatexAssimilated();
                 }
             };
 
             var assimilateGoal = new MeleeAttackGoal(entity, speedModifier, followingTargetEvenIfNotSeen) {
                 @Override
                 public boolean canUse() {
-                    return super.canUse() && Changed.config.server.doMobAssimilation.get() && canTransfurTarget.test(mob.getTarget());
+                    return super.canUse() && Changed.config.server.doMobAssimilation.get() && canTransfurTarget.test(mob.getTarget()) && ((PathFinderMobDataExtension)mob).isLatexAssimilated();
                 }
 
                 @Override
                 public boolean canContinueToUse() {
-                    return super.canContinueToUse() && Changed.config.server.doMobAssimilation.get() && canTransfurTarget.test(mob.getTarget());
+                    return super.canContinueToUse() && Changed.config.server.doMobAssimilation.get() && canTransfurTarget.test(mob.getTarget()) && ((PathFinderMobDataExtension)mob).isLatexAssimilated();
                 }
 
                 @Override
@@ -115,7 +115,7 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
                     return null;
                 });
             } else {
-                var nextBehavior = ProcessTransfur.getDefaultEntityAssimilationBehavior(assimilationVictim);
+                var nextBehavior = ProcessTransfur.getDefaultAssimilationDecisionHandler(assimilationVictim);
                 if (nextBehavior == null)
                     return null;
                 return nextBehavior.latexAssimilateVictimBehavior(assimilationVictim, decision);
@@ -124,7 +124,7 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
 
         @Override
         public @Nullable AssimilationBehavior nonLatexAssimilateVictimBehavior(T assimilationVictim, @NotNull NonLatexAssimilationDecision<?> decision) {
-            var nextBehavior = ProcessTransfur.getDefaultEntityAssimilationBehavior(assimilationVictim);
+            var nextBehavior = ProcessTransfur.getDefaultAssimilationDecisionHandler(assimilationVictim);
             if (nextBehavior == null)
                 return null;
             return nextBehavior.nonLatexAssimilateVictimBehavior(assimilationVictim, decision);
@@ -142,7 +142,7 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
         }
     }
 
-    class ReplaceSelfWithVariant<T extends LivingEntity, V extends ChangedEntity> implements EntityAssimilationBehavior<T> {
+    class ReplaceSelfWithVariant<T extends LivingEntity, V extends ChangedEntity> implements AssimilationDecisionHandler<T> {
         public final Supplier<TransfurVariant<V>> variant;
         public final BiConsumer<T, IAbstractChangedEntity> traitMapper;
 
@@ -160,7 +160,7 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
 
                 return newDecision.latexAssimilateVictimBehavior(assimilationVictim);
             } else {
-                var nextBehavior = ProcessTransfur.getDefaultEntityAssimilationBehavior(assimilationVictim);
+                var nextBehavior = ProcessTransfur.getDefaultAssimilationDecisionHandler(assimilationVictim);
                 if (nextBehavior == null)
                     return null;
                 return nextBehavior.latexAssimilateVictimBehavior(assimilationVictim, decision);
@@ -169,7 +169,7 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
 
         @Override
         public @Nullable AssimilationBehavior nonLatexAssimilateVictimBehavior(T assimilationVictim, @NotNull NonLatexAssimilationDecision<?> decision) {
-            var nextBehavior = ProcessTransfur.getDefaultEntityAssimilationBehavior(assimilationVictim);
+            var nextBehavior = ProcessTransfur.getDefaultAssimilationDecisionHandler(assimilationVictim);
             if (nextBehavior == null)
                 return null;
             return nextBehavior.nonLatexAssimilateVictimBehavior(assimilationVictim, decision);
@@ -177,15 +177,15 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
 
         @Override
         public @Nullable AssimilationBehavior immediateTransfurTargetBehavior(T assimilateTarget, @NotNull ImmediateTransfurDecision<?> decision) {
-            var nextBehavior = ProcessTransfur.getDefaultEntityAssimilationBehavior(assimilateTarget);
+            var nextBehavior = ProcessTransfur.getDefaultAssimilationDecisionHandler(assimilateTarget);
             if (nextBehavior == null)
                 return null;
             return nextBehavior.immediateTransfurTargetBehavior(assimilateTarget, decision);
         }
     }
 
-    class HumanoidAssimilationBehavior<T extends LivingEntity> implements EntityAssimilationBehavior<T> {
-        static final HumanoidAssimilationBehavior<LivingEntity> INSTANCE = new HumanoidAssimilationBehavior<>();
+    class HumanoidAssimilationDecisionHandler<T extends LivingEntity> implements AssimilationDecisionHandler<T> {
+        static final HumanoidAssimilationDecisionHandler<LivingEntity> INSTANCE = new HumanoidAssimilationDecisionHandler<>();
 
         @Override
         public @Nullable AssimilationBehavior latexAssimilateVictimBehavior(T assimilationVictim, @NotNull LatexAssimilationDecision<?> decision) {
@@ -212,8 +212,8 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
         }
     }
 
-    class PlayerAssimilationBehavior extends HumanoidAssimilationBehavior<Player> {
-        static final PlayerAssimilationBehavior INSTANCE = new PlayerAssimilationBehavior();
+    class PlayerAssimilationDecisionHandler extends HumanoidAssimilationDecisionHandler<Player> {
+        static final PlayerAssimilationDecisionHandler INSTANCE = new PlayerAssimilationDecisionHandler();
 
         /**
          * Handles setting the player's variant, or replacing them with the variant's entity.
@@ -278,12 +278,12 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
         #1587 - Non-latex transfurs variants can still be assimilated
          */
         protected boolean isPlayerLatexTransfurred(Player player) {
-            return ProcessTransfur.isPlayerLatex(player);
+            return ProcessTransfur.isGoo(player);
         }
 
         protected boolean isPlayerNonLatexTransfurred(Player player) {
             var variant = ProcessTransfur.getPlayerTransfurVariant(player);
-            return variant != null && !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
+            return variant != null && ProcessTransfur.isNonGoo(player);
         }
 
         protected boolean isPlayerNotTransfurred(Player player) {
@@ -394,59 +394,59 @@ public interface EntityAssimilationBehavior<T extends LivingEntity> {
     @ApiStatus.Internal
     @Nullable AssimilationBehavior immediateTransfurTargetBehavior(T assimilateTarget, @NotNull ImmediateTransfurDecision<?> decision);
 
-    static <T extends PathfinderMob> EntityAssimilationBehavior<T> latexAssimilation(double speedModifier, boolean followingTargetEvenIfNotSeen, TransfurDecider<T> decider) {
+    static <T extends PathfinderMob> AssimilationDecisionHandler<T> latexAssimilation(double speedModifier, boolean followingTargetEvenIfNotSeen, TransfurDecider<T> decider) {
         return latexAssimilation(true, false, speedModifier, followingTargetEvenIfNotSeen, decider);
     }
 
-    static <T extends PathfinderMob> EntityAssimilationBehavior<T> latexAssimilation(boolean mustSeeTarget, boolean mustReachTarget, double speedModifier, boolean followingTargetEvenIfNotSeen, TransfurDecider<T> decider) {
+    static <T extends PathfinderMob> AssimilationDecisionHandler<T> latexAssimilation(boolean mustSeeTarget, boolean mustReachTarget, double speedModifier, boolean followingTargetEvenIfNotSeen, TransfurDecider<T> decider) {
         Objects.requireNonNull(decider);
 
-        return new InjectEntityWithTransfurGoals<>(mustSeeTarget, mustReachTarget, speedModifier, followingTargetEvenIfNotSeen, decider);
+        return new InjectWithTransfurGoals<>(mustSeeTarget, mustReachTarget, speedModifier, followingTargetEvenIfNotSeen, decider);
     }
 
-    static <T extends LivingEntity, V extends ChangedEntity> EntityAssimilationBehavior<T> uniqueVariant(TransfurVariant<V> variant) {
+    static <T extends LivingEntity, V extends ChangedEntity> AssimilationDecisionHandler<T> uniqueVariant(TransfurVariant<V> variant) {
         return uniqueVariant(variant, (oldEntity, newEntity) -> {});
     }
 
-    static <T extends LivingEntity, V extends ChangedEntity> EntityAssimilationBehavior<T> uniqueVariant(TransfurVariant<V> variant, BiConsumer<T, IAbstractChangedEntity> traitMapper) {
+    static <T extends LivingEntity, V extends ChangedEntity> AssimilationDecisionHandler<T> uniqueVariant(TransfurVariant<V> variant, BiConsumer<T, IAbstractChangedEntity> traitMapper) {
         return new ReplaceSelfWithVariant<>(() -> variant, traitMapper);
     }
 
-    static <T extends LivingEntity, V extends ChangedEntity> EntityAssimilationBehavior<T> uniqueVariant(RegistryObject<TransfurVariant<V>> variant) {
+    static <T extends LivingEntity, V extends ChangedEntity> AssimilationDecisionHandler<T> uniqueVariant(RegistryObject<TransfurVariant<V>> variant) {
         return uniqueVariant(variant, (oldEntity, newEntity) -> {});
     }
 
-    static <T extends LivingEntity, V extends ChangedEntity> EntityAssimilationBehavior<T> uniqueVariant(RegistryObject<TransfurVariant<V>> variant, BiConsumer<T, IAbstractChangedEntity> traitMapper) {
+    static <T extends LivingEntity, V extends ChangedEntity> AssimilationDecisionHandler<T> uniqueVariant(RegistryObject<TransfurVariant<V>> variant, BiConsumer<T, IAbstractChangedEntity> traitMapper) {
         return new ReplaceSelfWithVariant<>(variant, traitMapper);
     }
 
-    static <T extends LivingEntity> EntityAssimilationBehavior<T> conditionalAssimilation(Predicate<T> predicate) {
-        return new EntityAssimilationBehavior<T>() {
+    static <T extends LivingEntity> AssimilationDecisionHandler<T> conditionalAssimilation(Predicate<T> predicate) {
+        return new AssimilationDecisionHandler<T>() {
             @Override
             public @Nullable AssimilationBehavior latexAssimilateVictimBehavior(T assimilationVictim, @NotNull LatexAssimilationDecision<?> decision) {
-                var behavior = ProcessTransfur.getDefaultEntityAssimilationBehavior(assimilationVictim);
+                var behavior = ProcessTransfur.getDefaultAssimilationDecisionHandler(assimilationVictim);
                 return behavior != null && predicate.test(assimilationVictim) ? behavior.latexAssimilateVictimBehavior(assimilationVictim, decision) : null;
             }
 
             @Override
             public @Nullable AssimilationBehavior nonLatexAssimilateVictimBehavior(T assimilationVictim, @NotNull NonLatexAssimilationDecision<?> decision) {
-                var behavior = ProcessTransfur.getDefaultEntityAssimilationBehavior(assimilationVictim);
+                var behavior = ProcessTransfur.getDefaultAssimilationDecisionHandler(assimilationVictim);
                 return behavior != null && predicate.test(assimilationVictim) ? behavior.nonLatexAssimilateVictimBehavior(assimilationVictim, decision) : null;
             }
 
             @Override
             public @Nullable AssimilationBehavior immediateTransfurTargetBehavior(T assimilateTarget, @NotNull ImmediateTransfurDecision<?> decision) {
-                var behavior = ProcessTransfur.getDefaultEntityAssimilationBehavior(assimilateTarget);
+                var behavior = ProcessTransfur.getDefaultAssimilationDecisionHandler(assimilateTarget);
                 return behavior != null && predicate.test(assimilateTarget) ? behavior.immediateTransfurTargetBehavior(assimilateTarget, decision) : null;
             }
         };
     }
 
-    static EntityAssimilationBehavior<LivingEntity> defaultHumanoid() {
-        return HumanoidAssimilationBehavior.INSTANCE;
+    static AssimilationDecisionHandler<LivingEntity> defaultHumanoid() {
+        return HumanoidAssimilationDecisionHandler.INSTANCE;
     }
 
-    static EntityAssimilationBehavior<Player> defaultPlayer() {
-        return PlayerAssimilationBehavior.INSTANCE;
+    static AssimilationDecisionHandler<Player> defaultPlayer() {
+        return PlayerAssimilationDecisionHandler.INSTANCE;
     }
 }

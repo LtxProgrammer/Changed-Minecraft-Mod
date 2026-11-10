@@ -131,6 +131,10 @@ public abstract class AbstractRobot extends PathfinderMob {
         return getCharge() < 0.15f;
     }
 
+    protected boolean wantsToSeekCharger() {
+        return isLowBattery();
+    }
+
     // Threshold where the robot will detach to pursue its tasks
     public boolean isSufficientlyCharged() {
         return getCharge() > 0.8f;
@@ -171,6 +175,10 @@ public abstract class AbstractRobot extends PathfinderMob {
         return 1f / (2 * 60 * 20); // 2 minutes charge
     }
 
+    protected boolean wantsToLeaveChargerWhenFull() {
+        return !this.hasCustomName();
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -203,7 +211,7 @@ public abstract class AbstractRobot extends PathfinderMob {
         else if (this.getCharge() < 1f && this.isCharging()) {
             this.setCharge(Mth.clamp(this.getCharge() + this.getChargeRate(), 0f, 1f));
 
-            if (this.getCharge() >= 1f && !this.hasCustomName())
+            if (this.getCharge() >= 1f && this.wantsToLeaveChargerWhenFull())
                 this.detachFromCharger();
         }
     }
@@ -264,6 +272,9 @@ public abstract class AbstractRobot extends PathfinderMob {
             final var chargerState = level().getBlockState(chargerPos);
             if (chargerState.getBlock() instanceof IRobotCharger charger) {
                 charger.acceptRobotRemoved(chargerState, level(), chargerPos, this);
+
+                // Restore nearest charger
+                this.broadcastNearbyCharger(chargerPos, charger.getChargerType(), true);
             }
         }
     }
@@ -288,7 +299,7 @@ public abstract class AbstractRobot extends PathfinderMob {
 
         @Override
         public boolean canUse() {
-            return robot.isLowBattery() && robot.closestCharger != null;
+            return robot.wantsToSeekCharger() && robot.closestCharger != null;
         }
 
         @Override

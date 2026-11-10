@@ -1,8 +1,11 @@
 package net.ltxprogrammer.changed.entity.robot;
 
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.AbstractLargePanel;
 import net.ltxprogrammer.changed.block.NineSection;
+import net.ltxprogrammer.changed.computers.BasicNIC;
+import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
@@ -17,9 +20,11 @@ import net.ltxprogrammer.changed.util.ItemUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -38,16 +43,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.Path;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Exoskeleton extends AbstractRobot {
+public class Exoskeleton extends AbstractRobot implements NetworkInterface {
     private static final EntityDataAccessor<Integer> DATA_ID_ATTACK_TARGET = SynchedEntityData.defineId(Exoskeleton.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Byte> DATA_ID_FLAGS = SynchedEntityData.defineId(Exoskeleton.class, EntityDataSerializers.BYTE);
+    public static final int FLAG_ENABLED = 0;
+    public static final int FLAG_HOSTILE = 1;
     @Nullable
     private LivingEntity clientSideCachedAttackTarget;
     private int clientSideAttackTime;
 
     private ListTag savedEnchantments = new ListTag();
+
+    public final BasicNIC nic;
 
     public static Optional<Pair<ItemStack, ExoskeletonItem<?>>> getEntityExoskeleton(LivingEntity entity) {
         return AccessorySlots.getForEntity(entity)
@@ -61,6 +71,28 @@ public class Exoskeleton extends AbstractRobot {
 
     public Exoskeleton(EntityType<? extends Exoskeleton> p_21368_, Level p_21369_) {
         super(p_21368_, p_21369_);
+        this.nic = new BasicNIC(Address.forEntity(this));
+    }
+
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        this.nic.setPhysicalAddress(Address.forEntity(this));
+    }
+
+    @Override
+    public void acceptNeighbor(ServerLevel level, Address physicalSource) {
+        nic.acceptNeighbor(level, physicalSource);
+    }
+
+    @Override
+    public void acceptFrame(ServerLevel level, Address physicalSource, Frame dataFrame) {
+        nic.acceptFrame(level, physicalSource, dataFrame);
+    }
+
+    @Override
+    public void sendOutFrame(ServerLevel level, @Nullable Address destination, Frame frame, int ttl) {
+        nic.sendOutFrame(level, destination, frame, ttl);
     }
 
     public ItemStack getDropItem() {
@@ -69,6 +101,7 @@ public class Exoskeleton extends AbstractRobot {
         if (this.hasCustomName())
             stack.setHoverName(this.getCustomName());
         stack.getOrCreateTag().put("Enchantments", savedEnchantments);
+        stack.getOrCreateTag().putBoolean("IsHostile", this.isHostile());
         return stack;
     }
 
@@ -77,18 +110,23 @@ public class Exoskeleton extends AbstractRobot {
         if (stack.hasCustomHoverName())
             this.setCustomName(stack.getHoverName());
         savedEnchantments = stack.getEnchantmentTags();
+        this.setFlag(FLAG_HOSTILE, !stack.getOrCreateTag().contains("IsHostile") || stack.getOrCreateTag().getBoolean("IsHostile"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("Enchantments", savedEnchantments);
+        tag.putBoolean("IsEnabled", this.isEnabled());
+        tag.putBoolean("IsHostile", this.isHostile());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         savedEnchantments = tag.getList("Enchantments", 10);
+        this.setFlag(FLAG_ENABLED, !tag.contains("IsEnabled") || tag.getBoolean("IsEnabled"));
+        this.setFlag(FLAG_HOSTILE, !tag.contains("IsHostile") || tag.getBoolean("IsHostile"));
     }
 
     @Override
@@ -112,6 +150,9 @@ public class Exoskeleton extends AbstractRobot {
     }
 
     protected boolean targetIsBenignLatex(LivingEntity entity) {
+        if (!isHostile())
+            return false;
+
         if (this.targetAlreadyHasExo(entity))
             return false;
 
@@ -122,6 +163,9 @@ public class Exoskeleton extends AbstractRobot {
     }
 
     protected boolean targetHasBenignPants(LivingEntity entity) {
+        if (!isHostile())
+            return false;
+
         if (this.targetAlreadyHasExo(entity))
             return false;
 
@@ -146,6 +190,7 @@ public class Exoskeleton extends AbstractRobot {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_ID_ATTACK_TARGET, 0);
+        this.entityData.define(DATA_ID_FLAGS, (byte)0b11);
     }
 
     public int getAttackDuration() {
@@ -162,6 +207,31 @@ public class Exoskeleton extends AbstractRobot {
 
     public boolean hasActiveAttackTarget() {
         return this.entityData.get(DATA_ID_ATTACK_TARGET) != 0;
+    }
+
+    protected boolean getFlag(int flag) {
+        return ((this.entityData.get(DATA_ID_FLAGS)) & 1 << flag) != 0;
+    }
+
+    protected void setFlag(int flag, boolean value) {
+        byte b0 = this.entityData.get(DATA_ID_FLAGS);
+        if (value) {
+            this.entityData.set(DATA_ID_FLAGS, (byte)(b0 | 1 << flag));
+        } else {
+            this.entityData.set(DATA_ID_FLAGS, (byte)(b0 & ~(1 << flag)));
+        }
+    }
+
+    public boolean isEnabled() {
+        return getFlag(FLAG_ENABLED);
+    }
+
+    public boolean isHostile() {
+        return getFlag(FLAG_HOSTILE);
+    }
+
+    public boolean canTargetEntities() {
+        return isHostile() && isEnabled();
     }
 
     @Nullable
@@ -242,9 +312,42 @@ public class Exoskeleton extends AbstractRobot {
         return super.getChargeDecay();
     }
 
+    protected void handleFrame(ServerLevel level, Address logicalSource, Frame packet) {
+        if (packet instanceof DiscoveryProtocol discoveryProtocol && !discoveryProtocol.isReply()) {
+            Set<Class<?>> protocols = new HashSet<>();
+            protocols.add(DiscoveryProtocol.class);
+            protocols.add(DeviceInfoProtocol.Query.class);
+            protocols.add(ExoControlProtocol.class);
+            nic.sendOutFrame(level, logicalSource, discoveryProtocol.intersect(protocols));
+        }
+
+        if (packet == DeviceInfoProtocol.Query.INSTANCE) {
+            nic.sendOutFrame(level, logicalSource, new DeviceInfoProtocol(
+                    Component.literal("Exoskeleton"),
+                    this.blockPosition(),
+                    Changed.modResource("exoskeleton")
+            ));
+        }
+
+        if (packet instanceof ExoControlProtocol exoControlProtocol) {
+            exoControlProtocol.enabled().ifPresent(value -> this.setFlag(FLAG_ENABLED, value));
+            exoControlProtocol.hostile().ifPresent(value -> this.setFlag(FLAG_HOSTILE, value));
+        }
+    }
+
+    @Override
+    protected boolean wantsToLeaveChargerWhenFull() {
+        return super.wantsToLeaveChargerWhenFull() && isEnabled();
+    }
+
     @Override
     public void tick() {
         super.tick();
+
+        if (level() instanceof ServerLevel serverLevel) {
+            this.nic.tick(serverLevel, this.blockPosition());
+            this.nic.processFrames(serverLevel, this::handleFrame);
+        }
 
         if (this.isCharging() && this.getSleepingPos().isPresent()) {
             final var panel = level().getBlockState(this.getSleepingPos().get());
@@ -275,6 +378,18 @@ public class Exoskeleton extends AbstractRobot {
     public void aiStep() {
         super.aiStep();
 
+        if (isEnabled()) {
+            this.goalSelector.enableControlFlag(Goal.Flag.MOVE);
+            this.goalSelector.enableControlFlag(Goal.Flag.LOOK);
+            this.goalSelector.enableControlFlag(Goal.Flag.JUMP);
+            this.goalSelector.enableControlFlag(Goal.Flag.TARGET);
+        } else {
+            this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
+            this.goalSelector.disableControlFlag(Goal.Flag.LOOK);
+            this.goalSelector.disableControlFlag(Goal.Flag.JUMP);
+            this.goalSelector.disableControlFlag(Goal.Flag.TARGET);
+        }
+
         if (this.hasActiveAttackTarget()) {
             if (this.clientSideAttackTime < this.getAttackDuration()) {
                 ++this.clientSideAttackTime;
@@ -291,6 +406,11 @@ public class Exoskeleton extends AbstractRobot {
     @Override
     public boolean isNoGravity() {
         return super.isNoGravity() || this.isCharging();
+    }
+
+    @Override
+    protected boolean wantsToSeekCharger() {
+        return super.wantsToSeekCharger() || !isEnabled();
     }
 
     @Override
@@ -315,6 +435,12 @@ public class Exoskeleton extends AbstractRobot {
         if (DATA_ID_ATTACK_TARGET.equals(accessor)) {
             this.clientSideAttackTime = 0;
             this.clientSideCachedAttackTarget = null;
+        }
+
+        if (DATA_ID_FLAGS.equals(accessor)) {
+            if (this.getCharge() >= 1f && this.isCharging() && this.wantsToLeaveChargerWhenFull()) {
+                this.detachFromCharger();
+            }
         }
     }
 
@@ -375,14 +501,14 @@ public class Exoskeleton extends AbstractRobot {
         @Override
         public boolean canUse() {
             LivingEntity target = this.exoskeleton.getTarget();
-            return super.canUse() && (!exoskeleton.isCharging() || exoskeleton.isSufficientlyCharged()) && !exoskeleton.isLowBattery()
+            return super.canUse() && exoskeleton.canTargetEntities() && (!exoskeleton.isCharging() || exoskeleton.isSufficientlyCharged()) && !exoskeleton.isLowBattery()
                     && target != null && exoskeleton.targetIsBenignLatex(target);
         }
 
         @Override
         public boolean canContinueToUse() {
             LivingEntity target = this.exoskeleton.getTarget();
-            return super.canContinueToUse() && !exoskeleton.isCharging() && !exoskeleton.isLowBattery()
+            return super.canContinueToUse() && exoskeleton.canTargetEntities() && !exoskeleton.isCharging() && !exoskeleton.isLowBattery()
                     && target != null && exoskeleton.targetIsBenignLatex(target);
         }
     }
@@ -406,12 +532,12 @@ public class Exoskeleton extends AbstractRobot {
 
         public boolean canUse() {
             LivingEntity livingentity = this.exoskeleton.getTarget();
-            return livingentity != null && livingentity.isAlive() && exoskeleton.targetHasBenignPants(livingentity)
+            return exoskeleton.canTargetEntities() && livingentity != null && livingentity.isAlive() && exoskeleton.targetHasBenignPants(livingentity)
                     && (!exoskeleton.isCharging() || exoskeleton.isSufficientlyCharged()) && !exoskeleton.isLowBattery();
         }
 
         public boolean canContinueToUse() {
-            return super.canContinueToUse() && this.exoskeleton.getTarget() != null && exoskeleton.targetHasBenignPants(this.exoskeleton.getTarget())
+            return super.canContinueToUse() && exoskeleton.canTargetEntities() && this.exoskeleton.getTarget() != null && exoskeleton.targetHasBenignPants(this.exoskeleton.getTarget())
                     && !exoskeleton.isCharging() && !exoskeleton.isLowBattery();
         }
 

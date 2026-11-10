@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.ai.TamedEntityFavor;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.init.ChangedTamedEntityFavors;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.TamedEntityMenu;
@@ -99,14 +100,14 @@ public class TamedEntityScreen extends AbstractRadialScreen<TamedEntityMenu> {
     }
 
     protected ResourceLocation getTextureForSection(int section, boolean thisHovered, boolean anyHovered) {
-        if (menu.tamedEntity.getType().is(ChangedTags.EntityTypes.LATEX))
+        if (ProcessTransfur.isGoo(menu.tamedEntity))
             return thisHovered ? PATH_GOO_HOVERED : PATH_GOO;
         else
             return thisHovered ? PATH_ORGANIC_HOVERED : PATH_ORGANIC;
     }
 
     protected ResourceLocation getTextureForSelectedSection() {
-        if (menu.tamedEntity.getType().is(ChangedTags.EntityTypes.LATEX))
+        if (ProcessTransfur.isGoo(menu.tamedEntity))
             return PATH_GOO_SELECTED;
         else
             return PATH_ORGANIC_SELECTED;

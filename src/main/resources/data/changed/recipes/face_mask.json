@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "S#S"
+    "SFS"
   ],
   "key": {
     "S": {
       "item": "minecraft:string"
     },
-    "#": {
-      "item": "minecraft:white_carpet"
+    "F": {
+      "item": "changed:fabric"
     }
   },
   "result": {

@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
@@ -21,7 +22,7 @@ public abstract class WanderingTraderMixin extends AbstractVillager {
 
     @Inject(method = "registerGoals", at = @At("RETURN"))
     public void registerGoals(CallbackInfo callback) {
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, ChangedEntity.class, latex -> latex.getType().is(ChangedTags.EntityTypes.LATEX),
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, ChangedEntity.class, ProcessTransfur::isGoo,
                 8.0F, 0.5D, 0.5D, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test));
     }
 }

@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_leather_chestplate": {
+    "has_fabric": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:leather_chestplate"
+              "changed:fabric"
             ]
           }
         ]
@@ -22,14 +22,15 @@
   },
   "requirements": [
     [
-      "has_leather_chestplate",
+      "has_fabric",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
       "changed:black_tshirt",
-      "changed:white_tshirt"
+      "changed:white_tshirt",
+      "changed:wetsuit"
     ]
   },
   "sends_telemetry_event": false

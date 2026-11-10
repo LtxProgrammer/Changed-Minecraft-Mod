@@ -39,7 +39,7 @@ public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> {
 
         final Predicate<LivingEntity> neutralPredicate = livingEntity -> {
             if (livingEntity instanceof ChangedEntity) {
-                return livingEntity.getType().is(ChangedTags.EntityTypes.LATEX);
+                return ProcessTransfur.isGoo(livingEntity);
             }
 
             return true;
