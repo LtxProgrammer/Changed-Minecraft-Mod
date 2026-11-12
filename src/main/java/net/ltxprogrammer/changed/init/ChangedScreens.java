@@ -33,6 +33,7 @@ public class ChangedScreens {
             ApplicationScreens.register(ChangedApplications.DOOR_CONTROLLER.get(), DoorControllerScreen::new);
             ApplicationScreens.register(ChangedApplications.TEXT_EDITOR.get(), TextEditorScreen::new);
             ApplicationScreens.register(ChangedApplications.EXOSKELETON_CONTROLLER.get(), ExoControllerScreen::new);
+            ApplicationScreens.register(ChangedApplications.STASIS_CHAMBER_CONTROLLER.get(), StasisChamberControllerScreen::new);
         });
     }
 }

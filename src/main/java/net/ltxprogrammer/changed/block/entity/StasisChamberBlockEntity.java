@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.computers.BasicNIC;
+import net.ltxprogrammer.changed.computers.application.StasisChamberControllerApplication;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.ai.ImmediateTransfurDecision;
@@ -16,6 +17,7 @@ import net.ltxprogrammer.changed.item.FluidCanister;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
 import net.ltxprogrammer.changed.world.inventory.StasisChamberMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -76,7 +78,11 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
     private LivingEntity cachedEntity;
     private final BasicNIC nic;
 
-    protected static final Set<Class<?>> PROTOCOLS = Set.of(DiscoveryProtocol.class, DoorControlProtocol.class, DeviceInfoProtocol.Query.class, StasisChamberControlProtocol.class);
+    protected static final Set<Class<?>> PROTOCOLS = Set.of(DiscoveryProtocol.class, DoorControlProtocol.class, DeviceInfoProtocol.Query.class,
+            StasisChamberControlProtocol.class,
+            StasisChamberControlProtocol.InputProgram.class,
+            StasisChamberControlProtocol.SetModifications.class,
+            StasisChamberControlProtocol.SetWaitDuration.class);
 
     private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
         protected void onOpen(Level level, BlockPos blockPos, BlockState blockState) {
@@ -92,17 +98,12 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         }
 
         protected boolean isOwnContainer(Player player) {
-            if (!(player.containerMenu instanceof StasisChamberMenu)) {
-                return false;
-            } else {
-                if (player.containerMenu instanceof StasisChamberMenu stasisMenu)
-                    return stasisMenu.blockEntity == StasisChamberBlockEntity.this;
-
-                if (((StasisChamberMenu)player.containerMenu).container instanceof CompoundContainer compoundContainer)
-                    compoundContainer.contains(StasisChamberBlockEntity.this);
-
-                return false;
+            if (player.containerMenu instanceof StasisChamberMenu stasisMenu) {
+                return stasisMenu.blockEntity == StasisChamberBlockEntity.this;
+            } else if (player.containerMenu instanceof ComputerMenu computerMenu && computerMenu.currentApplication() instanceof StasisChamberControllerApplication app) {
+                return app.inspectingChamber == StasisChamberBlockEntity.this;
             }
+            return false;
         }
     };
 
@@ -389,6 +390,13 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
                     Changed.modResource("stasis_chamber")
             ));
         }
+
+        if (packet instanceof StasisChamberControlProtocol.InputProgram inputProgram)
+            inputProgram.program.input(this, inputProgram.controller);
+        if (packet instanceof StasisChamberControlProtocol.SetModifications setModifications)
+            this.applyModifications(setModifications.modifications);
+        if (packet instanceof StasisChamberControlProtocol.SetWaitDuration setWaitDuration)
+            this.setWaitDuration(setWaitDuration.ticks, setWaitDuration.controller);
     }
 
     public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, StasisChamberBlockEntity blockEntity) {

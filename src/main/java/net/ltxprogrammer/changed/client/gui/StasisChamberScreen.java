@@ -163,8 +163,6 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         GENDERED
     }
 
-    public record PaginatedWidget(int pageIndex, AbstractWidget widget) {}
-
     private boolean initialized = false;
     private Button programsButton;
     private Button modifyButton;
@@ -204,7 +202,7 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         modifyType = menu.getChamberedLatex().map(entity -> {
             if (entity.getChangedEntity() instanceof ModifiableEntity modifiable) {
                 if (this.lastSeenEntityForModification != modifiable) {
-                    modificationWidgets.forEach(entry -> this.removeWidget(entry.widget));
+                    modificationWidgets.forEach(entry -> this.removeWidget(entry.widget()));
                     modificationWidgets.clear();
                     this.createModificationWidgets(modifiable);
                 }
@@ -218,8 +216,8 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         programWidgets.forEach(button -> button.visible = buttonScope == ButtonScope.PROGRAMS);
         genderButton.visible = buttonScope == ButtonScope.MODIFICATIONS && modifyType == ModifyType.GENDERED;
         modificationWidgets.forEach(entry -> {
-            entry.widget.visible = (buttonScope == ButtonScope.MODIFICATIONS && modifyType == ModifyType.INTERFACE) &&
-                modificationsPageIndex == entry.pageIndex;
+            entry.widget().visible = (buttonScope == ButtonScope.MODIFICATIONS && modifyType == ModifyType.INTERFACE) &&
+                modificationsPageIndex == entry.pageIndex();
         });
     }
 

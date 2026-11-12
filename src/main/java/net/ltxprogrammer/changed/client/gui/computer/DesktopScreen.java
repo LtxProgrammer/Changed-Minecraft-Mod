@@ -22,6 +22,11 @@ public class DesktopScreen implements ApplicationScreen {
     }
 
     @Override
+    public ComputerScreen getScreen() {
+        return screen;
+    }
+
+    @Override
     public void initialize(int desktopLeft, int desktopTop, int desktopWidth, int desktopHeight) {
         screen.clearApplicationWidgets();
 

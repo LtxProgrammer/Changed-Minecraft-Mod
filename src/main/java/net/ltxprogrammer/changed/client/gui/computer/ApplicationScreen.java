@@ -2,10 +2,12 @@ package net.ltxprogrammer.changed.client.gui.computer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.gui.ComputerScreen;
 import net.ltxprogrammer.changed.computers.UITheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.StringWidget;
@@ -368,6 +370,16 @@ public interface ApplicationScreen extends GuiEventListener {
     }
 
     void initialize(int desktopLeft, int desktopTop, int desktopWidth, int desktopHeight);
+
+    ComputerScreen getScreen();
+
+    default <T extends AbstractWidget> T addRenderableWidget(T widget) {
+        return getScreen().addApplicationWidget(widget);
+    }
+
+    default void removeWidget(GuiEventListener widget) {
+        getScreen().removeApplicationWidget(widget);
+    }
 
     default void render(GuiGraphics graphics, int cursorX, int cursorY, float partialTicks) {
 

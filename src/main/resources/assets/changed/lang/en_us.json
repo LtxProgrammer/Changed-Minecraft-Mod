@@ -1592,6 +1592,7 @@
   "application.changed.door_controller": "Door Controller",
   "application.changed.text_editor": "Text Editor",
   "application.changed.exoskeleton_controller": "Exoskeleton Controller",
+  "application.changed.stasis_chamber_controller": "Stasis Chamber Controller",
 
   "application.changed.file_explorer.parent_dir": "Parent Directory",
   "application.changed.file_explorer.drives": "Local Drives",
@@ -1614,5 +1615,6 @@
   "application.changed.door_controller.close": "Close Door",
   "application.changed.door_controller.automatic": "Automatic",
   "application.changed.exoskeleton_controller.enabled": "Enabled",
-  "application.changed.exoskeleton_controller.hostile": "Hostile"
+  "application.changed.exoskeleton_controller.hostile": "Hostile",
+  "application.changed.stasis_chamber_controller.inspect": "Inspect"
 }

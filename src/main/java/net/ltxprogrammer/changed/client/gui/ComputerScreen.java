@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.ComputerAppLaunchPacket;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -41,6 +42,10 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
         return theme;
     }
 
+    public Font getFont() {
+        return font;
+    }
+
     @Override
     public ComputerMenu getMenu() {
         return menu;
@@ -56,6 +61,11 @@ public class ComputerScreen extends Screen implements MenuAccess<ComputerMenu> {
     public <T extends AbstractWidget> T addApplicationWidget(T widget) {
         widgets.add(this.addRenderableWidget(widget));
         return widget;
+    }
+
+    public void removeApplicationWidget(GuiEventListener widget) {
+        widgets.remove(widget);
+        this.removeWidget(widget);
     }
 
     public void clearApplicationWidgets() {
