@@ -1592,6 +1592,7 @@
   "application.changed.door_controller": "Ajtóvezérlő",
   "application.changed.text_editor": "Szövegszerkesztő",
   "application.changed.exoskeleton_controller": "Exoskeleton vezérlője",
+  "application.changed.stasis_chamber_controller": "Sztáziskamra vezérlője",
 
   "application.changed.file_explorer.parent_dir": "Szülőkönyvtár",
   "application.changed.file_explorer.drives": "Helyi meghajtók",
@@ -1614,5 +1615,6 @@
   "application.changed.door_controller.close": "Ajtó zárása",
   "application.changed.door_controller.automatic": "Automatikus",
   "application.changed.exoskeleton_controller.enabled": "Engedélyezve",
-  "application.changed.exoskeleton_controller.hostile": "Ellenséges"
+  "application.changed.exoskeleton_controller.hostile": "Ellenséges",
+  "application.changed.stasis_chamber_controller.inspect": "Ellenőrzés"
 }
