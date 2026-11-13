@@ -73,7 +73,7 @@ public class SaveFileDialogScreen extends FileExplorerScreen {
                 .build(ApplicationScreen.iconButton2(screen::getTheme, 0, 0)));
         startingWidth -= 23;
 
-        var saveAsWidget = screen.addApplicationWidget(new EditBox(screen.getMinecraft().font, x, y, startingWidth, 20, Component.empty()) {
+        var saveAsWidget = screen.addApplicationWidget(new EditBox(screen.getFont(), x, y, startingWidth, 20, Component.empty()) {
             @Override
             public boolean keyPressed(int keyCode, int scanCode, int mods) {
                 if (!this.canConsumeInput()) {

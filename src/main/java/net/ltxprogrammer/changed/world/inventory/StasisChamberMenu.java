@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.block.entity.StasisChamberBlockEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.FluidCanister;
+import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -383,10 +384,10 @@ public class StasisChamberMenu extends AbstractContainerMenu implements Updateab
         this.setDirty(tag);
     }
 
-    public void inputProgram(String program) {
+    public void inputProgram(StasisChamberBlockEntity.Program program) {
         CompoundTag tag = new CompoundTag();
         tag.putString("control", "program");
-        tag.putString("program", program);
+        TagUtil.putResourceLocation(tag, "program", program.getId());
         this.setDirty(tag);
     }
 
@@ -418,8 +419,9 @@ public class StasisChamberMenu extends AbstractContainerMenu implements Updateab
                     return;
                 Command.values()[commandId].handle(this);
             } else if ("program".equals(control)) {
-                String program = payload.getString("program");
-                blockEntity.inputProgram(program, controller);
+                var program = StasisChamberBlockEntity.Program.getFromID(TagUtil.getResourceLocation(payload, "program"));
+                if (program != null)
+                    program.input(blockEntity, controller);
             } else if ("modify".equals(control)) {
                 if (payload.contains("modify"))
                     blockEntity.applyModifications(payload.getCompound("modify"));

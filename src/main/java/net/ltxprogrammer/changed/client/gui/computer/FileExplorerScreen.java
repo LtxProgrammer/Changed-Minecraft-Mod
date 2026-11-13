@@ -67,6 +67,11 @@ public class FileExplorerScreen implements ApplicationScreen {
         });
     }
 
+    @Override
+    public ComputerScreen getScreen() {
+        return screen;
+    }
+
     protected void openFile(LexicalPath.Absolute fullPath) {
         screen.openFile(fullPath);
     }
@@ -108,7 +113,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         AtomicInteger yOffset = new AtomicInteger(0);
 
         screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y, desktopWidth - 8, 20,
-                        application.getType().getDisplayName(), screen.getMinecraft().font)
+                        application.getType().getDisplayName(), screen.getFont())
                 .alignCenter().setColor(0x404040));
 
         screen.addApplicationWidget(Button.builder(COMPONENT_EXIT, (self) -> {
@@ -126,7 +131,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         }));
 
         this.bottomText = screen.addApplicationWidget(this.bottomText != null ? this.bottomText : ApplicationScreen.shadowlessString(x, desktopTop + 191, desktopWidth, 9,
-                        Component.empty(), screen.getMinecraft().font)
+                        Component.empty(), screen.getFont())
                 .alignLeft().setColor(0x404040));
 
         return yOffset.getAcquire();
@@ -165,7 +170,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         }
 
         if (permissions.canWrite()) {
-            var renameWidget = screen.addApplicationWidget(new EditBox(screen.getMinecraft().font, x, y, startingWidth, 20, Component.empty()) {
+            var renameWidget = screen.addApplicationWidget(new EditBox(screen.getFont(), x, y, startingWidth, 20, Component.empty()) {
                 @Override
                 public boolean keyPressed(int keyCode, int scanCode, int mods) {
                     if (!this.canConsumeInput()) {
@@ -314,7 +319,7 @@ public class FileExplorerScreen implements ApplicationScreen {
 
             if (filesAndFolderCount <= 0) {
                 screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth, 20,
-                                Component.translatable("application.changed.file_explorer.empty_folder"), screen.getMinecraft().font)
+                                Component.translatable("application.changed.file_explorer.empty_folder"), screen.getFont())
                         .alignCenter().setColor(0x404040));
             }
         });
@@ -329,7 +334,7 @@ public class FileExplorerScreen implements ApplicationScreen {
             int elementIndex = elementCount.getAndIncrement();
             if (!(elementIndex < scrollBar.getScroll() || elementIndex >= scrollBar.getScrollNext())) {
                 screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth, 20,
-                                Component.translatable("application.changed.file_explorer.invalid_folder", menu.getWorkingDir().toString()), screen.getMinecraft().font)
+                                Component.translatable("application.changed.file_explorer.invalid_folder", menu.getWorkingDir().toString()), screen.getFont())
                         .alignCenter().setColor(0x404040));
             }
         }
@@ -443,7 +448,7 @@ public class FileExplorerScreen implements ApplicationScreen {
             int elementIndex = elementCount.getAndIncrement();
             if (!(elementIndex < scrollBar.getScroll() || elementIndex >= scrollBar.getScrollNext())) {
                 screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth, 20,
-                                Component.translatable("application.changed.file_explorer.empty_network"), screen.getMinecraft().font)
+                                Component.translatable("application.changed.file_explorer.empty_network"), screen.getFont())
                         .alignCenter().setColor(0x404040));
             }
         }

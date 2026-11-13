@@ -26,7 +26,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ExoControllerScreen implements ApplicationScreen {
-    public static final ResourceLocation BACKGROUND = Changed.modResource("textures/gui/computer/app_bg/door_controller.png");
+    public static final ResourceLocation BACKGROUND = Changed.modResource("textures/gui/computer/app_bg/device_selection.png");
 
     public static ResourceLocation getDeviceIconLocation(ResourceLocation icon) {
         return ResourceLocation.fromNamespaceAndPath(
@@ -63,6 +63,11 @@ public class ExoControllerScreen implements ApplicationScreen {
             Changed.PACKET_HANDLER.sendToServer(
                     ComputerAppClosePacket.closeApplication(application.getType()));
         });
+    }
+
+    @Override
+    public ComputerScreen getScreen() {
+        return screen;
     }
 
     protected void updateExoActionButtons(NetworkInterface.Address exo) {
@@ -133,7 +138,7 @@ public class ExoControllerScreen implements ApplicationScreen {
         BlockPos computerPos = menu.computer.getBlockPos();
 
         screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y, desktopWidth - 8, 20,
-                application.getType().getDisplayName(), screen.getMinecraft().font)
+                application.getType().getDisplayName(), screen.getFont())
                 .alignCenter().setColor(0x404040));
 
         screen.addApplicationWidget(Button.builder(COMPONENT_EXIT, (self) -> {
@@ -159,8 +164,8 @@ public class ExoControllerScreen implements ApplicationScreen {
         int operationsPaneWidth = desktopWidth - (operationsPaneX - x) - 8;
         int operationsPaneHalfWidth = (operationsPaneWidth / 2) - 2;
 
-        this.exoNameWidget = screen.addApplicationWidget(new EditBox(screen.getMinecraft().font, operationsPaneX, operationsPaneY, operationsPaneWidth, 20, Component.literal("Door Name")));
-        this.exoNameWidget.active = false;
+        this.exoNameWidget = screen.addApplicationWidget(new EditBox(screen.getFont(), operationsPaneX, operationsPaneY, operationsPaneWidth, 20, Component.literal("Door Name")));
+        this.exoNameWidget.visible = false;
 
         this.enabledCheckbox = screen.addApplicationWidget(ApplicationScreen.checkBox(screen::getTheme, operationsPaneX, operationsPaneY + 23, operationsPaneWidth, 20, Component.translatable("application.changed.exoskeleton_controller.enabled"), true, self -> {
             if (this.selectedExo != null)
@@ -170,7 +175,7 @@ public class ExoControllerScreen implements ApplicationScreen {
 
             this.updateExoActionButtons(this.selectedExo);
         }));
-        this.enabledCheckbox.active = false;
+        this.enabledCheckbox.visible = false;
 
         this.hostileCheckbox = screen.addApplicationWidget(ApplicationScreen.checkBox(screen::getTheme, operationsPaneX, operationsPaneY + 46, operationsPaneWidth, 20, Component.translatable("application.changed.exoskeleton_controller.hostile"), true, self -> {
             if (this.selectedExo != null)
@@ -180,7 +185,7 @@ public class ExoControllerScreen implements ApplicationScreen {
 
             this.updateExoActionButtons(this.selectedExo);
         }));
-        this.hostileCheckbox.active = false;
+        this.hostileCheckbox.visible = false;
     }
 
     @Override

@@ -23,7 +23,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class DoorControllerScreen implements ApplicationScreen {
-    public static final ResourceLocation BACKGROUND = Changed.modResource("textures/gui/computer/app_bg/door_controller.png");
+    public static final ResourceLocation BACKGROUND = Changed.modResource("textures/gui/computer/app_bg/device_selection.png");
 
     public static ResourceLocation getDeviceIconLocation(ResourceLocation icon) {
         return ResourceLocation.fromNamespaceAndPath(
@@ -61,6 +61,11 @@ public class DoorControllerScreen implements ApplicationScreen {
             Changed.PACKET_HANDLER.sendToServer(
                     ComputerAppClosePacket.closeApplication(application.getType()));
         });
+    }
+
+    @Override
+    public ComputerScreen getScreen() {
+        return screen;
     }
 
     protected void updateDoorActionButtons(NetworkInterface.Address door) {
@@ -127,7 +132,7 @@ public class DoorControllerScreen implements ApplicationScreen {
         BlockPos computerPos = menu.computer.getBlockPos();
 
         screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y, desktopWidth - 8, 20,
-                application.getType().getDisplayName(), screen.getMinecraft().font)
+                application.getType().getDisplayName(), screen.getFont())
                 .alignCenter().setColor(0x404040));
 
         screen.addApplicationWidget(Button.builder(COMPONENT_EXIT, (self) -> {
@@ -153,7 +158,8 @@ public class DoorControllerScreen implements ApplicationScreen {
         int operationsPaneWidth = desktopWidth - (operationsPaneX - x) - 8;
         int operationsPaneHalfWidth = (operationsPaneWidth / 2) - 2;
 
-        this.doorNameWidget = screen.addApplicationWidget(new EditBox(screen.getMinecraft().font, operationsPaneX, operationsPaneY, operationsPaneWidth, 20, Component.literal("Door Name")));
+        this.doorNameWidget = screen.addApplicationWidget(new EditBox(screen.getFont(), operationsPaneX, operationsPaneY, operationsPaneWidth, 20, Component.literal("Door Name")));
+        this.doorNameWidget.visible = false;
 
         this.openDoorButton = screen.addApplicationWidget(Button.builder(Component.translatable("application.changed.door_controller.open"), (self) -> {
             if (this.selectedDoor != null)
@@ -164,6 +170,7 @@ public class DoorControllerScreen implements ApplicationScreen {
                 this.automaticCheckbox.selected = false;
         }).bounds(operationsPaneX, operationsPaneY + 23, operationsPaneHalfWidth, 20)
                 .build(ApplicationScreen.textButton(screen::getTheme)));
+        this.openDoorButton.visible = false;
 
         this.closeDoorButton = screen.addApplicationWidget(Button.builder(Component.translatable("application.changed.door_controller.close"), (self) -> {
             if (this.selectedDoor != null)
@@ -174,6 +181,7 @@ public class DoorControllerScreen implements ApplicationScreen {
                 this.automaticCheckbox.selected = false;
         }).bounds(operationsPaneX + operationsPaneHalfWidth + 3, operationsPaneY + 23, operationsPaneHalfWidth, 20)
                 .build(ApplicationScreen.textButton(screen::getTheme)));
+        this.closeDoorButton.visible = false;
 
         this.automaticCheckbox = screen.addApplicationWidget(ApplicationScreen.checkBox(screen::getTheme, operationsPaneX, operationsPaneY + 46, operationsPaneWidth, 20, Component.translatable("application.changed.door_controller.automatic"), true, self -> {
             if (this.selectedDoor != null)
@@ -183,6 +191,7 @@ public class DoorControllerScreen implements ApplicationScreen {
 
             this.updateDoorActionButtons(this.selectedDoor);
         }));
+        this.automaticCheckbox.visible = false;
     }
 
     @Override
