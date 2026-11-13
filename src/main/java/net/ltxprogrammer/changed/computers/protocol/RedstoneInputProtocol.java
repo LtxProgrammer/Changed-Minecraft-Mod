@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.computers.protocol;
 
 import net.minecraft.core.Direction;
 
-public final class RedstoneInputProtocol extends Packet {
+public final class RedstoneInputProtocol extends Frame {
     private final int signal;
     private final Direction direction;
 

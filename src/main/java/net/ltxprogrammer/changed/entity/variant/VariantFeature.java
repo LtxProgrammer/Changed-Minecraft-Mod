@@ -7,23 +7,36 @@ import net.minecraft.network.chat.Component;
 import javax.annotation.Nullable;
 
 public class VariantFeature {
-    public VariantFeature(Combinator combinator) {
+    public VariantFeature(Combinator combinator, boolean bad) {
         this.combinator = combinator;
+        this.negative = bad;
     }
 
-    /// Feature should either be on or off
+    /// Feature should either be on or off. It is considered an upside to have this feature.
     public static VariantFeature binary() {
-        return new VariantFeature(Combinator.BINARY);
+        return new VariantFeature(Combinator.BINARY, false);
+    }
+
+    /// Feature should either be on or off. It is considered a downside to have this feature.
+    public static VariantFeature binaryBad() {
+        return new VariantFeature(Combinator.BINARY, true);
     }
 
     /// Feature should take the maximum value present in the trees
     public static VariantFeature maxPresent() {
-        return new VariantFeature(Combinator.MAX);
+        return new VariantFeature(Combinator.MAX, false);
+    }
+
+    public static VariantFeature maxPresentBad() {
+        return new VariantFeature(Combinator.MAX, true);
     }
 
     /// Feature should take the sum of the values present in the trees
     public static VariantFeature sumPresent() {
-        return new VariantFeature(Combinator.SUM);
+        return new VariantFeature(Combinator.SUM, false);
+    }
+    public static VariantFeature sumPresentBad() {
+        return new VariantFeature(Combinator.SUM, true);
     }
 
     public enum Combinator {
@@ -33,23 +46,33 @@ public class VariantFeature {
     }
 
     public final Combinator combinator;
+    public final boolean negative;
     @Nullable
-    private String descriptionId;
+    private String descriptionIdGive;
+    @Nullable
+    private String descriptionIdTake;
 
-    protected String getOrCreateDescriptionId() {
-        if (this.descriptionId == null) {
-            this.descriptionId = Util.makeDescriptionId("transfur_variant_feature", ChangedRegistry.TRANSFUR_VARIANT_FEATURES.getKey(this));
+    protected String getOrCreateDescriptionId(boolean giving) {
+        if (this.descriptionIdGive == null) {
+            var key = ChangedRegistry.TRANSFUR_VARIANT_FEATURES.getKey(this);
+            if (this.combinator == Combinator.BINARY) {
+                this.descriptionIdGive = Util.makeDescriptionId("transfur_variant_feature", key) + ".give";
+                this.descriptionIdTake = Util.makeDescriptionId("transfur_variant_feature", key) + ".take";
+            } else {
+                this.descriptionIdGive = Util.makeDescriptionId("transfur_variant_feature", key);
+                this.descriptionIdTake = this.descriptionIdGive;
+            }
         }
 
-        return this.descriptionId;
+        return giving ? this.descriptionIdGive : this.descriptionIdTake;
     }
 
-    public String getDescriptionId() {
-        return this.getOrCreateDescriptionId();
+    public String getDescriptionId(boolean giving) {
+        return this.getOrCreateDescriptionId(giving);
     }
 
-    public Component getDisplayName() {
-        return Component.translatable(this.getDescriptionId());
+    public Component getDisplayName(boolean giving) {
+        return Component.translatable(this.getDescriptionId(giving));
     }
 
     @Override

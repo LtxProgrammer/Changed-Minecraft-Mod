@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /// Used to communicate which protocols a device will respond to. This is useful to list devices that self elect to respond
-public final class DiscoveryProtocol extends Packet {
+public final class DiscoveryProtocol extends Frame {
     private final Set<Class<?>> implementedProtocols;
     private final boolean isReply;
 

@@ -72,7 +72,7 @@ public class TextEditorScreen implements ApplicationScreen {
                     ComputerAppClosePacket.closeApplication(application.getType()));
         });
 
-        this.font = screen.getMinecraft().font;
+        this.font = screen.getFont();
 
         this.textEdit = new TextFieldHelper(
                 application::getFileContent,
@@ -87,6 +87,11 @@ public class TextEditorScreen implements ApplicationScreen {
                 (nText) -> nText.length() < 1024
         );
         this.textEdit.setCursorToStart();
+    }
+
+    @Override
+    public ComputerScreen getScreen() {
+        return screen;
     }
 
     @Override

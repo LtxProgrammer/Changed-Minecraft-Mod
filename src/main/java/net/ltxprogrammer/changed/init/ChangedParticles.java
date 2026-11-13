@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.effect.particle.*;
 import net.ltxprogrammer.changed.entity.Emote;
 import net.ltxprogrammer.changed.util.Color3;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -14,8 +13,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 public class ChangedParticles {
@@ -23,6 +20,8 @@ public class ChangedParticles {
 
     public static final RegistryObject<ParticleType<ColoredParticleOption>> DRIPPING_LATEX = register("dripping_latex",
             ColoredParticleOption.DESERIALIZER, ColoredParticleOption::codec);
+    public static final RegistryObject<ParticleType<ColoredEntityParticleOption>> GLOBBED_LATEX = register("globbed_latex",
+            ColoredEntityParticleOption.DESERIALIZER, ColoredEntityParticleOption::codec);
     public static final RegistryObject<ParticleType<ColoredParticleOption>> GAS = register("gas",
             ColoredParticleOption.DESERIALIZER, ColoredParticleOption::codec);
     public static final RegistryObject<ParticleType<EmoteParticleOption>> EMOTE = register("emote",
@@ -32,6 +31,10 @@ public class ChangedParticles {
 
     public static ColoredParticleOption drippingLatex(Color3 color) {
         return new ColoredParticleOption(DRIPPING_LATEX.get(), color);
+    }
+
+    public static ColoredEntityParticleOption globbedLatex(Entity entity, Color3 color) {
+        return new ColoredEntityParticleOption(GLOBBED_LATEX.get(), color, entity);
     }
 
     public static ColoredParticleOption gas(Color3 color) {

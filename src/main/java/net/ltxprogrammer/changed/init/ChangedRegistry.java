@@ -14,6 +14,7 @@ import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
+import net.ltxprogrammer.changed.entity.PoseExtension;
 import net.ltxprogrammer.changed.entity.ai.TamedEntityFavor;
 import net.ltxprogrammer.changed.entity.decoration.WallSignVariant;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
@@ -206,6 +207,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
     public static final RegistryHolder<LatexType> LATEX_TYPE = new RegistryHolder<>(registryKey("latex_type"));
     public static final RegistryHolder<WallSignVariant> WALL_SIGN_VARIANT = new RegistryHolder<>(registryKey("wall_sign_variant"));
     public static final RegistryHolder<TamedEntityFavor> TAMED_ENTITY_FAVORS = new RegistryHolder<>(registryKey("tamed_entity_favors"));
+    public static final RegistryHolder<PoseExtension> POSE_EXTENSION = new RegistryHolder<>(registryKey("pose_extensions"));
 
     public static final RegistryHolder<PieceType<?>> FACILITY_PIECE_TYPES = new RegistryHolder<>(registryKey("facility/piece_types"));
     public static final RegistryHolder<Zone> FACILITY_ZONES = new RegistryHolder<>(registryKey("facility/zones"));
@@ -285,6 +287,7 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
         }, null);
         createRegistry(event, WALL_SIGN_VARIANT.key);
         createRegistry(event, TAMED_ENTITY_FAVORS.key);
+        createRegistry(event, POSE_EXTENSION.key);
         createRegistry(event, FACILITY_PIECE_TYPES.key);
         createRegistry(event, FACILITY_ZONES.key);
         createRegistry(event, FACILITY_EVENTS.key);

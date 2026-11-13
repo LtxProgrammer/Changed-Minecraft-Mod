@@ -43,7 +43,7 @@ public class AbilityOverlay {
         int cool = (int)(controller.coolDownPercent() * 32);
         int active = cool >= 32 ? (int)(controller.getProgressActive() * 32) : 0;
 
-        int gooOrNot = variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX) ? 0 : 32;
+        int gooOrNot = ProcessTransfur.isGoo(variant.getHost()) ? 0 : 32;
         graphics.blit(ABILITY_BACKGROUNDS, x, y, gooOrNot, 0, 32, 32, 64, 128); // back
         if (cool > 0)
             graphics.blit(ABILITY_BACKGROUNDS, x, y + (32 - cool), gooOrNot, 32 + (32 - cool), 32, cool, 64, 128); // ready

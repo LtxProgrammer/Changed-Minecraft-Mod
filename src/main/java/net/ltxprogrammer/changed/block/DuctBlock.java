@@ -302,7 +302,7 @@ public class DuctBlock extends ChangedBlock implements SimpleWaterloggedBlock {
             return super.use(state, level, blockPos, player, hand, hitResult);
         // At least one open face is connected to an exit
 
-        if (player instanceof PlayerDataExtension playerDataExtension && ProcessTransfur.isPlayerLatex(player)
+        if (player instanceof PlayerDataExtension playerDataExtension && ProcessTransfur.isGoo(player)
                 && playerDataExtension.getPlayerMover() == null) {
             var instance = PlayerMover.DUCT_MOVER.get().createInstance();
             instance.ductBlock = this;

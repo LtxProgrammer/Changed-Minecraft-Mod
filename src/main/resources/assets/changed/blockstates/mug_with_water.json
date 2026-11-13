@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/mug_with_water"
+    },
+    "facing=east": {
+      "model": "changed:block/mug_with_water",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed:block/mug_with_water",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed:block/mug_with_water",
+      "y": 270
+    }
+  }
+}

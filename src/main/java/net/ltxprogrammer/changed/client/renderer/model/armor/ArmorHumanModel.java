@@ -10,7 +10,10 @@ import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -20,7 +23,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class ArmorHumanModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorHumanModel<T>> {
     public static final ArmorModelSet<ChangedEntity, ArmorHumanModel<ChangedEntity>> MODEL_SET =
-            ArmorModelSet.of(Changed.modResource("armor_player"), ArmorHumanModel::createArmorLayer, ArmorHumanModel::new);
+            ArmorModelSet.of(Changed.modResource("armor_player"), layer -> createArmorLayer(layer, false), ArmorHumanModel::new, false);
+    public static final ArmorModelSet<ChangedEntity, ArmorHumanModel<ChangedEntity>> MODEL_SET_SLIM =
+            ArmorModelSet.of(Changed.modResource("armor_player_slim"), layer -> createArmorLayer(layer, true), ArmorHumanModel::new, true);
 
     private final ModelPart Head;
     private final ModelPart Hat;
@@ -46,8 +51,16 @@ public class ArmorHumanModel<T extends ChangedEntity> extends LatexHumanoidArmor
                 .addPreset(AnimatorPresets.humanLike(Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg));
     }
 
-    public static LayerDefinition createArmorLayer(ArmorModel layer) {
-        return LayerDefinition.create(HumanoidModel.createMesh(layer.dualDeformation, 0.0F), 64, 32);
+    public static LayerDefinition createArmorLayer(ArmorModel layer, boolean slim) {
+        var meshDefinition = HumanoidModel.createMesh(layer.dualDeformation, 0.0F);
+
+        if (slim && layer.isClothing()) {
+            PartDefinition partdefinition = meshDefinition.getRoot();
+            partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(5.0F, 2.5F, 0.0F));
+            partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(40, 16).addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(-5.0F, 2.5F, 0.0F));
+        }
+
+        return LayerDefinition.create(meshDefinition, 64, 32);
     }
 
     @Override

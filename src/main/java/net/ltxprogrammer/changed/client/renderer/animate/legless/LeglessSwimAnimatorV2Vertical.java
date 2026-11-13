@@ -1,9 +1,11 @@
 package net.ltxprogrammer.changed.client.renderer.animate.legless;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.upperbody.SharkUpperBodySwimAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,6 +36,21 @@ public class LeglessSwimAnimatorV2Vertical<T extends ChangedEntity, M extends Ad
                 (((float) Math.PI / 3.0F) * 0.5f));
         float legSway3 = -SWIM_AMOUNT * Mth.cos(limbSwing * SWIM_RATE -
                 (((float) Math.PI / 3.0F) * 1f));
+        float armOffset = Mth.map(midSegmentSway, -0.35f, 0.35f, 2.0f, -2.0f);
+
+        PartPose estimatedSwimTorsoPos = PartPose.offsetAndRotation(
+                0,
+                core.calculateTorsoPositionY(),
+                armOffset * SWIM_SCALE,
+                /* xRot */ midSegmentSway,
+                /* yRot */ 0,
+                /* zRot */ 0
+        );
+        this.positionAbdomenBelowTorso(estimatedSwimTorsoPos, (x, y, z) -> {
+            abdomen.x = Mth.lerp(core.swimAmount, abdomen.x, x);
+            abdomen.y = Mth.lerp(core.swimAmount, abdomen.y, y);
+            abdomen.z = Mth.lerp(core.swimAmount, abdomen.z, z);
+        });
 
         abdomen.yRot = Mth.lerp(core.swimAmount, abdomen.yRot, 0.0f);
         abdomen.zRot = Mth.lerp(core.swimAmount, abdomen.zRot, 0.0f);

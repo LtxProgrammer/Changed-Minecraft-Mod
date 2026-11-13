@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -43,12 +44,14 @@ public class ConfiguredFileSystemGenerators extends SimplePreparableReloadListen
     }
 
     @Nullable
-    public FileSystemGenerator getFileSystemGenerator(ResourceLocation id) {
+    public FileSystemGenerator getFileSystemGenerator(Level level, ResourceLocation id) {
+        if (level.isClientSide)
+            return null; // Only the server should have generators defined. Clients connecting to servers do not sync these
         return this.fileSystemGenerators.get(id);
     }
 
     @Nullable
-    public static FileSystemGenerator getGenerator(ResourceLocation id) {
-        return INSTANCE.getFileSystemGenerator(id);
+    public static FileSystemGenerator getGenerator(Level level, ResourceLocation id) {
+        return INSTANCE.getFileSystemGenerator(level, id);
     }
 }

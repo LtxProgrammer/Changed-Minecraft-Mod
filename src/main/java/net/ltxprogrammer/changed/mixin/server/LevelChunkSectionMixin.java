@@ -2,8 +2,9 @@ package net.ltxprogrammer.changed.mixin.server;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.ltxprogrammer.changed.block.LatexCoveringSource;
-import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.ltxprogrammer.changed.world.LatexCoverCounter;
 import net.ltxprogrammer.changed.world.LatexCoverState;
@@ -19,8 +20,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LevelChunkSection.class)
 public abstract class LevelChunkSectionMixin implements LevelChunkSectionExtension {
@@ -34,9 +33,31 @@ public abstract class LevelChunkSectionMixin implements LevelChunkSectionExtensi
     public LatexCoverState getLatexCoverState(int x, int y, int z) {
         BlockState blockState = this.states.get(x, y, z);
         if (blockState.getBlock() instanceof LatexCoveringSource source)
-            return source.getLatexCoverState(blockState, new BlockPos(x, y, z));
+            return source.getLatexCoverState(blockState);
         return coverStates.get(x, y, z);
     }
+
+    @WrapOperation(method = "setBlockState(IIILnet/minecraft/world/level/block/state/BlockState;Z)Lnet/minecraft/world/level/block/state/BlockState;",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getFluidState()Lnet/minecraft/world/level/material/FluidState;", ordinal = 0))
+    public FluidState changed$updatedCoverState(BlockState oldState, Operation<FluidState> original,
+                                                @Local(argsOnly = true, ordinal = 0) int x,
+                                                @Local(argsOnly = true, ordinal = 1) int y,
+                                                @Local(argsOnly = true, ordinal = 2) int z,
+                                                @Local(argsOnly = true) BlockState newState) {
+        FluidState oldFluidState = original.call(oldState);
+        LatexCoverState empty = ChangedLatexTypes.NONE.get().defaultCoverState();
+
+        LatexCoverState oldCoverState = (oldState.getBlock() instanceof LatexCoveringSource source ? source.getLatexCoverState(oldState) : empty);
+        LatexCoverState newCoverState = (newState.getBlock() instanceof LatexCoveringSource source ? source.getLatexCoverState(newState) : empty);
+
+        if (oldCoverState.isRandomlyTicking())
+            this.tickingLatexCoverCount--;
+        if (newCoverState.isRandomlyTicking())
+            this.tickingLatexCoverCount++;
+
+        return oldFluidState;
+    }
+
 
     @Override
     public LatexCoverState setLatexCoverState(int x, int y, int z, LatexCoverState state, boolean unchecked) {
@@ -78,6 +99,7 @@ public abstract class LevelChunkSectionMixin implements LevelChunkSectionExtensi
     public void recalcLatexCoverCounts() {
         LatexCoverCounter coverCounter = new LatexCoverCounter();
         this.coverStates.count(coverCounter);
+        this.states.count(coverCounter::countLatexSources);
         this.nonEmptyBlockCount += (short)coverCounter.nonEmptyBlockCount;
         this.tickingLatexCoverCount = (short)coverCounter.tickingLatexCoverCount;
     }

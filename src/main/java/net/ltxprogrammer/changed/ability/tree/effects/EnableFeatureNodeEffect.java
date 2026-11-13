@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.entity.variant.VariantFeature;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
@@ -56,14 +57,36 @@ public class EnableFeatureNodeEffect extends NodeEffect {
         double d0 = this.factor;
         if (negate)
             d0 = -d0;
+        if (feature.negative)
+            d0 = -d0;
 
         double d1 = d0;
 
         if (d0 > 0.0D) {
-            componentConsumer.accept(Component.translatable("attribute.modifier.plus.0", ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), feature.getDisplayName()).withStyle(ChatFormatting.BLUE));
+            if (feature.combinator == VariantFeature.Combinator.BINARY) {
+                componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.variant_feature.plus_only",
+                        feature.getDisplayName(!feature.negative)).withStyle(ChatFormatting.BLUE));
+            }  else if (feature.combinator == VariantFeature.Combinator.MAX) {
+                var levelText = Component.translatable("enchantment.level." + (Mth.floor(this.factor)));
+                componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.variant_feature.plus",
+                        feature.getDisplayName(feature.negative), levelText).withStyle(ChatFormatting.BLUE));
+            } else {
+                componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.variant_feature.plus", ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1),
+                        feature.getDisplayName(!feature.negative)).withStyle(ChatFormatting.BLUE));
+            }
         } else if (d0 < 0.0D) {
             d1 *= -1.0D;
-            componentConsumer.accept(Component.translatable("attribute.modifier.take.0", ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), feature.getDisplayName()).withStyle(ChatFormatting.RED));
+            if (feature.combinator == VariantFeature.Combinator.BINARY) {
+                componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.variant_feature.take_only",
+                        feature.getDisplayName(feature.negative)).withStyle(ChatFormatting.RED));
+            } else if (feature.combinator == VariantFeature.Combinator.MAX) {
+                var levelText = Component.translatable("enchantment.level." + (Mth.floor(this.factor)));
+                componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.variant_feature.take",
+                        feature.getDisplayName(feature.negative), levelText).withStyle(ChatFormatting.RED));
+            } else {
+                componentConsumer.accept(Component.translatable("text.changed.ability_tree.node.variant_feature.take", ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1),
+                        feature.getDisplayName(feature.negative)).withStyle(ChatFormatting.RED));
+            }
         }
     }
 }

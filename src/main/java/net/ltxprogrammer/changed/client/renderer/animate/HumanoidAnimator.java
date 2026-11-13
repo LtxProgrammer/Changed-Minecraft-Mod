@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer.animate;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.CameraExtender;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
@@ -11,13 +12,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.event.IModBusEvent;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -412,6 +418,38 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends AdvancedHumanoi
 
         protected float sinLerp(float sin, float a, float b) {
             return Mth.lerp(sin * 0.5f + 0.5f, a, b);
+        }
+
+        protected static void positionRelative(ModelPart origin, float xRelative, float yRelative, float zRelative, TriConsumer<Float, Float, Float> componentConsumer) {
+            Matrix3f normal = new Matrix3f();
+            if (origin.xRot != 0.0F || origin.yRot != 0.0F || origin.zRot != 0.0F) {
+                normal.rotate((new Quaternionf()).rotationZYX(origin.zRot, origin.yRot, origin.xRot));
+            }
+
+            Vector3f offset = new Vector3f();
+            normal.transform(xRelative, yRelative, zRelative, offset);
+
+            componentConsumer.accept(
+                    origin.x + offset.x,
+                    origin.y + offset.y,
+                    origin.z + offset.z
+            );
+        }
+
+        protected static void positionRelative(PartPose origin, float xRelative, float yRelative, float zRelative, TriConsumer<Float, Float, Float> componentConsumer) {
+            Matrix3f normal = new Matrix3f();
+            if (origin.xRot != 0.0F || origin.yRot != 0.0F || origin.zRot != 0.0F) {
+                normal.rotate((new Quaternionf()).rotationZYX(origin.zRot, origin.yRot, origin.xRot));
+            }
+
+            Vector3f offset = new Vector3f();
+            normal.transform(xRelative, yRelative, zRelative, offset);
+
+            componentConsumer.accept(
+                    origin.x + offset.x,
+                    origin.y + offset.y,
+                    origin.z + offset.z
+            );
         }
     }
 

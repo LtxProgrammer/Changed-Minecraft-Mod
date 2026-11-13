@@ -8,7 +8,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -21,23 +20,34 @@ public class ArmorModelSet<T extends LivingEntity, M extends EntityModel<? super
     private final Map<ArmorModel, ModelLayerLocation> modelDefinitions = new HashMap<>();
     private final Function<ArmorModel, LayerDefinition> modelCreator;
     private final BiFunction<ModelPart, ArmorModel, M> modelWrapper;
+    private final boolean slimTextures;
 
-    private ArmorModelSet(Map<ArmorModel, ModelLayerLocation> copiedDefinitions, BiFunction<ModelPart, ArmorModel, M> modelWrapper) {
+    private ArmorModelSet(Map<ArmorModel, ModelLayerLocation> copiedDefinitions, BiFunction<ModelPart, ArmorModel, M> modelWrapper, boolean slimTextures) {
         modelDefinitions.putAll(copiedDefinitions);
         this.modelCreator = (armorModel -> null);
         this.modelWrapper = modelWrapper;
+        this.slimTextures = slimTextures;
     }
 
-    public ArmorModelSet(ResourceLocation rootId, Function<ArmorModel, LayerDefinition> modelCreator, BiFunction<ModelPart, ArmorModel, M> modelWrapper) {
-        Arrays.stream(ArmorModel.values()).forEach(model -> {
+    public ArmorModelSet(ResourceLocation rootId, Function<ArmorModel, LayerDefinition> modelCreator, BiFunction<ModelPart, ArmorModel, M> modelWrapper, boolean slimTextures) {
+        ArmorModels.streamModels().forEach(model -> {
             modelDefinitions.put(model, new ModelLayerLocation(rootId, model.identifier));
         });
         this.modelCreator = modelCreator;
         this.modelWrapper = modelWrapper;
+        this.slimTextures = slimTextures;
+    }
+
+    public boolean usesSlimTextures() {
+        return slimTextures;
     }
 
     public static <T extends LivingEntity, M extends EntityModel<? super T>> ArmorModelSet<T, M> ofUnspecified(ResourceLocation rootId, Function<ArmorModel, LayerDefinition> modelCreator) {
-        return new ArmorModelSet<>(rootId, modelCreator, ((rootPart, armorModel) -> null)) {
+        return ofUnspecified(rootId, modelCreator, false);
+    }
+
+    public static <T extends LivingEntity, M extends EntityModel<? super T>> ArmorModelSet<T, M> ofUnspecified(ResourceLocation rootId, Function<ArmorModel, LayerDefinition> modelCreator, boolean slimTextures) {
+        return new ArmorModelSet<>(rootId, modelCreator, ((rootPart, armorModel) -> null), slimTextures) {
             @Override
             public M createModel(EntityModelSet bakery, ArmorModel model) {
                 throw new IllegalStateException("Attempted to create armor model wrapper for unspecified class");
@@ -46,11 +56,15 @@ public class ArmorModelSet<T extends LivingEntity, M extends EntityModel<? super
     }
 
     public static <T extends LivingEntity, M extends EntityModel<? super T>> ArmorModelSet<T, M> of(ResourceLocation rootId, Function<ArmorModel, LayerDefinition> modelCreator, BiFunction<ModelPart, ArmorModel, M> modelWrapper) {
-        return new ArmorModelSet<>(rootId, modelCreator, modelWrapper);
+        return of(rootId, modelCreator, modelWrapper, false);
+    }
+
+    public static <T extends LivingEntity, M extends EntityModel<? super T>> ArmorModelSet<T, M> of(ResourceLocation rootId, Function<ArmorModel, LayerDefinition> modelCreator, BiFunction<ModelPart, ArmorModel, M> modelWrapper, boolean slimTextures) {
+        return new ArmorModelSet<>(rootId, modelCreator, modelWrapper, slimTextures);
     }
 
     public static <T extends LivingEntity, M extends EntityModel<? super T>> ArmorModelSet<T, M> castOf(ArmorModelSet<?, ?> other, BiFunction<ModelPart, ArmorModel, M> modelWrapper) {
-        return new ArmorModelSet<>(other.modelDefinitions, modelWrapper) {
+        return new ArmorModelSet<>(other.modelDefinitions, modelWrapper, other.slimTextures) {
             @Override
             public void registerDefinitions(BiConsumer<ModelLayerLocation, Supplier<LayerDefinition>> consumer) {}
         };

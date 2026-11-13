@@ -35,6 +35,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -42,7 +43,7 @@ import java.util.List;
 
 public class LatexDripParticle extends LatexParticle {
     private final SpriteSet spriteSet;
-    protected TextureAtlasSprite sprite;
+    protected @Nullable TextureAtlasSprite sprite;
 
     protected double gravity, friction;
     protected Vector3f surfaceNormalRelativeCamera = new Vector3f(0, 0, 1);
@@ -91,7 +92,7 @@ public class LatexDripParticle extends LatexParticle {
 
         this.gravity = 0.65f;
         this.friction = 0.98f;
-        this.sprite = spriteSet.get(0, 3);
+        this.sprite = null; // Deferred
     }
 
     public float getSpriteSize(float partialTicks) {
@@ -299,6 +300,8 @@ public class LatexDripParticle extends LatexParticle {
         if (!shouldRender())
             return; // No render
         preppedForRender = false;
+        if (this.sprite == null)
+            this.sprite = spriteSet.get(0, 3);
 
         Vec3 vec3 = camera.getPosition();
         float lerpX, lerpY, lerpZ;

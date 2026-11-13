@@ -5,8 +5,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.ILatexAssimilatedEntity;
-import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
-import net.ltxprogrammer.changed.ability.tree.events.OnTransfurOther;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.ai.*;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
@@ -17,7 +15,7 @@ import net.ltxprogrammer.changed.entity.AccessoryEntities;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.packet.*;
 import net.ltxprogrammer.changed.util.EntityUtil;
-import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -26,6 +24,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -34,6 +33,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -50,7 +50,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -63,62 +62,62 @@ import java.util.function.Supplier;
 public class ProcessTransfur {
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final Map<ResourceLocation, EntityAssimilationBehavior<?>> ASSIMILATED_MOB_TRANSFUR_LOGIC = new Object2ObjectArrayMap<>();
-    private static final Map<ResourceLocation, EntityAssimilationBehavior<?>> OLD_ASSIMILATION_MAP = new Object2ObjectArrayMap<>();
+    private static final Map<ResourceLocation, AssimilationDecisionHandler<?>> ASSIMILATED_MOB_TRANSFUR_LOGIC = new Object2ObjectArrayMap<>();
+    private static final Map<ResourceLocation, AssimilationDecisionHandler<?>> OLD_ASSIMILATION_MAP = new Object2ObjectArrayMap<>();
 
     public static class GatherMobAssimilationsEvent extends Event implements IModBusEvent {
-        private final Map<ResourceLocation, EntityAssimilationBehavior<?>> backingMap;
+        private final Map<ResourceLocation, AssimilationDecisionHandler<?>> backingMap;
 
         public enum OverrideBehavior {
             FORCE_VALUE,
             IGNORE
         }
 
-        public GatherMobAssimilationsEvent(Map<ResourceLocation, EntityAssimilationBehavior<?>> backingMap) {
+        public GatherMobAssimilationsEvent(Map<ResourceLocation, AssimilationDecisionHandler<?>> backingMap) {
             this.backingMap = backingMap;
         }
 
         @Nullable
         @SuppressWarnings("unchecked")
-        protected <T extends LivingEntity> EntityAssimilationBehavior<T> getBehavior(ResourceLocation key) {
+        protected <T extends LivingEntity> AssimilationDecisionHandler<T> getBehavior(ResourceLocation key) {
             if (!backingMap.containsKey(key))
                 return null;
-            return (EntityAssimilationBehavior<T>) backingMap.get(key);
+            return (AssimilationDecisionHandler<T>) backingMap.get(key);
         }
 
         @Nullable
-        public <T extends LivingEntity> EntityAssimilationBehavior<T> getBehavior(EntityType<T> entityType) {
+        public <T extends LivingEntity> AssimilationDecisionHandler<T> getBehavior(EntityType<T> entityType) {
             return getBehavior(ForgeRegistries.ENTITY_TYPES.getKey(entityType));
         }
 
         @Nullable
-        public <T extends LivingEntity> EntityAssimilationBehavior<T> getBehavior(RegistryObject<EntityType<T>> entityType) {
+        public <T extends LivingEntity> AssimilationDecisionHandler<T> getBehavior(RegistryObject<EntityType<T>> entityType) {
             return getBehavior(entityType.getId());
         }
 
-        protected <T extends LivingEntity> void register(ResourceLocation key, EntityAssimilationBehavior<T> entityAssimilationBehavior, OverrideBehavior behavior) {
+        protected <T extends LivingEntity> void register(ResourceLocation key, AssimilationDecisionHandler<T> assimilationDecisionHandler, OverrideBehavior behavior) {
             var existing = getBehavior(key);
             if (existing != null && behavior == OverrideBehavior.IGNORE)
                 return;
             if (existing == null || behavior == OverrideBehavior.FORCE_VALUE) {
-                this.backingMap.put(key, entityAssimilationBehavior);
+                this.backingMap.put(key, assimilationDecisionHandler);
             }
         }
 
-        public <T extends LivingEntity> void register(EntityType<T> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
-            register(ForgeRegistries.ENTITY_TYPES.getKey(entityType), entityAssimilationBehavior, OverrideBehavior.FORCE_VALUE);
+        public <T extends LivingEntity> void register(EntityType<T> entityType, AssimilationDecisionHandler<T> assimilationDecisionHandler) {
+            register(ForgeRegistries.ENTITY_TYPES.getKey(entityType), assimilationDecisionHandler, OverrideBehavior.FORCE_VALUE);
         }
 
-        public <T extends LivingEntity> void register(RegistryObject<EntityType<T>> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
-            register(entityType.getId(), entityAssimilationBehavior, OverrideBehavior.FORCE_VALUE);
+        public <T extends LivingEntity> void register(RegistryObject<EntityType<T>> entityType, AssimilationDecisionHandler<T> assimilationDecisionHandler) {
+            register(entityType.getId(), assimilationDecisionHandler, OverrideBehavior.FORCE_VALUE);
         }
 
-        public <T extends LivingEntity> void register(EntityType<T> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior, OverrideBehavior behavior) {
-            register(ForgeRegistries.ENTITY_TYPES.getKey(entityType), entityAssimilationBehavior, behavior);
+        public <T extends LivingEntity> void register(EntityType<T> entityType, AssimilationDecisionHandler<T> assimilationDecisionHandler, OverrideBehavior behavior) {
+            register(ForgeRegistries.ENTITY_TYPES.getKey(entityType), assimilationDecisionHandler, behavior);
         }
 
-        public <T extends LivingEntity> void register(RegistryObject<EntityType<T>> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior, OverrideBehavior behavior) {
-            register(entityType.getId(), entityAssimilationBehavior, behavior);
+        public <T extends LivingEntity> void register(RegistryObject<EntityType<T>> entityType, AssimilationDecisionHandler<T> assimilationDecisionHandler, OverrideBehavior behavior) {
+            register(entityType.getId(), assimilationDecisionHandler, behavior);
         }
 
         @Override
@@ -137,31 +136,31 @@ public class ProcessTransfur {
     }
 
     @Deprecated(forRemoval = true)
-    public static <T extends LivingEntity> void registerMobAssimilation(EntityType<T> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
-        OLD_ASSIMILATION_MAP.put(ForgeRegistries.ENTITY_TYPES.getKey(entityType), entityAssimilationBehavior);
+    public static <T extends LivingEntity> void registerMobAssimilation(EntityType<T> entityType, AssimilationDecisionHandler<T> assimilationDecisionHandler) {
+        OLD_ASSIMILATION_MAP.put(ForgeRegistries.ENTITY_TYPES.getKey(entityType), assimilationDecisionHandler);
     }
 
     @Deprecated(forRemoval = true)
-    public static <T extends LivingEntity> void registerMobAssimilation(RegistryObject<EntityType<T>> entityType, EntityAssimilationBehavior<T> entityAssimilationBehavior) {
-        OLD_ASSIMILATION_MAP.put(entityType.getId(), entityAssimilationBehavior);
+    public static <T extends LivingEntity> void registerMobAssimilation(RegistryObject<EntityType<T>> entityType, AssimilationDecisionHandler<T> assimilationDecisionHandler) {
+        OLD_ASSIMILATION_MAP.put(entityType.getId(), assimilationDecisionHandler);
     }
 
-    public static <T extends LivingEntity> EntityAssimilationBehavior<T> getDefaultEntityAssimilationBehavior(T entity) {
+    public static <T extends LivingEntity> AssimilationDecisionHandler<T> getDefaultAssimilationDecisionHandler(T entity) {
         if (entity instanceof Player)
-            return (EntityAssimilationBehavior<T>) EntityAssimilationBehavior.defaultPlayer();
+            return (AssimilationDecisionHandler<T>) AssimilationDecisionHandler.defaultPlayer();
         else if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS))
-            return (EntityAssimilationBehavior<T>) EntityAssimilationBehavior.defaultHumanoid();
+            return (AssimilationDecisionHandler<T>) AssimilationDecisionHandler.defaultHumanoid();
         else
             return null;
     }
 
-    public static <T extends LivingEntity> EntityAssimilationBehavior<T> getEntityAssimilationBehavior(T entity) {
+    public static <T extends LivingEntity> AssimilationDecisionHandler<T> getAssimilationDecisionHandler(T entity) {
         if (entity == null)
             return null;
         var key = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
         if (!ASSIMILATED_MOB_TRANSFUR_LOGIC.containsKey(key))
-            return getDefaultEntityAssimilationBehavior(entity);
-        return (EntityAssimilationBehavior<T>) ASSIMILATED_MOB_TRANSFUR_LOGIC.get(key);
+            return getDefaultAssimilationDecisionHandler(entity);
+        return (AssimilationDecisionHandler<T>) ASSIMILATED_MOB_TRANSFUR_LOGIC.get(key);
     }
 
     /**
@@ -176,7 +175,7 @@ public class ProcessTransfur {
         if (fusionBehavior != null)
             return fusionBehavior;
 
-        var behavior = getEntityAssimilationBehavior(assimilationVictim);
+        var behavior = getAssimilationDecisionHandler(assimilationVictim);
         if (behavior == null)
             return null;
 
@@ -194,7 +193,7 @@ public class ProcessTransfur {
         if (decision == null)
             return null;
 
-        var behavior = getEntityAssimilationBehavior(assimilationVictim);
+        var behavior = getAssimilationDecisionHandler(assimilationVictim);
         if (behavior == null)
             return null;
 
@@ -212,7 +211,7 @@ public class ProcessTransfur {
         if (decision == null)
             return null;
 
-        var behavior = getEntityAssimilationBehavior(assimilationTarget);
+        var behavior = getAssimilationDecisionHandler(assimilationTarget);
         if (behavior == null)
             return null;
 
@@ -542,9 +541,9 @@ public class ProcessTransfur {
             public final @Nullable
             TransfurContext context;
 
-            public ChangedVariant(LivingEntity livingEntity, @Nullable TransfurVariant<?> variant, @Nullable TransfurContext context) {
+            public ChangedVariant(LivingEntity livingEntity, @Nullable TransfurVariant<?> oldVariant, @Nullable TransfurVariant<?> variant, @Nullable TransfurContext context) {
                 this.livingEntity = livingEntity;
-                this.oldVariant = TransfurVariant.getEntityVariant(livingEntity);
+                this.oldVariant = oldVariant;
                 this.newVariant = variant;
                 this.context = context;
             }
@@ -637,7 +636,7 @@ public class ProcessTransfur {
         player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
 
         if (variant != null && !event.isRedundant() && !instance.isTemporaryFromSuit()) {
-            Changed.postModEvent(new EntityVariantAssigned.ChangedVariant(player, variant, context));
+            Changed.postModEvent(new EntityVariantAssigned.ChangedVariant(player, oldVariant != null ? oldVariant.getParent() : null, variant, context));
             ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
         }
 
@@ -695,14 +694,14 @@ public class ProcessTransfur {
     }
 
     // Checks if player is either not latex or is organic latex
+    @Deprecated
     public static boolean isPlayerNotLatex(Player player) {
-        var variant = getPlayerTransfurVariant(player);
-        return variant == null || !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
+        return isNonGoo(player);
     }
 
+    @Deprecated
     public static boolean isPlayerLatex(Player player) {
-        var variant = getPlayerTransfurVariant(player);
-        return variant != null && variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
+        return isGoo(player);
     }
 
     public static Optional<TransfurVariant<?>> getEntityVariant(LivingEntity livingEntity) {
@@ -736,14 +735,12 @@ public class ProcessTransfur {
         }
     }
 
-    private static boolean isNonGoo(LivingEntity entity) {
-        if (entity instanceof ChangedEntity latex) {
-            return !entity.getType().is(ChangedTags.EntityTypes.LATEX);
-        }
+    public static boolean isGoo(LivingEntity entity) {
+        return EntityUtil.maybeGetOverlaying(entity).getType().is(ChangedTags.EntityTypes.LATEX);
+    }
 
-        else return ifPlayerTransfurred(EntityUtil.playerOrNull(entity), variant -> {
-            return !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
-        }, () -> true);
+    public static boolean isNonGoo(LivingEntity entity) {
+        return !isGoo(entity);
     }
 
     public static ItemStack getEntityAttackItem(LivingEntity entity) {
@@ -895,5 +892,49 @@ public class ProcessTransfur {
 
         if (behavior != null)
             behavior.stepAssimilate();
+    }
+
+    /**
+     * Invokes untransfur logic for player if they're transfurred.
+     * @param player The player to untransfur.
+     * @param causeEntity The entity that caused the untransfur event. Can be equal to player.
+     */
+    public static void untransfur(@NotNull Player player, @NotNull Entity causeEntity) {
+        ifPlayerTransfurred(player, variant -> {
+            var event = new TransfurEvents.UntransfurPlayerByEntityEvent(causeEntity, player, variant, null);
+            if (Changed.postModEvent(event))
+                return;
+            TransfurEvents.finalizeUntransfurPlayerEvent(event);
+        });
+    }
+
+    /**
+     * Invokes untransfur logic for player if they're transfurred.
+     * @param player The player to untransfur.
+     * @param causeEntity The entity that caused the untransfur event. Can be equal to player.
+     * @param causeItem The item used to untransfur.
+     */
+    public static void untransfur(@NotNull Player player, @NotNull Entity causeEntity, @NotNull ItemStack causeItem) {
+        ifPlayerTransfurred(player, variant -> {
+            var event = new TransfurEvents.UntransfurPlayerByItemEvent(causeEntity, causeItem, player, variant, null);
+            if (Changed.postModEvent(event))
+                return;
+            TransfurEvents.finalizeUntransfurPlayerEvent(event);
+        });
+    }
+
+    /**
+     * Invokes untransfur logic for player if they're transfurred.
+     * @param player The player to untransfur
+     * @param blockState The block state that caused the untransfur event
+     * @param blockPosition Where the block that caused the untransfur event was.
+     */
+    public static void untransfur(@NotNull Player player, @NotNull BlockState blockState, @NotNull BlockPos blockPosition) {
+        ifPlayerTransfurred(player, variant -> {
+            var event = new TransfurEvents.UntransfurPlayerByBlockEvent(blockState, blockPosition, player, variant, null);
+            if (Changed.postModEvent(event))
+                return;
+            TransfurEvents.finalizeUntransfurPlayerEvent(event);
+        });
     }
 }

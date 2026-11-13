@@ -6,7 +6,10 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.util.Mth;
+import org.apache.logging.log4j.util.TriConsumer;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -48,5 +51,9 @@ public abstract class AbstractLeglessAnimator<T extends ChangedEntity, M extends
         abdomen.z = Mth.lerp(0.5f, humanoidModel.leftLeg.z, humanoidModel.rightLeg.z);
 
         abdomen.y += core.calculateLegPositionY() - 12.0f;
+    }
+
+    protected void positionAbdomenBelowTorso(PartPose torsoPosition, TriConsumer<Float, Float, Float> componentConsumer) {
+        positionRelative(torsoPosition, 0, core.torsoLength, 0, componentConsumer);
     }
 }

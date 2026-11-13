@@ -156,7 +156,7 @@ def modIndex = [
     "sleep_tight": [ artifact: "curse.maven:sleep-tight-817564:7169017", compile: true, clientOnly: false ], // It need MoonLightLib to Work.
     "moonlight_lib": [ artifact: "net.mehvahdjukaar:moonlight-1.20-2.16.16-forge:1.20-2.16.16", compile: true, clientOnly: false ], // MoonLightLib
     "firstperson": [ artifact: "dev.tr7zw:firstperson-forge-2.4.9-mc1.20.1:2.4.9", compile: true, clientOnly: true ],
-    "entityculling": [ artifact: "dev.tr7zw:entityculling-forge-1.8.2-mc1.20.1:1.8.2", compile: true, clientOnly: true ],
+    "entityculling": [ artifact: "dev.tr7zw:entityculling-forge-1.11.3-mc1.20.1:1.11.3", compile: true, clientOnly: true ],
     "geckolib": [ artifact: "curse.maven:geckolib-388172:6658942", compile: false, clientOnly: false ], // Forge 1.20.1 v4.7.2
     "dragonsurvival": [ artifact: "curse.maven:dragons-survival-420799:6588402", compile: false, clientOnly: false ], // Forge 1.20.1 v28.05.2025
     "playeranimator": [ artifact: "curse.maven:playeranimator-658587:4587214", compile: true, clientOnly: false ], // Forge 1.20.1 v1.0.2
@@ -226,8 +226,8 @@ dependencies {
     implementation fg.deobf("dev.architectury:architectury-forge:${archVersion}")
 
     if (runWithClientOnlyMods && runWithMods.contains("entityculling")) {
-        runtimeOnly fg.deobf("dev.tr7zw:TRender-1.0.5-1.20.1-forge-SNAPSHOT:1.0.5")
-        runtimeOnly fg.deobf("dev.tr7zw:TRansition-1.0.3-1.20.1-forge-SNAPSHOT:1.0.3")
+        runtimeOnly fg.deobf("dev.tr7zw:TRender-1.0.17-1.20.1-forge-SNAPSHOT:1.0.17")
+        runtimeOnly fg.deobf("dev.tr7zw:TRansition-1.0.26-1.20.1-forge-SNAPSHOT:1.0.26")
     }
 
     // CGM does not exist for 1.20.1

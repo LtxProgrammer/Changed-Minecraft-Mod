@@ -9,6 +9,8 @@
     "AttributesLib.AttributeEventsMixin",
     "CreatureChat.EntityChatDataMixin",
     "Curios.CuriosApiMixin",
+    "Pehkui.ChangedCompatibilityMixin",
+    "Pehkui.ScaleTypeMixin",
     "SleepTight.HumanoidAnimatorMixin"
   ],
   "client": [
@@ -37,8 +39,6 @@
     "NotEnoughAnimations.PetAnimationMixin",
     "Parcool.AdvancedHumanoidRendererMixin",
     "Parcool.HumanoidAnimatorMixin",
-    "Pehkui.ChangedEntityMixin",
-    "Pehkui.ScaleTypeMixin",
     "Personality.AdvancedHumanoidRendererMixin",
     "Personality.HumanoidAnimatorMixin",
     "Personality.PersonalityClientEventsMixin",

@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
+import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 
 public class WolfHeadInitAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractHeadAnimator<T, M> {
@@ -27,7 +28,12 @@ public class WolfHeadInitAnimator<T extends ChangedEntity, M extends AdvancedHum
             head.xRot = (-(float)Math.PI / 4F);
         } else if (core.swimAmount > 0.0F) {
             if (entity.isVisuallySwimming()) {
-                head.xRot = HumanoidAnimator.rotlerpRad(core.swimAmount, head.xRot, (-(float)Math.PI / 4F));
+                boolean matchLookAngle = (entity.isInWater() || entity.canSwimInFluidType(ForgeMod.EMPTY_TYPE.get())) && entity.isSprinting();
+                if (matchLookAngle) {
+                    head.xRot = HumanoidAnimator.rotlerpRad(core.swimAmount, head.xRot, (-(float)Math.PI / 4F));
+                } else {
+                    head.xRot = HumanoidAnimator.rotlerpRad(core.swimAmount, head.xRot, Math.max((-(float)Math.PI / 4F), (headPitch - 90F) * ((float)Math.PI / 180F)));
+                }
             } else {
                 head.xRot = HumanoidAnimator.rotlerpRad(core.swimAmount, head.xRot, headPitch * ((float)Math.PI / 180F));
             }

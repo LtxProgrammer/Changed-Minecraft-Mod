@@ -1,28 +1,19 @@
 package net.ltxprogrammer.changed.effect.particle;
 
-
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.ltxprogrammer.changed.entity.Emote;
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 public class EmoteParticle extends TextureSheetParticle {
     private final Entity track;
 
     protected EmoteParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, SpriteSet sprite, Emote emote, Entity track) {
         super(level, x, y, z, vx, vy, vz);
-        this.setSize(0.3f, 0.3f);
-        this.quadSize = 0.3f;
 
         this.lifetime = 80;
 
@@ -32,15 +23,25 @@ public class EmoteParticle extends TextureSheetParticle {
 
         this.gravity = 0.0f;
         this.hasPhysics = false;
+
         this.track = track;
+        this.updateScale();
 
         this.setSprite(sprite.get(emote.ordinal(), Emote.values().length - 1));
+    }
+
+    protected void updateScale() {
+        this.quadSize = 0.3f;
+        if (track instanceof LivingEntity livingEntity)
+            this.quadSize *= livingEntity.getScale();
+        this.setSize(this.quadSize, this.quadSize);
     }
 
     @Override
     public void tick() {
         super.tick();
         this.setPos(track.getX(), track.getY() + track.getDimensions(track.getPose()).height + 0.65, track.getZ());
+        this.updateScale();
     }
 
     @Override
@@ -48,48 +49,16 @@ public class EmoteParticle extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_LIT;
     }
 
-    public void render(VertexConsumer buffer, Camera camera, float partialTicks) { // The same as SingleQuadParticle, but forces FULL_BRIGHT
-        Vec3 camPos = camera.getPosition();
-        float x = (float)(Mth.lerp(partialTicks, this.xo, this.x) - camPos.x());
-        float y = (float)(Mth.lerp(partialTicks, this.yo, this.y) - camPos.y());
-        float z = (float)(Mth.lerp(partialTicks, this.zo, this.z) - camPos.z());
-        Quaternionf quat;
-        if (this.roll == 0.0F) {
-            quat = camera.rotation();
-        } else {
-            quat = new Quaternionf(camera.rotation());
-            float f3 = Mth.lerp(partialTicks, this.oRoll, this.roll);
-            quat.mul(Axis.ZP.rotation(f3));
-        }
-
-        Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);
-        quat.transform(vector3f1);
-        Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
-        float f4 = this.getQuadSize(partialTicks);
-
-        for(int i = 0; i < 4; ++i) {
-            Vector3f vector3f = avector3f[i];
-            quat.transform(vector3f);
-            vector3f.mul(f4);
-            vector3f.add(x, y, z);
-        }
-
-        float u0 = this.getU0();
-        float u1 = this.getU1();
-        float v0 = this.getV0();
-        float v1 = this.getV1();
-
-        buffer.vertex((double)avector3f[0].x(), (double)avector3f[0].y(), (double)avector3f[0].z()).uv(u1, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(LightTexture.FULL_BRIGHT).endVertex();
-        buffer.vertex((double)avector3f[1].x(), (double)avector3f[1].y(), (double)avector3f[1].z()).uv(u1, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(LightTexture.FULL_BRIGHT).endVertex();
-        buffer.vertex((double)avector3f[2].x(), (double)avector3f[2].y(), (double)avector3f[2].z()).uv(u0, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(LightTexture.FULL_BRIGHT).endVertex();
-        buffer.vertex((double)avector3f[3].x(), (double)avector3f[3].y(), (double)avector3f[3].z()).uv(u0, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(LightTexture.FULL_BRIGHT).endVertex();
+    @Override
+    protected int getLightColor(float partialTicks) {
+        return LightTexture.FULL_BRIGHT;
     }
 
     public static class Provider implements ParticleProvider<EmoteParticleOption> {
         protected final SpriteSet sprite;
 
-        public Provider(SpriteSet p_106394_) {
-            this.sprite = p_106394_;
+        public Provider(SpriteSet spriteSet) {
+            this.sprite = spriteSet;
         }
 
         @Nullable

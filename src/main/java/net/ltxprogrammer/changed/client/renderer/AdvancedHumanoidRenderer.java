@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -33,13 +34,14 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
     @Nullable
     private LatexHumanoidHairLayer<T, M> hairLayer;
 
-    private LatexHumanoidArmorLayer<T, M> armorLayer;
+    @Nullable
+    private final LatexHumanoidArmorLayer<T, M> armorLayer;
 
     public @Nullable LatexHumanoidHairLayer<T, M> getHairLayer() {
         return hairLayer;
     }
 
-    public LatexHumanoidArmorLayer<T, M> getArmorLayer() {
+    public @Nullable LatexHumanoidArmorLayer<T, M> getArmorLayer() {
         return armorLayer;
     }
 
@@ -82,14 +84,21 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
     public AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,
                                     ArmorModelPicker<T, ? extends LatexHumanoidArmorModel<? super T, ?>> modelPicker, float shadowSize) {
         super(context, main, shadowSize);
-        if (main == null) return;
-        this.armorLayer = new LatexHumanoidArmorLayer<>(this, modelPicker, context.getModelManager());
+        if (main == null) {
+            this.armorLayer = null;
+            return;
+        }
+        this.armorLayer = this.makeArmorLayer(this, modelPicker, context.getModelManager());
         this.addLayers(context, main);
     }
 
     public AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,
                                     ArmorModelSet<? super T, ? extends LatexHumanoidArmorModel<? super T, ?>> modelSet, float shadowSize) {
         this(context, main, ArmorModelPicker.basic(context.getModelSet(), modelSet), shadowSize);
+    }
+
+    protected @Nullable LatexHumanoidArmorLayer<T, M> makeArmorLayer(AdvancedHumanoidRenderer<T, M> parentModel, ArmorModelPicker<T, ? extends LatexHumanoidArmorModel<? super T, ?>> modelPicker, ModelManager modelManager) {
+        return new LatexHumanoidArmorLayer<>(parentModel, modelPicker, modelManager);
     }
 
     protected boolean isEntityUprightType(@NotNull T entity) {
@@ -111,6 +120,15 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
         float renderScale = entity.getRenderScale(partialTicks);
         if (renderScale != 1f)
             poseStack.scale(renderScale, renderScale, renderScale);
+    }
+
+    protected float getSwimAngle(@NotNull T entity, float bob, float bodyYRot, float partialTicks, float swimAmount) {
+        boolean matchLookAngle = (entity.isInWater() || entity.canSwimInFluidType(ForgeMod.EMPTY_TYPE.get())) && entity.isSprinting();
+        float swimmingAngle = matchLookAngle ? -90.0F - entity.getXRot() : -90.0F;
+        return swimmingAngle * Mth.DEG_TO_RAD;
+
+        // TODO: animate dive into water based on velocity
+        // Mer idle animation when not moving in water?
     }
 
     @Override
@@ -139,9 +157,9 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
             }
         } else if (upright && swimAmount > 0.0F) {
             super.setupRotations(entity, poseStack, bob, bodyYRot, partialTicks);
-            float f3 = (entity.isInWater() || entity.canSwimInFluidType(ForgeMod.EMPTY_TYPE.get())) ? -90.0F - entity.getXRot() : -90.0F;
-            float f4 = Mth.lerp(swimAmount, 0.0F, f3);
-            poseStack.mulPose(Axis.XP.rotationDegrees(f4));
+            poseStack.mulPose(Axis.XP.rotation(Mth.lerp(swimAmount,
+                    0.0F,
+                    this.getSwimAngle(entity, bob, bodyYRot, partialTicks, swimAmount))));
             if (entity.isVisuallySwimming()) {
                 poseStack.translate(0.0D, -1.0D, (double)0.3F);
             }

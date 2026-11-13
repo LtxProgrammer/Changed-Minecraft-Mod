@@ -112,6 +112,8 @@ public class ChangedFusions extends SimplePreparableReloadListener<List<ChangedF
                 IAbstractChangedEntity oldSourceEntity = transfurSource.copyAbstraction();
 
                 transfurSource.replaceVariant(newFusionVariant);
+                TransfurVariant.takeOldEntityItems(transfurSource, assimVictim.getEntity());
+                TransfurVariant.takeOldEntityExperience(transfurSource, assimVictim.getEntity());
 
                 if (!Changed.postModEvent(new TransfurEvents.ChangedEntityFusionWithChangedEntityEvent(oldSourceEntity, assimVictim, transfurSource, newFusionVariant)))
                     ProcessTransfur.onNewlyFused(transfurSource);
@@ -127,6 +129,8 @@ public class ChangedFusions extends SimplePreparableReloadListener<List<ChangedF
                 IAbstractChangedEntity oldAssimEntity = assimVictim.copyAbstraction();
 
                 assimVictim.replaceVariant(newFusionVariant);
+                TransfurVariant.takeOldEntityItems(assimVictim, transfurSource.getEntity());
+                TransfurVariant.takeOldEntityExperience(assimVictim, transfurSource.getEntity());
 
                 if (!Changed.postModEvent(new TransfurEvents.ChangedEntityFusionWithChangedEntityEvent(transfurSource, oldAssimEntity, assimVictim, newFusionVariant)))
                     ProcessTransfur.onNewlyFused(assimVictim);
@@ -150,6 +154,8 @@ public class ChangedFusions extends SimplePreparableReloadListener<List<ChangedF
             IAbstractChangedEntity oldAssimEntity = assimVictim.copyAbstraction();
 
             assimVictim.replaceVariant(newFusionVariant);
+            TransfurVariant.takeOldEntityItems(assimVictim, transfurSource.getEntity());
+            TransfurVariant.takeOldEntityExperience(assimVictim, transfurSource.getEntity());
 
             if (!Changed.postModEvent(new TransfurEvents.AssimilatedEntityFusionWithChangedEntityEvent(transfurSource, oldAssimEntity, assimVictim, newFusionVariant)))
                 ProcessTransfur.onNewlyFused(assimVictim);
@@ -206,6 +212,8 @@ public class ChangedFusions extends SimplePreparableReloadListener<List<ChangedF
                 IAbstractChangedEntity oldSourceEntity = sourceLatex.copyAbstraction();
 
                 sourceLatex.replaceVariant(newFusionVariant);
+                TransfurVariant.takeOldEntityItems(sourceLatex, assimVictim);
+                TransfurVariant.takeOldEntityExperience(sourceLatex, assimVictim);
 
                 if (!Changed.postModEvent(new TransfurEvents.ChangedEntityFusionWithMobEvent(oldSourceEntity, assimVictim, sourceLatex, newFusionVariant)))
                     ProcessTransfur.onNewlyFused(sourceLatex);

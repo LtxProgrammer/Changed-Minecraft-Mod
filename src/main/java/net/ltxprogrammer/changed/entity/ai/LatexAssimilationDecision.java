@@ -18,7 +18,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -139,13 +138,17 @@ public record LatexAssimilationDecision<T extends ChangedEntity>(DecisionStrengt
                     Changed.postModEvent(new TransfurEvents.LatexAssimilationSteppedEvent(target, scaledDamage, willAssimilate, this));
                 },
                 () -> {
+                    var killClaim = transfurSource.getEntity();
+                    transfurSource.replaceVariant(transfurVariant);
+                    TransfurVariant.takeOldEntityItems(transfurSource, target);
+                    TransfurVariant.takeOldEntityExperience(transfurSource, target);
+
                     if (target instanceof Player player) {
-                        ProcessTransfur.killPlayerByAbsorption(player, transfurSource.getEntity());
+                        ProcessTransfur.killPlayerByAbsorption(player, killClaim);
                     } else {
                         target.discard();
                     }
 
-                    transfurSource.replaceVariant(transfurVariant);
                     AbilityTreeInstance.offerPointEvent(transfurSource, ChangedAbilityPointEvents.ON_TRANSFUR_OTHER.get(), new OnTransfurOther.Criteria(target));
                     ProcessTransfur.onAbsorbEntity(transfurSource);
                     ChangedSounds.broadcastSound(transfurSource.getEntity(), transfurVariant.sound, 1.0f, 1.0f);

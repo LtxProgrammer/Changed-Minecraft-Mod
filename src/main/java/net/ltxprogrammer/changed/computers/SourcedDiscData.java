@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.computers;
 
 import net.ltxprogrammer.changed.computers.protocol.FileSystemShareProtocol;
-import net.ltxprogrammer.changed.computers.protocol.LogicalNetworkInterface;
+import net.ltxprogrammer.changed.computers.protocol.NetworkInterface;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,8 +32,8 @@ public interface SourcedDiscData {
         return new WrappedDiscDataSource(data, ejectable, writer, onlyWriteWhenModified);
     }
 
-    static SourcedDiscData fromRemote(int logicalAddress, String name, @Nullable FileSystemShareProtocol share) {
-        return new RemoteSource(logicalAddress, name, share);
+    static SourcedDiscData fromRemote(NetworkInterface.Address address, String name, @Nullable FileSystemShareProtocol share) {
+        return new RemoteSource(address, name, share);
     }
 
     class WrappedDiscDataSource implements SourcedDiscData {
@@ -166,11 +166,11 @@ public interface SourcedDiscData {
     }
 
     class RemoteSource implements SourcedDiscData {
-        final int logicalAddress;
+        final NetworkInterface.Address address;
         DiscData data;
 
-        public RemoteSource(int logicalAddress, String name, @Nullable FileSystemShareProtocol share) {
-            this.logicalAddress = logicalAddress;
+        public RemoteSource(NetworkInterface.Address address, String name, @Nullable FileSystemShareProtocol share) {
+            this.address = address;
             if (share != null) {
                 data = DiscData.copyOf(share.getRootFolder(), this::markModified);
                 data.setPermissions(share.getPermissions());
@@ -197,7 +197,7 @@ public interface SourcedDiscData {
 
         @Override
         public boolean matchesOrigin(Object origin) {
-            return origin.equals(logicalAddress);
+            return origin.equals(address);
         }
 
         @Override
@@ -213,18 +213,18 @@ public interface SourcedDiscData {
         @Override
         public boolean equals(Object object) {
             if (!(object instanceof RemoteSource that)) return false;
-            return Objects.equals(logicalAddress, that.logicalAddress);
+            return Objects.equals(address, that.address);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(logicalAddress);
+            return Objects.hashCode(address);
         }
 
         @Override
         public String toString() {
             return "RemoteSource{" +
-                    "address=" + LogicalNetworkInterface.logicalAddressAsString(logicalAddress) +
+                    "address=" + address +
                     '}';
         }
     }

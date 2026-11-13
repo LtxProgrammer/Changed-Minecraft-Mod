@@ -2,12 +2,14 @@ package net.ltxprogrammer.changed.extension;
 
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.data.AccessorySlots;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.origins.OriginsHelper;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -284,5 +286,9 @@ public class ChangedCompatibility {
 
     public static boolean shouldIgnoreWaveVisionRenderTypesOutsideOfWaveVision() {
         return isModPresent("rubidium");
+    }
+
+    public static EntityDimensions maybeAdjustEntitySize(ChangedEntity entity, EntityDimensions size) {
+        return size;
     }
 }

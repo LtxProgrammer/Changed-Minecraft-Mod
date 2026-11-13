@@ -29,8 +29,11 @@ public class ChangedScreens {
         event.enqueueWork(() -> {
             ApplicationScreens.register(ChangedApplications.DESKTOP.get(), DesktopScreen::new);
             ApplicationScreens.register(ChangedApplications.FILE_EXPLORER.get(), FileExplorerScreen::new);
+            ApplicationScreens.register(ChangedApplications.SAVE_FILE_DIALOG.get(), SaveFileDialogScreen::new);
             ApplicationScreens.register(ChangedApplications.DOOR_CONTROLLER.get(), DoorControllerScreen::new);
             ApplicationScreens.register(ChangedApplications.TEXT_EDITOR.get(), TextEditorScreen::new);
+            ApplicationScreens.register(ChangedApplications.EXOSKELETON_CONTROLLER.get(), ExoControllerScreen::new);
+            ApplicationScreens.register(ChangedApplications.STASIS_CHAMBER_CONTROLLER.get(), StasisChamberControllerScreen::new);
         });
     }
 }

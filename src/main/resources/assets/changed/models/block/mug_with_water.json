@@ -1,0 +1,6 @@
+{
+  "parent": "changed:custom/filled_mug",
+  "textures": {
+    "mug": "changed:block/mug_with_water"
+  }
+}

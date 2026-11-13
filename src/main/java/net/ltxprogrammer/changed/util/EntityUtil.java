@@ -52,9 +52,10 @@ public class EntityUtil {
      * @return Changed entity or original entity
      */
     public static LivingEntity maybeGetOverlaying(LivingEntity entity) {
-        return ProcessTransfur.getPlayerTransfurVariantSafe(playerOrNull(entity))
-                .map(instance -> (LivingEntity)instance.getChangedEntity())
-                .orElse(entity);
+        var variant = ProcessTransfur.getPlayerTransfurVariant(playerOrNull(entity));
+        if (variant != null)
+            return variant.getChangedEntity();
+        return entity;
     }
 
     public static float getFrictionOnBlock(BlockState instance, float originalFriction, LevelReader level, BlockPos pos, @Nullable Entity entity) {

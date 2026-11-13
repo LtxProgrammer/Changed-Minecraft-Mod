@@ -19,11 +19,6 @@ public class CamouflageAbility extends SimpleToggleAbility {
     }
 
     @Override
-    public boolean canUse(IAbstractChangedEntity entity) {
-        return true;
-    }
-
-    @Override
     public void tickIdle(IAbstractChangedEntity entity) {
         super.tickIdle(entity);
 

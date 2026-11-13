@@ -8,5 +8,10 @@
   },
   "price": 1,
 
-  "comment": "Grants ability to summon sharks"
+  "acquiredEffects": [
+    {
+      "type": "changed:unlock_active_ability",
+      "ability": "changed:summon_sharks"
+    }
+  ]
 }

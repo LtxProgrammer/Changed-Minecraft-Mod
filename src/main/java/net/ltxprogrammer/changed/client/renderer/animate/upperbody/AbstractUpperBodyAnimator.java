@@ -8,8 +8,10 @@ import net.minecraft.client.model.AnimationUtils;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractUpperBodyAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends HumanoidAnimator.Animator<T, M> {
@@ -138,5 +140,13 @@ public abstract class AbstractUpperBodyAnimator<T extends ChangedEntity, M exten
         this.torso.copyFrom(humanoidModel.body);
         this.leftArm.copyFrom(humanoidModel.leftArm);
         this.rightArm.copyFrom(humanoidModel.rightArm);
+    }
+
+    protected void positionLeftArmByTorso(TriConsumer<Float, Float, Float> componentConsumer) {
+        positionRelative(torso, core.torsoWidth, 2.0f, 0.0f, componentConsumer);
+    }
+
+    protected void positionRightArmByTorso(TriConsumer<Float, Float, Float> componentConsumer) {
+        positionRelative(torso, -core.torsoWidth, 2.0f, 0.0f, componentConsumer);
     }
 }

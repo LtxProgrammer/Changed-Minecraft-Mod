@@ -1,41 +1,30 @@
 package net.ltxprogrammer.changed.item;
 
-import net.ltxprogrammer.changed.client.animations.ModelPartIdentifier;
 import net.ltxprogrammer.changed.data.AccessorySlots;
-import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ClothingItem extends Item implements Clothing, ExtendedItemProperties {
@@ -125,19 +114,20 @@ public class ClothingItem extends Item implements Clothing, ExtendedItemProperti
                 this.getClothingState(stack),
                 entity,
                 slot,
-                type
+                type,
+                false
         );
 
         return texture == null ? null : texture.toString();
     }
 
     @Override
-    public final @Nullable ResourceLocation getTexture(ItemStack stack, Entity entity, EquipmentSlot renderSlot, @Nullable String type) {
-        return getClothingTexture(stack, this.getClothingState(stack), entity, renderSlot, type);
+    public final @Nullable ResourceLocation getTexture(ItemStack stack, Entity entity, EquipmentSlot renderSlot, @Nullable String type, boolean slim) {
+        return getClothingTexture(stack, this.getClothingState(stack), entity, renderSlot, type, slim);
     }
 
     @Nullable
-    protected ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type) {
+    protected ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type, boolean slim) {
         ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
         return ResourceLocation.fromNamespaceAndPath(
                 itemId.getNamespace(),

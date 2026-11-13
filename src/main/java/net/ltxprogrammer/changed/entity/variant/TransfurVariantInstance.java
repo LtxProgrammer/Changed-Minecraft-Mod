@@ -37,7 +37,6 @@ import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -51,7 +50,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -1088,7 +1086,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         this.tickTransfurProgress();
 
         if (host.onGround())
-            jumpCharges = parent.extraJumpCharges;
+            jumpCharges = Mth.floor(this.getFeatureLevel(ChangedVariantFeatures.MIDAIR_JUMPS.get()));
 
         this.tickFlying();
 

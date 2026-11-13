@@ -1,32 +1,33 @@
 package net.ltxprogrammer.changed.computers.protocol;
 
+import net.ltxprogrammer.changed.util.OptionalBoolean;
+
 import java.util.Objects;
-import java.util.Optional;
 
-public final class DoorControlProtocol extends Packet {
-    public static final DoorControlProtocol AUTOMATIC = new DoorControlProtocol(Optional.of(true), Optional.empty(), Optional.empty());
-    public static final DoorControlProtocol MANUAL = new DoorControlProtocol(Optional.of(false), Optional.empty(), Optional.empty());
-    public static final DoorControlProtocol OPEN_DOOR = new DoorControlProtocol(Optional.of(false), Optional.of(true), Optional.empty());
-    public static final DoorControlProtocol CLOSE_DOOR = new DoorControlProtocol(Optional.of(false), Optional.of(false), Optional.empty());
-    private final Optional<Boolean> automaticState;
-    private final Optional<Boolean> openState;
-    private final Optional<Boolean> lockState;
+public final class DoorControlProtocol extends Frame {
+    public static final DoorControlProtocol AUTOMATIC = new DoorControlProtocol(OptionalBoolean.of(true), OptionalBoolean.empty(), OptionalBoolean.empty());
+    public static final DoorControlProtocol MANUAL = new DoorControlProtocol(OptionalBoolean.of(false), OptionalBoolean.empty(), OptionalBoolean.empty());
+    public static final DoorControlProtocol OPEN_DOOR = new DoorControlProtocol(OptionalBoolean.of(false), OptionalBoolean.of(true), OptionalBoolean.empty());
+    public static final DoorControlProtocol CLOSE_DOOR = new DoorControlProtocol(OptionalBoolean.of(false), OptionalBoolean.of(false), OptionalBoolean.empty());
+    private final OptionalBoolean automaticState;
+    private final OptionalBoolean openState;
+    private final OptionalBoolean lockState;
 
-    public DoorControlProtocol(Optional<Boolean> automaticState, Optional<Boolean> openState, Optional<Boolean> lockState) {
+    public DoorControlProtocol(OptionalBoolean automaticState, OptionalBoolean openState, OptionalBoolean lockState) {
         this.automaticState = automaticState;
         this.openState = openState;
         this.lockState = lockState;
     }
 
-    public Optional<Boolean> automaticState() {
+    public OptionalBoolean automaticState() {
         return automaticState;
     }
 
-    public Optional<Boolean> openState() {
+    public OptionalBoolean openState() {
         return openState;
     }
 
-    public Optional<Boolean> lockState() {
+    public OptionalBoolean lockState() {
         return lockState;
     }
 

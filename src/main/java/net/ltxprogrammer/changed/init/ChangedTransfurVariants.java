@@ -8,7 +8,7 @@ import net.ltxprogrammer.changed.datagen.ability.AbilityTreeProvider;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.VisionType;
-import net.ltxprogrammer.changed.entity.ai.EntityAssimilationBehavior;
+import net.ltxprogrammer.changed.entity.ai.AssimilationDecisionHandler;
 import net.ltxprogrammer.changed.entity.ai.TransfurDecider;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.GenderedPair;
@@ -71,7 +71,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexAlien>> LATEX_ALIEN = register("form_latex_alien",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_ALIEN));
     public static final RegistryObject<TransfurVariant<LatexBee>> LATEX_BEE = register("form_latex_bee",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_BEE).extraJumps(4));
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_BEE));
     public static final RegistryObject<TransfurVariant<LatexBenignOrca>> LATEX_BENIGN_ORCA = register("form_latex_benign_orca",
             TransfurVariant.Builder.of(ChangedEntities.BENIGN_LATEX_ORCA).noVision().disableItems());
     public static final RegistryObject<TransfurVariant<LatexBenignWolf>> LATEX_BENIGN_WOLF = register("form_latex_benign_wolf",
@@ -82,9 +82,8 @@ public class ChangedTransfurVariants {
             TransfurVariant.Builder.of(ChangedEntities.BLUE_LATEX_WOLF).scares(AbstractSkeleton.class));
     public static final RegistryObject<TransfurVariant<LatexCrocodile>> LATEX_CROCODILE = register("form_latex_crocodile",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_CROCODILE));
-    // TODO balance extra jumps and gliding (maybe only allow one or the other)
     public static final RegistryObject<TransfurVariant<LatexCrow>> LATEX_CROW = register("form_latex_crow",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_CROW).extraJumps(4));
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_CROW));
     public static final RegistryObject<TransfurVariant<CrystalWolf>> CRYSTAL_WOLF = register("form_crystal_wolf",
             TransfurVariant.Builder.of(ChangedEntities.CRYSTAL_WOLF).scares(AbstractSkeleton.class).sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
     public static final RegistryObject<TransfurVariant<CrystalWolfHorned>> CRYSTAL_WOLF_HORNED = register("form_crystal_wolf_horned",
@@ -116,7 +115,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexMingCat>> LATEX_MING_CAT = register("form_latex_ming_cat",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_MING_CAT).scares(Creeper.class));
     public static final RegistryObject<TransfurVariant<LatexMoth>> LATEX_MOTH = register("form_latex_moth",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_MOTH).extraJumps(6));
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_MOTH));
     public static final RegistryObject<TransfurVariant<LatexMutantBloodcellWolf>> LATEX_MUTANT_BLOODCELL_WOLF = register("form_latex_mutant_bloodcell_wolf",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_MUTANT_BLOODCELL_WOLF).scares(AbstractSkeleton.class).visionType(VisionType.REDUCED));
     public static final RegistryObject<TransfurVariant<LatexOrca>> LATEX_ORCA = register("form_latex_orca",
@@ -276,9 +275,9 @@ public class ChangedTransfurVariants {
     }
 
     public static void addChangedMobAssimilations(ProcessTransfur.GatherMobAssimilationsEvent event) {
-        event.register(EntityType.BEE, EntityAssimilationBehavior.latexAssimilation(1.4, true,
+        event.register(EntityType.BEE, AssimilationDecisionHandler.latexAssimilation(1.4, true,
                 TransfurDecider.simpleMobDecider(LATEX_BEE, 3.0f)));
-        event.register(EntityType.RABBIT, EntityAssimilationBehavior.latexAssimilation(2.0, true,
+        event.register(EntityType.RABBIT, AssimilationDecisionHandler.latexAssimilation(2.0, true,
                 TransfurDecider.simpleMobDecider(Gendered.LATEX_RABBITS, 3.0f)));
     }
 }

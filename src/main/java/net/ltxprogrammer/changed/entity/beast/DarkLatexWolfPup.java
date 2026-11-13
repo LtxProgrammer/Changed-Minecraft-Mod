@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.ai.TamedEntityFavor;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
@@ -30,7 +31,6 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     protected static final int MAX_AGE = 72000;
     protected int age = 0;
     protected int ticksLeftAsPuddle = 0;
-    private static final EntityDataAccessor<Boolean> DATA_PUDDLE_ID = SynchedEntityData.defineId(DarkLatexWolfPup.class, EntityDataSerializers.BOOLEAN);
 
     public DarkLatexWolfPup(EntityType<? extends DarkLatexWolfPup> type, Level level) {
         super(type, level);
@@ -64,26 +64,16 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
         return true;
     }
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_PUDDLE_ID, false);
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
-        super.onSyncedDataUpdated(accessor);
-        if (accessor.equals(DATA_PUDDLE_ID))
-            EntityUtil.refreshDimensionsAndPushFromWall(maybeGetUnderlying());
-    }
-
     public void setPuddle(boolean isPuddle) {
         this.goalSelector.setControlFlag(Goal.Flag.MOVE, !isPuddle);
-        this.entityData.set(DATA_PUDDLE_ID, isPuddle);
+        if (isPuddle)
+            this.setPoseExtension(ChangedPoseExtensions.DEFORMED.get());
+        else
+            this.clearPoseExtension(ChangedPoseExtensions.DEFORMED.get());
     }
 
     public boolean isPuddle() {
-        return this.entityData.get(DATA_PUDDLE_ID);
+        return this.getPoseExtension() == ChangedPoseExtensions.DEFORMED.get();
     }
 
     @Override
@@ -138,15 +128,6 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
             return 0.9F;
         else
             return 0.8F;
-    }
-
-    @Override
-    public EntityDimensions getDimensions(Pose pose) {
-        EntityDimensions core = super.getDimensions(pose);
-        if (this.isPuddle())
-            return EntityDimensions.scalable(core.width + 0.4f, core.height - 0.5f);
-        else
-            return core;
     }
 
     @Override

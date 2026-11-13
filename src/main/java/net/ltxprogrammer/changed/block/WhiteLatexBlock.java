@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.beast.WhiteLatexEntity;
 import net.ltxprogrammer.changed.entity.latex.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
@@ -8,19 +7,15 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.AbortableIterationConsumer;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
@@ -41,9 +36,19 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     }
 
     @Override
-    public @NotNull LatexCoverState getLatexCoverState(BlockState blockState, BlockPos blockPos) {
+    public @NotNull LatexCoverState getLatexCoverState(BlockState blockState) {
         return ChangedLatexTypes.WHITE_LATEX.get().sourceCoverState();
     }
+
+    public static final List<Supplier<? extends WhiteLatexFlora>> SMALL_FLORA = List.of(
+            ChangedBlocks.WHITE_LATEX_SWIRL,
+            ChangedBlocks.WHITE_LATEX_SQUIGGLE,
+            ChangedBlocks.WHITE_LATEX_STUMP
+    );
+
+    public static final List<Supplier<? extends WhiteLatexFlora>> LARGE_FLORA = List.of(
+            ChangedBlocks.WHITE_LATEX_STEM
+    );
 
     public boolean skipRendering(BlockState thisState, BlockState otherState, Direction direction) {
         return otherState.is(this) ? true : super.skipRendering(thisState, otherState, direction);
@@ -61,8 +66,6 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
         if (context instanceof EntityCollisionContext ecc) {
             if (ecc.getEntity() instanceof LivingEntity le) {
-                if (le.fallDistance > 3.0f)
-                    return Shapes.empty();
                 if (WhiteLatexTransportInterface.isEntityInWhiteLatex(le))
                     return Shapes.empty();
             }

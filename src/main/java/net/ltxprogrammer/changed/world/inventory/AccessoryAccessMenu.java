@@ -2,8 +2,11 @@ package net.ltxprogrammer.changed.world.inventory;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.active.multiarm.SwitchHandsAbilityInstance;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -13,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -39,29 +43,38 @@ public class AccessoryAccessMenu extends AbstractContainerMenu {
     public final Player owner;
     public final Inventory inventory;
     public final AccessorySlots accessorySlots;
+    public final @Nullable SwitchHandsAbilityInstance switchHandsAbility;
 
     private ImmutableList<AccessorySlotType> builtSlots;
+    private int extraHandSlots;
     private final Map<Integer, Slot> customSlots = new HashMap<>();
 
-    private AccessoryAccessMenu(int id, Player owner, List<AccessorySlotType> slotTypes, ItemStack carried) {
+    private AccessoryAccessMenu(int id, Player owner, List<AccessorySlotType> slotTypes, int extraHandSlots, ItemStack carried) {
         super(ChangedMenus.ACCESSORY_ACCESS.get(), id);
         this.owner = owner;
         this.inventory = owner.getInventory();
         this.accessorySlots = AccessorySlots.getForEntity(owner).orElseGet(AccessorySlots::new);
-        this.createSlots(inventory, slotTypes);
+        this.switchHandsAbility = AbstractAbility.getAbilityInstance(owner, ChangedAbilities.SWITCH_HANDS.get());
+        this.createSlots(inventory, slotTypes, extraHandSlots);
         this.setCarried(carried);
     }
 
     public AccessoryAccessMenu(int id, Player owner) {
-        this(id, owner, AccessorySlots.getForEntity(owner).orElseGet(AccessorySlots::new).getOrderedSlots(), ItemStack.EMPTY);
+        this(id, owner,
+                AccessorySlots.getForEntity(owner).orElseGet(AccessorySlots::new).getOrderedSlots(),
+                AbstractAbility.getAbilityInstanceSafe(owner, ChangedAbilities.SWITCH_HANDS.get())
+                        .map(SwitchHandsAbilityInstance::getSlotCount).orElse(0),
+                ItemStack.EMPTY);
     }
 
     public AccessoryAccessMenu(int id, Inventory inventory, FriendlyByteBuf extra) {
-        this(id, inventory.player, readSlotTypes(extra), ItemStack.EMPTY);
+        this(id, inventory.player, readSlotTypes(extra), readExtraHandSlots(extra), ItemStack.EMPTY);
     }
 
     public static void openForPlayer(ServerPlayer player, ItemStack carryRequest) {
         final var slots = AccessorySlots.getForEntity(player).orElseGet(AccessorySlots::new);
+        final int extraHandCount = AbstractAbility.getAbilityInstanceSafe(player, ChangedAbilities.SWITCH_HANDS.get())
+                .map(SwitchHandsAbilityInstance::getSlotCount).orElse(0);
 
         if (!player.getAbilities().instabuild) {
             carryRequest = player.inventoryMenu.getCarried();
@@ -71,9 +84,10 @@ public class AccessoryAccessMenu extends AbstractContainerMenu {
         final ItemStack resolvedCarryRequest = carryRequest;
 
         NetworkHooks.openScreen(player,
-                new SimpleMenuProvider((id, inv, accessor) -> new AccessoryAccessMenu(id, accessor, slots.getOrderedSlots(), resolvedCarryRequest), Component.empty()),
+                new SimpleMenuProvider((id, inv, accessor) -> new AccessoryAccessMenu(id, accessor, slots.getOrderedSlots(), extraHandCount, resolvedCarryRequest), Component.empty()),
                 extra -> {
                     extra.writeCollection(slots.getOrderedSlots(), ChangedRegistry.ACCESSORY_SLOTS::writeRegistryObject);
+                    extra.writeVarInt(extraHandCount);
                 });
     }
 
@@ -83,12 +97,18 @@ public class AccessoryAccessMenu extends AbstractContainerMenu {
         return buffer.readList(ChangedRegistry.ACCESSORY_SLOTS::readRegistryObject);
     }
 
-    protected void makeAccessorySlots(List<AccessorySlotType> slotTypes) {
+    private static int readExtraHandSlots(@Nullable FriendlyByteBuf buffer) {
+        if (buffer == null)
+            return 0;
+        return buffer.readVarInt();
+    }
+
+    protected int makeAccessorySlots(List<AccessorySlotType> slotTypes, int slotOffset, int x) {
         var builder = ImmutableList.<AccessorySlotType>builder();
 
         for (int si = 0; si < slotTypes.size(); ++si) {
             final AccessorySlotType slotType = slotTypes.get(si);
-            this.customSlots.put(si, this.addSlot(new Slot(this.accessorySlots, si, 77 + ((si % 5) * 18), 8 + ((si / 5) * 18)) {
+            this.customSlots.put(si + slotOffset, this.addSlot(new Slot(this.accessorySlots, si, (77 + ((si % 5) * 18)) + x, 8 + ((si / 5) * 18)) {
                 @Override
                 public @Nullable Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, slotType.getNoItemIcon());
@@ -110,12 +130,33 @@ public class AccessoryAccessMenu extends AbstractContainerMenu {
         }
 
         builtSlots = builder.build();
+
+        return slotOffset + slotTypes.size();
     }
 
-    protected void createSlots(Inventory inv, List<AccessorySlotType> slotTypes) {
+    protected int makeExtraHandSlots(int extraHandSlots, int slotOffset) {
+        if (this.switchHandsAbility == null)
+            return slotOffset;
+
+        boolean leftHanded = owner.getMainArm() == HumanoidArm.LEFT;
+        for (int si = 0; si < extraHandSlots; ++si) {
+            this.customSlots.put(si + slotOffset, this.addSlot(new Slot(this.switchHandsAbility, si,
+                    8 + (((si + (leftHanded ? 0 : 1)) % 2) * 18),
+                    15 + ((si / 2) * 20)
+            )));
+        }
+
+        this.extraHandSlots = extraHandSlots;
+
+        return slotOffset + extraHandSlots;
+    }
+
+    protected void createSlots(Inventory inv, List<AccessorySlotType> slotTypes, int extraHandSlots) {
+        int x = extraHandSlots > 0 ? 50 : 0;
+
         for (int si = 0; si < 4; ++si) {
             final EquipmentSlot equipmentSlot = SLOT_IDS[si];
-            this.addSlot(new Slot(inv, 39 - si, 8, 8 + (si * 18)) {
+            this.addSlot(new Slot(inv, 39 - si, 8 + x, 8 + (si * 18)) {
                 public int getMaxStackSize() {
                     return 1;
                 }
@@ -137,11 +178,13 @@ public class AccessoryAccessMenu extends AbstractContainerMenu {
 
         for (int si = 0; si < 3; ++si)
             for (int sj = 0; sj < 9; ++sj)
-                this.addSlot(new Slot(inv, sj + (si + 1) * 9, 8 + sj * 18, 84 + si * 18));
+                this.addSlot(new Slot(inv, sj + (si + 1) * 9, (8 + sj * 18) + x, 84 + si * 18));
         for (int si = 0; si < 9; ++si)
-            this.addSlot(new Slot(inv, si, 8 + si * 18, 142));
+            this.addSlot(new Slot(inv, si, (8 + si * 18) + x, 142));
 
-        this.makeAccessorySlots(slotTypes);
+        int slotOffset = 0;
+        slotOffset = this.makeAccessorySlots(slotTypes, slotOffset, x);
+        slotOffset = this.makeExtraHandSlots(extraHandSlots, slotOffset);
     }
 
     @Override
@@ -152,6 +195,10 @@ public class AccessoryAccessMenu extends AbstractContainerMenu {
 
     public List<AccessorySlotType> getBuiltSlots() {
         return builtSlots;
+    }
+
+    public int getExtraHandSlots() {
+        return extraHandSlots;
     }
 
     public EquipmentSlot denyInvalidArmorSlot(ItemStack itemStack) {

@@ -345,7 +345,7 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
 
         super.tick();
 
-        if (parent.getEntityType().is(ChangedTags.EntityTypes.LATEX))
+        if (ProcessTransfur.isGoo(host))
             host.removeEffect(ChangedEffects.HYPERCOAGULATION.get());
 
         this.tickScare();

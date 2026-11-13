@@ -67,10 +67,7 @@ public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexH
     }
 
     public static void addUnifiedSquogLegs(PartDefinition partDefinition, ArmorModel layer) {
-        int calfUVy = switch (layer) {
-            case CLOTHING_INNER, CLOTHING_MIDDLE, ARMOR_INNER -> 20;
-            default -> 16;
-        };
+        int calfUVy = layer.isInnerModel() ? 20 : 16;
 
         PartDefinition RightLeg = partDefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-2.7F, 9.3F, 0.0F));
 

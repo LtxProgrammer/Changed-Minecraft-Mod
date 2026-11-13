@@ -100,6 +100,11 @@ public class ChangedBlocks {
     public static final RegistryObject<LatexContainerBlock> LATEX_CONTAINER = register("latex_container", LatexContainerBlock::new);
     public static final RegistryObject<LatexTrafficCone> LATEX_TRAFFIC_CONE = register("latex_traffic_cone", LatexTrafficCone::new);
     public static final RegistryObject<MugBlock> MUG = register("mug", MugBlock::new, block -> new EmptyMug(block, new Item.Properties()));
+    public static final RegistryObject<FilledMugBlock> MUG_WITH_WATER = registerNoItem("mug_with_water", FilledMugBlock::dilutesInWater);
+    public static final RegistryObject<FilledMugBlock> MUG_WITH_MILK = registerNoItem("mug_with_milk", FilledMugBlock::dilutesInWater);
+    public static final RegistryObject<FilledMugBlock> MUG_WITH_COFFEE = registerNoItem("mug_with_coffee", FilledMugBlock::dilutesInWater);
+    public static final RegistryObject<FilledMugBlock> MUG_WITH_DARK_LATEX = registerNoItem("mug_with_dark_latex", FilledMugBlock::sitsInWater);
+    public static final RegistryObject<FilledMugBlock> MUG_WITH_WHITE_LATEX = registerNoItem("mug_with_white_latex", FilledMugBlock::sitsInWater);
     public static final RegistryObject<BeifengCrystal> BEIFENG_CRYSTAL = register("beifeng_crystal", () -> new BeifengCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(1.7F, 0.2F)));
     public static final RegistryObject<BeifengCrystalSmall> BEIFENG_CRYSTAL_SMALL = register("beifeng_crystal_small", () -> new BeifengCrystalSmall(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(1.7F, 0.2F)));
     public static final RegistryObject<DarkDragonCrystal> DARK_DRAGON_CRYSTAL = register("dark_dragon_crystal", () -> new DarkDragonCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(1.7F, 0.2F)));
@@ -255,6 +260,10 @@ public class ChangedBlocks {
     public static final RegistryObject<FlowerPotBlock> POTTED_ORANGE_TREE_SAPLING = registerPottedPlant("potted_orange_tree_sapling", ORANGE_TREE_SAPLING);
     public static final RegistryObject<LeavesBlock> ORANGE_TREE_LEAVES = register("orange_tree_leaves", () -> new LeavesBlock(
             BlockBehaviour.Properties.of().strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(ChangedBlocks::ocelotOrParrot).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
+    public static final RegistryObject<WhiteLatexFlora> WHITE_LATEX_SWIRL = register("white_latex_swirl", () -> new WhiteLatexFlora(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.SLIME_BLOCK).noOcclusion().noCollission()));
+    public static final RegistryObject<WhiteLatexFlora> WHITE_LATEX_SQUIGGLE = register("white_latex_squiggle", () -> new WhiteLatexFlora(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.SLIME_BLOCK).noOcclusion().noCollission()));
+    public static final RegistryObject<WhiteLatexFlora> WHITE_LATEX_STUMP = register("white_latex_stump", () -> new WhiteLatexFlora(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.SLIME_BLOCK).noOcclusion().noCollission()));
+    public static final RegistryObject<WhiteLatexFloraTall> WHITE_LATEX_STEM = register("white_latex_stem", () -> new WhiteLatexFloraTall(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.SLIME_BLOCK).noOcclusion().noCollission()));
     public static final RegistryObject<InkCloud> INK_CLOUD = registerNoItem("ink_cloud", () -> new InkCloud(
             BlockBehaviour.Properties.of().strength(-1.0F, 3600000.0F).noCollission().noLootTable().isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
 

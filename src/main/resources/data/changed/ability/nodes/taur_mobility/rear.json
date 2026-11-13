@@ -7,7 +7,7 @@
     "groupDiscountLevels": -1
   },
 
-  "comment": "While held: the player's viewpoint raises up, allowing them to reach ~2+ blocks up. The player cannot move while rearing.",
+  "comment": "While held: the player's viewpoint raises up, allowing them to reach ~2+ blocks up. The player moves slowly while rearing.",
   "acquiredEffects": [
     {
       "type": "changed:unlock_active_ability",

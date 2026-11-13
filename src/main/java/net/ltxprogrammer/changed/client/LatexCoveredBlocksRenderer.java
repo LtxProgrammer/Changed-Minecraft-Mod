@@ -23,11 +23,13 @@ import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
@@ -45,6 +47,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -420,17 +423,13 @@ public class LatexCoveredBlocksRenderer implements PreparableReloadListener {
 
     private boolean wrappedTesselate(
             BlockAndTintGetter level, LatexCoverGetter latexCoverGetter,
-            BlockPos blockPos, VertexConsumer bufferBuilder,
+            BlockPos blockPos, PoseStack poseStack, VertexConsumer bufferBuilder,
             BlockState blockState, LatexCoverState coverState,
             RandomSource random) {
         final ModelSet modelSet = getModelSet(blockState, coverState);
 
-        if (blockState.isCollisionShapeFullBlock(level, blockPos))
+        if (SpreadingLatexType.isBlockFull(level, blockPos, blockState))
             return false;
-
-        int blockX0 = blockPos.getX() & 15;
-        int blockY0 = blockPos.getY() & 15;
-        int blockZ0 = blockPos.getZ() & 15;
 
         int lightColor = this.getLightColor(level, blockPos);
 
@@ -440,9 +439,6 @@ public class LatexCoveredBlocksRenderer implements PreparableReloadListener {
         boolean surfaceSouth = coverState.getProperties().contains(SpreadingLatexType.SOUTH) && coverState.getValue(SpreadingLatexType.SOUTH);
         boolean surfaceEast = coverState.getProperties().contains(SpreadingLatexType.EAST) && coverState.getValue(SpreadingLatexType.EAST);
         boolean surfaceWest = coverState.getProperties().contains(SpreadingLatexType.WEST) && coverState.getValue(SpreadingLatexType.WEST);
-
-        PoseStack poseStack = new PoseStack();
-        poseStack.translate(blockX0, blockY0, blockZ0);
 
         long seed = coverState.getSeed(blockPos);
 
@@ -507,17 +503,25 @@ public class LatexCoveredBlocksRenderer implements PreparableReloadListener {
 
     public boolean tesselate(
             BlockAndTintGetter level, LatexCoverGetter latexCoverGetter,
-            BlockPos blockPos, VertexConsumer bufferBuilder,
+            BlockPos blockPos, PoseStack poseStack, VertexConsumer bufferBuilder,
             BlockState blockState, LatexCoverState coverState,
             RandomSource random) {
         try {
-            return this.wrappedTesselate(level, latexCoverGetter, blockPos, bufferBuilder, blockState, coverState, random);
+            return this.wrappedTesselate(level, latexCoverGetter, blockPos, poseStack, bufferBuilder, blockState, coverState, random);
         } catch (Throwable throwable) {
             CrashReport crashreport = CrashReport.forThrowable(throwable, "Tesselating latex cover in world");
             CrashReportCategory crashreportcategory = crashreport.addCategory("Block being tesselated");
             CrashReportCategory.populateBlockDetails(crashreportcategory, level, blockPos, (BlockState)null);
             throw new ReportedException(crashreport);
         }
+    }
+
+    public void renderBreakingTexture(BlockState blockState, LatexCoverState coverState, BlockPos blockPos, ClientLevel level, PoseStack poseStack, VertexConsumer bufferBuilder, RandomSource random) {
+        if (!coverState.isPresent())
+            return;
+
+        LatexCoverGetter coverGetter = LatexCoverGetter.wrap(level);
+        this.tesselate(level, coverGetter, blockPos, poseStack, bufferBuilder, blockState, coverState, random);
     }
 
     private static IModelBuilder<?> modelBuilderFor(TextureAtlasSprite particle, ResourceLocation namedRenderType) {

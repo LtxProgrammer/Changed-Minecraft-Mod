@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.client.animations.LimbExtensions;
 import net.ltxprogrammer.changed.client.animations.ModelPartIdentifier;
 import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -50,14 +49,15 @@ public class LabCoatItem extends ClothingItem {
     }
 
     @Override
-    protected @Nullable ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type) {
+    protected @Nullable ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type, boolean slim) {
         ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        String stem = slim ? "_slim" : "";
         if (clothingState.getValue(CLOSED))
             return ResourceLocation.fromNamespaceAndPath(itemId.getNamespace(),
-                    String.format("textures/models/%s_closed.png", itemId.getPath()));
+                    String.format("textures/models/%s_closed%s.png", itemId.getPath(), stem));
         else
             return ResourceLocation.fromNamespaceAndPath(itemId.getNamespace(),
-                    String.format("textures/models/%s.png", itemId.getPath()));
+                    String.format("textures/models/%s%s.png", itemId.getPath(), stem));
     }
 
     @Override

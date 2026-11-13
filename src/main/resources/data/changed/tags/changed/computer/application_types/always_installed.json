@@ -3,6 +3,8 @@
   "values": [
     "changed:file_explorer",
     "changed:door_controller",
-    "changed:text_editor"
+    "changed:text_editor",
+    "changed:exoskeleton_controller",
+    "changed:stasis_chamber_controller"
   ]
 }

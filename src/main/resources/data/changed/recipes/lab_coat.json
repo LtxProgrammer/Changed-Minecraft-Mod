@@ -1,13 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "# #",
+    "#W#",
     "#I#",
     "#I#"
   ],
   "key": {
     "#": {
-      "item": "minecraft:white_carpet"
+      "item": "changed:fabric"
+    },
+    "W": {
+      "item": "minecraft:white_dye"
     },
     "I": {
       "item": "minecraft:iron_nugget"

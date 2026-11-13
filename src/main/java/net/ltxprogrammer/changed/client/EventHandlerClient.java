@@ -10,11 +10,7 @@ import net.ltxprogrammer.changed.client.gui.ContentWarningScreen;
 import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
-import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
-import net.ltxprogrammer.changed.effect.particle.EmoteParticle;
-import net.ltxprogrammer.changed.effect.particle.GasParticle;
-import net.ltxprogrammer.changed.effect.particle.LatexDripParticle;
-import net.ltxprogrammer.changed.effect.particle.TscSweepParticle;
+import net.ltxprogrammer.changed.effect.particle.*;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.latex.IClientLatexTypeExtensions;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
@@ -82,6 +78,7 @@ public class EventHandlerClient {
 
     @SubscribeEvent
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
+        event.registerSpecial(ChangedParticles.GLOBBED_LATEX.get(), GlobbedLatexParticle::new);
         event.registerSpriteSet(ChangedParticles.DRIPPING_LATEX.get(), LatexDripParticle.Provider::new);
         event.registerSpriteSet(ChangedParticles.GAS.get(), GasParticle.Provider::new);
         event.registerSpriteSet(ChangedParticles.EMOTE.get(), EmoteParticle.Provider::new);
@@ -247,7 +244,7 @@ public class EventHandlerClient {
             if (event.oldVariant != null || event.livingEntity.tickCount < 20)
                 return; // Only do effect if player was human
 
-            if (event.livingEntity instanceof Player player && player.isCreative())
+            if (event.livingEntity instanceof Player player && (player.isCreative() || player.isSpectator()))
                 return; // Don't do effect if player is creative mode
 
             event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, duration, 1, false, false));
@@ -261,6 +258,8 @@ public class EventHandlerClient {
         public static void onRenderBlockHighlight(RenderHighlightEvent.Block event) {
             if (event.getTarget() instanceof LatexCoverHitResult)
                 event.setCanceled(true);
+            else
+                return;
 
             final var level = Minecraft.getInstance().level;
             final var getter = LatexCoverGetter.wrap(level);

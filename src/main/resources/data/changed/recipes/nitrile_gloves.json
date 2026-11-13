@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "# #"
+  ],
+  "key": {
+    "#": {
+      "item": "changed:rubber"
+    }
+  },
+  "result": {
+    "item": "changed:nitrile_gloves",
+    "count": 1
+  }
+}

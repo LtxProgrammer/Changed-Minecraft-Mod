@@ -67,6 +67,15 @@ public class FileExplorerScreen implements ApplicationScreen {
         });
     }
 
+    @Override
+    public ComputerScreen getScreen() {
+        return screen;
+    }
+
+    protected void openFile(LexicalPath.Absolute fullPath) {
+        screen.openFile(fullPath);
+    }
+
     protected void copyFileOrFolder(LexicalPath.Absolute from, LexicalPath.Absolute to) {
         CompoundTag payload = new CompoundTag();
         payload.putString("control", "copy");
@@ -90,13 +99,21 @@ public class FileExplorerScreen implements ApplicationScreen {
         Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
     }
 
+    protected int getScrollRegionHeight() {
+        return 163;
+    }
+
+    protected int getScrollElementCount() {
+        return 7;
+    }
+
     protected int buildBasicWidgets() {
         int x = desktopLeft + 4;
         int y = desktopTop + 4;
         AtomicInteger yOffset = new AtomicInteger(0);
 
         screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y, desktopWidth - 8, 20,
-                        application.getType().getDisplayName(), screen.getMinecraft().font)
+                        application.getType().getDisplayName(), screen.getFont())
                 .alignCenter().setColor(0x404040));
 
         screen.addApplicationWidget(Button.builder(COMPONENT_EXIT, (self) -> {
@@ -105,8 +122,8 @@ public class FileExplorerScreen implements ApplicationScreen {
                 .tooltip(Tooltip.create(COMPONENT_EXIT))
                 .build(ApplicationScreen.iconButton(screen::getTheme, 200, 0)));
 
-        this.scrollBar = screen.addApplicationWidget(this.scrollBar != null ? this.scrollBar : ApplicationScreen.verticalScrollBarStepped(screen::getTheme, desktopLeft + 314, desktopTop + 27, 6, 163)
-                .setCanvasSize(5).setViewportSize(7).setScrollListener((lastScroll, scroll) -> {
+        this.scrollBar = screen.addApplicationWidget(this.scrollBar != null ? this.scrollBar : ApplicationScreen.verticalScrollBarStepped(screen::getTheme, desktopLeft + 314, desktopTop + 27, 6, this.getScrollRegionHeight())
+                .setCanvasSize(5).setViewportSize(this.getScrollElementCount()).setScrollListener((lastScroll, scroll) -> {
             if (lastScroll == scroll)
                 return;
             refreshListings.run();
@@ -114,7 +131,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         }));
 
         this.bottomText = screen.addApplicationWidget(this.bottomText != null ? this.bottomText : ApplicationScreen.shadowlessString(x, desktopTop + 191, desktopWidth, 9,
-                        Component.empty(), screen.getMinecraft().font)
+                        Component.empty(), screen.getFont())
                 .alignLeft().setColor(0x404040));
 
         return yOffset.getAcquire();
@@ -153,7 +170,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         }
 
         if (permissions.canWrite()) {
-            var renameWidget = screen.addApplicationWidget(new EditBox(screen.getMinecraft().font, x, y, startingWidth, 20, Component.empty()) {
+            var renameWidget = screen.addApplicationWidget(new EditBox(screen.getFont(), x, y, startingWidth, 20, Component.empty()) {
                 @Override
                 public boolean keyPressed(int keyCode, int scanCode, int mods) {
                     if (!this.canConsumeInput()) {
@@ -198,7 +215,7 @@ public class FileExplorerScreen implements ApplicationScreen {
         return remainingWidth;
     }
 
-    protected void buildRegularListings(boolean isLocal) {
+    protected int buildRegularListings(boolean isLocal) {
         screen.clearApplicationWidgets();
 
         int x = desktopLeft + 4;
@@ -278,7 +295,7 @@ public class FileExplorerScreen implements ApplicationScreen {
                 int iconX = file.type.xTexture;
                 int iconY = file.type.yTexture;
                 lineWidgets.add(screen.addApplicationWidget(Button.builder(Component.literal(name), (self) -> {
-                            screen.openFile(filePath);
+                            this.openFile(filePath);
                         }).bounds(x, y + yOffset.getAndAdd(23), remainingWidth, 20)
                         .build(explorerListItemButton(screen::getTheme, iconX, iconY))));
             });
@@ -302,7 +319,7 @@ public class FileExplorerScreen implements ApplicationScreen {
 
             if (filesAndFolderCount <= 0) {
                 screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth, 20,
-                                Component.translatable("application.changed.file_explorer.empty_folder"), screen.getMinecraft().font)
+                                Component.translatable("application.changed.file_explorer.empty_folder"), screen.getFont())
                         .alignCenter().setColor(0x404040));
             }
         });
@@ -317,7 +334,7 @@ public class FileExplorerScreen implements ApplicationScreen {
             int elementIndex = elementCount.getAndIncrement();
             if (!(elementIndex < scrollBar.getScroll() || elementIndex >= scrollBar.getScrollNext())) {
                 screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth, 20,
-                                Component.translatable("application.changed.file_explorer.invalid_folder", menu.getWorkingDir().toString()), screen.getMinecraft().font)
+                                Component.translatable("application.changed.file_explorer.invalid_folder", menu.getWorkingDir().toString()), screen.getFont())
                         .alignCenter().setColor(0x404040));
             }
         }
@@ -333,6 +350,8 @@ public class FileExplorerScreen implements ApplicationScreen {
         listenForDeviceUpdates = false;
         refreshListings = () -> buildRegularListings(isLocal);
         renaming = false;
+
+        return yOffset.getAcquire();
     }
 
     protected void buildDriveListings() {
@@ -416,7 +435,7 @@ public class FileExplorerScreen implements ApplicationScreen {
             screen.addApplicationWidget(Button.builder(deviceInfo.deviceName(), (self) -> {
                         CompoundTag payload = new CompoundTag();
                         payload.putString("control", "mount");
-                        payload.putInt("address", logicalAddress);
+                        payload.put("address", logicalAddress.encode());
                         Changed.PACKET_HANDLER.sendToServer(ComputerAppSyncPacket.syncApplication(application.getType(), payload));
 
                         self.active = false;
@@ -429,7 +448,7 @@ public class FileExplorerScreen implements ApplicationScreen {
             int elementIndex = elementCount.getAndIncrement();
             if (!(elementIndex < scrollBar.getScroll() || elementIndex >= scrollBar.getScrollNext())) {
                 screen.addApplicationWidget(ApplicationScreen.shadowlessString(x, y + yOffset.getAndAdd(23), desktopWidth, 20,
-                                Component.translatable("application.changed.file_explorer.empty_network"), screen.getMinecraft().font)
+                                Component.translatable("application.changed.file_explorer.empty_network"), screen.getFont())
                         .alignCenter().setColor(0x404040));
             }
         }

@@ -4,9 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.Folder;
 import net.ltxprogrammer.changed.computers.LexicalPath;
 import net.ltxprogrammer.changed.computers.SourcedDiscData;
-import net.ltxprogrammer.changed.computers.protocol.DeviceInfoProtocol;
-import net.ltxprogrammer.changed.computers.protocol.FileSystemShareProtocol;
-import net.ltxprogrammer.changed.computers.protocol.Packet;
+import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedApplications;
 import net.ltxprogrammer.changed.network.packet.ComputerAppSyncPacket;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -24,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 public class FileExplorerApplication extends NetworkDeviceControllerApplication {
-    public final Map<Integer, DeviceInfoProtocol> reachableDevices = new HashMap<>();
-    public final Map<Integer, FileSystemShareProtocol> deviceFolders = new HashMap<>();
+    public final Map<NetworkInterface.Address, DeviceInfoProtocol> reachableDevices = new HashMap<>();
+    public final Map<NetworkInterface.Address, FileSystemShareProtocol> deviceFolders = new HashMap<>();
     public boolean devicesDirty = true;
     public boolean listingsDirty = true;
     public Character remoteDriveLetter = null;
@@ -45,7 +43,7 @@ public class FileExplorerApplication extends NetworkDeviceControllerApplication 
         return FileSystemShareProtocol.Query.class;
     }
 
-    private void refreshRemoteListings() {
+    protected void refreshRemoteListings() {
         CompoundTag response = new CompoundTag();
         response.putString("control", "refreshListings");
 
@@ -58,7 +56,7 @@ public class FileExplorerApplication extends NetworkDeviceControllerApplication 
         if (receiver.isServer()) {
             String control = payload.getString("control");
             if ("mount".equals(control)) {
-                int remoteAddress = payload.getInt("address");
+                var remoteAddress = NetworkInterface.Address.decode(payload.get("address"));
                 if (remoteDriveLetter != null)
                     menu.computer.unmountDisc(remoteDriveLetter);
                 remoteDriveLetter = menu.computer.mountDisc(SourcedDiscData.fromRemote(
@@ -121,14 +119,14 @@ public class FileExplorerApplication extends NetworkDeviceControllerApplication 
         } else {
             String control = payload.getString("control");
             if ("addDevice".equals(control)) {
-                reachableDevices.put(payload.getInt("address"), new DeviceInfoProtocol(
+                reachableDevices.put(NetworkInterface.Address.decode(payload.get("address")), new DeviceInfoProtocol(
                         Component.Serializer.fromJson(payload.getString("name")),
                         TagUtil.getBlockPos(payload, "pos"),
                         TagUtil.getResourceLocation(payload, "icon")
                 ));
                 devicesDirty = true;
             } else if ("removeDevice".equals(control)) {
-                reachableDevices.remove(payload.getInt("address"));
+                reachableDevices.remove(NetworkInterface.Address.decode(payload.get("address")));
                 devicesDirty = true;
             } else if ("selectDrive".equals(control)) {
                 openDriveLetter = payload.getString("letter").charAt(0);
@@ -139,37 +137,37 @@ public class FileExplorerApplication extends NetworkDeviceControllerApplication 
     }
 
     @Override
-    public void handlePacket(ServerLevel level, int logicalSource, Packet packet) {
-        super.handlePacket(level, logicalSource, packet);
-        if (packet instanceof FileSystemShareProtocol fileSystemShare) {
-            deviceFolders.put(logicalSource, fileSystemShare);
+    public void handlePacket(ServerLevel level, NetworkInterface.Address physicalSource, Frame frame) {
+        super.handlePacket(level, physicalSource, frame);
+        if (frame instanceof FileSystemShareProtocol fileSystemShare) {
+            deviceFolders.put(physicalSource, fileSystemShare);
         }
     }
 
     @Override
-    protected void deviceAdded(ServerLevel level, int logicalDevice, DeviceInfoProtocol deviceInfoProtocol) {
+    protected void deviceAdded(ServerLevel level, NetworkInterface.Address logicalDevice, DeviceInfoProtocol deviceInfoProtocol) {
         reachableDevices.put(logicalDevice, deviceInfoProtocol);
 
         CompoundTag payload = new CompoundTag();
         payload.putString("control", "addDevice");
-        payload.putInt("address", logicalDevice);
+        payload.put("address", logicalDevice.encode());
         payload.putString("name", Component.Serializer.toJson(deviceInfoProtocol.deviceName()));
         TagUtil.putBlockPos(payload, "pos", deviceInfoProtocol.position());
         TagUtil.putResourceLocation(payload, "icon", deviceInfoProtocol.icon());
         Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)menu.getPlayer()),
                 ComputerAppSyncPacket.syncApplication(this.getType(), payload));
 
-        menu.computer.nic.sendPacket(level, logicalDevice, FileSystemShareProtocol.Query.INSTANCE);
+        menu.computer.nic.sendOutFrame(level, logicalDevice, FileSystemShareProtocol.Query.INSTANCE);
     }
 
     @Override
-    protected void deviceRemoved(ServerLevel level, int logicalDevice) {
+    protected void deviceRemoved(ServerLevel level, NetworkInterface.Address logicalDevice) {
         reachableDevices.remove(logicalDevice);
         deviceFolders.remove(logicalDevice);
 
         CompoundTag payload = new CompoundTag();
         payload.putString("control", "removeDevice");
-        payload.putInt("address", logicalDevice);
+        payload.put("address", logicalDevice.encode());
         Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)menu.getPlayer()),
                 ComputerAppSyncPacket.syncApplication(this.getType(), payload));
     }

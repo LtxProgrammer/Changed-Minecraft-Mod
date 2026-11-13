@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 
-public class LatexCrow extends ChangedEntity implements PowderSnowWalkable {
+public class LatexCrow extends AbstractFlyingCapableEntity implements PowderSnowWalkable {
     public LatexCrow(EntityType<? extends ChangedEntity> type, Level level) {
         super(type, level);
     }

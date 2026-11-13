@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.init.ChangedPoseExtensions;
 import net.ltxprogrammer.changed.init.ChangedVariantFeatures;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -170,7 +171,7 @@ public class WallClimbAbilityInstance extends AbstractAbilityInstance {
 
             if (isActive) {
                 self.setNoGravity(true);
-                self.setPose(Pose.SWIMMING);
+                entity.getChangedEntity().setPoseExtension(ChangedPoseExtensions.SURFACE_CLIMBING.get());
                 this.pushPull(pushPositions);
                 this.transitionVelocityAndView(lastSurfaceNormal, surfaceNormal);
                 this.friction();
@@ -180,9 +181,12 @@ public class WallClimbAbilityInstance extends AbstractAbilityInstance {
 
             if (isActive) {
                 self.setNoGravity(true);
-                self.setPose(Pose.SWIMMING);
+                entity.getChangedEntity().setPoseExtension(ChangedPoseExtensions.SURFACE_CLIMBING.get());
             }
         }
+
+        if (!isActive)
+            entity.getChangedEntity().clearPoseExtension(ChangedPoseExtensions.SURFACE_CLIMBING.get());
     }
 
     protected Vec3 closestPointInBox(Vec3 point, AABB box) {

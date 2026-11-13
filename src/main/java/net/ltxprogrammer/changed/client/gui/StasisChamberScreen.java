@@ -163,8 +163,6 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         GENDERED
     }
 
-    public record PaginatedWidget(int pageIndex, AbstractWidget widget) {}
-
     private boolean initialized = false;
     private Button programsButton;
     private Button modifyButton;
@@ -204,7 +202,7 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         modifyType = menu.getChamberedLatex().map(entity -> {
             if (entity.getChangedEntity() instanceof ModifiableEntity modifiable) {
                 if (this.lastSeenEntityForModification != modifiable) {
-                    modificationWidgets.forEach(entry -> this.removeWidget(entry.widget));
+                    modificationWidgets.forEach(entry -> this.removeWidget(entry.widget()));
                     modificationWidgets.clear();
                     this.createModificationWidgets(modifiable);
                 }
@@ -218,8 +216,8 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         programWidgets.forEach(button -> button.visible = buttonScope == ButtonScope.PROGRAMS);
         genderButton.visible = buttonScope == ButtonScope.MODIFICATIONS && modifyType == ModifyType.GENDERED;
         modificationWidgets.forEach(entry -> {
-            entry.widget.visible = (buttonScope == ButtonScope.MODIFICATIONS && modifyType == ModifyType.INTERFACE) &&
-                modificationsPageIndex == entry.pageIndex;
+            entry.widget().visible = (buttonScope == ButtonScope.MODIFICATIONS && modifyType == ModifyType.INTERFACE) &&
+                modificationsPageIndex == entry.pageIndex();
         });
     }
 
@@ -399,31 +397,31 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         }).bounds(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.close.tooltip"))).build());
 
         programWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.program.transfur"), button -> {
-            menu.inputProgram("transfur");
+            menu.inputProgram(StasisChamberBlockEntity.Program.TRANSFUR);
         }).bounds(leftMargin, topMargin + buttonHeightSpacing, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.program.transfur.tooltip"))).build()));
 
         programWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.program.modify"), button -> {
-            menu.inputProgram("modify");
+            menu.inputProgram(StasisChamberBlockEntity.Program.MODIFY);
         }).bounds(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.program.modify.tooltip"))).build()));
 
         programWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.program.capture_next"), button -> {
-            menu.inputProgram("captureNextEntity");
+            menu.inputProgram(StasisChamberBlockEntity.Program.CAPTURE_NEXT_ENTITY);
         }).bounds(leftMargin, topMargin + buttonHeightSpacing * 2, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.program.capture_next.tooltip"))).build()));
 
         programWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.program.toggle_stasis"), button -> {
-            menu.inputProgram("toggleStasis");
+            menu.inputProgram(StasisChamberBlockEntity.Program.TOGGLE_STASIS);
         }).bounds(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing * 2, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.program.toggle_stasis.tooltip"))).build()));
 
         programWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.program.create_entity"), button -> {
-            menu.inputProgram("createEntity");
+            menu.inputProgram(StasisChamberBlockEntity.Program.CREATE_ENTITY);
         }).bounds(leftMargin, topMargin + buttonHeightSpacing * 3, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.program.create_entity.tooltip"))).build()));
 
         programWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.program.discard_entity"), button -> {
-            menu.inputProgram("discardEntity");
+            menu.inputProgram(StasisChamberBlockEntity.Program.DISCARD_ENTITY);
         }).bounds(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing * 3, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.program.discard_entity.tooltip"))).build()));
 
         programWidgets.add(this.addRenderableWidget(Button.builder(Component.translatable("changed.stasis.program.abort"), button -> {
-            menu.inputProgram("abort");
+            menu.inputProgram(StasisChamberBlockEntity.Program.ABORT);
         }).bounds(leftMargin, topMargin + buttonHeightSpacing * 4, buttonWidth, buttonHeight).tooltip(Tooltip.create(Component.translatable("changed.stasis.program.abort.tooltip"))).build()));
 
         waitDurationSlider = this.addRenderableWidget(new AbstractSliderButton(leftMargin, topMargin + buttonHeightSpacing * 5, buttonWidthLong, buttonHeight, Component.translatable("changed.stasis.program.wait_duration", menu.getWaitDurationSeconds(menu.getWaitDurationPercent())), menu.getWaitDurationPercent()) {

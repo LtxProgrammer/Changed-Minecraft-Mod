@@ -1,9 +1,11 @@
 package net.ltxprogrammer.changed.client.tfanimations;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.CubeListBuilderExtender;
 import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModels;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -37,7 +39,7 @@ public class TransfurHelper {
     protected final HelperModel TaurTorso;
     protected final HelperModel PupTorso;
 
-    protected final EnumMap<ArmorModel, ArmorHelper> ArmorMap;
+    protected final Object2ObjectArrayMap<ArmorModel, ArmorHelper> ArmorMap;
 
     public static class ArmorHelper {
         protected final HelperModel DigitigradeLeftLeg;
@@ -94,8 +96,8 @@ public class TransfurHelper {
         });
         this.PupTorso = HelperModel.fixed(root.getChild("PupTorso"));
 
-        ArmorMap = Util.make(new EnumMap<>(ArmorModel.class), map -> {
-            Arrays.stream(ArmorModel.values()).forEach(armorModel -> map.put(armorModel, new ArmorHelper(root.getChild(armorModel.identifier))));
+        ArmorMap = Util.make(new Object2ObjectArrayMap<>(), map -> {
+            ArmorModels.streamModels().forEach(armorModel -> map.put(armorModel, new ArmorHelper(root.getChild(armorModel.identifier))));
         });
     }
 
@@ -374,7 +376,7 @@ public class TransfurHelper {
 
         // ARMOR
         {
-            Arrays.stream(ArmorModel.values()).forEach(armorModel -> {
+            ArmorModels.streamModels().forEach(armorModel -> {
                 PartDefinition layer = partdefinition.addOrReplaceChild(armorModel.identifier, CubeListBuilder.create(), PartPose.ZERO);
                 createArmorLayer(layer, armorModel);
             });

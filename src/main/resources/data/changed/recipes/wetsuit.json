@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RFR",
+    "RFR",
+    "RFR"
+  ],
+  "key": {
+    "R": {
+      "item": "changed:rubber"
+    },
+    "F": {
+      "item": "changed:fabric"
+    }
+  },
+  "result": {
+    "item": "changed:wetsuit"
+  }
+}

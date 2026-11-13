@@ -1,0 +1,8 @@
+{
+  "variants": [
+    "#changed:noctuoian"
+  ],
+  "titleId": "changed.ability_tree.noctuoidea",
+  "flavorId": "changed.ability_tree.noctuoidea.flavor",
+  "flavorCompletedId": "changed.ability_tree.noctuoidea.mastered"
+}

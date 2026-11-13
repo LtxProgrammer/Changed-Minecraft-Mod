@@ -62,6 +62,7 @@
     "client.ItemOverridesMixin",
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
+    "client.MultiPlayerGameModeMixin",
     "client.OptionsMixin",
     "client.SheetsMixin",
     "client.SkinManagerMixin",
@@ -111,7 +112,8 @@
     "render.RenderLayerMixin",
     "render.RenderSystemMixin",
     "render.RenderTypeMixin",
-    "render.TextureAtlasMixin"
+    "render.TextureAtlasMixin",
+    "render.model.AgeableListModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1

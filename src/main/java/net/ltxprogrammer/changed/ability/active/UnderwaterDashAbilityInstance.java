@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.ability.active;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.init.ChangedPoseExtensions;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
@@ -47,9 +48,11 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
             this.boostAngle = entity.getEntity().getLookAngle();
             this.breached = false;
             this.playBoostSound();
+            entity.getChangedEntity().clearPoseExtension(ChangedPoseExtensions.DIVING.get());
         } else { // Start breach, dive
             this.boostTicks = 0;
             this.breached = true;
+            entity.getChangedEntity().tryEnterPoseExtension(ChangedPoseExtensions.DIVING.get());
         }
 
         this.velocityOnReentry = 0.0d;
@@ -143,8 +146,10 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
                 this.boostTicks = 0;
                 self.setDeltaMovement(this.boostAngle.multiply(baselineSpeed * 1.5, baselineSpeed * 1.5, baselineSpeed * 1.5));
                 this.spawnBreachParticles();
+                entity.getChangedEntity().tryEnterPoseExtension(ChangedPoseExtensions.DIVING.get());
             } else {
                 this.spawnBoostParticles(1.0f);
+                entity.getChangedEntity().clearPoseExtension(ChangedPoseExtensions.DIVING.get());
             }
         }
 
@@ -152,10 +157,11 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
             if (level <= 0) {
                 this.breached = false;
                 this.reentryTicks = 0;
+                entity.getChangedEntity().clearPoseExtension(ChangedPoseExtensions.DIVING.get());
                 return;
             }
 
-            self.setPose(Pose.SWIMMING);
+            entity.getChangedEntity().tryEnterPoseExtension(ChangedPoseExtensions.DIVING.get());
             self.setSprinting(true);
 
             this.breached = !self.isEyeInFluidType(ForgeMod.WATER_TYPE.get());
@@ -166,9 +172,10 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
             if (self.onGround() || self.onClimbable()) {
                 this.breached = false;
                 this.reentryTicks = 0;
+                entity.getChangedEntity().clearPoseExtension(ChangedPoseExtensions.DIVING.get());
             }
 
-            if (!this.breached) {
+            else if (!this.breached) {
                 this.reentryTicks = 20;
                 this.boostAngle = self.getDeltaMovement().normalize();
                 this.playBoostSound();
@@ -181,6 +188,7 @@ public class UnderwaterDashAbilityInstance extends AbstractAbilityInstance {
                 return;
             }
 
+            entity.getChangedEntity().clearPoseExtension(ChangedPoseExtensions.DIVING.get());
             self.setPose(Pose.SWIMMING);
             self.setSprinting(true);
             this.reentryTicks--;

@@ -101,7 +101,6 @@ public class SurfaceNBTPiece extends StructurePiece {
                 .setIgnoreEntities(false);
         if (lootTable != null)
             settings.addProcessor(ChestLootTableProcessor.of(lootTable));
-        template.placeInWorld(level, generationPosition, generationPosition, settings, random, 2);
 
         try {
             template.placeInWorld(level, generationPosition, generationPosition, settings, random, 2);

@@ -103,7 +103,7 @@ public class GrabEntityPacket implements ChangedPacket {
                     return;
                 context.setPacketHandled(true);
                 if (sender.getId() == sourceEntity) {
-                    if (ProcessTransfur.isPlayerNotLatex(sender))
+                    if (ProcessTransfur.isNonGoo(sender))
                         return; // Invalid, sender has to be latex
                 } else {
                     return; // Invalid, sender cannot dictate other entities grab action

@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class PinkShorts extends ShortsItem implements LatexFusingItem {
     @Override
-    protected @Nullable ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type) {
+    protected @Nullable ResourceLocation getClothingTexture(ItemStack stack, ClothingState clothingState, Entity wearer, EquipmentSlot renderSlot, @Nullable String type, boolean slim) {
         ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
         return ResourceLocation.fromNamespaceAndPath(itemId.getNamespace(),
                 String.format("textures/models/%s_%s.png", itemId.getPath(), Mth.clamp(stack.getDamageValue() - 1, 0, 4)));

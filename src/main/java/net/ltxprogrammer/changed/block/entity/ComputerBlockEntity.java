@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.computers.*;
-import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
 import net.ltxprogrammer.changed.computers.generator.FileSystemGenerator;
 import net.ltxprogrammer.changed.computers.protocol.*;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
@@ -165,8 +164,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
 
     public ComputerBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ChangedBlockEntities.COMPUTER.get(), blockPos, blockState);
-        nic = new BasicNIC(Address.forBlock(blockPos.immutable()));
-        nic.logicalAddress = this.random.nextInt();
+        this.nic = new BasicNIC(Address.forBlock(blockPos));
 
         primaryDisc = createFileSystem(random);
         this.mountDisc(SourcedDiscData.wrap(primaryDisc, false));
@@ -264,19 +262,23 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         this.writeBackAll();
         ContainerHelper.saveAllItems(tag, this.items);
         tag.put("fs", this.primaryDisc.serialize());
+        if (this.homeDirectory != null)
+            tag.putString("homeDir", this.homeDirectory.toString());
+        if (this.binariesDirectory != null)
+            tag.putString("binDir", this.binariesDirectory.toString());
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        CompoundTag tag = this.saveWithoutMetadata();
-
         CompoundTag mounted = new CompoundTag();
         for (var entry : mountedFileSystems.char2ObjectEntrySet()) {
             CompoundTag discInfo = new CompoundTag();
-            discInfo.put("fs", entry.getValue().getDiscData().generateIfNecessary(this.configureDirectory(entry.getCharKey())).serialize());
+            discInfo.put("fs", entry.getValue().getDiscData().generateIfNecessary(this.level, this.configureDirectory(entry.getCharKey())).serialize());
             discInfo.putBoolean("ejectable", entry.getValue().canEject());
             mounted.put(String.valueOf(entry.getCharKey()), discInfo);
         }
+
+        CompoundTag tag = this.saveWithoutMetadata();
 
         tag.remove("fs");
         tag.put("mounted", mounted);
@@ -303,6 +305,16 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
                         discInfo.getBoolean("ejectable")));
             });
         }
+
+        if (tag.contains("homeDir"))
+            this.homeDirectory = LexicalPath.of(tag.getString("homeDir")).assertAbsolute();
+        if (tag.contains("binDir"))
+            this.binariesDirectory = LexicalPath.of(tag.getString("binDir")).assertAbsolute();
+    }
+
+    @Override
+    public void acceptNeighbor(ServerLevel level, Address physicalSource) {
+        nic.acceptNeighbor(level, physicalSource);
     }
 
     @Override
@@ -311,11 +323,11 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     @Override
-    public void sendFrame(ServerLevel level, Frame dataFrame) {
-        nic.sendFrame(level, dataFrame);
+    public void sendOutFrame(ServerLevel level, @Nullable Address destination, Frame frame, int ttl) {
+        nic.sendOutFrame(level, destination, frame, ttl);
     }
 
-    public void handlePacket(ServerLevel level, int logicalSource, Packet packet) {
+    public void handleFrame(ServerLevel level, Address logicalSource, Frame packet) {
         var menu = this.getActiveMenu();
 
         if (packet instanceof DiscoveryProtocol discoveryProtocol && !discoveryProtocol.isReply()) {
@@ -325,11 +337,11 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
             protocols.add(FileSystemShareProtocol.Query.class);
             if (menu != null)
                 protocols.addAll(menu.currentApplication().getNetworkProtocols());
-            nic.sendPacket(level, logicalSource, discoveryProtocol.intersect(protocols));
+            nic.sendOutFrame(level, logicalSource, discoveryProtocol.intersect(protocols));
         }
 
         if (packet == DeviceInfoProtocol.Query.INSTANCE) {
-            nic.sendPacket(level, logicalSource, new DeviceInfoProtocol(
+            nic.sendOutFrame(level, logicalSource, new DeviceInfoProtocol(
                     Component.literal("Computer"),
                     this.getBlockPos(),
                     Changed.modResource("computer")
@@ -346,7 +358,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
             var menu = blockEntity.getActiveMenu();
             if (menu != null)
                 menu.currentApplication().serverTick(serverLevel);
-            blockEntity.nic.processPackets(serverLevel, blockEntity::handlePacket);
+            blockEntity.nic.processFrames(serverLevel, blockEntity::handleFrame);
         }
     }
 
@@ -358,7 +370,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         for (var entry : mountedFileSystems.char2ObjectEntrySet()) {
             consumer.visit(
                     entry.getCharKey(),
-                    entry.getValue().getDiscData().generateIfNecessary(this.configureDirectory(entry.getCharKey())),
+                    entry.getValue().getDiscData().generateIfNecessary(this.level, this.configureDirectory(entry.getCharKey())),
                     entry.getValue().canEject()
             );
         }
@@ -368,7 +380,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
         var sourcedData = mountedFileSystems.get(driveLetter);
         if (sourcedData == null)
             return null;
-        return sourcedData.getDiscData().generateIfNecessary(this.configureDirectory(driveLetter));
+        return sourcedData.getDiscData().generateIfNecessary(this.level, this.configureDirectory(driveLetter));
     }
 
     public @Nullable DiscData getFileSystem(LexicalPath.Absolute drive) {
@@ -430,6 +442,7 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     public Optional<Folder> getFolderSafe(LexicalPath.Absolute path) {
+        if (path == null) return Optional.empty();
         var driveName = path.getRoot();
         var fs = getFileSystem(driveName);
         if (fs != null)
@@ -540,22 +553,18 @@ public class ComputerBlockEntity extends BaseContainerBlockEntity implements Sta
 
     protected FileSystemGenerator.DirectoryConsumer configureDirectory(char driveLetter) {
         var driveRoot = LexicalPath.fromDriveLetter(driveLetter);
+        if (driveLetter != 'C')
+            return (dir, path) -> {};
+
         return (dir, path) -> {
             switch (dir) {
-                case HOME_DIR -> homeDirectory = driveRoot.resolve(path);
+                case HOME_DIR -> currentWorkingDirectory = homeDirectory = driveRoot.resolve(path);
                 case BIN_DIR -> binariesDirectory = driveRoot.resolve(path);
             }
         };
     }
 
     protected DiscData createFileSystem(RandomSource random) {
-        var data = new DiscData(this::setChanged);
-        var generator = ConfiguredFileSystemGenerators.getGenerator(Changed.modResource("default_pc"));
-        if (generator == null)
-            return data;
-
-        generator.generate(random, data, this.configureDirectory('C'));
-        currentWorkingDirectory = homeDirectory;
-        return data;
+        return new DiscData(this::setChanged, Changed.modResource("default_pc"), random.nextLong());
     }
 }

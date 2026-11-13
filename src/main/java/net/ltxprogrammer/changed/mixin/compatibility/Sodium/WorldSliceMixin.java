@@ -10,7 +10,6 @@ import net.ltxprogrammer.changed.extension.sodium.ClonedChunkSectionExtension;
 import net.ltxprogrammer.changed.extension.sodium.WorldSliceExtension;
 import net.ltxprogrammer.changed.init.ChangedLatexTypes;
 import net.ltxprogrammer.changed.world.LatexCoverState;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -68,7 +67,7 @@ public abstract class WorldSliceMixin implements WorldSliceExtension {
     public LatexCoverState getLatexCoverState(int x, int y, int z) {
         final BlockState blockState = getBlockState(x, y, z);
         if (blockState.getBlock() instanceof LatexCoveringSource source)
-            return source.getLatexCoverState(blockState, new BlockPos(x, y, z));
+            return source.getLatexCoverState(blockState);
 
         int relX = x - this.originX;
         int relY = y - this.originY;

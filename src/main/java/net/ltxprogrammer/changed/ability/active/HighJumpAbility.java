@@ -15,11 +15,6 @@ public class HighJumpAbility extends SimpleToggleAbility {
         super(false);
     }
 
-    @Override
-    public boolean canUse(IAbstractChangedEntity entity) {
-        return true;
-    }
-
     private static final Collection<Component> DESCRIPTION = Collections.singleton(Component.translatable("ability.changed.high_jump.desc"));
     private static final Component ENABLE = Component.translatable("ability.changed.high_jump.enable");
     private static final Component DISABLE = Component.translatable("ability.changed.high_jump.disable");
