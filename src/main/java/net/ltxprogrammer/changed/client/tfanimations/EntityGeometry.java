@@ -89,15 +89,15 @@ public class EntityGeometry {
         }
     }*/
 
-    public float x;
-    public float y;
-    public float z;
-    public float xRot;
-    public float yRot;
-    public float zRot;
-    public float xScale;
-    public float yScale;
-    public float zScale;
+    public float x = 0.0f;
+    public float y = 0.0f;
+    public float z = 0.0f;
+    public float xRot = 0.0f;
+    public float yRot = 0.0f;
+    public float zRot = 0.0f;
+    public float xScale = 1.0f;
+    public float yScale = 1.0f;
+    public float zScale = 1.0f;
     public boolean visible = true;
     public final ObjectArrayList<Cube> cubes = new ObjectArrayList<>();
     public final Object2ObjectArrayMap<String, EntityGeometry> children = new Object2ObjectArrayMap<>();
