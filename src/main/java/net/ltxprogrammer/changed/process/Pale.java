@@ -46,7 +46,7 @@ public class Pale {
     public static void tickPaleExposure(Player player) {
         if (isCured(player))
             return;
-        if (!player.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_PALE))
+        if (!player.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_PALE.get()))
             return;
         if (player.isCreative() || player.isSpectator())
             return;

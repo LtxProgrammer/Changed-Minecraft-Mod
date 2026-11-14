@@ -7,12 +7,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber
 public class CommandPale {
-    @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("setpaleexposure").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("player", EntityArgument.player())

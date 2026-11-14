@@ -17,12 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.Optional;
 
@@ -97,32 +92,28 @@ public interface WhiteLatexTransportInterface {
         }).findFirst();
     }
 
-    @Mod.EventBusSubscriber
-    class EventSubscriber {
-        protected LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target) {
-            return LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX), 4.8f);
-        }
+    static LatexAssimilationDecision<?> makeAssimilationDecision(LivingEntity target, BlockPos latexPosition) {
+        return LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX), 4.8f, newEntity -> {
+            entityEnterLatex(newEntity.getEntity(), latexPosition);
+        });
+    }
 
-        @SubscribeEvent
-        static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-            if (event.phase != TickEvent.Phase.END)
-                return;
+    static void handlePlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END)
+            return;
 
-            if (isEntityInWhiteLatex(event.player))
-                return;
+        if (isEntityInWhiteLatex(event.player))
+            return;
 
-            isBoundingBoxInWhiteLatex(event.player).ifPresent(latexPosition -> {
-                ProcessTransfur.ifPlayerTransfurred(event.player, variant -> {
-                    if (variant.getLatexType() == ChangedLatexTypes.WHITE_LATEX.get())
-                        entityEnterLatex(event.player, latexPosition);
-                    else if (ChangedLatexTypes.WHITE_LATEX.get().isHostileTo(variant.getLatexType()))
-                        event.player.hurt(ChangedDamageSources.WHITE_LATEX.source(event.player.level().registryAccess()), 2.0f);
-                }, () -> {
-                    ProcessTransfur.progressTransfur(event.player, LatexAssimilationDecision.fromBlockOrItem(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX), 4.8f, newEntity -> {
-                        entityEnterLatex(newEntity.getEntity(), latexPosition);
-                    }));
-                });
+        isBoundingBoxInWhiteLatex(event.player).ifPresent(latexPosition -> {
+            ProcessTransfur.ifPlayerTransfurred(event.player, variant -> {
+                if (variant.getLatexType() == ChangedLatexTypes.WHITE_LATEX.get())
+                    entityEnterLatex(event.player, latexPosition);
+                else if (ChangedLatexTypes.WHITE_LATEX.get().isHostileTo(variant.getLatexType()))
+                    event.player.hurt(ChangedDamageSources.WHITE_LATEX.source(event.player.level().registryAccess()), 2.0f);
+            }, () -> {
+                ProcessTransfur.progressTransfur(event.player, makeAssimilationDecision(event.player, latexPosition));
             });
-        }
+        });
     }
 }

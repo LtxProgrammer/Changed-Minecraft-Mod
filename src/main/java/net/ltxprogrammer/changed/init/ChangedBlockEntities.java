@@ -15,7 +15,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Mod.EventBusSubscriber
 public class ChangedBlockEntities {
     @SafeVarargs
     private static <T extends BlockEntity> Supplier<BlockEntityType<T>> deferredProvider(BlockEntityType.BlockEntitySupplier<T> entitySupplier, Supplier<? extends Block>... block) {

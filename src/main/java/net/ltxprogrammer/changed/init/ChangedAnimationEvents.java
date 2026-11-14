@@ -51,7 +51,7 @@ public class ChangedAnimationEvents {
 
     public static void broadcastTransfurAnimation(LivingEntity livingEntity, TransfurVariant<?> variant, TransfurContext context) {
         if (livingEntity.level().isClientSide) return; // Should only be called on the server
-        if (!livingEntity.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION)) return;
+        if (!livingEntity.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION.get())) return;
 
         if (context.source() != null)
             Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity),

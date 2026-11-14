@@ -3,15 +3,10 @@ package net.ltxprogrammer.changed.init;
 import net.ltxprogrammer.changed.client.gui.*;
 import net.ltxprogrammer.changed.client.gui.computer.*;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ChangedScreens {
-    @SubscribeEvent
-    public static void clientLoad(FMLClientSetupEvent event) {
+    public static void registerScreens(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(ChangedMenus.COMPUTER.get(), ComputerScreen::new);
             MenuScreens.register(ChangedMenus.INFUSER.get(), InfuserScreen::new);

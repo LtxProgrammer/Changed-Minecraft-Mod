@@ -186,7 +186,7 @@ public class ExoskeletonItem<T extends AbstractRobot> extends PlaceableEntity<T>
             return false;
         } else {
             if (damage > 0) {
-                int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack);
+                int i = stack.getEnchantmentLevel(Enchantments.UNBREAKING);
                 int j = 0;
 
                 for(int k = 0; i > 0 && k < damage; ++k) {

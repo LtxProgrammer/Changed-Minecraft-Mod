@@ -164,7 +164,7 @@ public abstract class AbstractLatexBlock extends Block implements LatexCoveringS
 
     @Override
     public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
-        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, builder.getParameter(LootContextParams.TOOL)) > 0)
+        if (builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0)
             return List.of(new ItemStack(this));
         return List.of(goo.get().getDefaultInstance(), goo.get().getDefaultInstance(), goo.get().getDefaultInstance());
     }

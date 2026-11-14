@@ -3,8 +3,6 @@ package net.ltxprogrammer.changed.fluid;
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.TransfurCause;
-import net.ltxprogrammer.changed.entity.TransfurContext;
-import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.ai.NonLatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -12,24 +10,16 @@ import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.Util;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber
 public abstract class TransfurGas extends Gas {
     public final ImmutableList<Supplier<? extends TransfurVariant<?>>> variants;
 
@@ -64,7 +54,6 @@ public abstract class TransfurGas extends Gas {
                 .map(variant -> NonLatexAssimilationDecision.fromBlockOrItem(variant, TransfurCause.FACE_HAZARD, 8.0f, 1.0f));
     }
 
-    @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
         var entity = event.getEntity();
         validEntityInGas(entity).ifPresent(transfurGas -> {

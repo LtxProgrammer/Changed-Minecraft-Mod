@@ -113,7 +113,7 @@ public abstract class TransfurCrystalBlock extends BushBlock {
         if (!shouldDrop(blockState))
             return List.of();
 
-        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, lootBuilder.getParameter(LootContextParams.TOOL)) > 0)
+        if (lootBuilder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0)
             return List.of(new ItemStack(this));
 
         if (this instanceof AbstractDoubleTransfurCrystal)

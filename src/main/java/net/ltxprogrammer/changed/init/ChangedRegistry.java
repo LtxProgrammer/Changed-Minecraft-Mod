@@ -31,8 +31,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.levelgen.DebugLevelSource;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,8 +42,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public abstract class ChangedRegistry<T> implements Registry<T> {
+public abstract class ChangedRegistry {
     private static final Logger LOGGER = LogManager.getLogger(ChangedRegistry.class);
 
     private static final int MAX_VARINT = Integer.MAX_VALUE - 1;
@@ -241,7 +238,6 @@ public abstract class ChangedRegistry<T> implements Registry<T> {
         }
     }
 
-    @SubscribeEvent
     public static void onCreateRegistries(NewRegistryEvent event) {
         createRegistry(event, TRANSFUR_VARIANT.key, builder -> {
             builder.hasTags();

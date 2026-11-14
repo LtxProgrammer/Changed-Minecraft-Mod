@@ -22,15 +22,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber
 public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
     private final List<Supplier<? extends TransfurVariant<?>>> form;
     private final Supplier<? extends LatexType> gooType;
@@ -64,7 +61,6 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
                 TransfurContext.hazard(TransfurCause.LATEX_PUDDLE), 5.0f);
     }
 
-    @SubscribeEvent
     public static void onEntityTick(LivingEvent.LivingTickEvent event) {
         Level level = event.getEntity().level();
         AbstractLatexFluid fluid = null;

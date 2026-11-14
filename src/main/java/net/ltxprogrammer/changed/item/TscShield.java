@@ -19,10 +19,7 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.common.Mod;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -117,16 +114,12 @@ public class TscShield extends TscWeapon implements SpecializedItemRendering {
         return InteractionResultHolder.consume(itemstack);
     }
 
-    @Mod.EventBusSubscriber
-    public static class ShieldEvent {
-        @SubscribeEvent
-        public static void onShieldBlock(ShieldBlockEvent event) {
-            if (event.getEntity().getUseItem().is(ChangedItems.TSC_SHIELD.get())) {
-                if (event.getDamageSource().getEntity() instanceof LivingEntity source) {
-                    TscWeapon.applyShock(source, ChangedItems.TSC_SHIELD.get().attackStun());
-                    if (TransfurVariant.getEntityVariant(source) != null)
-                        source.hurt(event.getEntity().level().damageSources().mobAttack(event.getEntity()), 1);
-                }
+    public static void onShieldBlock(ShieldBlockEvent event) {
+        if (event.getEntity().getUseItem().is(ChangedItems.TSC_SHIELD.get())) {
+            if (event.getDamageSource().getEntity() instanceof LivingEntity source) {
+                TscWeapon.applyShock(source, ChangedItems.TSC_SHIELD.get().attackStun());
+                if (TransfurVariant.getEntityVariant(source) != null)
+                    source.hurt(event.getEntity().level().damageSources().mobAttack(event.getEntity()), 1);
             }
         }
     }

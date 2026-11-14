@@ -12,11 +12,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoader;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +21,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ChangedEntityRenderers {
     private static final List<EntityType<? extends ChangedEntity>> copyPlayerLayers = new ArrayList<>();
     private static Map<EntityType<? extends ComplexRenderer>, Map<String, EntityRenderer<? extends ComplexRenderer>>> complexRenderers = ImmutableMap.of();
@@ -51,7 +47,6 @@ public class ChangedEntityRenderers {
         complexRenderers = event.build(context);
     }
 
-    @SubscribeEvent
     public static void registerComplexEntityRenderers(RegisterComplexRenderersEvent event) {
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_PARTIAL.get(), "default", DarkLatexWolfPartialRenderer.forModelSize(false));
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_PARTIAL.get(), "slim", DarkLatexWolfPartialRenderer.forModelSize(true));
@@ -68,7 +63,6 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(entityType, entityRendererProvider);
     }
 
-    @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         copyPlayerLayers.clear();
 

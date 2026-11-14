@@ -1,9 +1,7 @@
 package net.ltxprogrammer.changed.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.animations.AnimationAssociations;
 import net.ltxprogrammer.changed.client.animations.AnimationDefinitions;
@@ -12,26 +10,30 @@ import net.ltxprogrammer.changed.client.latexparticles.LatexParticleEngine;
 import net.ltxprogrammer.changed.client.latexparticles.SetupContext;
 import net.ltxprogrammer.changed.client.renderer.ChangedEntityWithOutLevelRenderer;
 import net.ltxprogrammer.changed.client.renderer.blockentity.ChangedBlockEntityWithoutLevelRenderer;
+import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.FirstPersonLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.sound.GasSFX;
+import net.ltxprogrammer.changed.effect.particle.*;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.VisionType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.item.SpecializedItemRendering;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.BlockDestructionProgress;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
@@ -42,9 +44,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ChunkRenderTypeSet;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -54,7 +54,6 @@ import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -100,23 +99,39 @@ public class ChangedClient {
         ChangedFluids.APPLY_RENDER_LAYERS.forEach(Runnable::run);
     }
 
-    public static void registerReloadListeners(Consumer<PreparableReloadListener> resourceManager) {
-        resourceManager.accept(particleSystem.getOrThrow());
-        resourceManager.accept(abilityRenderer.getOrThrow());
-        resourceManager.accept(latexCoveredBlocksRenderer.getOrThrow());
-        resourceManager.accept(wallSigns.getOrThrow());
-        resourceManager.accept(AnimationDefinitions.INSTANCE);
-        resourceManager.accept(AnimationAssociations.INSTANCE);
+    public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(particleSystem.getOrThrow());
+        event.registerReloadListener(abilityRenderer.getOrThrow());
+        event.registerReloadListener(latexCoveredBlocksRenderer.getOrThrow());
+        event.registerReloadListener(wallSigns.getOrThrow());
+        event.registerReloadListener(AnimationDefinitions.INSTANCE);
+        event.registerReloadListener(AnimationAssociations.INSTANCE);
     }
 
-    public static void registerModLoadingEventListeners(IEventBus eventBus) {
-        eventBus.addListener(RecipeCategories::registerCategories);
-        eventBus.addListener(ChangedOverlays::registerOverlays);
-        eventBus.addListener(ChangedClient::onBlockColorsInit);
-        eventBus.addListener(ChangedClient::onItemColorsInit);
-        eventBus.addListener(ChangedClient::onClientFinishSetup);
-        eventBus.addListener(AbilityRenderer::onRegisterModels);
-        eventBus.addListener(ChangedKeyMappings::registerKeyBindings);
+    /// Called during mod initialization on the Client. Use this function to register event listeners to the mod's event bus
+    public static void registerModLoadingEventListeners(IEventBus modEventBus) {
+        modEventBus.addListener(RecipeCategories::registerCategories);
+        modEventBus.addListener(ChangedOverlays::registerOverlays);
+        modEventBus.addListener(ChangedClient::onBlockColorsInit);
+        modEventBus.addListener(ChangedClient::onItemColorsInit);
+        modEventBus.addListener(ChangedClient::onRegisterParticles);
+        modEventBus.addListener(ChangedClient::onRegisterModelRenderTypes);
+        modEventBus.addListener(ChangedClient::addChangedLayers);
+        modEventBus.addListener(ChangedClient::onRegisterReloadListenerEvent);
+        modEventBus.addListener(ChangedClient::onClientFinishSetup);
+        modEventBus.addListener(AbilityRenderer::onRegisterModels);
+        modEventBus.addListener(ChangedKeyMappings::registerKeyBindings);
+        modEventBus.addListener(WaveVisionRenderer::onModelBake);
+        modEventBus.addListener(ChangedItemProperties::registerProperties);
+
+        modEventBus.addListener(ChangedAccessoryRenderers::registerAccessoryRenderers);
+        modEventBus.addListener(ChangedBlockEntityRenderers::registerBlockEntityRenderers);
+        modEventBus.addListener(ChangedEntityRenderers::registerEntityRenderers);
+        modEventBus.addListener(ChangedEntityRenderers::registerComplexEntityRenderers);
+        modEventBus.addListener(ChangedLayerDefinitions::registerLayerDefinitions);
+        modEventBus.addListener(ChangedScreens::registerScreens);
+        modEventBus.addListener(ChangedTextures::registerAll);
+        modEventBus.addListener(SpecializedItemRendering::onModelRegistryEvent);
     }
 
     public static void afterRenderStage(RenderLevelStageEvent event) {
@@ -317,5 +332,36 @@ public class ChangedClient {
                             default -> -1;
                         },
                 ChangedBlocks.ORANGE_TREE_LEAVES.get());
+    }
+
+    public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
+        event.registerSpecial(ChangedParticles.GLOBBED_LATEX.get(), GlobbedLatexParticle::new);
+        event.registerSpriteSet(ChangedParticles.DRIPPING_LATEX.get(), LatexDripParticle.Provider::new);
+        event.registerSpriteSet(ChangedParticles.GAS.get(), GasParticle.Provider::new);
+        event.registerSpriteSet(ChangedParticles.EMOTE.get(), EmoteParticle.Provider::new);
+        event.registerSpriteSet(ChangedParticles.TSC_SWEEP_ATTACK.get(), TscSweepParticle.Provider::new);
+    }
+
+    public static void onRegisterModelRenderTypes(RegisterNamedRenderTypesEvent event) {
+        event.register("emissive", RenderType.cutout(), RenderType.eyes(TextureAtlas.LOCATION_BLOCKS));
+    }
+
+    public static <T extends LivingEntity, M extends EntityModel<T>, R extends LivingEntityRenderer<T, M>> void addLatexParticles(EntityRenderersEvent.AddLayers event, EntityType<T> entityType) {
+        R renderer = event.getRenderer(entityType);
+        if (renderer != null)
+            renderer.addLayer(new LatexParticlesLayer<>(renderer, renderer.getModel()));
+        else
+            Changed.LOGGER.warn("Renderer not present for {} in AddLayers event", entityType);
+    }
+
+    public static void addChangedLayers(EntityRenderersEvent.AddLayers event) {
+        event.getSkins().stream().map(name -> Pair.of(name, event.getSkin(name))).forEach(pair -> {
+            if (pair.getSecond() instanceof PlayerRenderer renderer) {
+                renderer.addLayer(new DarkLatexMaskLayer<>(renderer, event.getEntityModels()));
+                renderer.addLayer(new GasMaskLayer<>(renderer, event.getEntityModels()));
+            }
+        });
+        addLatexParticles(event, EntityType.BEE);
+        addLatexParticles(event, EntityType.RABBIT);
     }
 }

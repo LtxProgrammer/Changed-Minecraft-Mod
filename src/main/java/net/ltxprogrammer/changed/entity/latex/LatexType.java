@@ -279,7 +279,7 @@ public abstract class LatexType {
         if (resourcelocation == BuiltInLootTables.EMPTY) {
             return Collections.emptyList();
         } else {
-            LootParams lootparams = builder.withParameter(LatexCoverState.LOOT_CONTEXT_PARAM, coverState).create(ChangedLootContextParamSets.LATEX_COVER);
+            LootParams lootparams = builder.withParameter(LatexCoverState.LOOT_CONTEXT_PARAM, coverState).create(ChangedLootContextParamSets.LATEX_COVER.get());
             ServerLevel serverlevel = lootparams.getLevel();
             LootTable loottable = serverlevel.getServer().getLootData().getLootTable(resourcelocation);
             return loottable.getRandomItems(lootparams);

@@ -1,20 +1,29 @@
 package net.ltxprogrammer.changed;
 
 import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
+import net.ltxprogrammer.changed.block.WearableBlock;
+import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.client.*;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
+import net.ltxprogrammer.changed.command.Commands;
 import net.ltxprogrammer.changed.computers.generator.ConfiguredFileSystemGenerators;
 import net.ltxprogrammer.changed.data.BuiltinRepositorySource;
+import net.ltxprogrammer.changed.datagen.GatherData;
 import net.ltxprogrammer.changed.entity.AccessoryEntities;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
+import net.ltxprogrammer.changed.fluid.TransfurGas;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.item.*;
 import net.ltxprogrammer.changed.network.ChangedPackets;
 import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.world.ChangedDataFixer;
+import net.ltxprogrammer.changed.world.WorldEventHandler;
 import net.ltxprogrammer.changed.world.features.structures.FacilityPieces;
 import net.ltxprogrammer.changed.world.features.structures.facility.FacilityZoneEntities;
 import net.minecraft.resources.ResourceLocation;
@@ -48,10 +57,8 @@ public class Changed {
     public static final String MODID = "changed";
 
     public static final Logger LOGGER = LogManager.getLogger(Changed.class);
-    public static EventHandlerClient eventHandlerClient;
     public static ChangedConfig config;
     public static ChangedDataFixer dataFixer;
-    //private static IEventBus modEventBus;
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(modResource("network"), () -> PROTOCOL_VERSION,
@@ -61,22 +68,56 @@ public class Changed {
     /**
      * This function is split out of the main function as a request by mod extension devs
      */
-    private void registerLoadingEventListeners(IEventBus eventBus) {
-        eventBus.addListener(this::commonSetup);
-        eventBus.addListener(this::clientSetup);
-        eventBus.addListener(this::customPacks);
+    private void registerLoadingEventListeners(IEventBus modEventBus) {
+        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::clientSetup);
+        modEventBus.addListener(this::customPacks);
 
-        eventBus.addListener(ChangedAttributes::modifyEntityAttributes);
+        modEventBus.addListener(ChangedAttributes::modifyEntityAttributes);
+        modEventBus.addListener(ChangedRegistry::onCreateRegistries);
+        modEventBus.addListener(ChangedEntities::registerAttributes);
+        modEventBus.addListener(ChangedEntities::registerSpawnPlacements);
+        modEventBus.addListener(GatherData::onGatherData);
+    }
+
+    private void registerGameEventListeners(IEventBus forgeEventBus) {
+        forgeEventBus.addListener(this::dataListeners);
+
+        forgeEventBus.addListener(ExtendedItemProperties::handleTickEvent);
+        forgeEventBus.addListener(WearableBlock::handleTickEvent);
+        forgeEventBus.addListener(TransfurGas::onLivingUpdate);
+        forgeEventBus.addListener(AbstractLatexFluid::onEntityTick);
+        forgeEventBus.addListener(WhiteLatexTransportInterface::handlePlayerTick);
+        forgeEventBus.addListener(Commands::registerCommands);
+        forgeEventBus.addListener(WorldEventHandler::onEmptySwingEvent);
+        forgeEventBus.addListener(WorldEventHandler::onEntityAttackedEvent);
+        forgeEventBus.addListener(ProcessTransfur::onLivingDamaged);
+        forgeEventBus.addListener(ProcessTransfur::onLivingAttacked);
+        forgeEventBus.addListener(ProcessTransfur::onLivingDeath);
+
+        TransfurVariantInstance.addGameEventListeners(forgeEventBus);
+
+        forgeEventBus.addListener(TscShield::onShieldBlock);
+        forgeEventBus.addListener(LatexTippedArrowItem::onLivingDamaged);
+        forgeEventBus.addListener(FurnaceFuel::onBurnItem);
+        forgeEventBus.addListener(LatexFusingItem::onAssimilationDecision);
+    }
+
+    private void registerClientLoadingEventListeners(IEventBus modEventBus) {
+        ChangedClient.registerModLoadingEventListeners(modEventBus);
+    }
+
+    private void registerClientGameEventListeners(IEventBus forgeEventBus) {
+        EventHandlerClient.registerGameEventListeners(forgeEventBus);
     }
 
     public Changed(FMLJavaModLoadingContext context) {
         //modEventBus = context.getModEventBus();
         config = new ChangedConfig(context);
 
+        // Register loading event listeners
         registerLoadingEventListeners(context.getModEventBus());
-
-        addEventListener(this::dataListeners);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> registerClientEventListeners(context.getModEventBus()));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> registerClientLoadingEventListeners(context.getModEventBus()));
 
         PACKETS.registerPackets();
 
@@ -130,6 +171,10 @@ public class Changed {
         ChangedApplications.REGISTRY.register(modEventBus);
         ChangedFileSystemGenerators.REGISTRY.register(modEventBus);
 
+        // Register game event listeners
+        registerGameEventListeners(MinecraftForge.EVENT_BUS);
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> registerClientGameEventListeners(MinecraftForge.EVENT_BUS));
+
         // Our DFU references the above registries, so they need to be initialized before the DFU is created
         dataFixer = new ChangedDataFixer();
     }
@@ -153,11 +198,9 @@ public class Changed {
             ComposterBlock.COMPOSTABLES.put(ChangedItems.ORANGE.get(), 0.65F);
         });
         event.enqueueWork(ProcessTransfur::gatherMobAssimilations);
-    }
-
-    private void registerClientEventListeners(IEventBus eventBus) {
-        MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient());
-        ChangedClient.registerModLoadingEventListeners(eventBus);
+        event.enqueueWork(ChangedCriteriaTriggers::registerTriggers);
+        event.enqueueWork(ChangedGameRules::registerGameRules);
+        event.enqueueWork(ChangedLootContextParamSets::registerSets);
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {

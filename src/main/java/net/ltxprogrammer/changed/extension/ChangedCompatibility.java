@@ -270,7 +270,7 @@ public class ChangedCompatibility {
             = findRegistryObject(ForgeRegistries.ENCHANTMENTS, ResourceLocation.fromNamespaceAndPath("enigmaticlegacy", "eternal_binding_curse"));
 
     public static void shouldAccessoryDropOnDeath(AccessorySlots.DropItemEvent event) {
-        if (EnchantmentHelper.getItemEnchantmentLevel(enchantment_enigmaticlegacy_eternalbinding.get(), event.getStack()) > 0)
+        if (event.getStack().getEnchantmentLevel(enchantment_enigmaticlegacy_eternalbinding.get()) > 0)
             event.keepItem();
     }
 
