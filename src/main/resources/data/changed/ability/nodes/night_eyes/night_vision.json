@@ -2,6 +2,7 @@
   "parent": { "tree": "changed:night_eyes" },
   "titleId": "changed.ability_tree.night_eyes.night_vision",
   "flavorId": "changed.ability_tree.night_eyes.night_vision.flavor",
+  "display": { "icon": "changed:textures/abilities/toggle_night_vision.png" },
   "price": 0,
 
   "acquiredEffects": [

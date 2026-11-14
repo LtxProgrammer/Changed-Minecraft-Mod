@@ -2,6 +2,7 @@
   "parent": { "tree": "changed:dark_latex_pup" },
   "titleId": "changed.ability_tree.dark_latex_pup.puddle",
   "flavorId": "changed.ability_tree.dark_latex_pup.puddle.flavor",
+  "display": { "icon": "changed:textures/abilities/puddle.png" },
   "price": 0,
 
   "acquiredEffects": [

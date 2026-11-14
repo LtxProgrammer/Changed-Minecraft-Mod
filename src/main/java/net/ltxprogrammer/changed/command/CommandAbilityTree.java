@@ -33,12 +33,12 @@ import java.util.stream.Stream;
 @Mod.EventBusSubscriber
 public class CommandAbilityTree {
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_TREES = SuggestionProviders.register(Changed.modResource("trees"), (p_121667_, p_121668_) -> {
-        return SharedSuggestionProvider.suggestResource(AbilityTrees.INSTANCE.getRemoteTrees().stream().map(AbilityTree::getTreeLocation), p_121668_);
+        return SharedSuggestionProvider.suggestResource(AbilityTrees.INSTANCE.getTreesForSuggestions().stream().map(AbilityTree::getTreeLocation), p_121668_);
     });
 
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_NODES = SuggestionProviders.register(Changed.modResource("nodes"), (context, p_121668_) -> {
         var treeId = context.getArgument("tree", ResourceLocation.class);
-        var tree = AbilityTrees.INSTANCE.getNamedRemoteTree(treeId);
+        var tree = AbilityTrees.INSTANCE.getNamedTreeForSuggestions(treeId);
         return SharedSuggestionProvider.suggestResource(tree == null ? Stream.empty() : tree.getTreeNodes().map(Pair::getFirst), p_121668_);
     });
 
@@ -187,6 +187,12 @@ public class CommandAbilityTree {
         pointStore.addLevels(deltaLevels);
 
         int actualDelta = pointStore.getLevels() - levelsBefore;
+        if (actualDelta != 0) {
+            player.connection.send(
+                    Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofActiveTrees(abilityTree, variant.getParent()), NetworkDirection.PLAY_TO_CLIENT)
+            );
+        }
+
         if (actualDelta > 0)
             source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.addlevels.positive", actualDelta, player.getScoreboardName()), false);
         else if (actualDelta < 0)

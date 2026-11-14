@@ -256,7 +256,7 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
         protected NodeRenderState determineRenderState() {
             if (isUnlocked())
                 return NodeRenderState.UNLOCKED;
-            if (parent != null && !parent.isUnlocked() && !parent.canBeSkipped())
+            if (!accountedTree.isParentNodeUnlocked(AbilityTreeScreen.this.entity, nodeName))
                 return NodeRenderState.DISTANT;
             if (entity.getEntity() instanceof Player player && player.getAbilities().instabuild) {
                 return NodeRenderState.CAN_ACQUIRE;
@@ -461,7 +461,9 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
             }
         };
 
-        var accountedTrees = menu.abilityTree.getTrees(variant);
+        var accountedTrees = menu.abilityTree.getTrees(variant).stream()
+                .sorted(Comparator.comparing(t -> t.getTree().getTreeLocation()))
+                .toList();
         accountedTrees.forEach(accountedTree -> {
             if (accountedTree.getTree().isHidden())
                 return;
@@ -652,7 +654,7 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
 
     @Override
     public boolean mouseDragged(double x, double y, int button, double dx, double dy) {
-        if (button == GLFW.GLFW_MOUSE_BUTTON_2) {
+        if (button == GLFW.GLFW_MOUSE_BUTTON_2 || button == GLFW.GLFW_MOUSE_BUTTON_3) {
             panX += dx;
             panY += dy;
             return true;

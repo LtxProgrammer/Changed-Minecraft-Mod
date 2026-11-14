@@ -100,9 +100,12 @@ public record NodeDisplayInfo(Either<ResourceLocation, ItemStack> icon, FrameTyp
             Codec.either(ResourceLocation.CODEC, ITEMSTACK_CODEC).fieldOf("icon").orElse(Either.left(ResourceLocation.withDefaultNamespace("missingno"))).forGetter(NodeDisplayInfo::icon),
             OptionalKeyFieldCodec.keyOptionalFieldOf("frame", FrameType.CODEC, FrameType.BASIC).forGetter(NodeDisplayInfo::frameType),
             OptionalKeyFieldCodec.keyOptionalFieldOf("numeral", Numeral.CODEC, Numeral.ZERO).forGetter(NodeDisplayInfo::numeral),
-            Codec.INT.fieldOf("iconWidth").orElse(16).forGetter(NodeDisplayInfo::iconWidth),
-            Codec.INT.fieldOf("iconHeight").orElse(16).forGetter(NodeDisplayInfo::iconHeight)
-    ).apply(builder, NodeDisplayInfo::new));
+            Codec.INT.optionalFieldOf("iconWidth").forGetter(node -> Optional.of(node.iconWidth)),
+            Codec.INT.optionalFieldOf("image_width").forGetter(node -> Optional.empty()),
+            Codec.INT.optionalFieldOf("iconHeight").forGetter(node -> Optional.of(node.iconHeight)),
+            Codec.INT.optionalFieldOf("image_height").forGetter(node -> Optional.empty())
+    ).apply(builder, (icon, frameType, numeral, iconWidth, image_width, iconHeight, image_height) ->
+            new NodeDisplayInfo(icon, frameType, numeral, iconWidth.or(() -> image_width).orElse(16), iconHeight.or(() -> image_height).orElse(16))));
 
     public static final NodeDisplayInfo MISSING = new NodeDisplayInfo(Either.left(ResourceLocation.withDefaultNamespace("missingno")), FrameType.BASIC, Numeral.ZERO, 16, 16);
 }

@@ -52,7 +52,7 @@ public class HasAdvancementsRequirement extends AbstractRequirement {
         PlayerAdvancements playerAdvancements = serverPlayer.getAdvancements();
 
         return matchMode.apply(advancementIds.stream().map(advancementManager::getAdvancement), advancement -> {
-            return playerAdvancements.getOrStartProgress(advancement).isDone();
+            return advancement != null && playerAdvancements.getOrStartProgress(advancement).isDone();
         });
     }
 
@@ -74,10 +74,13 @@ public class HasAdvancementsRequirement extends AbstractRequirement {
             CompoundTag entryTag = new CompoundTag();
 
             Advancement advancement = advancementManager.getAdvancement(advancementId);
-
-            entryTag.putBoolean("state", playerAdvancements.getOrStartProgress(advancement).isDone());
-            if (advancement.getDisplay() != null)
-                entryTag.putString("title", Component.Serializer.toJson(advancement.getDisplay().getTitle()));
+            if (advancement == null) {
+                entryTag.putBoolean("state", false);
+            } else {
+                entryTag.putBoolean("state", playerAdvancements.getOrStartProgress(advancement).isDone());
+                if (advancement.getDisplay() != null)
+                    entryTag.putString("title", Component.Serializer.toJson(advancement.getDisplay().getTitle()));
+            }
 
             tag.put(advancementId.toString(), entryTag);
         });
