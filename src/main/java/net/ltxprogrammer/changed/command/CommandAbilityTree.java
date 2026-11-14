@@ -33,12 +33,12 @@ import java.util.stream.Stream;
 @Mod.EventBusSubscriber
 public class CommandAbilityTree {
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_TREES = SuggestionProviders.register(Changed.modResource("trees"), (p_121667_, p_121668_) -> {
-        return SharedSuggestionProvider.suggestResource(AbilityTrees.INSTANCE.getTreesForSuggestions().stream().map(AbilityTree::getTreeLocation), p_121668_);
+        return SharedSuggestionProvider.suggestResource(AbilityTrees.INSTANCE.getRemoteTrees().stream().map(AbilityTree::getTreeLocation), p_121668_);
     });
 
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_NODES = SuggestionProviders.register(Changed.modResource("nodes"), (context, p_121668_) -> {
         var treeId = context.getArgument("tree", ResourceLocation.class);
-        var tree = AbilityTrees.INSTANCE.getNamedTreeForSuggestions(treeId);
+        var tree = AbilityTrees.INSTANCE.getNamedRemoteTree(treeId);
         return SharedSuggestionProvider.suggestResource(tree == null ? Stream.empty() : tree.getTreeNodes().map(Pair::getFirst), p_121668_);
     });
 

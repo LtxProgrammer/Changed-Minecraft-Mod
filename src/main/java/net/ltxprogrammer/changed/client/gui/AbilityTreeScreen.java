@@ -462,8 +462,7 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
         };
 
         var accountedTrees = menu.abilityTree.getTrees(variant).stream()
-                .sorted(Comparator.comparing(t -> t.getTree().getTreeLocation()))
-                .toList();
+                .sorted(Comparator.comparing(t -> t.getTree().getTreeLocation()));
         accountedTrees.forEach(accountedTree -> {
             if (accountedTree.getTree().isHidden())
                 return;
