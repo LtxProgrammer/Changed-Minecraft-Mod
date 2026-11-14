@@ -182,6 +182,12 @@ public class CommandAbilityTree {
         pointStore.addLevels(deltaLevels);
 
         int actualDelta = pointStore.getLevels() - levelsBefore;
+        if (actualDelta != 0) {
+            player.connection.send(
+                    Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofActiveTrees(abilityTree, variant.getParent()), NetworkDirection.PLAY_TO_CLIENT)
+            );
+        }
+
         if (actualDelta > 0)
             source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.addlevels.positive", actualDelta, player.getScoreboardName()), false);
         else if (actualDelta < 0)

@@ -2,6 +2,7 @@
   "parent": { "tree": "changed:siren" },
   "titleId": "changed.ability_tree.siren.sing",
   "flavorId": "changed.ability_tree.siren.sing.flavor",
+  "display": { "icon": "changed:textures/abilities/siren_sing.png" },
   "price": 0,
 
   "acquiredEffects": [
