@@ -1,7 +1,7 @@
 {
   "parent": "changed:aquatic/practice1",
   "titleId": "changed.ability_tree.practice2",
-  "flavorId": "changed.ability_tree.aquatic.practice2",
+  "flavorId": "changed.ability_tree.aquatic.practice2.flavor",
   "display": {
 	  "icon": {
 		  "item": "changed:wetsuit"

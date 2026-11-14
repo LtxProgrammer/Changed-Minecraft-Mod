@@ -4,8 +4,8 @@
   "flavorId": "changed.ability_tree.hypnosis.hypnosis.flavor",
   "display": {
 	  "icon": "changed:textures/gui/nodes/hypnosis.png",
-	  "image_height": 18,
-	  "image_width": 18
+	  "iconHeight": 18,
+	  "iconWidth": 18
   },
   "price": 0,
 
