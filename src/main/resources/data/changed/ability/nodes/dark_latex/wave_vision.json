@@ -2,6 +2,7 @@
   "parent": { "tree": "changed:dark_latex" },
   "titleId": "changed.ability_tree.dark_latex.wave_vision",
   "flavorId": "changed.ability_tree.dark_latex.wave_vision.flavor",
+  "display": { "icon": "changed:textures/abilities/use_waves_pulse.png" },
   "price": 0,
 
   "acquiredEffects": [

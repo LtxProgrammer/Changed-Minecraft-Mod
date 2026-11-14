@@ -2,6 +2,7 @@
   "parent": "changed:taur_mobility/practice1",
   "titleId": "changed.ability_tree.taur_mobility.rear",
   "flavorId": "changed.ability_tree.taur_mobility.rear.flavor",
+  "display": { "icon": "changed:textures/abilities/rear.png" },
   "price": {
     "levels": 1,
     "groupDiscountLevels": -1
