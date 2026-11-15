@@ -1,17 +1,23 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.advancements.critereon.*;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.advancements.CriteriaTriggers;
 
-import static net.minecraft.advancements.CriteriaTriggers.register;
-
-@Mod.EventBusSubscriber
 public class ChangedCriteriaTriggers {
     // TODO grab mechanic
-    public static final TransfurTrigger TRANSFUR = register(new TransfurTrigger());
-    public static final AquaticBreatheTrigger AQUATIC_BREATHE = register(new AquaticBreatheTrigger());
-    public static final WhiteLatexFuseTrigger WHITE_LATEX_FUSE = register(new WhiteLatexFuseTrigger());
-    public static final BeehiveSleepTrigger BEEHIVE_SLEEP = register(new BeehiveSleepTrigger());
-    public static final TameLatexTrigger TAME_LATEX = register(new TameLatexTrigger());
-    public static final FlyingTrigger FLYING = register(new FlyingTrigger());
+    public static final TransfurTrigger TRANSFUR = new TransfurTrigger();
+    public static final AquaticBreatheTrigger AQUATIC_BREATHE = new AquaticBreatheTrigger();
+    public static final WhiteLatexFuseTrigger WHITE_LATEX_FUSE = new WhiteLatexFuseTrigger();
+    public static final BeehiveSleepTrigger BEEHIVE_SLEEP = new BeehiveSleepTrigger();
+    public static final TameLatexTrigger TAME_LATEX = new TameLatexTrigger();
+    public static final FlyingTrigger FLYING = new FlyingTrigger();
+
+    public static void registerTriggers() {
+        CriteriaTriggers.register(TRANSFUR);
+        CriteriaTriggers.register(AQUATIC_BREATHE);
+        CriteriaTriggers.register(WHITE_LATEX_FUSE);
+        CriteriaTriggers.register(BEEHIVE_SLEEP);
+        CriteriaTriggers.register(TAME_LATEX);
+        CriteriaTriggers.register(FLYING);
+    }
 }

@@ -7,7 +7,6 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.tree.AbilityTree;
-import net.ltxprogrammer.changed.ability.tree.AbilityTreeInstance;
 import net.ltxprogrammer.changed.ability.tree.AbilityTrees;
 import net.ltxprogrammer.changed.ability.tree.NodePrice;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
@@ -23,14 +22,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
 
 import java.util.List;
 import java.util.stream.Stream;
 
-@Mod.EventBusSubscriber
 public class CommandAbilityTree {
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_TREES = SuggestionProviders.register(Changed.modResource("trees"), (p_121667_, p_121668_) -> {
         return SharedSuggestionProvider.suggestResource(AbilityTrees.INSTANCE.getRemoteTrees().stream().map(AbilityTree::getTreeLocation), p_121668_);
@@ -46,7 +42,6 @@ public class CommandAbilityTree {
     private static final SimpleCommandExceptionType NOT_TREE = new SimpleCommandExceptionType(Component.translatable("command.changed.error.not_tree"));
     private static final SimpleCommandExceptionType NOT_NODE = new SimpleCommandExceptionType(Component.translatable("command.changed.error.not_node"));
 
-    @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("abilitytree").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("player", EntityArgument.player())
@@ -187,6 +182,12 @@ public class CommandAbilityTree {
         pointStore.addLevels(deltaLevels);
 
         int actualDelta = pointStore.getLevels() - levelsBefore;
+        if (actualDelta != 0) {
+            player.connection.send(
+                    Changed.PACKET_HANDLER.toVanillaPacket(AbilityTreeSyncInstancePacket.ofActiveTrees(abilityTree, variant.getParent()), NetworkDirection.PLAY_TO_CLIENT)
+            );
+        }
+
         if (actualDelta > 0)
             source.sendSuccess(() -> Component.translatable("command.changed.success.abilitytree.addlevels.positive", actualDelta, player.getScoreboardName()), false);
         else if (actualDelta < 0)

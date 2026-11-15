@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.util.SimpleRegistryHolder;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
@@ -12,10 +13,6 @@ import java.util.function.Consumer;
 
 @Mod.EventBusSubscriber
 public class ChangedLootContextParamSets {
-    public static final LootContextParamSet LATEX_COVER = register("latex_cover", (builder) -> {
-        builder.required(LatexCoverState.LOOT_CONTEXT_PARAM).required(LootContextParams.ORIGIN).required(LootContextParams.TOOL).optional(LootContextParams.THIS_ENTITY).optional(LootContextParams.EXPLOSION_RADIUS);
-    });
-
     private static LootContextParamSet register(String name, Consumer<LootContextParamSet.Builder> builderConsumer) {
         LootContextParamSet.Builder lootcontextparamset$builder = new LootContextParamSet.Builder();
         builderConsumer.accept(lootcontextparamset$builder);
@@ -27,5 +24,19 @@ public class ChangedLootContextParamSets {
         } else {
             return lootcontextparamset;
         }
+    }
+
+    private static SimpleRegistryHolder<LootContextParamSet> createHolder(String name, Consumer<LootContextParamSet.Builder> builderConsumer) {
+        return new SimpleRegistryHolder<>(() -> {
+            return register(name, builderConsumer);
+        });
+    }
+
+    public static final SimpleRegistryHolder<LootContextParamSet> LATEX_COVER = createHolder("latex_cover", (builder) -> {
+        builder.required(LatexCoverState.LOOT_CONTEXT_PARAM).required(LootContextParams.ORIGIN).required(LootContextParams.TOOL).optional(LootContextParams.THIS_ENTITY).optional(LootContextParams.EXPLOSION_RADIUS);
+    });
+
+    public static void registerSets() {
+        LATEX_COVER.register();
     }
 }

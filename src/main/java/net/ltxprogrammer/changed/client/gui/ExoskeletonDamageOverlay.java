@@ -13,17 +13,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ExoskeletonDamageOverlay {
     private static final ResourceLocation TEXTURE = Changed.modResource("textures/misc/exoskeleton_damage_outline.png");
 
-    @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void eventHandler(RenderGuiOverlayEvent.Pre event) {
         if (/*event.getType() == RenderGuiOverlayEvent.ElementType.ALL &&*/ Minecraft.getInstance().getCameraEntity() instanceof LivingEntity wearer) {
             var exoOpt = Exoskeleton.getEntityExoskeleton(wearer);

@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
-import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
-import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
-import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.ClothingShape;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.init.ChangedEnchantments;
@@ -11,18 +8,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.Optional;
 
 public interface ExtendedItemProperties {
     @Nullable
@@ -79,24 +69,23 @@ public interface ExtendedItemProperties {
 
     }
 
-    @Mod.EventBusSubscriber
-    class Event {
-        @SubscribeEvent
-        public static void onEntityTick(LivingEvent.LivingTickEvent event) {
-            Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR)
-                            .forEach(slot -> {
-                                var itemStack = event.getEntity().getItemBySlot(slot);
-                                if (itemStack.getItem() instanceof ExtendedItemProperties extended) {
-                                    if (!extended.allowedInSlot(itemStack, event.getEntity(), slot) &&
-                                            EnchantmentHelper.getItemEnchantmentLevel(ChangedEnchantments.FORM_FITTING.get(), itemStack) <= 0) {
-                                        event.getEntity().setItemSlot(slot, ItemStack.EMPTY);
-                                        AccessorySlots.defaultInvalidHandler(event.getEntity()).accept(itemStack);
-                                        return;
-                                    }
+    static void handleTickEvent(LivingEvent.LivingTickEvent event) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (!slot.isArmor())
+                continue;
 
-                                    extended.wearTick(itemStack, event.getEntity());
-                                }
-                            });
+            ItemStack itemStack = event.getEntity().getItemBySlot(slot);
+            if (!(itemStack.getItem() instanceof ExtendedItemProperties extended))
+                continue;
+
+            if (!extended.allowedInSlot(itemStack, event.getEntity(), slot) &&
+                    itemStack.getEnchantmentLevel(ChangedEnchantments.FORM_FITTING.get()) <= 0) {
+                event.getEntity().setItemSlot(slot, ItemStack.EMPTY);
+                AccessorySlots.defaultInvalidHandler(event.getEntity()).accept(itemStack);
+                return;
+            }
+
+            extended.wearTick(itemStack, event.getEntity());
         }
     }
 }

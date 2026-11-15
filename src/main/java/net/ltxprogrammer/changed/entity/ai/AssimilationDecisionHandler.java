@@ -31,8 +31,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
-
 /**
  * Defines what happens when this mob gets assimilated.
  * @param <T> type of entity being assimilated
@@ -226,10 +224,10 @@ public interface AssimilationDecisionHandler<T extends LivingEntity> {
         protected IAbstractChangedEntity transfurPlayer(Player victim, TransfurVariant<?> variant, TransfurContext context, boolean initialKeepConscious) {
             final var level = victim.level();
 
-            final boolean doAnimation = level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION);
+            final boolean doAnimation = level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION.get());
             final boolean keepConscious;
 
-            if (initialKeepConscious || level.getGameRules().getBoolean(RULE_KEEP_BRAIN))
+            if (initialKeepConscious || level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_BRAIN.get()))
                 keepConscious = true;
             else {
                 if (victim.isCreative())

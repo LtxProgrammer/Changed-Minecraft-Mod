@@ -42,8 +42,9 @@ public class AbilityTreeSyncPointStorePacket implements ChangedPacket {
             context.setPacketHandled(true);
             return levelFuture.thenAccept(level -> {
                 var localPlayer = UniversalDist.getLocalPlayer();
-                AbilityTreeInstance.getForPlayer(localPlayer).getTree(tree)
-                        .readPointStore(pointStoreInfo, incomplete);
+                var accountedTree = AbilityTreeInstance.getForPlayer(localPlayer).getTree(tree);
+                if (accountedTree != null)
+                    accountedTree.readPointStore(pointStoreInfo, incomplete);
             });
         }
 

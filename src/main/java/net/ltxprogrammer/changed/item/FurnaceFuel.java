@@ -1,20 +1,16 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.init.ChangedBlocks;
-import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber
 public class FurnaceFuel {
     private static final Map<Supplier<? extends Item>, Function<ItemStack, Integer>> BURN_TIMES = new HashMap<>();
 
@@ -46,7 +42,6 @@ public class FurnaceFuel {
         addBlockBurnTime(ChangedBlocks.WALL_GREENHOUSE, 300);
     }
 
-    @SubscribeEvent
     public static void onBurnItem(FurnaceFuelBurnTimeEvent event) {
         BURN_TIMES.forEach((item, fn) -> {
             if (event.getItemStack().is(item.get()))

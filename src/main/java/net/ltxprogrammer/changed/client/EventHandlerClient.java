@@ -2,21 +2,16 @@ package net.ltxprogrammer.changed.client;
 
 import com.mojang.blaze3d.platform.GlUtil;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.active.GrabEntityAbility;
 import net.ltxprogrammer.changed.client.gui.ContentWarningScreen;
-import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
-import net.ltxprogrammer.changed.effect.particle.*;
+import net.ltxprogrammer.changed.client.gui.ExoskeletonDamageOverlay;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.latex.IClientLatexTypeExtensions;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -27,16 +22,11 @@ import net.ltxprogrammer.changed.world.LatexCoverHitResult;
 import net.ltxprogrammer.changed.world.LatexCoverState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -45,13 +35,28 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.IEventBus;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class EventHandlerClient {
-    private boolean shouldEntityBeRendered(LivingEntity entity) {
+    private EventHandlerClient() {}
+
+    /// Called during mod initialization on the Client. Use this function to register event listeners to forge's event bus
+    public static void registerGameEventListeners(IEventBus forgeEventBus) {
+        forgeEventBus.addListener(EventHandlerClient::onRenderEntityPre);
+        forgeEventBus.addListener(EventHandlerClient::onRenderFog);
+        forgeEventBus.addListener(EventHandlerClient::onSetupCamera);
+        forgeEventBus.addListener(EventHandlerClient::onFogColors);
+        forgeEventBus.addListener(EventHandlerClient::onRespawn);
+        forgeEventBus.addListener(EventHandlerClient::onInputEvent);
+        forgeEventBus.addListener(EventHandlerClient::onSetScreen);
+        forgeEventBus.addListener(EventHandlerClient::onNameFormat);
+        forgeEventBus.addListener(EventHandlerClient::onChangedVariant);
+        forgeEventBus.addListener(EventHandlerClient::onRenderBlockHighlight);
+        forgeEventBus.addListener(ExoskeletonDamageOverlay::eventHandler);
+    }
+
+    private static boolean shouldEntityBeRendered(LivingEntity entity) {
         if (entity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
             var grabAbility = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
             if (grabAbility != null && !grabAbility.shouldRenderGrabbedEntity())
@@ -69,30 +74,12 @@ public class EventHandlerClient {
         return true;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onRenderEntityPre(RenderLivingEvent.Pre<?, ?> event) {
-        if (!this.shouldEntityBeRendered(EntityUtil.maybeGetUnderlying(event.getEntity())))
+    public static void onRenderEntityPre(RenderLivingEvent.Pre<?, ?> event) {
+        if (!shouldEntityBeRendered(EntityUtil.maybeGetUnderlying(event.getEntity())))
             event.setCanceled(true);
     }
 
-    @SubscribeEvent
-    public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
-        event.registerSpecial(ChangedParticles.GLOBBED_LATEX.get(), GlobbedLatexParticle::new);
-        event.registerSpriteSet(ChangedParticles.DRIPPING_LATEX.get(), LatexDripParticle.Provider::new);
-        event.registerSpriteSet(ChangedParticles.GAS.get(), GasParticle.Provider::new);
-        event.registerSpriteSet(ChangedParticles.EMOTE.get(), EmoteParticle.Provider::new);
-        event.registerSpriteSet(ChangedParticles.TSC_SWEEP_ATTACK.get(), TscSweepParticle.Provider::new);
-    }
-
-    @SubscribeEvent
-    public static void onRegisterModelRenderTypes(RegisterNamedRenderTypesEvent event) {
-        event.register("emissive", RenderType.cutout(), RenderType.eyes(TextureAtlas.LOCATION_BLOCKS));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onRenderFog(ViewportEvent.RenderFog event) {
+    public static void onRenderFog(ViewportEvent.RenderFog event) {
         if (!(event.getCamera().getBlockAtCamera().getFluidState().getType() instanceof AbstractLatexFluid abstractLatexFluid)) return;
 
         event.setNearPlaneDistance(0.25F);
@@ -100,9 +87,7 @@ public class EventHandlerClient {
         event.setCanceled(true);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
+    public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
         if (!(event.getCamera().getEntity() instanceof LivingEntity livingEntity))
             return;
         var ability = AbstractAbility.getAbilityInstance(livingEntity, ChangedAbilities.WALL_CLIMB.get());
@@ -116,9 +101,7 @@ public class EventHandlerClient {
         event.setRoll(ability.getEffectiveRoll(partialTick));
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onFogColors(ViewportEvent.ComputeFogColor event) {
+    public static void onFogColors(ViewportEvent.ComputeFogColor event) {
         if (!(event.getCamera().getBlockAtCamera().getFluidState().getType() instanceof AbstractLatexFluid abstractLatexFluid)) return;
 
         var color = IClientLatexTypeExtensions.of(abstractLatexFluid.getLatexType()).getColor();
@@ -127,15 +110,11 @@ public class EventHandlerClient {
         event.setBlue(color.blue());
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onRespawn(ClientPlayerNetworkEvent.Clone event) {
+    public static void onRespawn(ClientPlayerNetworkEvent.Clone event) {
         Changed.PACKET_HANDLER.sendToServer(QueryTransfurPacket.Builder.of(event.getNewPlayer()));
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onInputEvent(InputEvent.InteractionKeyMappingTriggered event) {
+    public static void onInputEvent(InputEvent.InteractionKeyMappingTriggered event) {
         if (event.isAttack() || event.isUseItem()) {
             LocalPlayer localPlayer = Minecraft.getInstance().player;
 
@@ -158,19 +137,7 @@ public class EventHandlerClient {
         }
     }
 
-    /**
-     * This function needs to be static
-     * @param event
-     */
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
-        ChangedClient.registerReloadListeners(event::registerReloadListener);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onSetScreen(ScreenEvent.Opening event) {
+    public static void onSetScreen(ScreenEvent.Opening event) {
         if (event.getNewScreen() instanceof TitleScreen) {
             if (GlUtil.getOpenGLVersion().contains("Mesa")) {
                 Changed.LOGGER.warn("Mesa graphics driver detected, certain visual features will be disabled");
@@ -184,98 +151,69 @@ public class EventHandlerClient {
         }
     }
 
-    public static <T extends LivingEntity, M extends EntityModel<T>, R extends LivingEntityRenderer<T, M>> void addLatexParticles(EntityRenderersEvent.AddLayers event, EntityType<T> entityType) {
-        R renderer = event.getRenderer(entityType);
-        if (renderer != null)
-            renderer.addLayer(new LatexParticlesLayer<>(renderer, renderer.getModel()));
+    public static void onNameFormat(RenderNameTagEvent event) {
+        if (event.getEntity() instanceof ChangedEntity changedEntity && changedEntity.getUnderlyingPlayer() != null) {
+            if (!Changed.config.server.showTFNametags.get()) {
+                event.setResult(Event.Result.DENY);
+                return;
+            }
+
+            var variant = ProcessTransfur.getPlayerTransfurVariant(changedEntity.getUnderlyingPlayer());
+            if (variant != null && variant.isTransfurring()) {
+                event.setResult(Event.Result.DENY);
+                return;
+            }
+
+            event.setContent(PatreonBenefits.getPlayerName(changedEntity.getUnderlyingPlayer()));
+        } else if (event.getEntity() instanceof Player player) {
+            event.setContent(PatreonBenefits.getPlayerName(player, event.getContent()));
+        }
+    }
+
+    public static void onChangedVariant(ProcessTransfur.EntityVariantAssigned.ChangedVariant event) {
+        if (event.livingEntity.level().isClientSide)
+            return;
+
+        if (event.oldVariant == event.newVariant || event.context == null)
+            return;
+
+        final int duration = event.livingEntity.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION.get()) ?
+                (int)(event.context.cause().getDuration() * 20) : 40;
+        event.livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, 4, false, false));
+
+        if (event.oldVariant != null || event.livingEntity.tickCount < 20)
+            return; // Only do effect if player was human
+
+        if (event.livingEntity instanceof Player player && (player.isCreative() || player.isSpectator()))
+            return; // Don't do effect if player is creative mode
+
+        event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, duration, 1, false, false));
+        if (!event.newVariant.getEntityType().is(ChangedTags.EntityTypes.LATEX))
+            return; // Only do blindness if variant is goo
+
+        event.livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, duration, 1, false, false));
+    }
+
+    public static void onRenderBlockHighlight(RenderHighlightEvent.Block event) {
+        if (event.getTarget() instanceof LatexCoverHitResult)
+            event.setCanceled(true);
         else
-            Changed.LOGGER.warn("Renderer not present for {} in AddLayers event", entityType);
-    }
+            return;
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public static void addChangedLayers(EntityRenderersEvent.AddLayers event) {
-        event.getSkins().stream().map(name -> Pair.of(name, event.getSkin(name))).forEach(pair -> {
-            if (pair.getSecond() instanceof PlayerRenderer renderer) {
-                renderer.addLayer(new DarkLatexMaskLayer<>(renderer, event.getEntityModels()));
-                renderer.addLayer(new GasMaskLayer<>(renderer, event.getEntityModels()));
-            }
-        });
-        addLatexParticles(event, EntityType.BEE);
-        addLatexParticles(event, EntityType.RABBIT);
-    }
+        final var level = Minecraft.getInstance().level;
+        final var getter = LatexCoverGetter.wrap(level);
+        final var blockPos = event.getTarget().getBlockPos();
 
-    @OnlyIn(Dist.CLIENT)
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-    public static class ForgeEventHandler {
-        @OnlyIn(Dist.CLIENT)
-        @SubscribeEvent
-        public static void onNameFormat(RenderNameTagEvent event) {
-            if (event.getEntity() instanceof ChangedEntity changedEntity && changedEntity.getUnderlyingPlayer() != null) {
-                if (!Changed.config.server.showTFNametags.get()) {
-                    event.setResult(Event.Result.DENY);
-                    return;
-                }
+        LatexCoverState state = LatexCoverState.getAt(level, blockPos);
+        if (!state.isAir() && level.getWorldBorder().isWithinBounds(blockPos)) {
+            VertexConsumer bufferBuilder = event.getMultiBufferSource().getBuffer(RenderType.lines());
+            Vec3 vec3 = event.getCamera().getPosition();
+            double d0 = vec3.x();
+            double d1 = vec3.y();
+            double d2 = vec3.z();
 
-                var variant = ProcessTransfur.getPlayerTransfurVariant(changedEntity.getUnderlyingPlayer());
-                if (variant != null && variant.isTransfurring()) {
-                    event.setResult(Event.Result.DENY);
-                    return;
-                }
-
-                event.setContent(PatreonBenefits.getPlayerName(changedEntity.getUnderlyingPlayer()));
-            } else if (event.getEntity() instanceof Player player) {
-                event.setContent(PatreonBenefits.getPlayerName(player, event.getContent()));
-            }
-        }
-
-        @SubscribeEvent
-        public static void onChangedVariant(ProcessTransfur.EntityVariantAssigned.ChangedVariant event) {
-            if (event.livingEntity.level().isClientSide)
-                return;
-
-            if (event.oldVariant == event.newVariant || event.context == null)
-                return;
-
-            final int duration = event.livingEntity.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ?
-                    (int)(event.context.cause().getDuration() * 20) : 40;
-            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, 4, false, false));
-
-            if (event.oldVariant != null || event.livingEntity.tickCount < 20)
-                return; // Only do effect if player was human
-
-            if (event.livingEntity instanceof Player player && (player.isCreative() || player.isSpectator()))
-                return; // Don't do effect if player is creative mode
-
-            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, duration, 1, false, false));
-            if (!event.newVariant.getEntityType().is(ChangedTags.EntityTypes.LATEX))
-                return; // Only do blindness if variant is goo
-
-            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, duration, 1, false, false));
-        }
-
-        @SubscribeEvent
-        public static void onRenderBlockHighlight(RenderHighlightEvent.Block event) {
-            if (event.getTarget() instanceof LatexCoverHitResult)
-                event.setCanceled(true);
-            else
-                return;
-
-            final var level = Minecraft.getInstance().level;
-            final var getter = LatexCoverGetter.wrap(level);
-            final var blockPos = event.getTarget().getBlockPos();
-
-            LatexCoverState state = LatexCoverState.getAt(level, blockPos);
-            if (!state.isAir() && level.getWorldBorder().isWithinBounds(blockPos)) {
-                VertexConsumer bufferBuilder = event.getMultiBufferSource().getBuffer(RenderType.lines());
-                Vec3 vec3 = event.getCamera().getPosition();
-                double d0 = vec3.x();
-                double d1 = vec3.y();
-                double d2 = vec3.z();
-
-                LevelRenderer.renderVoxelShape(event.getPoseStack(), bufferBuilder, state.getShape(getter, blockPos, CollisionContext.of(event.getCamera().getEntity())),
-                        (double)blockPos.getX() - d0, (double)blockPos.getY() - d1, (double)blockPos.getZ() - d2, 0.0F, 0.0F, 0.0F, 0.4F, false);
-            }
+            LevelRenderer.renderVoxelShape(event.getPoseStack(), bufferBuilder, state.getShape(getter, blockPos, CollisionContext.of(event.getCamera().getEntity())),
+                    (double)blockPos.getX() - d0, (double)blockPos.getY() - d1, (double)blockPos.getZ() - d2, 0.0F, 0.0F, 0.0F, 0.4F, false);
         }
     }
 }

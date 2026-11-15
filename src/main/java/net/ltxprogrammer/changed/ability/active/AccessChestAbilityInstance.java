@@ -70,7 +70,7 @@ public class AccessChestAbilityInstance extends AbstractAbilityInstance implemen
     public void onRemove() {
         super.onRemove();
         if (entity.isDeadOrDying() &&
-                entity.getLevel().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) &&
+                entity.getLevel().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM.get()) &&
                 entity.getLevel().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             return; // Don't drop contents, preserve for player restoring from state
         }

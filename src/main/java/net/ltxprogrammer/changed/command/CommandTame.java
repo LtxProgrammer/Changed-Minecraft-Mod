@@ -10,19 +10,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.Collection;
 
-@Mod.EventBusSubscriber
 public class CommandTame {
     private static final SimpleCommandExceptionType NO_OWNER = new SimpleCommandExceptionType(Component.translatable("command.changed.error.no_owner"));
     private static final SimpleCommandExceptionType NOT_TAMABLE = new SimpleCommandExceptionType(Component.translatable("command.changed.error.not_tamable"));
     private static final SimpleCommandExceptionType ALREADY_TAMED = new SimpleCommandExceptionType(Component.translatable("command.changed.error.already_tamed"));
     private static final SimpleCommandExceptionType ALREADY_UNTAMED = new SimpleCommandExceptionType(Component.translatable("command.changed.error.already_untamed"));
 
-    @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("tamechanged").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("entities", EntityArgument.entities())

@@ -320,13 +320,13 @@ public abstract class SpreadingLatexType extends LatexType {
             return;
         }
         if (!this.canSpread(state)) return;
-        if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0) return;
+        if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE.get()) <= 0) return;
         if (!level.isAreaLoaded(blockPos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
 
         BlockState sourceState = level.getBlockState(blockPos);
 
         int spreadCount = Math.round(
-                (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) / 100f) *
+                (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE.get()) / 100f) *
                 (random.nextFloat() * 4));
         if (spreadCount <= 0) return;
 
@@ -704,8 +704,8 @@ public abstract class SpreadingLatexType extends LatexType {
         public void randomTick(LatexCoverState state, ServerLevel level, BlockPos blockPos, RandomSource random) {
             super.randomTick(state, level, blockPos, random);
 
-            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
-                    random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))) {
+            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE.get()) <= 0 ||
+                    random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE.get()))) {
                 this.doCrystalGrowth(state, level, blockPos, random);
                 return;
             }
@@ -871,14 +871,14 @@ public abstract class SpreadingLatexType extends LatexType {
         public void randomTick(@NotNull LatexCoverState state, @NotNull ServerLevel level, @NotNull BlockPos blockPos, @NotNull RandomSource random) {
             super.randomTick(state, level, blockPos, random);
 
-            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
-                    random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))) {
+            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE.get()) <= 0 ||
+                    random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE.get()))) {
                 this.doFloraGrowth(state, level, blockPos, random);
                 return;
             }
 
-            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) <= 0 ||
-                    random.nextInt(1000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))) {
+            if (!(level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE.get()) <= 0 ||
+                    random.nextInt(1000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE.get()))) {
                 this.doEntitySpawn(state, level, blockPos, random);
                 return;
             }

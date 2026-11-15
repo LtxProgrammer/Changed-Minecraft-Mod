@@ -66,7 +66,6 @@ public abstract class EnchantmentHelperMixin {
 
     @WrapOperation(method = "getRandomItemWith(Lnet/minecraft/world/item/enchantment/Enchantment;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Predicate;)Ljava/util/Map$Entry;",
             at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Lists;newArrayList()Ljava/util/ArrayList;", remap = false))
-    @SuppressWarnings("deprecation")
     private static ArrayList<Map.Entry<EquipmentSlot, ItemStack>> orRandomAccessoryWith(Operation<ArrayList<Map.Entry<EquipmentSlot, ItemStack>>> original,
                                                                                         @Local(argsOnly = true) Enchantment enchantment,
                                                                                         @Local(argsOnly = true) LivingEntity livingEntity,
@@ -76,7 +75,7 @@ public abstract class EnchantmentHelperMixin {
             slots.forEachSlot((slot, itemStack) -> {
                 if (!itemStack.isEmpty() &&
                         itemStack.getItem() instanceof AccessoryItem accessoryItem &&
-                        EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemStack) > 0 &&
+                        itemStack.getEnchantmentLevel(enchantment) > 0 &&
                         accessoryItem.isConsideredByEnchantment(new AccessorySlotContext<>(livingEntity, slot, itemStack), enchantment) &&
                         predicate.test(itemStack)) {
                     list.add(new Map.Entry<>() {

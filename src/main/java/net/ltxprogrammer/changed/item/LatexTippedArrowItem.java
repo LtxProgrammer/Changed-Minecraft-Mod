@@ -6,15 +6,12 @@ import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.ai.LatexAssimilationDecision;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -23,17 +20,13 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
-@Mod.EventBusSubscriber
 public class LatexTippedArrowItem extends TippedArrowItem implements VariantHoldingBase {
     public static final String FORM_LOCATION = Changed.modResourceStr("form");
 
@@ -54,7 +47,6 @@ public class LatexTippedArrowItem extends TippedArrowItem implements VariantHold
         return LatexAssimilationDecision.fromBlockOrItem(variant, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE), 8.0f);
     }
 
-    @SubscribeEvent
     public static void onLivingDamaged(LivingDamageEvent event) {
         if (event.getSource().getDirectEntity() instanceof Arrow arrow) {
             if (arrow.getPersistentData().contains(FORM_LOCATION)) {

@@ -36,13 +36,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -333,46 +330,42 @@ public class WaveVisionRenderer {
         ChangedTextures.lateRegisterTexture(WAVE_RESONANCE_BLOCK_MASK, () -> WAVE_RESONANCE_BLOCK_MASK_TEXTURE);
     }
 
-    @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class ModEvents {
-        @SubscribeEvent
-        public static void onModelBake(ModelEvent.BakingCompleted event) {
-            LOGGER.info("Creating resonance block mask");
+    public static void onModelBake(ModelEvent.BakingCompleted event) {
+        LOGGER.info("Creating resonance block mask");
 
-            ResourceManager resources = Minecraft.getInstance().getResourceManager();
-            TextureAtlas blockAtlas = event.getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS);
-            if (!(blockAtlas instanceof TextureAtlasExtender ext)) return;
+        ResourceManager resources = Minecraft.getInstance().getResourceManager();
+        TextureAtlas blockAtlas = event.getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS);
+        if (!(blockAtlas instanceof TextureAtlasExtender ext)) return;
 
-            NativeImage maskBuilder = new NativeImage(ext.getWidth(), ext.getHeight(), false);
+        NativeImage maskBuilder = new NativeImage(ext.getWidth(), ext.getHeight(), false);
 
-            ext.getSprites().forEach(sprite -> {
-                ResourceLocation resonanceMask = MixedTexture.getResourceLocation(resolveResonanceTexture(sprite.contents().name()));
-                resources.getResource(resonanceMask).ifPresentOrElse(resource -> {
-                    try {
-                        loadImageIntoMask(maskBuilder, sprite, resource);
-                        LOGGER.debug("Loaded {} into resonance mask", resonanceMask);
-                    } catch (IOException e) {
-                        fillMaskWithDefault(maskBuilder, sprite);
-                    } catch (NullPointerException e) {
-                        LOGGER.warn("Resource at {} gave a null InputStream", resonanceMask);
-                        fillMaskWithDefault(maskBuilder, sprite);
-                    }
-                }, () -> {
+        ext.getSprites().forEach(sprite -> {
+            ResourceLocation resonanceMask = MixedTexture.getResourceLocation(resolveResonanceTexture(sprite.contents().name()));
+            resources.getResource(resonanceMask).ifPresentOrElse(resource -> {
+                try {
+                    loadImageIntoMask(maskBuilder, sprite, resource);
+                    LOGGER.debug("Loaded {} into resonance mask", resonanceMask);
+                } catch (IOException e) {
                     fillMaskWithDefault(maskBuilder, sprite);
-                });
+                } catch (NullPointerException e) {
+                    LOGGER.warn("Resource at {} gave a null InputStream", resonanceMask);
+                    fillMaskWithDefault(maskBuilder, sprite);
+                }
+            }, () -> {
+                fillMaskWithDefault(maskBuilder, sprite);
             });
+        });
 
-            LOGGER.info("Resonance block mask created");
+        LOGGER.info("Resonance block mask created");
 
-            if (WAVE_RESONANCE_BLOCK_MASK_TEXTURE != null)
-                WAVE_RESONANCE_BLOCK_MASK_TEXTURE.releaseId();
-            WAVE_RESONANCE_BLOCK_MASK_TEXTURE = new DynamicTexture(maskBuilder);
+        if (WAVE_RESONANCE_BLOCK_MASK_TEXTURE != null)
+            WAVE_RESONANCE_BLOCK_MASK_TEXTURE.releaseId();
+        WAVE_RESONANCE_BLOCK_MASK_TEXTURE = new DynamicTexture(maskBuilder);
 
-            if (!RenderSystem.isOnRenderThreadOrInit()) {
-                RenderSystem.recordRenderCall(WaveVisionRenderer::uploadResonanceMask);
-            } else {
-                uploadResonanceMask();
-            }
+        if (!RenderSystem.isOnRenderThreadOrInit()) {
+            RenderSystem.recordRenderCall(WaveVisionRenderer::uploadResonanceMask);
+        } else {
+            uploadResonanceMask();
         }
     }
 }

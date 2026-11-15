@@ -2,6 +2,7 @@
   "parent": { "tree": "changed:malleable" },
   "titleId": "changed.ability_tree.malleable.switch_gender",
   "flavorId": "changed.ability_tree.malleable.switch_gender.flavor",
+  "display": { "icon": "changed:textures/abilities/switch_gender.png" },
   "price": 0,
 
   "acquiredEffects": [

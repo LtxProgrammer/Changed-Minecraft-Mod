@@ -2,19 +2,11 @@ package net.ltxprogrammer.changed.init;
 
 import com.mojang.blaze3d.pipeline.RenderCall;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.datafixers.util.Pair;
-import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.data.OnlineTexture;
-import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.HashMap;
@@ -22,7 +14,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedTextures {
     public static final Map<ResourceLocation, AbstractTexture> REGISTRY = new HashMap<>();
 
@@ -53,7 +44,6 @@ public class ChangedTextures {
         REGISTRY.forEach(textureManager::register);
     }
 
-    @SubscribeEvent
     public static void registerAll(FMLClientSetupEvent event) {
         if (!RenderSystem.isOnRenderThread())
             RenderSystem.recordRenderCall(ChangedTextures::registerAllOnRenderThread);

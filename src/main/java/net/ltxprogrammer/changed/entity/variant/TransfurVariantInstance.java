@@ -56,8 +56,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
@@ -69,7 +68,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = Changed.MODID)
 public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     private static final Cacheable<AttributeMap> DEFAULT_PLAYER_ATTRIBUTES = Cacheable.of(() -> new AttributeMap(Player.createAttributes().build()));
 
@@ -382,7 +380,22 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         }
     }
 
-    @SubscribeEvent
+    public static void addGameEventListeners(IEventBus forgeEventBus) {
+        // Because TransfurVariantInstance is a class with a generic, addListener() throws a fuss about the event type.
+        // It *needs* to be specified.
+        forgeEventBus.<LivingAttackEvent>addListener(TransfurVariantInstance::onEntityAttack);
+        forgeEventBus.<PlayerInteractEvent.EntityInteract>addListener(TransfurVariantInstance::onEntityRightClick);
+        forgeEventBus.<PlayerInteractEvent.RightClickItem>addListener(TransfurVariantInstance::onItemRightClick);
+        forgeEventBus.<PlayerInteractEvent.RightClickBlock>addListener(TransfurVariantInstance::onBlockRightClick);
+        forgeEventBus.<PlayerInteractEvent.LeftClickBlock>addListener(TransfurVariantInstance::onBlockLeftClick);
+        forgeEventBus.<LivingFallEvent>addListener(TransfurVariantInstance::onLivingFallEvent);
+        forgeEventBus.<TickEvent.PlayerTickEvent>addListener(TransfurVariantInstance::onPlayerTick);
+        forgeEventBus.<LivingDeathEvent>addListener(TransfurVariantInstance::onPlayerDeath);
+        forgeEventBus.<PlayerEvent.PlayerRespawnEvent>addListener(TransfurVariantInstance::onPlayerSpawn);
+        forgeEventBus.<EntityJoinLevelEvent>addListener(TransfurVariantInstance::onPlayerJoin);
+        forgeEventBus.<LivingBreatheEvent>addListener(TransfurVariantInstance::onLivingBreathe);
+    }
+
     public static void onEntityAttack(LivingAttackEvent event) {
         if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
             event.setCanceled(true);
@@ -394,7 +407,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         }
     }
 
-    @SubscribeEvent
     public static void onEntityRightClick(PlayerInteractEvent.EntityInteract event) {
         if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
             event.setCanceled(true);
@@ -412,7 +424,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         });
     }
 
-    @SubscribeEvent
     public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
         if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
             event.setCanceled(true);
@@ -430,7 +441,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         });
     }
 
-    @SubscribeEvent
     public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
         if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
             event.setCanceled(true);
@@ -453,7 +463,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         }
     }
 
-    @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
         if (SeatEntity.isSeatedEntityNoInteract(event.getEntity())) {
             event.setCanceled(true);
@@ -471,7 +480,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         });
     }
 
-    @SubscribeEvent
     public static void onLivingFallEvent(LivingFallEvent event) {
         var attributes = event.getEntity().getAttributes();
         if (attributes.hasAttribute(ChangedAttributes.FALL_RESISTANCE.get())) {
@@ -505,7 +513,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         }
     }
 
-    @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END)
             return;
@@ -526,7 +533,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         });
     }
 
-    @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player) {
             ProcessTransfur.ifPlayerTransfurred(player, instance -> {
@@ -538,17 +544,15 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         }
     }
 
-    @SubscribeEvent
     public static void onPlayerSpawn(PlayerEvent.PlayerRespawnEvent event) {
         ProcessTransfur.ifPlayerTransfurred(event.getEntity(), instance -> {
-            if (instance.isDead() && !event.getEntity().level().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM))
+            if (instance.isDead() && !event.getEntity().level().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM.get()))
                 ProcessTransfur.removePlayerTransfurVariant(event.getEntity());
         });
 
         AccessoryEntities.INSTANCE.forceReloadAccessories(event.getEntity());
     }
 
-    @SubscribeEvent
     public static void onPlayerJoin(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             serverPlayer.connection.send(
@@ -813,12 +817,12 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         transfurProgressionO = transfurProgression;
         if (transfurProgression < 1f) {
             transfurProgression += (1.0f / transfurContext.cause().getDuration()) * 0.05f;
-            if (!host.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION)) {
+            if (!host.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION.get())) {
                 transfurProgressionO = 1f;
                 transfurProgression = 1f;
             }
 
-            if (host.level().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_BRAIN)) {
+            if (host.level().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_BRAIN.get())) {
                 willSurviveTransfur = true;
             }
 
@@ -935,7 +939,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         }
     }
 
-    @SubscribeEvent
     public static void onLivingBreathe(LivingBreatheEvent event) {
         var grabber = GrabEntityAbility.getGrabber(event.getEntity());
         var grab = grabber != null ? grabber.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()) : null;

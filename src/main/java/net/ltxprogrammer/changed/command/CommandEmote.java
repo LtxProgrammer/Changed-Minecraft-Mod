@@ -12,20 +12,16 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 import java.util.Locale;
 
-@Mod.EventBusSubscriber
 public class CommandEmote {
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_EMOTE = SuggestionProviders.register(Changed.modResource("emotes"), (p_121667_, p_121668_) -> {
         var list = List.of(Emote.values());
         return SharedSuggestionProvider.suggest(list.stream().map(emote -> emote.toString().toLowerCase(Locale.ROOT)), p_121668_);
     });
 
-    @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("emote")
                 .then(Commands.argument("emote", StringArgumentType.string()).suggests(SUGGEST_EMOTE)

@@ -601,6 +601,10 @@ public class AbilityTreeInstance {
                 ListTag list = (ListTag)nodeRequirementProgresses.get(key);
 
                 var node = tree.getNamedNode(id);
+                if (node == null) {
+                    LOGGER.warn("Missing node {} for tree {} while reading requirement progress", id, tree.getTreeLocation());
+                    return;
+                }
                 var progressList = node.getRequirementProgress();
                 if (!incomplete)
                     progressList.clear();

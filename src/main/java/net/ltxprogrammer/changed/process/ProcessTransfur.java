@@ -38,8 +38,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.IModBusEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -58,7 +56,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = Changed.MODID)
 public class ProcessTransfur {
     private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -556,20 +553,20 @@ public class ProcessTransfur {
     }
 
     public static void removePlayerTransfurVariant(Player player) {
-        setPlayerTransfurVariant(player, null, null, player.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ? 0.0f : 1.0f);
+        setPlayerTransfurVariant(player, null, null, player.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION.get()) ? 0.0f : 1.0f);
     }
 
     @Deprecated
     public static @Nullable TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant) {
-        return setPlayerTransfurVariant(player, ogVariant, null, player.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ? 0.0f : 1.0f);
+        return setPlayerTransfurVariant(player, ogVariant, null, player.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION.get()) ? 0.0f : 1.0f);
     }
 
     public static @Nullable TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause) {
-        return setPlayerTransfurVariant(player, ogVariant, TransfurContext.hazard(cause), player.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ? 0.0f : 1.0f);
+        return setPlayerTransfurVariant(player, ogVariant, TransfurContext.hazard(cause), player.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION.get()) ? 0.0f : 1.0f);
     }
 
     public static @Nullable TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurContext context) {
-        return setPlayerTransfurVariant(player, ogVariant, context, player.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ? 0.0f : 1.0f);
+        return setPlayerTransfurVariant(player, ogVariant, context, player.level().getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION.get()) ? 0.0f : 1.0f);
     }
 
     public static @Nullable TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurContext context, float progress) {
@@ -747,7 +744,6 @@ public class ProcessTransfur {
         return entity.swingingArm != null ? entity.getItemInHand(entity.swingingArm) : ItemStack.EMPTY;
     }
 
-    @SubscribeEvent
     public static void onLivingDamaged(LivingDamageEvent event) {
         if (TransfurVariant.getEntityVariant(event.getEntity()) == null)
             return;
@@ -806,7 +802,6 @@ public class ProcessTransfur {
         return amount;
     }
 
-    @SubscribeEvent
     public static void onLivingAttacked(LivingAttackEvent event) {
         //The entity getting hurt is a morph. Cancel the event.
         if(event.getEntity().getPersistentData().contains(TransfurVariant.NBT_PLAYER_ID)) {
@@ -844,7 +839,6 @@ public class ProcessTransfur {
         }
     }
 
-    @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         //The entity dying is a morph. Cancel the event.
         if (event.getEntity().getPersistentData().contains(TransfurVariant.NBT_PLAYER_ID)) {

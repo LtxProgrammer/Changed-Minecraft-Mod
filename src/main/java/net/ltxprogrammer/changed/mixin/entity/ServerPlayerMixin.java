@@ -64,7 +64,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
             getAbilityTree().restoreFrom(ext.getAbilityTree());
         }
 
-        if (player.level().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) {
+        if (player.level().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM.get()) || restore) {
             ProcessTransfur.ifPlayerTransfurred(player, oldVariant -> {
                 if (!oldVariant.willSurviveTransfur)
                     return;

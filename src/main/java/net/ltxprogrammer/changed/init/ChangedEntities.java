@@ -27,8 +27,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -40,7 +38,6 @@ import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.entity.variant.TransfurVariant.getNextEntId;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedEntities {
     @Deprecated(forRemoval = true)
     public interface VoidConsumer { void accept(); }
@@ -469,7 +466,6 @@ public class ChangedEntities {
         return entityType;
     }
 
-    @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         ATTR_FUNC_REGISTRY.forEach((pair) -> event.put(pair.getFirst().get(), pair.getSecond().get().build()));
         event.put(ROOMBA.get(), Roomba.createAttributes().build());
@@ -479,7 +475,6 @@ public class ChangedEntities {
         event.put(LEGLESS_ARMOR_STAND.get(), LivingEntity.createLivingAttributes().build());
     }
 
-    @SubscribeEvent
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         SPAWN_PLACEMENT_REGISTRY.forEach(consumer -> consumer.accept(event));
     }

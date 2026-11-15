@@ -174,18 +174,18 @@ public class ChangedFusions extends SimplePreparableReloadListener<List<ChangedF
         if (transfurSource.left().isPresent()) { // Check if attacker can't fuse
             final IAbstractChangedEntity sourceLatex = transfurSource.left().get();
             var instance = sourceLatex.getTransfurVariantInstance();
-            if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+            if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER.get()))
                 return null;
         }
 
         { // Check if attackee can't fuse
             var instance = assimVictim.getTransfurVariantInstance();
-            if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+            if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER.get()))
                 return null;
         }
 
         if (assimVictim.isPlayer() && !transfurSource.map(IAbstractChangedEntity::isPlayer, assimilatedEntity -> false)) {
-            if (!level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
+            if (!level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER.get()))
                 return null;
         }
 
@@ -200,7 +200,7 @@ public class ChangedFusions extends SimplePreparableReloadListener<List<ChangedF
         if (transfurSource.left().isPresent()) { // Check if attacker can't fuse
             final IAbstractChangedEntity sourceLatex = transfurSource.left().get();
             var instance = sourceLatex.getTransfurVariantInstance();
-            if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+            if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER.get()))
                 return null;
 
             var event = new TransfurEvents.ChangedEntityFusionWithMobDecisionEvent(sourceLatex, assimVictim, fusionVariant);
