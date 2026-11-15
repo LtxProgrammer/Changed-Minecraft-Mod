@@ -891,7 +891,6 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         this.wasTouchingWater = player.wasTouchingWater;
         this.swimAmount = player.swimAmount;
         this.swimAmountO = player.swimAmountO;
-        // AccessTransformers don't work well with forge and other mods stuff. so maybe we could just override the method "getEyeInFluidType" instead?
         this.forgeFluidTypeOnEyes = player.forgeFluidTypeOnEyes;
 
         this.fallFlyTicks = player.fallFlyTicks;
