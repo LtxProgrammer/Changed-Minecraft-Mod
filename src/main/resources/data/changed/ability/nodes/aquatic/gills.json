@@ -1,0 +1,14 @@
+{
+  "parent": { "tree": "changed:aquatic" },
+  "titleId": "changed.ability_tree.aquatic.gills",
+  "flavorId": "changed.ability_tree.aquatic.gills.flavor",
+  "display": { "icon": { "item": "minecraft:prismarine_shard" } },
+  "price": 0,
+
+  "acquiredEffects": [
+    {
+      "type": "changed:enable_feature",
+      "feature": "changed:breathe/accept_water"
+    }
+  ]
+}

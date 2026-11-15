@@ -1,7 +1,6 @@
 {
   "parent": { "tree": "changed:taur_mobility" },
   "titleId": "changed.ability_tree.practice1",
-  "flavorId": "changed.ability_tree.taur_mobility.practice1.flavor",
   "display": { "icon": { "item": "changed:leather_quadrupedal_leggings" }, "numeral": 1 },
   "price": {
     "levels": 1,

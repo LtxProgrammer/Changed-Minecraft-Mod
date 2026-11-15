@@ -1,7 +1,6 @@
 {
   "parent": { "tree": "changed:naga_mobility" },
   "titleId": "changed.ability_tree.practice1",
-  "flavorId": "changed.ability_tree.naga_mobility.practice1.flavor",
   "display": { "icon": { "item": "changed:leather_upper_abdomen_armor" }, "numeral": 1 },
   "price": {
     "levels": 1,

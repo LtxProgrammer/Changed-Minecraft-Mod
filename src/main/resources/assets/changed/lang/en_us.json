@@ -1394,6 +1394,8 @@
   "changed.ability_tree.aquatic.depth_compression.flavor": "Diving deeper compresses your goo, making you a little harder to hit, and boosting your resistance to physical attack.",
   "changed.ability_tree.aquatic.dive": "Dive",
   "changed.ability_tree.aquatic.dive.flavor": "Your sleek, hydrodynamic form allows you to get a boost of speed when entering the water.",
+  "changed.ability_tree.aquatic.gills": "Gills",
+  "changed.ability_tree.aquatic.gills.flavor": "Your feel refreshed as your gills touch water. It feels as if you were taking a deep breath of fresh air.",
   "changed.ability_tree.aquatic.no_sinking": "Fluid Stability",
   "changed.ability_tree.aquatic.no_sinking.flavor": "You've figured out how to maintain neutral buoyancy. Treading water is a thing of the past!",
   "changed.ability_tree.aquatic.oxygen_symbiosis": "Oxygen Symbiosis",
