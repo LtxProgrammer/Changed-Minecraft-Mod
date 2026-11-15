@@ -153,7 +153,7 @@ public class TransfurVariant<T extends ChangedEntity> {
     public final float cameraZOffset;
     public final ResourceLocation sound;
     @Deprecated
-    public final List<AbstractAbility<?>> defaultAbilities;
+    public final List<Supplier<? extends AbstractAbility<?>>> defaultAbilities;
 
     public TransfurVariant(Supplier<EntityType<T>> ctor,
                            BreatheMode breatheMode,
@@ -162,7 +162,7 @@ public class TransfurVariant<T extends ChangedEntity> {
         this(ctor, List.of(), breatheMode, visionType, itemUseMode, scares, transfurMode, cameraZOffset, sound);
     }
 
-    public TransfurVariant(Supplier<EntityType<T>> ctor, List<AbstractAbility<?>> defaultAbilities,
+    public TransfurVariant(Supplier<EntityType<T>> ctor, List<Supplier<? extends AbstractAbility<?>>> defaultAbilities,
                            BreatheMode breatheMode,
                            VisionType visionType, UseItemMode itemUseMode, @Nullable BiPredicate<T, PathfinderMob> scares, TransfurMode transfurMode,
                            float cameraZOffset, ResourceLocation sound) {
@@ -178,7 +178,7 @@ public class TransfurVariant<T extends ChangedEntity> {
     }
 
     @Deprecated
-    public List<AbstractAbility<?>> getDefaultAbilities() {
+    public List<Supplier<? extends AbstractAbility<?>>> getDefaultAbilities() {
         return defaultAbilities;
     }
 
@@ -484,7 +484,7 @@ public class TransfurVariant<T extends ChangedEntity> {
         @Nullable
         BiPredicate<T, PathfinderMob> scares = null;
         TransfurMode transfurMode = TransfurMode.REPLICATION;
-        List<AbstractAbility<?>> abilities = new ArrayList<>();
+        List<Supplier<? extends AbstractAbility<?>>> abilities = new ArrayList<>();
         float cameraZOffset = 0.0F;
         ResourceLocation sound = ChangedSounds.TRANSFUR_BY_LATEX.getId();
 
@@ -591,19 +591,19 @@ public class TransfurVariant<T extends ChangedEntity> {
         @Deprecated(forRemoval = true)
         public Builder<T> addAbility(Function<EntityType<?>, ? extends AbstractAbility<?>> ability) {
             if (ability != null)
-                this.abilities.add(ability.apply(this.entityType.get()));
+                this.abilities.add(() -> ability.apply(this.entityType.get()));
             return this;
         }
 
         @Deprecated()
         public Builder<T> addAbility(Supplier<? extends AbstractAbility<?>> ability) {
             if (ability != null)
-                this.abilities.add(ability.get());
+                this.abilities.add(ability);
             return this;
         }
 
         @Deprecated()
-        public Builder<T> abilities(List<AbstractAbility<?>> abilities) {
+        public Builder<T> abilities(List<Supplier<? extends AbstractAbility<?>>> abilities) {
             this.abilities = new ArrayList<>(abilities);
             return this;
         }
@@ -694,13 +694,11 @@ public class TransfurVariant<T extends ChangedEntity> {
         }
 
         public Builder<T> cameraZOffset(float v) {
-            this.cameraZOffset = v;
-            return this;
+            this.cameraZOffset = v; return this;
         }
 
         public Builder<T> sound(ResourceLocation event) {
-            this.sound = event;
-            return this;
+            this.sound = event; return this;
         }
 
         public TransfurVariant<T> build() {

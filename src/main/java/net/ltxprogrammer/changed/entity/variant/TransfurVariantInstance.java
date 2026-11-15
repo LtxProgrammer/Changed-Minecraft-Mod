@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.datafixers.util.Pair;
@@ -317,7 +316,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         // Support for the old Default Abilities, is Recommended to make a "default abilities" tree instead of rely on this feature.
         // It will not be removed but at same time it will not get any updates or something similar.
         if (!this.parent.getDefaultAbilities().isEmpty()) {
-            this.parent.getDefaultAbilities().forEach(ability -> {
+            this.parent.getDefaultAbilities().forEach(abilitySupplier -> {
+                AbstractAbility<?> ability = abilitySupplier.get();
                 this.abilityInstances.put(ability, ability.makeInstance(IAbstractChangedEntity.forPlayer(host)));
             });
         }
