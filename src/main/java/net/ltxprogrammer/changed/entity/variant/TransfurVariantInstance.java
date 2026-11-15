@@ -312,6 +312,16 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         this.breatheMode = parent.breatheMode;
         this.visionType = parent.visionType;
         this.itemUseMode = parent.itemUseMode;
+
+        // Support for the old Default Abilities, is Recommended to make a "default abilities" tree instead of rely on this feature.
+        // It will not be removed but at same time it will not get any updates or something similar.
+        List<Supplier<? extends AbstractAbility<?>>> defaultAbilities = this.parent.getDefaultAbilities();
+        if (!defaultAbilities.isEmpty()) {
+            defaultAbilities.forEach(abilitySupplier -> {
+                AbstractAbility<?> ability = abilitySupplier.get();
+                this.abilityInstances.put(ability, ability.makeInstance(IAbstractChangedEntity.forPlayer(host)));
+            });
+        }
     }
 
     @Nullable
@@ -1002,6 +1012,17 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     protected void updateAbilitiesMap() {
         Map<AbstractAbility<?>, Integer> abilitiesToAdd = new Object2IntArrayMap<>();
+
+        List<Supplier<? extends AbstractAbility<?>>> defaultAbilities = this.parent.getDefaultAbilities();
+        if (!defaultAbilities.isEmpty()) {
+            defaultAbilities.forEach(abilitySupplier -> {
+                AbstractAbility<?> ability = abilitySupplier.get();
+                int defaultAbilityLevel = 0; // Addon will love me because of this variable.
+
+                abilitiesToAdd.putIfAbsent(ability, defaultAbilityLevel); // Default abilities have 1 as value
+            });
+        }
+
         visitActiveNodeEffects(ChangedAbilityTreeCodecs.UNLOCK_ACTIVE_ABILITY_EFFECT.get(), activeAbilityNode -> {
             abilitiesToAdd.compute(activeAbilityNode.ability, (ability, amplifier) -> {
                 if (amplifier == null)
