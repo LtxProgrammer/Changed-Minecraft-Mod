@@ -1017,7 +1017,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         if (!defaultAbilities.isEmpty()) {
             defaultAbilities.forEach(abilitySupplier -> {
                 AbstractAbility<?> ability = abilitySupplier.get();
-                int defaultAbilityLevel = 1; // Addon will love me because of this variable.
+                int defaultAbilityLevel = 0; // Addon will love me because of this variable.
 
                 abilitiesToAdd.putIfAbsent(ability, defaultAbilityLevel); // Default abilities have 1 as value
             });
