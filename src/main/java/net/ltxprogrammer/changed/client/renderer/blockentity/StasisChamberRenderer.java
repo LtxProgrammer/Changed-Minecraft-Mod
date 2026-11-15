@@ -11,7 +11,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -25,8 +24,9 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class StasisChamberRenderer<T extends StasisChamberBlockEntity> implements BlockEntityRenderer<T> {
+public class StasisChamberRenderer<T extends StasisChamberBlockEntity> extends OpenableDoorDebugRenderer<T> {
     public StasisChamberRenderer(BlockEntityRendererProvider.Context context) {
+        super(context);
         //this.goo = context.bakeLayer(LAYER_LOCATION);
     }
 
@@ -197,5 +197,7 @@ public class StasisChamberRenderer<T extends StasisChamberBlockEntity> implement
 
             pose.popPose();
         });
+
+        super.render(blockEntity, partialTicks, pose, buffers, packedLight, packedOverlay);
     }
 }
