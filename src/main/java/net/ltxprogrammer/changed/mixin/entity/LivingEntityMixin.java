@@ -278,7 +278,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                     blockstate.getValue(StasisChamber.SECTION).getRelative(blockpos, blockstate.getValue(HorizontalDirectionalBlock.FACING), ThreeXThreeSection.CENTER),
                     ChangedBlockEntities.STASIS_CHAMBER.get()
             ).filter(chamber -> chamber.getFluidYHeight() > yCheck).flatMap(StasisChamberBlockEntity::getFluidType).ifPresent(fluid -> {
-                this.forgeFluidTypeOnEyes = fluid.getFluidType();
+                ((EntityAccessor)this).setForgeFluidTypeOnEyes(fluid.getFluidType());
                 if (fluid instanceof Gas gas)
                     eyeInGas = gas;
             });
