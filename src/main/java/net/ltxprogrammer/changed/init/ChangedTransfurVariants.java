@@ -39,7 +39,9 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<GasWolfFemale>> GAS_WOLF_FEMALE = register("form_gas_wolf/female",
             TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF_FEMALE).scares(AbstractSkeleton.class).sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
     public static final RegistryObject<TransfurVariant<GasWolfMale>> GAS_WOLF_MALE = register("form_gas_wolf/male",
-            TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF_MALE).scares(AbstractSkeleton.class).sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
+            TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF_MALE).scares(AbstractSkeleton.class)
+                    .addAbility(ChangedAbilities.HYPNOSIS) // test
+                    .sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()));
     public static final RegistryObject<TransfurVariant<GasWolfPup>> GAS_WOLF_PUP = register("form_gas_wolf_pup",
             TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF_PUP).scares(AbstractSkeleton.class).holdItemsInMouth().sound(ChangedSounds.TRANSFUR_BY_NOT_LATEX.getId()).cameraZOffset(6.0f / 16.0f));
     public static final RegistryObject<TransfurVariant<PooltoyWolf>> POOLTOY_WOLF = register("form_pooltoy_wolf",
