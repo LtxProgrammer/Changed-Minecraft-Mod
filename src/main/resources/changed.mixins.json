@@ -23,7 +23,6 @@
     "block.SpreadingSnowyDirtBlockMixin",
     "block.WebBlockMixin",
     "entity.ArrowMixin",
-    "entity.EntityAccessor",
     "entity.EntityMixin",
     "entity.InventoryMixin",
     "entity.LightingBoltMixin",

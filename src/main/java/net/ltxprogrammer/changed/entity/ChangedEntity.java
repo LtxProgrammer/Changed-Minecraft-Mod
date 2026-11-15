@@ -15,7 +15,6 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.entity.variant.VariantFeature;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
-import net.ltxprogrammer.changed.mixin.entity.EntityAccessor;
 import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.*;
@@ -892,8 +891,8 @@ public abstract class ChangedEntity extends Monster implements EntityShape.Provi
         this.wasTouchingWater = player.wasTouchingWater;
         this.swimAmount = player.swimAmount;
         this.swimAmountO = player.swimAmountO;
-        // AccessTransformers can't work with forge and other mods stuff. so maybe we could just override the method "getEyeInFluidType" instead?
-        ((EntityAccessor) this).setForgeFluidTypeOnEyes(player.getEyeInFluidType());
+        // AccessTransformers don't work well with forge and other mods stuff. so maybe we could just override the method "getEyeInFluidType" instead?
+        this.forgeFluidTypeOnEyes = player.forgeFluidTypeOnEyes;
 
         this.fallFlyTicks = player.fallFlyTicks;
 
