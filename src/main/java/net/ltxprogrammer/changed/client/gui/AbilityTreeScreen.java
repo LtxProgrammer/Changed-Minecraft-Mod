@@ -258,12 +258,12 @@ public class AbilityTreeScreen extends Screen implements MenuAccess<AbilityTreeM
                 return NodeRenderState.UNLOCKED;
             if (!accountedTree.isParentNodeUnlocked(AbilityTreeScreen.this.entity, nodeName))
                 return NodeRenderState.DISTANT;
+            if (!accountedTree.hasPrerequisites(AbilityTreeScreen.this.entity, nodeName))
+                return NodeRenderState.PRE_REQ_LOCKED;
             if (entity.getEntity() instanceof Player player && player.getAbilities().instabuild) {
                 return NodeRenderState.CAN_ACQUIRE;
             }
 
-            if (!accountedTree.hasPrerequisites(AbilityTreeScreen.this.entity, nodeName))
-                return NodeRenderState.PRE_REQ_LOCKED;
             if (!accountedTree.canAfford(UniversalDist.getLocalPlayer(), AbilityTreeScreen.this.entity.getSelfVariant(), nodeName))
                 return NodeRenderState.PRE_REQ_MET;
             return NodeRenderState.CAN_ACQUIRE;

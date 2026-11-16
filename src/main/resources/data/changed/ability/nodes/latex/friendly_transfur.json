@@ -15,6 +15,11 @@
       "type": "changed:is_not_entity",
       "entities": [ "#changed:armless" ],
       "explainId": "changed.ability_tree.latex.grab.bad_variant"
+    },
+    {
+      "type": "changed:is_not_variant",
+      "variants": [ "#changed:pup", "#changed:feral" ],
+      "explainId": "changed.ability_tree.latex.grab.bad_variant"
     }
   ],
 
