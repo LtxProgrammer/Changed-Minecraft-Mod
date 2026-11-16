@@ -217,6 +217,35 @@ public class LatexSwimMover extends PlayerMover<LatexSwimMover.MoverInstance> {
         }
 
         @Override
+        public void remoteAiStep(Player player, InputWrapper input, LogicalSide side) {
+            if (lastPos == null)
+                lastPos = player.getPosition(1.0f);
+
+            Vec3 currentPos = player.getPosition(1.0f);
+            Vec3 velocity = currentPos.subtract(lastPos).multiply(DECAY, DECAY, DECAY);
+            if (velocity.distanceToSqr(Vec3.ZERO) < 0.00000625)
+                velocity = Vec3.ZERO;
+
+            this.updateSurfaceDirection(player, input, side);
+            if (surfaceDirection != null && velocity.length() > 0.0001) {
+                var boundingBox = player.getBoundingBox();
+                double xVar = (1 - Mth.abs(surfaceDirection.getStepX())) * 0.35;
+                double yVar = (1 - Mth.abs(surfaceDirection.getStepY())) * 0.35;
+                double zVar = (1 - Mth.abs(surfaceDirection.getStepZ())) * 0.35;
+                var particleCount = velocity.length() * 10;
+                for (int i = 0; i < particleCount && i < 4; ++i) {
+                    double x = Mth.lerp(player.getRandom().nextFloat(), boundingBox.minX - xVar, boundingBox.maxX + xVar);
+                    double y = Mth.lerp(player.getRandom().nextFloat(), boundingBox.minY - yVar, boundingBox.maxY + yVar);
+                    double z = Mth.lerp(player.getRandom().nextFloat(), boundingBox.minZ - zVar, boundingBox.maxZ + zVar);
+                    player.level().addParticle(ChangedParticles.globbedLatex(player, Color3.WHITE),
+                            x, y, z, 0, 0, 0);
+                }
+            }
+
+            lastPos = currentPos;
+        }
+
+        @Override
         public void serverAiStep(Player player, InputWrapper input, LogicalSide side) {
             var form = getForm(player);
             if (player instanceof ServerPlayer serverPlayer && form != null)

@@ -23,6 +23,7 @@ public abstract class PlayerMoverInstance<T extends PlayerMover<?>> {
     public void readFrom(CompoundTag tag) {}
 
     public abstract void aiStep(Player player, InputWrapper input, LogicalSide side);
+    public void remoteAiStep(Player player, InputWrapper input, LogicalSide side) {}
     public abstract void serverAiStep(Player player, InputWrapper input, LogicalSide side);
 
     /**

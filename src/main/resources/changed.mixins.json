@@ -68,6 +68,7 @@
     "client.SkinManagerMixin",
     "client.TutorialMixin",
     "entity.LocalPlayerMixin",
+    "entity.RemotePlayerMixin",
     "forge.ChunkRenderTypeSetMixin",
     "gui.AbstractContainerScreenMixin",
     "gui.ClientRecipeBookMixin",
