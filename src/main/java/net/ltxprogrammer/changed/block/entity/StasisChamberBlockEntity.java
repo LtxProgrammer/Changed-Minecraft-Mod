@@ -31,7 +31,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -408,7 +407,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         }
 
         var commands = blockEntity.scheduledCommands;
-        if (commands.isEmpty() && !blockEntity.getEntitiesWithin().isEmpty()) {
+        if (commands.isEmpty() && !blockEntity.getEntitiesCompletelyWithin().isEmpty()) {
             // No scheduled work, ensure entities within can leave
             commands.add(ScheduledCommand.DRAIN);
             commands.add(ScheduledCommand.RELEASE);
@@ -489,7 +488,32 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         return isFilled() && getChamberedLatex().isPresent();
     }
 
-    public <T extends Entity> List<T> getEntitiesWithin(Class<T> clazz) {
+    protected static boolean isBoundingBoxCompletelyWithin(AABB smallBox, AABB bigBox) {
+        // AABB.contains() treats the upper bound (maxX, maxY, maxZ) as exclusive.
+        // This method treats it as inclusive
+        var min = smallBox.minX >= bigBox.minX && smallBox.minX <= bigBox.maxX &&
+                smallBox.minY >= bigBox.minY && smallBox.minY <= bigBox.maxY &&
+                smallBox.minZ >= bigBox.minZ && smallBox.minZ <= bigBox.maxZ;
+        var max = smallBox.maxX >= bigBox.minX && smallBox.maxX <= bigBox.maxX &&
+                smallBox.maxY >= bigBox.minY && smallBox.maxY <= bigBox.maxY &&
+                smallBox.maxZ >= bigBox.minZ && smallBox.maxZ <= bigBox.maxZ;
+        return min && max;
+    }
+
+    public <T extends Entity> List<T> getEntitiesInside(Class<T> clazz) {
+        if (!(this.getBlockState().getBlock() instanceof StasisChamber chamber)) {
+            return List.of();
+        }
+
+        AABB detectionBox = chamber.getDetectionSize(this.getBlockState(), level, this.getBlockPos());
+        Level level = getLevel();
+        if (level == null)
+            return List.of();
+
+        return level.getEntitiesOfClass(clazz, detectionBox);
+    }
+
+    public <T extends Entity> List<T> getEntitiesCompletelyWithin(Class<T> clazz) {
         if (!(this.getBlockState().getBlock() instanceof StasisChamber chamber)) {
             return List.of();
         }
@@ -506,27 +530,30 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
                 var entity = iterator.next();
                 AABB entityBox = entity.getBoundingBox();
 
-                if (!(detectionBox.contains(entityBox.minX, entityBox.minY, entityBox.minZ) &&
-                        detectionBox.contains(entityBox.maxX, entityBox.maxY, entityBox.maxZ)))
+                if (!isBoundingBoxCompletelyWithin(entityBox, detectionBox))
                     iterator.remove();
             }
         }
         return entities;
     }
 
-    public List<LivingEntity> getEntitiesWithin() {
-        return getEntitiesWithin(LivingEntity.class);
+    public List<LivingEntity> getEntitiesCompletelyWithin() {
+        return getEntitiesCompletelyWithin(LivingEntity.class);
     }
 
-    public List<Player> getPlayersWithin() {
-        return getEntitiesWithin(Player.class).stream()
+    public List<LivingEntity> getEntitiesInside() {
+        return getEntitiesInside(LivingEntity.class);
+    }
+
+    public List<Player> getPlayersCompletelyWithin() {
+        return getEntitiesCompletelyWithin(Player.class).stream()
                 .filter(entity -> entity instanceof Player)
                 .map(entity -> (Player)entity)
                 .toList();
     }
 
     public boolean ensureCapturedIsStillInside() {
-        var entities = getEntitiesWithin();
+        var entities = getEntitiesCompletelyWithin();
 
         if (cachedEntity == null) {
             cachedEntity = entities.stream().findAny().orElse(null);
@@ -548,7 +575,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
     public boolean isPlayerAllowedToConfigure(@Nullable Player controller) {
         if (controller == null)
             return true; // Unknown packet origin (shouldn't be possible on server-side)
-        var players = getPlayersWithin();
+        var players = getPlayersCompletelyWithin();
         if (players.isEmpty())
             return true; // No players within the chamber
 
@@ -637,7 +664,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
          * Requires: Chamber door is open.
          */
         CAPTURE_ENTITY("capture_entity", StasisChamberBlockEntity::isOpen, blockEntity -> {
-            var entities = blockEntity.getEntitiesWithin();
+            var entities = blockEntity.getEntitiesCompletelyWithin();
             if (entities.size() != 1)
                 return true; // Execute again
             blockEntity.cachedEntity = entities.get(0);
@@ -857,7 +884,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
          * Requires: Chamber door is closed and the chamber is drained.
          */
         RELEASE("release", StasisChamberBlockEntity::isClosedAndDrained, blockEntity -> {
-            if (blockEntity.getEntitiesWithin().isEmpty())
+            if (blockEntity.getEntitiesInside().isEmpty())
                 return false; // No entities inside, no need to open
             if (blockEntity.getBlockState().getBlock() instanceof StasisChamber chamber) {
                 chamber.openDoor(blockEntity.getBlockState(), blockEntity.getLevel(), blockEntity.getBlockPos());
@@ -870,7 +897,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
          * Requires: Chamber door is open.
          */
         CLOSE_WHEN_EMPTY("close_when_empty", StasisChamberBlockEntity::isOpen, blockEntity -> {
-            if (!blockEntity.getEntitiesWithin().isEmpty())
+            if (!blockEntity.getEntitiesInside().isEmpty())
                 return true;
             if (blockEntity.getBlockState().getBlock() instanceof StasisChamber chamber) {
                 chamber.closeDoor(blockEntity.getBlockState(), blockEntity.getLevel(), blockEntity.getBlockPos());

@@ -1,7 +1,6 @@
 {
   "parent": "changed:mer_mobility/practice2",
   "titleId": "changed.ability_tree.practice3",
-  "flavorId": "changed.ability_tree.mer_mobility.practice3.flavor",
   "display": { "icon": { "item": "changed:diamond_upper_abdomen_armor" }, "numeral": 3 },
   "price": {
     "levels": 1

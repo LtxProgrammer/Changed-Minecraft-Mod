@@ -46,7 +46,9 @@ public class UnlockActiveAbilityNodeEffect extends NodeEffect {
     public void buildDescription(Consumer<Component> componentConsumer, boolean negate) {
         super.buildDescription(componentConsumer, negate);
 
-        var abilityName = Component.translatable("ability." + ChangedRegistry.ABILITY.getKey(ability).toString().replace(':', '.'));;
+        var abilityName = Component.translatable("ability." + ChangedRegistry.ABILITY.getKey(ability).toString()
+                .replace(':', '.')
+                .replace('/', '.'));
 
         var levelText = Component.translatable("enchantment.level." + (this.level + 1));
         if (!negate) {

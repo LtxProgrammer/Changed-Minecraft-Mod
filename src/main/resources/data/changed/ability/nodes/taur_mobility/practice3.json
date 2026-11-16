@@ -1,7 +1,6 @@
 {
   "parent": "changed:taur_mobility/practice2",
   "titleId": "changed.ability_tree.practice3",
-  "flavorId": "changed.ability_tree.taur_mobility.practice3.flavor",
   "display": { "icon": { "item": "changed:diamond_quadrupedal_leggings" }, "numeral": 3 },
   "price": {
     "levels": 1
