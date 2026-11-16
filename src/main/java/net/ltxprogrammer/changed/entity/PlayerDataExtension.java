@@ -26,8 +26,8 @@ public interface PlayerDataExtension extends LivingEntityDataExtension {
     int getPaleExposure();
     void setPaleExposure(int level);
 
-    @Nullable PlayerMoverInstance<?> getPlayerMover();
-    void setPlayerMover(@Nullable PlayerMoverInstance<?> mover);
+    @Nullable PlayerMoverInstance getPlayerMover();
+    void setPlayerMover(@Nullable PlayerMoverInstance mover);
     default void setPlayerMoverType(@Nullable PlayerMover<?> moverType) {
         var existingMover = getPlayerMover();
 

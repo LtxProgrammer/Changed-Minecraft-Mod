@@ -8,10 +8,10 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;
 
-public abstract class PlayerMoverInstance<T extends PlayerMover<?>> {
-    public final T parent;
+public abstract class PlayerMoverInstance {
+    public final PlayerMover<?> parent;
 
-    public PlayerMoverInstance(T parent) {
+    public PlayerMoverInstance(PlayerMover<?> parent) {
         this.parent = parent;
     }
 

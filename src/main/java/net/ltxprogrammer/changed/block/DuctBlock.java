@@ -314,128 +314,121 @@ public class DuctBlock extends ChangedBlock implements SimpleWaterloggedBlock {
         return super.use(state, level, blockPos, player, hand, hitResult);
     }
 
-    public static class DuctMover extends PlayerMover<DuctMover.DuctMoverInstance> {
-        public static class DuctMoverInstance extends PlayerMoverInstance<DuctMover> {
-            public Block ductBlock;
-            public int coolDown = 0;
+    public static class DuctMover extends PlayerMoverInstance {
+        public Block ductBlock;
+        public int coolDown = 0;
 
-            public DuctMoverInstance(DuctMover parent) {
-                super(parent);
-            }
+        public DuctMover(PlayerMover<?> parent) {
+            super(parent);
+        }
 
-            public static Direction.Axis getClosestAxis(Vec3 vec3) {
-                if (Math.abs(vec3.x) > Math.abs(vec3.y) && Math.abs(vec3.x) > Math.abs(vec3.z))
-                    return Direction.Axis.X;
-                if (Math.abs(vec3.y) > Math.abs(vec3.x) && Math.abs(vec3.y) > Math.abs(vec3.z))
-                    return Direction.Axis.Y;
-                else
-                    return Direction.Axis.Z;
-            }
+        public static Direction.Axis getClosestAxis(Vec3 vec3) {
+            if (Math.abs(vec3.x) > Math.abs(vec3.y) && Math.abs(vec3.x) > Math.abs(vec3.z))
+                return Direction.Axis.X;
+            if (Math.abs(vec3.y) > Math.abs(vec3.x) && Math.abs(vec3.y) > Math.abs(vec3.z))
+                return Direction.Axis.Y;
+            else
+                return Direction.Axis.Z;
+        }
 
-            public static Direction getClosestDirection(Vec3 vec3) {
-                return switch (getClosestAxis(vec3)) {
-                    case X -> Direction.fromAxisAndDirection(Direction.Axis.X, vec3.x > 0.0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
-                    case Y -> Direction.fromAxisAndDirection(Direction.Axis.Y, vec3.y > 0.0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
-                    case Z -> Direction.fromAxisAndDirection(Direction.Axis.Z, vec3.z > 0.0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
-                };
-            }
+        public static Direction getClosestDirection(Vec3 vec3) {
+            return switch (getClosestAxis(vec3)) {
+                case X -> Direction.fromAxisAndDirection(Direction.Axis.X, vec3.x > 0.0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+                case Y -> Direction.fromAxisAndDirection(Direction.Axis.Y, vec3.y > 0.0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+                case Z -> Direction.fromAxisAndDirection(Direction.Axis.Z, vec3.z > 0.0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+            };
+        }
 
-            public static void playDuctSound(BlockPos where) {
+        public static void playDuctSound(BlockPos where) {
 
-            }
-
-            @Override
-            public void saveTo(CompoundTag tag) {
-                super.saveTo(tag);
-                TagUtil.putResourceLocation(tag, "block", ForgeRegistries.BLOCKS.getKey(ductBlock));
-            }
-
-            @Override
-            public void readFrom(CompoundTag tag) {
-                super.readFrom(tag);
-                this.ductBlock = ForgeRegistries.BLOCKS.getValue(TagUtil.getResourceLocation(tag, "block"));
-            }
-
-            @Override
-            public void aiStep(Player player, InputWrapper input, LogicalSide side) {
-                player.setDeltaMovement(0, 0, 0);
-                player.noPhysics = true;
-
-                if (coolDown > 0) {
-                    coolDown--;
-                    return;
-                }
-
-                Vec3 lookAngle = player.getLookAngle();
-                Vec3 upAngle = player.getUpVector(0.5f);
-
-                Direction lookDir = getClosestDirection(lookAngle);
-                Direction upDir = getClosestDirection(upAngle);
-                Direction leftDir = getClosestDirection(upAngle.cross(lookAngle));
-
-                Direction moveDir = null;
-                if (Math.abs(input.getForwardImpulse()) > 1.0E-5F)
-                    moveDir = input.getForwardImpulse() > 0.0f ? lookDir : lookDir.getOpposite();
-                else if (Math.abs(input.getLeftImpulse()) > 1.0E-5F)
-                    moveDir = input.getLeftImpulse() > 0.0f ? leftDir : leftDir.getOpposite();
-
-                if (moveDir == null) return;
-
-                BlockPos currentPos = player.blockPosition();
-                BlockPos nextPos = currentPos.relative(moveDir);
-
-                BlockState nextState = player.level().getBlockState(nextPos);
-                if (!nextState.is(ductBlock) && !nextState.is(ChangedTags.Blocks.DUCT_EXIT))
-                    return;
-
-                player.moveTo(nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + 0.5);
-                player.xOld = currentPos.getX() + 0.5;
-                player.yOld = currentPos.getY() + 0.5;
-                player.zOld = currentPos.getZ() + 0.5;
-                player.xo = currentPos.getX() + 0.5;
-                player.yo = currentPos.getY() + 0.5;
-                player.zo = currentPos.getZ() + 0.5;
-                playDuctSound(nextPos);
-
-                coolDown = input.getSprintKeyDown() ? 4 : 5;
-            }
-
-            @Override
-            public void serverAiStep(Player player, InputWrapper input, LogicalSide side) {
-
-            }
-
-            @Override
-            public boolean shouldRemoveMover(Player player, InputWrapper input, LogicalSide side) {
-                return !player.level().getBlockState(player.blockPosition()).is(ductBlock);
-            }
-
-            @Override
-            public EntityDimensions getDimensions(LivingEntity entity, Pose pose, EntityDimensions currentDimensions) {
-                return EntityDimensions.scalable(0.5f, 0.5f);
-            }
-
-            @Override
-            public void onAdd(Player player) {
-                super.onAdd(player);
-                player.refreshDimensions();
-            }
-
-            @Override
-            public void onRemove(Player player) {
-                super.onRemove(player);
-                EntityUtil.refreshDimensionsAndPushFromWall(player);
-            }
-
-            @Override
-            public float getEyeHeight(LivingEntity entity, Pose pose, float eyeHeight) {
-                return 0.25f;
-            }
         }
 
         @Override
-        public DuctMoverInstance createInstance() {
-            return new DuctMoverInstance(this);
+        public void saveTo(CompoundTag tag) {
+            super.saveTo(tag);
+            TagUtil.putResourceLocation(tag, "block", ForgeRegistries.BLOCKS.getKey(ductBlock));
+        }
+
+        @Override
+        public void readFrom(CompoundTag tag) {
+            super.readFrom(tag);
+            this.ductBlock = ForgeRegistries.BLOCKS.getValue(TagUtil.getResourceLocation(tag, "block"));
+        }
+
+        @Override
+        public void aiStep(Player player, InputWrapper input, LogicalSide side) {
+            player.setDeltaMovement(0, 0, 0);
+            player.noPhysics = true;
+
+            if (coolDown > 0) {
+                coolDown--;
+                return;
+            }
+
+            Vec3 lookAngle = player.getLookAngle();
+            Vec3 upAngle = player.getUpVector(0.5f);
+
+            Direction lookDir = getClosestDirection(lookAngle);
+            Direction upDir = getClosestDirection(upAngle);
+            Direction leftDir = getClosestDirection(upAngle.cross(lookAngle));
+
+            Direction moveDir = null;
+            if (Math.abs(input.getForwardImpulse()) > 1.0E-5F)
+                moveDir = input.getForwardImpulse() > 0.0f ? lookDir : lookDir.getOpposite();
+            else if (Math.abs(input.getLeftImpulse()) > 1.0E-5F)
+                moveDir = input.getLeftImpulse() > 0.0f ? leftDir : leftDir.getOpposite();
+
+            if (moveDir == null) return;
+
+            BlockPos currentPos = player.blockPosition();
+            BlockPos nextPos = currentPos.relative(moveDir);
+
+            BlockState nextState = player.level().getBlockState(nextPos);
+            if (!nextState.is(ductBlock) && !nextState.is(ChangedTags.Blocks.DUCT_EXIT))
+                return;
+
+            player.moveTo(nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + 0.5);
+            player.xOld = currentPos.getX() + 0.5;
+            player.yOld = currentPos.getY() + 0.5;
+            player.zOld = currentPos.getZ() + 0.5;
+            player.xo = currentPos.getX() + 0.5;
+            player.yo = currentPos.getY() + 0.5;
+            player.zo = currentPos.getZ() + 0.5;
+            playDuctSound(nextPos);
+
+            coolDown = input.getSprintKeyDown() ? 4 : 5;
+        }
+
+        @Override
+        public void serverAiStep(Player player, InputWrapper input, LogicalSide side) {
+
+        }
+
+        @Override
+        public boolean shouldRemoveMover(Player player, InputWrapper input, LogicalSide side) {
+            return !player.level().getBlockState(player.blockPosition()).is(ductBlock);
+        }
+
+        @Override
+        public EntityDimensions getDimensions(LivingEntity entity, Pose pose, EntityDimensions currentDimensions) {
+            return EntityDimensions.scalable(0.5f, 0.5f);
+        }
+
+        @Override
+        public void onAdd(Player player) {
+            super.onAdd(player);
+            player.refreshDimensions();
+        }
+
+        @Override
+        public void onRemove(Player player) {
+            super.onRemove(player);
+            EntityUtil.refreshDimensionsAndPushFromWall(player);
+        }
+
+        @Override
+        public float getEyeHeight(LivingEntity entity, Pose pose, float eyeHeight) {
+            return 0.25f;
         }
     }
 }
