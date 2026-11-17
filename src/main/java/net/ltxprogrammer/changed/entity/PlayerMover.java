@@ -10,40 +10,37 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
-public abstract class PlayerMover<T extends PlayerMoverInstance<?>> {
-    public abstract T createInstance();
+public interface PlayerMover<T extends PlayerMoverInstance> {
+    default T createInstance() {
+        return createInstance(this);
+    }
 
-    private static class DefaultMover extends PlayerMover<DefaultMover.DefaultInstance> {
-        private static class DefaultInstance extends PlayerMoverInstance<DefaultMover> {
-            public DefaultInstance(DefaultMover parent) {
-                super(parent);
-            }
+    T createInstance(PlayerMover<?> parent);
 
-            @Override
-            public void aiStep(Player player, InputWrapper input, LogicalSide side) {
-
-            }
-
-            @Override
-            public void serverAiStep(Player player, InputWrapper input, LogicalSide side) {
-
-            }
-
-            @Override
-            public boolean shouldRemoveMover(Player player, InputWrapper input, LogicalSide side) {
-                return true;
-            }
+    class DefaultMover extends PlayerMoverInstance {
+        public DefaultMover(PlayerMover<?> parent) {
+            super(parent);
         }
 
         @Override
-        public DefaultInstance createInstance() {
-            return new DefaultInstance(this);
+        public void aiStep(Player player, InputWrapper input, LogicalSide side) {
+
+        }
+
+        @Override
+        public void serverAiStep(Player player, InputWrapper input, LogicalSide side) {
+
+        }
+
+        @Override
+        public boolean shouldRemoveMover(Player player, InputWrapper input, LogicalSide side) {
+            return true;
         }
     }
 
-    public static DeferredRegister<PlayerMover<?>> REGISTRY = ChangedRegistry.PLAYER_MOVER.createDeferred(Changed.MODID);
+    DeferredRegister<PlayerMover<?>> REGISTRY = ChangedRegistry.PLAYER_MOVER.createDeferred(Changed.MODID);
 
-    public static RegistryObject<DefaultMover> DEFAULT_MOVER = REGISTRY.register("default", DefaultMover::new);
-    public static RegistryObject<DuctBlock.DuctMover> DUCT_MOVER = REGISTRY.register("duct", DuctBlock.DuctMover::new);
-    public static RegistryObject<LatexSwimMover> LATEX_SWIM = REGISTRY.register("latex_swim", LatexSwimMover::new);
+    RegistryObject<PlayerMover<DefaultMover>> DEFAULT_MOVER = REGISTRY.register("default", () -> DefaultMover::new);
+    RegistryObject<PlayerMover<DuctBlock.DuctMover>> DUCT_MOVER = REGISTRY.register("duct", () -> DuctBlock.DuctMover::new);
+    RegistryObject<PlayerMover<LatexSwimMover>> LATEX_SWIM = REGISTRY.register("latex_swim", () -> LatexSwimMover::new);
 }

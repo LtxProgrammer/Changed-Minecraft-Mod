@@ -79,6 +79,8 @@ public interface InputWrapper {
         }
     }
 
+    static InputWrapper EMPTY = new Empty();
+
     class InputHolder implements Supplier<Input>, InputWrapper {
         private final Input input;
         private final Options options;
@@ -148,6 +150,10 @@ public interface InputWrapper {
         if (UniversalDist.isLocalPlayer(player))
             return new InputHolder(player);
         else
-            return new Empty();
+            return EMPTY;
+    }
+
+    static InputWrapper empty() {
+        return EMPTY;
     }
 }

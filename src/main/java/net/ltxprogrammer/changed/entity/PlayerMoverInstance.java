@@ -8,10 +8,10 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;
 
-public abstract class PlayerMoverInstance<T extends PlayerMover<?>> {
-    public final T parent;
+public abstract class PlayerMoverInstance {
+    public final PlayerMover<?> parent;
 
-    public PlayerMoverInstance(T parent) {
+    public PlayerMoverInstance(PlayerMover<?> parent) {
         this.parent = parent;
     }
 
@@ -23,6 +23,7 @@ public abstract class PlayerMoverInstance<T extends PlayerMover<?>> {
     public void readFrom(CompoundTag tag) {}
 
     public abstract void aiStep(Player player, InputWrapper input, LogicalSide side);
+    public void remoteAiStep(Player player, InputWrapper input, LogicalSide side) {}
     public abstract void serverAiStep(Player player, InputWrapper input, LogicalSide side);
 
     /**

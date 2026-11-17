@@ -142,7 +142,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     // ADDITIONAL DATA
     @Nullable @Unique
-    public PlayerMoverInstance<?> playerMover = null;
+    public PlayerMoverInstance playerMover = null;
     @Unique
     public TransfurVariantInstance<?> latexVariant = null;
     @Unique
@@ -257,13 +257,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @Nullable
     @Override
-    public PlayerMoverInstance<?> getPlayerMover() {
+    public PlayerMoverInstance getPlayerMover() {
         return playerMover;
     }
 
     @Override
-    public void setPlayerMover(@Nullable PlayerMoverInstance<?> playerMover) {
-        PlayerMoverInstance<?> lastMover = this.playerMover;
+    public void setPlayerMover(@Nullable PlayerMoverInstance playerMover) {
+        PlayerMoverInstance lastMover = this.playerMover;
         this.playerMover = playerMover;
         if (lastMover != null)
             lastMover.onRemove((Player)(Object)this);
