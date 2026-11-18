@@ -25,14 +25,14 @@ public class DarkLatexBlock extends AbstractLatexBlock {
             ChangedBlocks.LATEX_CRYSTAL,
             ChangedBlocks.DARK_DRAGON_CRYSTAL,
             ChangedBlocks.BEIFENG_CRYSTAL_SMALL,
-            ChangedBlocks.WOLF_CRYSTAL_SMALL
+            ChangedBlocks.WOLF_CRYSTAL_SMALL,
+            ChangedBlocks.LATEX_PUP_CRYSTAL
     );
 
     public static final List<Supplier<? extends TransfurCrystalBlock>> LARGE_CRYSTALS = List.of(
             ChangedBlocks.DARK_LATEX_CRYSTAL_LARGE,
             ChangedBlocks.BEIFENG_CRYSTAL,
-            ChangedBlocks.WOLF_CRYSTAL,
-            ChangedBlocks.LATEX_PUP_CRYSTAL
+            ChangedBlocks.WOLF_CRYSTAL
     );
 
     @Override

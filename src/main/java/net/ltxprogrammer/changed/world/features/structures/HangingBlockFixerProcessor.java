@@ -33,4 +33,17 @@ public class HangingBlockFixerProcessor extends StructureProcessor {
     protected StructureProcessorType<?> getType() {
         return ChangedFeatures.HANGING_BLOCK_FIXER_PROCESSOR.get();
     }
+
+    @Override
+    public StructureTemplate.StructureEntityInfo processEntity(LevelReader world, BlockPos seedPos, StructureTemplate.StructureEntityInfo rawEntityInfo, StructureTemplate.StructureEntityInfo entityInfo, StructurePlaceSettings placementSettings, StructureTemplate template) {
+        var info = super.processEntity(world, seedPos, rawEntityInfo, entityInfo, placementSettings, template);
+
+        if (info.nbt.contains("TileX") && info.nbt.contains("TileY") && info.nbt.contains("TileZ")) {
+            info.nbt.putInt("TileX", info.blockPos.getX());
+            info.nbt.putInt("TileY", info.blockPos.getY());
+            info.nbt.putInt("TileZ", info.blockPos.getZ());
+        }
+
+        return info;
+    }
 }
