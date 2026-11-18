@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelSet;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.init.ChangedPoseExtensions;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -125,9 +126,12 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
     protected float getSwimAngle(@NotNull T entity, float bob, float bodyYRot, float partialTicks, float swimAmount) {
         boolean matchLookAngle = (entity.isInWater() || entity.canSwimInFluidType(ForgeMod.EMPTY_TYPE.get())) && entity.isSprinting();
         float swimmingAngle = matchLookAngle ? -90.0F - entity.getXRot() : -90.0F;
+        if (!entity.isInWater() && entity.getPoseExtension() == ChangedPoseExtensions.DIVING.get()) {
+            var velocity = entity.getDeltaMovement(partialTicks).normalize().y * 0.7;
+            swimmingAngle = (float)(-(velocity) * 0.5 + 0.5) * -180.0F;
+        }
         return swimmingAngle * Mth.DEG_TO_RAD;
 
-        // TODO: animate dive into water based on velocity
         // Mer idle animation when not moving in water?
     }
 
