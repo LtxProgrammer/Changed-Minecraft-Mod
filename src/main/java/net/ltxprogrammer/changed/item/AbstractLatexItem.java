@@ -78,8 +78,9 @@ public class AbstractLatexItem extends ItemNameBlockItem {
         /*if (!Changed.config.server.canBlockBeCovered(event.plannedState.getBlock()))
             return InteractionResult.FAIL;*/
 
-        context.getLevel().setBlockAndUpdate(event.blockPos, event.getPlannedState());
+        event.getPreProcess().accept(context.getLevel(), positionToCover);
         LatexCoverState.setAtAndUpdate(context.getLevel(), event.blockPos, event.plannedCoverState);
+        context.getLevel().setBlockAndUpdate(event.blockPos, event.getPlannedState());
 
         final var soundType = event.plannedCoverState.getSoundType(context.getLevel(), event.blockPos, context.getPlayer());
         if (soundType != null)

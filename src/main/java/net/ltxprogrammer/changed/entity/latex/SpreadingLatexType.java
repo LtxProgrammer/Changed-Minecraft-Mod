@@ -306,8 +306,9 @@ public abstract class SpreadingLatexType extends LatexType {
         if (Changed.postModEvent(event))
             return false;
 
-        level.setBlockAndUpdate(spreadPos, event.getPlannedState());
+        event.getPreProcess().accept(level, spreadPos);
         LatexCoverState.setAtAndUpdate(level, spreadPos, event.plannedCoverState);
+        level.setBlockAndUpdate(spreadPos, event.getPlannedState());
 
         event.getPostProcess().accept(level, spreadPos);
         return true;
@@ -663,6 +664,8 @@ public abstract class SpreadingLatexType extends LatexType {
                 switch (event.originalState.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
                     case UPPER -> {
                         event.setPlannedState(crystal.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), (level, where) -> {
+                            level.setBlockAndUpdate(where.below(), Blocks.AIR.defaultBlockState());
+                        }, (level, where) -> {
                             level.setBlockAndUpdate(where.below(), crystal
                                     .setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER));
                         });
@@ -670,6 +673,8 @@ public abstract class SpreadingLatexType extends LatexType {
 
                     case LOWER -> {
                         event.setPlannedState(crystal.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER), (level, where) -> {
+                            level.setBlockAndUpdate(where.above(), Blocks.AIR.defaultBlockState());
+                        }, (level, where) -> {
                             level.setBlockAndUpdate(where.above(), crystal
                                     .setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER));
                         });
@@ -814,14 +819,18 @@ public abstract class SpreadingLatexType extends LatexType {
                 switch (event.originalState.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
                     case UPPER -> {
                         event.setPlannedState(pillar.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), (level, where) -> {
-                            level.setBlockAndUpdate(event.blockPos.below(), pillar
+                            level.setBlockAndUpdate(where.below(), Blocks.AIR.defaultBlockState());
+                        }, (level, where) -> {
+                            level.setBlockAndUpdate(where.below(), pillar
                                     .setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER));
                         });
                     }
 
                     case LOWER -> {
                         event.setPlannedState(pillar.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER), (level, where) -> {
-                            level.setBlockAndUpdate(event.blockPos.above(), pillar
+                            level.setBlockAndUpdate(where.above(), Blocks.AIR.defaultBlockState());
+                        }, (level, where) -> {
+                            level.setBlockAndUpdate(where.above(), pillar
                                     .setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER));
                         });
                     }
@@ -913,6 +922,7 @@ public abstract class SpreadingLatexType extends LatexType {
         public final LevelAccessor level;
 
         private BlockState plannedState;
+        private BiConsumer<Level, BlockPos> preProcess;
         private BiConsumer<Level, BlockPos> postProcess;
 
         private static void defaultPostProcess(Level level, BlockPos blockPos) {
@@ -926,6 +936,7 @@ public abstract class SpreadingLatexType extends LatexType {
             this.level = level;
             plannedState = coveredState;
             plannedCoverState = coverState;
+            preProcess = CoveringBlockEvent::defaultPostProcess;
             postProcess = CoveringBlockEvent::defaultPostProcess;
         }
 
@@ -935,16 +946,21 @@ public abstract class SpreadingLatexType extends LatexType {
         }
 
         public void setPlannedState(BlockState blockState) {
-            this.setPlannedState(blockState, CoveringBlockEvent::defaultPostProcess);
+            this.setPlannedState(blockState, CoveringBlockEvent::defaultPostProcess, CoveringBlockEvent::defaultPostProcess);
         }
 
-        public void setPlannedState(BlockState blockState, BiConsumer<Level, BlockPos> postProcess) {
+        public void setPlannedState(BlockState blockState, BiConsumer<Level, BlockPos> preProcess, BiConsumer<Level, BlockPos> postProcess) {
             this.plannedState = blockState;
+            this.preProcess = preProcess;
             this.postProcess = postProcess;
         }
 
         public BlockState getPlannedState() {
             return plannedState;
+        }
+
+        public BiConsumer<Level, BlockPos> getPreProcess() {
+            return preProcess;
         }
 
         public BiConsumer<Level, BlockPos> getPostProcess() {

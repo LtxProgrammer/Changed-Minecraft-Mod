@@ -121,8 +121,9 @@ public abstract class AbstractLatexBlock extends Block implements LatexCoveringS
         /*if (!Changed.config.server.canBlockBeCovered(event.plannedState.getBlock()))
             return InteractionResult.FAIL;*/
 
-        level.setBlockAndUpdate(event.blockPos, event.getPlannedState());
+        event.getPreProcess().accept(level, event.blockPos);
         LatexCoverState.setAtAndUpdate(level, event.blockPos, event.plannedCoverState);
+        level.setBlockAndUpdate(event.blockPos, event.getPlannedState());
 
         event.getPostProcess().accept(level, event.blockPos);
         return true;
