@@ -21,6 +21,14 @@ public class ChangedMixinPlugin implements IMixinConfigPlugin {
             return isModPresent(modIdCondition);
     }
 
+    // ParCool 4.0 removed the animation API (capability.Animation, PlayerModelRotator, PlayerModelTransformer)
+    // that the Parcool mixins target. Those mixins must only apply when this class is still present.
+    private static final String PARCOOL_LEGACY_ANIMATION_CLASS = "com/alrex/parcool/common/capability/Animation.class";
+
+    private static boolean isParcoolLegacyAnimationPresent() {
+        return ChangedMixinPlugin.class.getClassLoader().getResource(PARCOOL_LEGACY_ANIMATION_CLASS) != null;
+    }
+
     @Override
     public void onLoad(String mixinPackage) {
 
@@ -34,6 +42,9 @@ public class ChangedMixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         // This map is generated at compile-time, and doesn't exist until then
+        if (mixinClassName.startsWith("net.ltxprogrammer.changed.mixin.compatibility.Parcool.") && !isParcoolLegacyAnimationPresent())
+            return false;
+
         final Multimap<String, String> dependencies = net.ltxprogrammer.changed.extension.MixinDependencies.MULTIMAP;
         return dependencies.get(mixinClassName).stream().allMatch(ChangedMixinPlugin::conditionSatisfied);
     }
