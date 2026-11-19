@@ -31,6 +31,9 @@ We strive to keep the code and assets of the Changed: Minecraft Mod at a excelle
 
 Submitting content that fails to meet quality expectations isn't an issue, and can be a good learning experience on what can be improved. However, excessively submitting issues/pull requests that repeatedly fail to meet quality expectations will result in a warning, and then a ban from contributing.
 
+## Generative AI Policy
+Absolutely no generative AI is to be used when developing this mod. Any user contributing AI generated material (code, textures, sounds, etc.) to the mod without disclosing the usage of AI will be blocked from further activity. Disclosing your use of AI in a pull request will not block you from further activity, but will result in the pull request being closed.
+
 ## How can I make my own extension mod?
 
 Please refer to the [wiki](https://github.com/LtxProgrammer/Changed-Minecraft-Mod/wiki) for tutorials on setting up, and using the API.
