@@ -175,7 +175,7 @@ def modIndex = [
     "etf": [ artifact: "curse.maven:entity-texture-features-fabric-568563:7930617", compile: true, clientOnly: false ], // Forge 1.20.1 v7.1
     "emf": [ artifact: "curse.maven:entity-model-features-844662:8063556", compile: true, clientOnly: false ], // Forge 1.20.1 v3.2.4
     "tacz": [ artifact: "curse.maven:timeless-and-classics-zero-1028108:6654541", compile: true, clientOnly: false ], // Forge 1.20.1 v1.1.6-hotfix
-    "parcool": [ artifact: "curse.maven:parcool-482378:6652972", compile: true, clientOnly: false ], // Forge 1.20.1 v3.4.0.7
+    "parcool": [ artifact: "curse.maven:parcool-482378:9415747", compile: true, clientOnly: false ], // Forge 1.20.1 v4.0.2.0
     "personality": [ artifact: "curse.maven:personality-415974:6248892", compile: true, clientOnly: false ], // Forge 1.20.1 v4.1.0
     "create": [ artifact: "curse.maven:create-328085:6641603", compile: true, clientOnly: false ], // Forge 1.20.1 v6.0.6
     "curios": [ artifact: "curse.maven:curios-309927:6418456", compile: true, clientOnly: false ], // Forge 1.20.1 v5.14.1
