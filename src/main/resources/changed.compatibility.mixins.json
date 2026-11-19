@@ -17,6 +17,7 @@
     "BeyondEarth.OxygenSystemMixin",
     "CarryOn.HoldEntityAnimatorMixin",
     "CarryOn.PickupHandlerMixin",
+    "CosmeticArmorReworked.LatexHumanoidArmorLayerMixin",
     "Create.AdvancedHumanoidRendererMixin",
     "Create.HumanoidAnimatorMixin",
     "Curios.AdvancedHumanoidRendererMixin",
