@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.animations;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
@@ -134,6 +135,12 @@ public class AnimationContainer {
         }
 
         return baseline;
+    }
+
+    public <T extends LivingEntity> void animateRotations(PoseStack poseStack, float partialTicks) {
+        this.getOrderedAnimations().forEach(animationInstance -> {
+            animationInstance.animateRotations(poseStack, partialTicks);
+        });
     }
 
     /**

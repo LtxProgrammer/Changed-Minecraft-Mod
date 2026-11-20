@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.animations;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaternionf;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -74,6 +76,20 @@ public class AnimationInstance {
 
     public void addItem(ItemStack item) {
         // TODO: Item animation track, either lock to limb or be keyframed
+    }
+
+    private void animateModelPosition(AnimationChannel positionChannel, PoseStack poseStack, float time, float transition) {
+        var position = positionChannel.getValue(animation, time);
+
+        poseStack.translate(position.x, position.y, position.z);
+    }
+
+    private void animateModelRotation(AnimationChannel rotationChannel, PoseStack poseStack, float time, float transition) {
+        var rotation = rotationChannel.getValue(animation, time);
+
+        if (rotation.x != 0.0F || rotation.y != 0.0F || rotation.z != 0.0F) {
+            poseStack.mulPose((new Quaternionf()).rotationZYX(rotation.z, rotation.y, rotation.x));
+        }
     }
 
     private void animateLimb(List<AnimationChannel> channelList, ModelPart part, PartPose base, float time, float transition) {
@@ -178,6 +194,21 @@ public class AnimationInstance {
 
             animateLimb(animation.channels.get(limb), limb.getModelPart(model, entity), baseline.get(limb), time, transition);
         });
+    }
+
+    protected void animateRotations(PoseStack poseStack, float partialTicks) {
+        final float time = computeTime(partialTicks);
+        final float transition = computeTransition(partialTicks);
+
+        for (var channel : animation.rootChannels) {
+            if (channel.getTarget() == AnimationChannel.Target.POSITION)
+                animateModelPosition(channel, poseStack, time, transition);
+        }
+
+        for (var channel : animation.rootChannels) {
+            if (channel.getTarget() == AnimationChannel.Target.ROTATION)
+                animateModelRotation(channel, poseStack, time, transition);
+        }
     }
 
     protected void animate(EntityModel<?> model, LivingEntity renderEntity, Map<ModelPartIdentifier, PartPose> baseline, float partialTicks) {

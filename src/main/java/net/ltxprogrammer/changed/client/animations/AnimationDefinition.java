@@ -2,9 +2,9 @@ package net.ltxprogrammer.changed.client.animations;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.ltxprogrammer.changed.data.codec.OptionalKeyFieldCodec;
 import net.ltxprogrammer.changed.entity.animation.AnimationParameters;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,6 +17,7 @@ import java.util.Map;
 public class AnimationDefinition {
     public final float length;
     public final float transitionDuration;
+    public final ImmutableList<AnimationChannel> rootChannels;
     public final ImmutableMap<ModelPartIdentifier, List<AnimationChannel>> channels;
     public final ImmutableList<ResourceLocation> entityProps;
     public final ImmutableList<AnimationChannel> itemProps;
@@ -25,6 +26,8 @@ public class AnimationDefinition {
     public static final Codec<AnimationDefinition> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.FLOAT.fieldOf("length").forGetter(definition -> definition.length),
             Codec.FLOAT.fieldOf("transitionDuration").forGetter(definition -> definition.transitionDuration),
+            OptionalKeyFieldCodec.keyOptionalFieldOf("rootChannels", Codec.list(AnimationChannel.CODEC), List.of())
+                    .forGetter(definition -> definition.rootChannels),
             Codec.unboundedMap(
                     ModelPartIdentifier.CODEC,
                     Codec.list(AnimationChannel.CODEC)
@@ -35,12 +38,14 @@ public class AnimationDefinition {
     ).apply(builder, AnimationDefinition::new));
 
     public AnimationDefinition(float length, float transitionDuration,
+                               List<AnimationChannel> rootChannels,
                                Map<ModelPartIdentifier, List<AnimationChannel>> channels,
                                List<ResourceLocation> entities,
                                List<AnimationChannel> items,
                                List<TimedSoundEffect> soundEffects) {
         this.length = length;
         this.transitionDuration = transitionDuration;
+        this.rootChannels = ImmutableList.copyOf(rootChannels);
         this.channels = ImmutableMap.copyOf(channels);
         this.entityProps = ImmutableList.copyOf(entities);
         this.itemProps = ImmutableList.copyOf(items);
@@ -57,6 +62,7 @@ public class AnimationDefinition {
 
     public static class Builder {
         private final float length;
+        private final List<AnimationChannel> rootAnimation = new ArrayList<>();
         private final Map<ModelPartIdentifier, List<AnimationChannel>> animations = new HashMap<>();
         private final List<ResourceLocation> entities = new ArrayList<>();
         private final List<AnimationChannel> items = new ArrayList<>();
@@ -74,6 +80,11 @@ public class AnimationDefinition {
 
         public Builder withTransition(float duration) {
             this.transitionDuration = duration;
+            return this;
+        }
+
+        public Builder addRootAnimation(AnimationChannel channel) {
+            rootAnimation.add(channel);
             return this;
         }
 
@@ -103,7 +114,7 @@ public class AnimationDefinition {
         }
 
         public AnimationDefinition build() {
-            return new AnimationDefinition(length, transitionDuration, animations, entities, items, soundEffects);
+            return new AnimationDefinition(length, transitionDuration, rootAnimation, animations, entities, items, soundEffects);
         }
     }
 }

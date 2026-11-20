@@ -439,16 +439,10 @@ public class StasisChamber extends HorizontalDirectionalBlock implements Partial
     }
 
     private static final Vec3 SIT_OFFSET = new Vec3(0.0D, -0.9D, 0.0D);
-    private static final Vec3 SLEEP_OFFSET = new Vec3(0.4D, -0.3D, 0.0D);
 
     @Override
     public Vec3 getSitOffset(BlockGetter level, BlockState state, BlockPos pos) {
         return SIT_OFFSET;
-    }
-
-    @Override
-    public Vec3 getSleepOffset(BlockGetter level, BlockState state, BlockPos pos) {
-        return SLEEP_OFFSET;
     }
 
     public static boolean isEntityStabilized(LivingEntity livingEntity) {

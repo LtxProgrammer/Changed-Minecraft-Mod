@@ -1,7 +1,10 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.LivingEntityRendererExtender;
+import net.ltxprogrammer.changed.client.animations.AnimationContainer;
 import net.ltxprogrammer.changed.client.renderer.accessory.WornExoskeletonRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.AccessoryLayer;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
@@ -98,6 +101,15 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
             at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V"))
     public void afterRender(T entity, float yRot, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, CallbackInfo ci) {
         this.unprepareLayers(entity);
+    }
+
+    @WrapOperation(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/LivingEntityRenderer;setupRotations(Lnet/minecraft/world/entity/LivingEntity;Lcom/mojang/blaze3d/vertex/PoseStack;FFF)V"))
+    public void afterSetupRotations(LivingEntityRenderer<T, M> instance, T entity, PoseStack poseStack, float bob, float bodyYRot, float partialTicks, Operation<Void> original) {
+        original.call(instance, entity, poseStack, bob, bodyYRot, partialTicks);
+        AnimationContainer.getForEntity(entity).ifPresent(container -> {
+            container.animateRotations(poseStack, partialTicks);
+        });
     }
 
     @Inject(method = "setupRotations", at = @At("HEAD"))

@@ -1,6 +1,16 @@
 {
   "length": 6.0,
   "transitionDuration": 1.25,
+  "rootChannels": [
+    {
+      "target": "position",
+      "keyframes": [
+        { "time": 0.0, "position": [ 0.0, 0.0, 0.0 ], "interpolation": "catmullrom" },
+        { "time": 3.0, "position": [ 0.0, 0.125, 0.0 ], "interpolation": "catmullrom" },
+        { "time": 6.0, "position": [ 0.0, 0.0, 0.0 ], "interpolation": "catmullrom" }
+      ]
+    }
+  ],
   "channels": {
     "head": [
       {
